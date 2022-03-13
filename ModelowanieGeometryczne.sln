@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ModelowanieGeometryczne", "MainProject\ModelowanieGeometryczne.vcxproj", "{66D3A330-5172-43D2-9D57-24C4A590F305}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{66D3A330-5172-43D2-9D57-24C4A590F305}.Debug|x64.ActiveCfg = Debug|x64
+		{66D3A330-5172-43D2-9D57-24C4A590F305}.Debug|x64.Build.0 = Debug|x64
+		{66D3A330-5172-43D2-9D57-24C4A590F305}.Release|x64.ActiveCfg = Release|x64
+		{66D3A330-5172-43D2-9D57-24C4A590F305}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {29AFB5C0-9EAF-4636-BA38-11B1E0D54511}
+	EndGlobalSection
+EndGlobal
