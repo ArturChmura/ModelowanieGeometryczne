@@ -7,22 +7,13 @@
 using namespace mini;
 using namespace std;
 
-DxDevice::DxDevice(const Window& window)
+
+
+DxDevice::DxDevice(ID3D11Device* device, ID3D11DeviceContext* context, IDXGISwapChain* swapChain)
 {
-	SwapChainDescription desc{ window.getHandle(), window.getClientSize() };
-	ID3D11Device* device = nullptr;
-	ID3D11DeviceContext* context = nullptr;
-	IDXGISwapChain* swapChain = nullptr;
-
-	auto hr = D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0,
-		nullptr, 0, D3D11_SDK_VERSION, &desc, &swapChain, &device, nullptr, &context);
-
-	m_device.reset(device);
-	m_swapChain.reset(swapChain);
-	m_context.reset(context);
-
-	if (FAILED(hr))
-		THROW_WINAPI;
+	this->m_device = device;
+	this->m_swapChain = swapChain;
+	this->m_context = context;
 }
 
 dx_ptr<ID3D11RenderTargetView> DxDevice::CreateRenderTargetView(const dx_ptr<ID3D11Texture2D>& texture) const

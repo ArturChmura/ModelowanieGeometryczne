@@ -12,7 +12,7 @@ void ArcCameraModel::Rotate(float firstAxis, float secondAxis)
 	auto dot = XMVector3Dot(direction, XMLoadFloat3(&upVector));
 	float dotF;
 	XMStoreFloat(&dotF, dot);
-	if (dotF * sgn(-secondAxis) > 0.99f)
+	if (dotF * sgn(-secondAxis) > 0.999f)
 	{
 		secondAxis = 0.0f;
 	}

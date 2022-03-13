@@ -12,13 +12,13 @@ namespace mini
 class DxDevice
 {
 public:
-	explicit DxDevice(const mini::Window& window);
+	explicit DxDevice(ID3D11Device* device, ID3D11DeviceContext* context, IDXGISwapChain* swapChain);
 
-	const mini::dx_ptr<ID3D11DeviceContext>& context() const { return m_context; }
+	ID3D11DeviceContext* context() const { return m_context; }
 
-	const mini::dx_ptr<IDXGISwapChain>& swapChain() const { return m_swapChain; }
+	IDXGISwapChain* swapChain() const { return m_swapChain; }
 
-	ID3D11Device* operator->() const { return m_device.get(); }
+	ID3D11Device* operator->() const { return m_device; }
 
 	mini::dx_ptr<ID3D11RenderTargetView> CreateRenderTargetView(const mini::dx_ptr<ID3D11Texture2D>& texture) const;
 
@@ -40,8 +40,11 @@ public:
 
 	template<class T> mini::dx_ptr < ID3D11Buffer>
 	CreateVertexBuffer(const std::vector<T>& vertices) const {
+		size_t e = vertices.size();
+		size_t t = sizeof(T);
+		size_t s = e * t;
 		auto desc = BufferDescription::VertexBufferDescription(
-			vertices.size() * sizeof(T));
+			s);
 		return CreateBuffer(reinterpret_cast<const void*>(
 			vertices.data()), desc);
 
@@ -49,7 +52,10 @@ public:
 
 	template<class T> mini::dx_ptr < ID3D11Buffer> CreateIndexBuffer(const std::vector<T>& indices) const
 	{
-		auto desc = BufferDescription::IndexBufferDescription(indices.size() * sizeof(T));
+		size_t e = indices.size();
+		size_t t = sizeof(T);
+		size_t s = e * t;
+		auto desc = BufferDescription::IndexBufferDescription(s);
 		return CreateBuffer(reinterpret_cast<const void*>(indices.data()), desc);
 	}
 
@@ -65,7 +71,7 @@ public:
 
 private:
 
-	mini::dx_ptr<ID3D11Device> m_device;
-	mini::dx_ptr<ID3D11DeviceContext> m_context;
-	mini::dx_ptr<IDXGISwapChain> m_swapChain;
+	ID3D11Device* m_device;
+	ID3D11DeviceContext* m_context;
+	IDXGISwapChain* m_swapChain;
 };
