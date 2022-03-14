@@ -11,11 +11,44 @@ Torus::Torus(float R, float r, unsigned int largeSlices, unsigned int smallSlice
 	this->color = { 1,0,0 };
 }
 
-Triangulation Torus::GetVertices()
+void Torus::SetBigRadius(float R)
 {
-	unsigned int verticesCount = largeSlices * smallSlices;
-	std::vector<Vertex> verices = std::vector<Vertex>();
-	std::vector<int> indices = std::vector<int>();
+	this->R = R;
+	UpdateVertices();
+}
+
+void Torus::SetSmallRadius(float r)
+{
+	this->r = r;
+	UpdateVertices();
+}
+
+void Torus::SetLargeSlices(int ls)
+{
+	this->largeSlices = ls;
+	UpdateVertices();
+}
+
+void Torus::SetSmallSlices(int ss)
+{
+	this->smallSlices = ss;
+	UpdateVertices();
+}
+
+void Torus::SetColor(DirectX::XMFLOAT3 color)
+{
+	this->color = color;
+	UpdateVertices();
+}
+
+void Torus::UpdateVertices()
+{
+	auto verticesCount = largeSlices * smallSlices;
+	auto indicesCount = largeSlices * smallSlices * 4;
+
+	std::vector<Vertex> verices = std::vector<Vertex>(verticesCount);
+	std::vector<int> indices = std::vector<int>(indicesCount);
+
 	for (size_t smallCount = 0; smallCount < smallSlices; smallCount++)
 	{
 		for (size_t largeCount = 0; largeCount < largeSlices; largeCount++)
@@ -33,21 +66,25 @@ Triangulation Torus::GetVertices()
 			Pair<int> bottomLeft = { largeCount, modulo2(smallCount - 1, smallSlices) };
 			Pair<int> bottomRight = { modulo2(largeCount + 1, largeSlices), modulo2(smallCount - 1, smallSlices) };
 
-			indices.push_back(topLeft.a + topLeft.b * largeSlices);
+			// Triangulacja
+			/* indices.push_back(topLeft.a + topLeft.b * largeSlices);
 			indices.push_back(topRight.a + topRight.b * largeSlices);
 			indices.push_back(bottomLeft.a + bottomLeft.b * largeSlices);
 
 			indices.push_back(topRight.a + topRight.b * largeSlices);
 			indices.push_back(bottomRight.a + bottomRight.b * largeSlices);
+			indices.push_back(bottomLeft.a + bottomLeft.b * largeSlices);*/
+
+			// Siatka
+			indices.push_back(topLeft.a + topLeft.b * largeSlices);
+			indices.push_back(topRight.a + topRight.b * largeSlices);
+			indices.push_back(topLeft.a + topLeft.b * largeSlices);
 			indices.push_back(bottomLeft.a + bottomLeft.b * largeSlices);
 
 		}
 	}
-
-	return { verices, indices };
+	this->vertices = verices;
+	this->indices = indices;
 }
 
-void Torus::ChangeColor(DirectX::XMFLOAT3 color)
-{
-	this->color = color;
-}
+

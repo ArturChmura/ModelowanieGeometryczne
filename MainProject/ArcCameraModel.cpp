@@ -1,6 +1,14 @@
 #include "ArcCameraModel.h"
 #include "Helpers.h"
 using namespace DirectX;
+DirectX::XMFLOAT4X4 ArcCameraModel::GetViewMatrix()
+{
+	return viewMatrix;
+}
+DirectX::XMFLOAT4X4 ArcCameraModel::GetPerspectiveMatrix()
+{
+	return perspectiveMatrix;
+}
 void ArcCameraModel::Rotate(float firstAxis, float secondAxis)
 {
 	firstAxis = -firstAxis;

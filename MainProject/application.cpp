@@ -59,7 +59,7 @@ Application::Application(SIZE size, ID3D11Device* device, ID3D11DeviceContext* c
 	backgroundColor = { 1,1,1 };
 
 	torusModel = std::make_shared<Torus>(6, 1, 6,5);
-	UpdateBuffers();
+	UpdateVertices();
 }
 
 
@@ -130,7 +130,7 @@ void Application::Render()
 	m_device.context()->VSSetConstantBuffers(0, 1, cbs);
 
 
-	m_device.context()->DrawIndexed(torusModel->largeSlices * torusModel->smallSlices * 2 * 3, 0, 0);
+	m_device.context()->DrawIndexed(torusModel->indicesCount, 0, 0);
 
 }
 
@@ -162,7 +162,7 @@ void Application::AddDrawable(std::shared_ptr<Shape> drawable)
 	m_indexBuffer = m_device.CreateIndexBuffer(indices);
 }
 
-void Application::UpdateBuffers()
+void Application::UpdateVertices()
 {
 	auto triangulation = torusModel->GetVertices();
 	m_vertexBuffer = m_device.CreateVertexBuffer(triangulation.Vertices);

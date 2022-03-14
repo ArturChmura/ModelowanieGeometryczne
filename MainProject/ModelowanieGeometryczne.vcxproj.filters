@@ -58,6 +58,9 @@
     <Filter Include="Source Files\Shaders">
       <UniqueIdentifier>{4dab86a2-5c13-412a-b1ea-f9cffe1e0db8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Scene">
+      <UniqueIdentifier>{1a8b1c73-18bf-4272-84ae-6583684f9f08}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxStructures.cpp">
@@ -119,6 +122,9 @@
     </ClCompile>
     <ClCompile Include="Model.cpp">
       <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -195,6 +201,15 @@
       <Filter>Header Files\EventsHandlers</Filter>
     </ClInclude>
     <ClInclude Include="Model.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexModel.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
   </ItemGroup>

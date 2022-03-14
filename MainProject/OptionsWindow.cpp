@@ -16,7 +16,7 @@ void OptionsWindow::Render()
 		ImGui::SliderFloat("R", &application->torusModel->R, 0.1f, 100.0f) ||
 		ImGui::SliderFloat("r", &application->torusModel->r, 0.1f, application->torusModel->R))
 	{
-		application->UpdateBuffers();
+		application->UpdateVertices();
 	}
 
 	ImGui::Text("Torus slices");
@@ -25,7 +25,7 @@ void OptionsWindow::Render()
 		|| ImGui::SliderInt("Small", &application->torusModel->smallSlices, 2, 100)
 		) 
 	{
-		application->UpdateBuffers();
+		application->UpdateVertices();
 	}
 
 	ImGui::Text("Torus scale");
@@ -51,7 +51,7 @@ void OptionsWindow::Render()
 	if (ImGui::ColorEdit3("Torus color", (float*)&torusColor))
 	{
 		application->torusModel->ChangeColor(torusColor);
-		application->UpdateBuffers();
+		application->UpdateVertices();
 	}
 
 	ImGui::ColorEdit3("Background color", (float*)&application->backgroundColor);
