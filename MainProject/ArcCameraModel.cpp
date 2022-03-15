@@ -1,6 +1,23 @@
 #include "ArcCameraModel.h"
 #include "Helpers.h"
 using namespace DirectX;
+ArcCameraModel::ArcCameraModel(XMFLOAT3 targetPosition, float distance, float fieldOfView, float aspectRatio, float nearZ, float farZ)
+	: PerspectiveCamera(fieldOfView, aspectRatio, nearZ, farZ)
+{
+	this->targetPosition = targetPosition;
+	XMFLOAT3 offset = { 0, 0, 1 };
+	XMStoreFloat3(&position, XMVectorAdd(XMLoadFloat3(&targetPosition), XMLoadFloat3(&offset)));
+	ChangeDistance(distance);
+}
+
+DirectX::XMFLOAT4X4 ArcCameraModel::GetViewMatrix()
+{
+	return viewMatrix;
+}
+DirectX::XMFLOAT4X4 ArcCameraModel::GetPerspectiveMatrix()
+{
+	return perspectiveMatrix;
+}
 void ArcCameraModel::Rotate(float firstAxis, float secondAxis)
 {
 	firstAxis = -firstAxis;
@@ -24,13 +41,13 @@ void ArcCameraModel::Rotate(float firstAxis, float secondAxis)
 
 	auto vectorSubtracted = DirectX::XMVectorSubtract(
 		DirectX::XMLoadFloat3(&position),
-		DirectX::XMLoadFloat3(&targerPostion)
+		DirectX::XMLoadFloat3(&targetPosition)
 	);
 
 	auto transformed = DirectX::XMVector4Transform(vectorSubtracted, DirectX::XMLoadFloat4x4(&rotationMatrixFirst));
 	transformed = DirectX::XMVector4Transform(transformed, DirectX::XMLoadFloat4x4(&rotationMatrixSecond));
 
-	auto added = DirectX::XMVectorAdd(transformed, DirectX::XMLoadFloat3(&targerPostion));
+	auto added = DirectX::XMVectorAdd(transformed, DirectX::XMLoadFloat3(&targetPosition));
 
 	DirectX::XMStoreFloat3(&position, added);
 
@@ -60,24 +77,21 @@ void ArcCameraModel::ChangeDistance(float distanceChange)
 
 void ArcCameraModel::LookAt(float x, float y, float z)
 {
-	targerPostion = { x,y,z };
+	targetPosition = { x,y,z };
 	UpdateViewMatrix();
 }
 
-void ArcCameraModel::SetPerspective(float fieldOfViewY, float aspectRatioXperY, float nearZ, float farZ)
-{
-	DirectX::XMStoreFloat4x4(&perspectiveMatrix, DirectX::XMMatrixPerspectiveFovLH(
-		fieldOfViewY,
-		aspectRatioXperY,
-		nearZ,
-		farZ));
-}
+
 
 void ArcCameraModel::UpdateViewMatrix()
 {
+	if (XMVector3Equal(XMLoadFloat3(&position), XMLoadFloat3(&targetPosition)))
+	{
+		targetPosition = { position.x , position.y ,position.z + 1 };
+	}
 	auto matrix = DirectX::XMMatrixLookAtLH(
 		DirectX::XMLoadFloat3(&position),
-		DirectX::XMLoadFloat3(&targerPostion),
+		DirectX::XMLoadFloat3(&targetPosition),
 		DirectX::XMLoadFloat3(&upVector)
 	);
 
@@ -88,7 +102,7 @@ void ArcCameraModel::UpdateViewMatrix()
 
 DirectX::XMVECTOR ArcCameraModel::GetCameraDirection()
 {
-	XMFLOAT3 direction = { targerPostion.x - position.x, targerPostion.y - position.y, targerPostion.z - position.z };
+	XMFLOAT3 direction = { targetPosition.x - position.x, targetPosition.y - position.y, targetPosition.z - position.z };
 	auto normalized = XMVector3Normalize(XMLoadFloat3(&direction));
 	return normalized;
 }
