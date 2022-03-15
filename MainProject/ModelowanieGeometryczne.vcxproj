@@ -13,11 +13,9 @@
   <ItemGroup>
     <ClCompile Include="application.cpp" />
     <ClCompile Include="ArcCameraModel.cpp" />
-    <ClCompile Include="Cone.cpp" />
-    <ClCompile Include="Cube.cpp" />
-    <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="dxDevice.cpp" />
     <ClCompile Include="dxStructures.cpp" />
+    <ClCompile Include="DxVertexModel.cpp" />
     <ClCompile Include="exceptions.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imgui_demo.cpp" />
@@ -29,7 +27,10 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="MouseEvents.cpp" />
-    <ClCompile Include="OptionsWindow.cpp" />
+    <ClCompile Include="PerspectiveCameraOptionsWindow.cpp" />
+    <ClCompile Include="TorusOptionsWindow.cpp" />
+    <ClCompile Include="PerspectiveCamera.cpp" />
+    <ClCompile Include="PerspectiveCamera.h" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Torus.cpp" />
   </ItemGroup>
@@ -37,11 +38,8 @@
     <ClInclude Include="application.h" />
     <ClInclude Include="ArcCameraModel.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="ColorRGBAfloat.h" />
-    <ClInclude Include="Cone.h" />
-    <ClInclude Include="Cube.h" />
-    <ClInclude Include="Drawable.h" />
     <ClInclude Include="dxDevice.h" />
+    <ClInclude Include="DxVertexModelDrawer.h" />
     <ClInclude Include="dxptr.h" />
     <ClInclude Include="dxStructures.h" />
     <ClInclude Include="exceptions.h" />
@@ -56,10 +54,10 @@
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="MouseEvents.h" />
-    <ClInclude Include="OptionsWindow.h" />
+    <ClInclude Include="PerspectiveCameraOptionsWindow.h" />
+    <ClInclude Include="TorusOptionsWindow.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Torus.h" />
-    <ClInclude Include="Triangulation.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexModel.h" />
   </ItemGroup>

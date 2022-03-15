@@ -28,6 +28,5 @@ private:
 
 	DirectX::XMFLOAT3 color;
 
-
 	void UpdateVertices();
 };

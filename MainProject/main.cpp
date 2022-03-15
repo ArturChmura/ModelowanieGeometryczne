@@ -13,7 +13,6 @@
 #include "ArcCameraModel.h"
 #include "Torus.h"
 #include "application.h"
-#include "OptionsWindow.h"
 #include "MouseEvents.h"
 // Data
 static ID3D11Device*            g_pd3dDevice = NULL;
@@ -52,6 +51,13 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
     ::UpdateWindow(hwnd);
 
     // Setup Dear ImGui context
+    
+
+    // Our state
+    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    std::shared_ptr<Application> app = std::make_shared<Application>(windowSize, g_pd3dDevice, g_pd3dDeviceContext, g_pSwapChain);
+
+
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -74,7 +80,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
     // Setup Platform/Renderer backends
     ImGui_ImplWin32_Init(hwnd);
     ImGui_ImplDX11_Init(g_pd3dDevice, g_pd3dDeviceContext);
-   
+
     // Load Fonts
     // - If no fonts are loaded, dear imgui will use the default font. You can also load multiple fonts and use ImGui::PushFont()/PopFont() to select them.
     // - AddFontFromFileTTF() will return the ImFont* so you can store it if you need to select the font among multiple.
@@ -89,12 +95,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/ProggyTiny.ttf", 10.0f);
     //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
     //IM_ASSERT(font != NULL);
-
-    // Our state
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-    std::shared_ptr<Application> app = std::make_shared<Application>(windowSize, g_pd3dDevice, g_pd3dDeviceContext, g_pSwapChain);
-    OptionsWindow optionsWindow = OptionsWindow(app);
-    MouseEvents mouseEvents = MouseEvents(app->camera);
     // Main loop
     bool done = false;
     while (!done)
@@ -111,24 +111,15 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
         }
         if (done)
             break;
-        mouseEvents.HandleMouse();
         // Start the Dear ImGui frame
         ImGui_ImplDX11_NewFrame();
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
-
-
-       
-        {
-            optionsWindow.Render();
-        }
-
-        // Rendering
-        ImGui::Render();
         g_pd3dDeviceContext->OMSetRenderTargets(1, &g_mainRenderTargetView, NULL);
 
         app->Update();
         app->Render();
+        ImGui::Render();
 
         ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
         // Update and Render additional Platform Windows
@@ -138,7 +129,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
             ImGui::RenderPlatformWindowsDefault();
         }
 
-        //g_pSwapChain->Present(1, 0); // Present with vsync
+        ////g_pSwapChain->Present(1, 0); // Present with vsync
         g_pSwapChain->Present(0, 0); // Present without vsync
     }
 
