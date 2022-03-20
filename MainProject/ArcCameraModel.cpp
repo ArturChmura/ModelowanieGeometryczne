@@ -85,13 +85,14 @@ void ArcCameraModel::LookAt(float x, float y, float z)
 
 void ArcCameraModel::UpdateViewMatrix()
 {
+	auto target = targetPosition;
 	if (XMVector3Equal(XMLoadFloat3(&position), XMLoadFloat3(&targetPosition)))
 	{
-		targetPosition = { position.x , position.y ,position.z + 1 };
+		target = { position.x , position.y ,position.z + 1 };
 	}
 	auto matrix = DirectX::XMMatrixLookAtLH(
 		DirectX::XMLoadFloat3(&position),
-		DirectX::XMLoadFloat3(&targetPosition),
+		DirectX::XMLoadFloat3(&target),
 		DirectX::XMLoadFloat3(&upVector)
 	);
 

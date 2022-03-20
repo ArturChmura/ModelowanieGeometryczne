@@ -13,7 +13,6 @@ PerspectiveCameraOptionsWindow::PerspectiveCameraOptionsWindow(std::shared_ptr<P
 void PerspectiveCameraOptionsWindow::Render()
 {
 	ImGui::Begin("Perspective Camera Options");
-	ImGui::Text("Torus size");
 	if (ImGui::SliderFloat("Field of View", &fieldOfView, 0.1f, 3.1415))
 	{
 		perspectiveCamera->SetFieldOfView(fieldOfView);

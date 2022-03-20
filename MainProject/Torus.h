@@ -26,7 +26,6 @@ private:
 	int largeSlices;
 	int smallSlices;
 
-	DirectX::XMFLOAT3 color;
 
 	void UpdateVertices();
 };

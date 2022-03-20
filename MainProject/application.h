@@ -24,16 +24,17 @@ public:
 	mini::dx_ptr<ID3D11PixelShader> m_pixelShader;
 	mini::dx_ptr<ID3D11InputLayout> m_layout;
 
-	shared_ptr<DxDevice> m_device;
+	std::shared_ptr<DxDevice> m_device;
 
 	mini::dx_ptr<ID3D11Buffer> MVPMatrix;
+	mini::dx_ptr<ID3D11Buffer> constantBuffer;
 
 	DirectX::XMFLOAT3 backgroundColor;
 
-	shared_ptr<Scene> scene;
+	std::shared_ptr<Scene> scene;
 
-	shared_ptr<TorusOptionsWindow> torusOptionsWindow;
-	shared_ptr<PerspectiveCameraOptionsWindow> perspectiveCameraOptionsWindow;
-	shared_ptr<MouseEvents> mouseEvents;
+	std::shared_ptr<TorusOptionsWindow> torusOptionsWindow;
+	std::shared_ptr<PerspectiveCameraOptionsWindow> perspectiveCameraOptionsWindow;
+	std::shared_ptr<MouseEvents> mouseEvents;
 
 };

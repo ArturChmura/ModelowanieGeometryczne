@@ -3,13 +3,14 @@
 #include "Cone.h"
 #include "windowsx.h"
 #include "Torus.h"
+#include "ConstantBuffer.h"
 
 using namespace mini;
 using namespace DirectX;
 
 Application::Application(SIZE size, ID3D11Device* device, ID3D11DeviceContext* context, IDXGISwapChain* swapChain)
 {
-	m_device = make_shared<DxDevice>(device, context, swapChain);
+	m_device = std::make_shared<DxDevice>(device, context, swapChain);
 	ID3D11Texture2D* temp = nullptr;
 	m_device->swapChain()->GetBuffer(0,
 		__uuidof(ID3D11Texture2D),
@@ -32,13 +33,10 @@ Application::Application(SIZE size, ID3D11Device* device, ID3D11DeviceContext* c
 	std::vector<D3D11_INPUT_ELEMENT_DESC> elements{
 	{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,
 	D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	{ "COLOR", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
-	offsetof(Vertex, color),
-	D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 	m_layout = m_device->CreateInputLayout(elements, vsBytes);
 
-	scene = make_shared<Scene>();
+	scene = std::make_shared<Scene>();
 	XMFLOAT3 targetPosition = { 0,0,0 };
 	auto camera = std::make_shared<ArcCameraModel>(targetPosition, 30, XMConvertToRadians(45), static_cast<float>(size.cx) / size.cy, 0.01f, 1000.0f);
 
@@ -47,13 +45,13 @@ Application::Application(SIZE size, ID3D11Device* device, ID3D11DeviceContext* c
 
 	backgroundColor = { 1,1,1 };
 
-	auto torus = make_shared<Torus>(10, 3, 20, 20);
-	auto torusDxModel = make_shared<DxVertexModelDrawer>(m_device, torus);
+	auto torus = std::make_shared<Torus>(10, 3, 20, 20);
+	auto torusDxModel = std::make_shared<DxVertexModelDrawer>(m_device, torus);
 	scene->AddModel(torusDxModel);
 
-	torusOptionsWindow = make_shared<TorusOptionsWindow>(torus);
+	torusOptionsWindow = std::make_shared<TorusOptionsWindow>(torus);
 	perspectiveCameraOptionsWindow = make_shared<PerspectiveCameraOptionsWindow>(camera);
-	mouseEvents = make_shared<MouseEvents>(camera);
+	mouseEvents = std::make_shared<MouseEvents>(camera);
 }
 
 
@@ -84,22 +82,26 @@ void Application::Render()
 		m_device->context()->IASetIndexBuffer(model->indexBuffer.get(),
 			DXGI_FORMAT_R32_UINT, 0);
 
-		MVPMatrix = m_device->CreateConstantBuffer<DirectX::XMFLOAT4X4>();
+		constantBuffer = m_device->CreateConstantBuffer<ConstantBuffer>();
 		D3D11_MAPPED_SUBRESOURCE res;
 		DirectX::XMMATRIX mvp;
-		m_device->context()->Map(MVPMatrix.get(), 0,
-			D3D11_MAP_WRITE_DISCARD, 0, &res); 
+		m_device->context()->Map(constantBuffer.get(), 0,
+			D3D11_MAP_WRITE_DISCARD, 0, &res);
+
+		auto constantBufferStruct = ConstantBuffer();
 		auto m = model->vertexModel->GetModelMatrix();
 		auto v = scene->activeCamera->GetViewMatrix();
 		auto p = scene->activeCamera->GetPerspectiveMatrix();
-		mvp =
+		constantBufferStruct.mvp =
 			XMLoadFloat4x4(&m) *
 			XMLoadFloat4x4(&v) *
 			XMLoadFloat4x4(&p);
-		memcpy(res.pData, &mvp, sizeof(DirectX::XMMATRIX));
-		m_device->context()->Unmap(MVPMatrix.get(), 0);
+		constantBufferStruct.color = XMLoadFloat3(&model->vertexModel->color);
+		memcpy(res.pData, &constantBufferStruct, sizeof(ConstantBuffer));
+		m_device->context()->Unmap(constantBuffer.get(), 0);
 
-		ID3D11Buffer* cbs[] = { MVPMatrix.get() };
+
+		ID3D11Buffer* cbs[] = { constantBuffer.get() };
 		m_device->context()->VSSetConstantBuffers(0, 1, cbs);
 
 		auto count = model->vertexModel->GetIndicesCount();

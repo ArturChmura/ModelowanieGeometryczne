@@ -58,6 +58,9 @@
     <Filter Include="Source Files\Scene">
       <UniqueIdentifier>{931913be-e1f2-4e51-890d-6401b3f412ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Buffers">
+      <UniqueIdentifier>{9aaf337d-1dab-467f-aabc-9a8df62e5b70}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxStructures.cpp">
@@ -202,6 +205,9 @@
     </ClInclude>
     <ClInclude Include="PerspectiveCameraOptionsWindow.h">
       <Filter>Header Files\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffer.h">
+      <Filter>Header Files\Buffers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

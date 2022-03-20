@@ -1,7 +1,7 @@
 #include "DxVertexModelDrawer.h"
 #include <stdio.h>
 
-DxVertexModelDrawer::DxVertexModelDrawer(shared_ptr<DxDevice> dxDevice, std::shared_ptr<VertexModel> vertexModel)
+DxVertexModelDrawer::DxVertexModelDrawer(std::shared_ptr<DxDevice> dxDevice, std::shared_ptr<VertexModel> vertexModel)
 {
 	this->vertexModel = vertexModel;
 	this->dxDevicce = dxDevice;

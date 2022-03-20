@@ -61,7 +61,7 @@ void Torus::UpdateVertices()
 			float x = (R + r * cosf(beta)) * cosf(alpha);
 			float y = (R + r * cosf(beta)) * sinf(alpha);
 			float z = r * sinf(beta);
-			Vertex vertex = { {x,y,z}, color };
+			Vertex vertex = { {x,y,z} };
 			verices.push_back(vertex);
 
 			Pair<int> topLeft = { largeCount, smallCount };

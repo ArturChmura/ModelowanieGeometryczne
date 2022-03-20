@@ -38,6 +38,7 @@
     <ClInclude Include="application.h" />
     <ClInclude Include="ArcCameraModel.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="dxDevice.h" />
     <ClInclude Include="DxVertexModelDrawer.h" />
     <ClInclude Include="dxptr.h" />
