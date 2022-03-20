@@ -5,15 +5,23 @@
 #include <fstream>
 
 using namespace mini;
-using namespace std;
 
-
-
-DxDevice::DxDevice(ID3D11Device* device, ID3D11DeviceContext* context, IDXGISwapChain* swapChain)
+DxDevice::DxDevice(SIZE clientSize)
 {
-	this->m_device = device;
-	this->m_swapChain = swapChain;
-	this->m_context = context;
+	SwapChainDescription desc{ clientSize };
+	ID3D11Device* device = nullptr;
+	ID3D11DeviceContext* context = nullptr;
+	IDXGISwapChain* swapChain = nullptr;
+
+	auto hr = D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0,
+		nullptr, 0, D3D11_SDK_VERSION, &desc, &swapChain, &device, nullptr, &context);
+
+	m_device.reset(device);
+	m_swapChain.reset(swapChain);
+	m_context.reset(context);
+
+	if (FAILED(hr))
+		THROW_WINAPI;
 }
 
 dx_ptr<ID3D11RenderTargetView> DxDevice::CreateRenderTargetView(const dx_ptr<ID3D11Texture2D>& texture) const
@@ -26,15 +34,15 @@ dx_ptr<ID3D11RenderTargetView> DxDevice::CreateRenderTargetView(const dx_ptr<ID3
 	return result;
 }
 
-vector<BYTE> DxDevice::LoadByteCode(const wstring& filename)
+std::vector<BYTE> DxDevice::LoadByteCode(const std::wstring& filename)
 {
-	ifstream sIn(filename, ios::in | ios::binary);
+	std::ifstream sIn(filename, std::ios::in | std::ios::binary);
 	if (!sIn)
 		THROW(L"Unable to open " + filename);
-	sIn.seekg(0, ios::end);
+	sIn.seekg(0, std::ios::end);
 	auto byteCodeLength = sIn.tellg();
-	sIn.seekg(0, ios::beg);
-	vector<BYTE> byteCode(static_cast<unsigned int>(byteCodeLength));
+	sIn.seekg(0, std::ios::beg);
+	std::vector<BYTE> byteCode(static_cast<unsigned int>(byteCodeLength));
 	if (!sIn.read(reinterpret_cast<char*>(byteCode.data()), byteCodeLength))
 		THROW(L"Error reading" + filename);
 	sIn.close();
@@ -75,7 +83,7 @@ dx_ptr<ID3D11Buffer> DxDevice::CreateBuffer(const void* data, const D3D11_BUFFER
 	return result;
 }
 
-dx_ptr<ID3D11VertexShader> DxDevice::CreateVertexShader(vector<BYTE> vsCode) const
+dx_ptr<ID3D11VertexShader> DxDevice::CreateVertexShader(std::vector<BYTE> vsCode) const
 {
 	ID3D11VertexShader* temp = nullptr;
 	auto a = reinterpret_cast<const void*>(vsCode.data());
@@ -87,7 +95,7 @@ dx_ptr<ID3D11VertexShader> DxDevice::CreateVertexShader(vector<BYTE> vsCode) con
 	return result;
 }
 
-dx_ptr<ID3D11PixelShader> DxDevice::CreatePixelShader(vector<BYTE> psCode) const
+dx_ptr<ID3D11PixelShader> DxDevice::CreatePixelShader(std::vector<BYTE> psCode) const
 {
 	ID3D11PixelShader* temp;
 	auto hr = m_device->CreatePixelShader(reinterpret_cast<const void*>(psCode.data()), psCode.size(), nullptr, &temp);
@@ -97,7 +105,7 @@ dx_ptr<ID3D11PixelShader> DxDevice::CreatePixelShader(vector<BYTE> psCode) const
 	return result;
 }
 
-dx_ptr<ID3D11InputLayout> DxDevice::CreateInputLayout(const vector<D3D11_INPUT_ELEMENT_DESC> elements, vector<BYTE> vsCode) const
+dx_ptr<ID3D11InputLayout> DxDevice::CreateInputLayout(const std::vector<D3D11_INPUT_ELEMENT_DESC> elements, std::vector<BYTE> vsCode) const
 {
 	ID3D11InputLayout* temp;
 	auto hr = m_device->CreateInputLayout(elements.data(), static_cast<UINT>(elements.size()),

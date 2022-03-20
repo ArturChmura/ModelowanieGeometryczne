@@ -34,9 +34,6 @@
     <Filter Include="Resource Files\ImGui">
       <UniqueIdentifier>{c8e48d4b-0447-42d8-8ac1-624039e4e266}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Windows">
-      <UniqueIdentifier>{81ae7849-1221-4a6c-b878-d8dcda23cc1c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\EventsHandlers">
       <UniqueIdentifier>{0c423b19-f6d5-4d2a-ab03-9f374e16121c}</UniqueIdentifier>
     </Filter>
@@ -58,6 +55,21 @@
     <Filter Include="Source Files\Scene">
       <UniqueIdentifier>{931913be-e1f2-4e51-890d-6401b3f412ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ConstantBuffers">
+      <UniqueIdentifier>{da53606a-bfd6-4f78-a097-cbace4dcc9ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ImGui">
+      <UniqueIdentifier>{17883721-fdd1-4b1a-9ff9-060ac86729f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Window">
+      <UniqueIdentifier>{dff9add1-3edb-432b-b250-be68dfef71e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Refactor">
+      <UniqueIdentifier>{0ec510b5-2a07-40bd-8f32-a0a4334585b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Windows">
+      <UniqueIdentifier>{81ae7849-1221-4a6c-b878-d8dcda23cc1c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxStructures.cpp">
@@ -66,16 +78,13 @@
     <ClCompile Include="dxDevice.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ArcCameraModel.cpp">
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Torus.cpp">
       <Filter>Source Files\Shapes</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="main2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui.cpp">
@@ -125,6 +134,18 @@
     </ClCompile>
     <ClCompile Include="PerspectiveCameraOptionsWindow.cpp">
       <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DXWindow.cpp">
+      <Filter>Source Files\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="UIContext.cpp">
+      <Filter>Source Files\Refactor</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneView.cpp">
+      <Filter>Source Files\Refactor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +223,21 @@
     </ClInclude>
     <ClInclude Include="PerspectiveCameraOptionsWindow.h">
       <Filter>Header Files\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffer.h">
+      <Filter>Header Files\ConstantBuffers</Filter>
+    </ClInclude>
+    <ClInclude Include="UIContext.h">
+      <Filter>Source Files\Refactor</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderContext.h">
+      <Filter>Source Files\Refactor</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneView.h">
+      <Filter>Source Files\Refactor</Filter>
+    </ClInclude>
+    <ClInclude Include="DXWindow.h">
+      <Filter>Source Files\Window</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

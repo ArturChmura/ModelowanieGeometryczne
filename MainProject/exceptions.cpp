@@ -1,6 +1,5 @@
 #include "exceptions.h"
 
-using namespace std;
 using namespace mini;
 
 WinAPIException::WinAPIException(const wchar_t* location, DWORD errorCode)
@@ -9,9 +8,9 @@ WinAPIException::WinAPIException(const wchar_t* location, DWORD errorCode)
 
 }
 
-wstring WinAPIException::getMessage() const
+std::wstring WinAPIException::getMessage() const
 {
-	wstring message;
+	std::wstring message;
 	try
 	{
 		LPWSTR lpMsgBuf;
@@ -22,7 +21,7 @@ wstring WinAPIException::getMessage() const
 			message = lpMsgBuf;
 			LocalFree(lpMsgBuf);
 		}
-		message += wstring(L"\nLocation: ") + getErrorLocation();
+		message += std::wstring(L"\nLocation: ") + getErrorLocation();
 	}
 	catch(...)
 	{	}

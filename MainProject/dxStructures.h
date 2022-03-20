@@ -3,7 +3,7 @@
 
 struct SwapChainDescription : DXGI_SWAP_CHAIN_DESC
 {
-	SwapChainDescription(HWND wndHwnd, SIZE wndSize);
+	SwapChainDescription(SIZE wndSize);
 };
 
 struct Viewport : D3D11_VIEWPORT

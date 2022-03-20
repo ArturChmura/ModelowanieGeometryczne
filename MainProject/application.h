@@ -10,30 +10,18 @@
 #include "TorusOptionsWindow.h"
 #include "MouseEvents.h"
 #include "PerspectiveCameraOptionsWindow.h"
+#include "DXWindow.h"
 
 using namespace mini;
 class Application
 {
 public:
-	Application(SIZE size, ID3D11Device* device, ID3D11DeviceContext* context, IDXGISwapChain* swapChain);
-	void Render();
-	void Update();
-	mini::dx_ptr<ID3D11RenderTargetView> m_backBuffer;
-	mini::dx_ptr<ID3D11DepthStencilView> m_depthBuffer;
-	mini::dx_ptr<ID3D11VertexShader> m_vertexShader;
-	mini::dx_ptr<ID3D11PixelShader> m_pixelShader;
-	mini::dx_ptr<ID3D11InputLayout> m_layout;
+	Application(HWND windowHandle, SIZE size, const std::string& app_name);
 
-	shared_ptr<DxDevice> m_device;
+	void loop();
 
-	mini::dx_ptr<ID3D11Buffer> MVPMatrix;
+private:
 
-	DirectX::XMFLOAT3 backgroundColor;
-
-	shared_ptr<Scene> scene;
-
-	shared_ptr<TorusOptionsWindow> torusOptionsWindow;
-	shared_ptr<PerspectiveCameraOptionsWindow> perspectiveCameraOptionsWindow;
-	shared_ptr<MouseEvents> mouseEvents;
+	std::unique_ptr<DXDWindow> mWindow;
 
 };

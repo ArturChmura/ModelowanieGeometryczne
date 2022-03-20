@@ -1,6 +1,6 @@
 #include "dxStructures.h"
 
-SwapChainDescription::SwapChainDescription(HWND wndHwnd, SIZE wndSize)
+SwapChainDescription::SwapChainDescription(SIZE wndSize)
 {
 	ZeroMemory(this, sizeof(SwapChainDescription));
 	BufferDesc.Width = wndSize.cx;
@@ -14,7 +14,6 @@ SwapChainDescription::SwapChainDescription(HWND wndHwnd, SIZE wndSize)
 	SampleDesc.Count = 1;
 	BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	BufferCount = 1;
-	OutputWindow = wndHwnd;
 	Windowed = true;
 	//SwapEffect = DXGI_SWAP_EFFECT_DISCARD; //0
 	//Flags = 0;

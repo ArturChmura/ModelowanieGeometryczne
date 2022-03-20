@@ -1,16 +1,16 @@
 #include "DxVertexModelDrawer.h"
 #include <stdio.h>
 
-DxVertexModelDrawer::DxVertexModelDrawer(shared_ptr<DxDevice> dxDevice, std::shared_ptr<VertexModel> vertexModel)
+DxVertexModelDrawer::DxVertexModelDrawer(std::shared_ptr<VertexModel> vertexModel, std::shared_ptr < DxDevice> dxDevice)
 {
 	this->vertexModel = vertexModel;
-	this->dxDevicce = dxDevice;
+	this->dxDevice = dxDevice;
 	vertexModel->act.push_back([this]() {UpdateBuffers(); });
 	UpdateBuffers();
 }
 
 void DxVertexModelDrawer::UpdateBuffers()
 {
-	vertexBuffer = dxDevicce->CreateVertexBuffer(vertexModel->GetVertices());
-	indexBuffer = dxDevicce->CreateVertexBuffer(vertexModel->GetIndices());
+	vertexBuffer = dxDevice->CreateVertexBuffer(vertexModel->GetVertices());
+	indexBuffer = dxDevice->CreateIndexBuffer(vertexModel->GetIndices());
 }
