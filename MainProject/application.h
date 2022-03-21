@@ -20,14 +20,10 @@ public:
 	void Update();
 	mini::dx_ptr<ID3D11RenderTargetView> m_backBuffer;
 	mini::dx_ptr<ID3D11DepthStencilView> m_depthBuffer;
-	mini::dx_ptr<ID3D11VertexShader> m_vertexShader;
-	mini::dx_ptr<ID3D11PixelShader> m_pixelShader;
-	mini::dx_ptr<ID3D11InputLayout> m_layout;
 
 	std::shared_ptr<DxDevice> m_device;
 
 	mini::dx_ptr<ID3D11Buffer> MVPMatrix;
-	mini::dx_ptr<ID3D11Buffer> constantBuffer;
 
 	DirectX::XMFLOAT3 backgroundColor;
 

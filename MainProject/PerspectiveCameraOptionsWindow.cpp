@@ -25,7 +25,7 @@ void PerspectiveCameraOptionsWindow::Render()
 	{
 		perspectiveCamera->SetNearZ(nearZ);
 	}
-	if (ImGui::SliderFloat("Far Z", &farZ, 1.0f, 180.0f))
+	if (ImGui::SliderFloat("Far Z", &farZ, 1.0f, 1000.0f))
 	{
 		perspectiveCamera->SetFarZ(farZ);
 	}

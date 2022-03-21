@@ -1,8 +1,8 @@
 #pragma once
+#pragma once
 #include "DirectXMath.h"
 
-struct ConstantBuffer
+struct MVPConstantBuffer
 {
 	DirectX::XMMATRIX mvp;
-	DirectX::XMVECTOR color;
 };

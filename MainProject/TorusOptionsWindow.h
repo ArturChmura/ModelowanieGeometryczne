@@ -11,6 +11,7 @@ public:
 	std::shared_ptr<Torus> torus;
 	DirectX::XMFLOAT3 scale;
 	DirectX::XMFLOAT3 translation;
+	DirectX::XMFLOAT3 rotation;
 	float R;
 	float r;
 	int largeSlices;

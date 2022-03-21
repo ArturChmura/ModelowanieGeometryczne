@@ -61,6 +61,12 @@
     <Filter Include="Header Files\Buffers">
       <UniqueIdentifier>{9aaf337d-1dab-467f-aabc-9a8df62e5b70}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Drawers">
+      <UniqueIdentifier>{2c489980-19c5-499c-91c1-bc891257d449}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Drawers">
+      <UniqueIdentifier>{5e058a51-3294-4b4a-b0d2-8e0e39be08ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxStructures.cpp">
@@ -111,10 +117,7 @@
     <ClCompile Include="MouseEvents.cpp">
       <Filter>Source Files\EventsHandlers</Filter>
     </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Source Files\Models</Filter>
-    </ClCompile>
-    <ClCompile Include="DxVertexModel.cpp">
+    <ClCompile Include="IModel.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
@@ -128,6 +131,18 @@
     </ClCompile>
     <ClCompile Include="PerspectiveCameraOptionsWindow.cpp">
       <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="DxVertexModelDrawer.cpp">
+      <Filter>Source Files\Drawers</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalAxisDrawer.cpp">
+      <Filter>Source Files\Drawers</Filter>
+    </ClCompile>
+    <ClCompile Include="Coursor3d.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Coursor3dDrawer.cpp">
+      <Filter>Source Files\Drawers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -188,7 +203,7 @@
     <ClInclude Include="MouseEvents.h">
       <Filter>Header Files\EventsHandlers</Filter>
     </ClInclude>
-    <ClInclude Include="Model.h">
+    <ClInclude Include="IModel.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
@@ -200,21 +215,39 @@
     <ClInclude Include="VertexModel.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
-    <ClInclude Include="DxVertexModelDrawer.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
     <ClInclude Include="PerspectiveCameraOptionsWindow.h">
       <Filter>Header Files\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="ConstantBuffer.h">
+    <ClInclude Include="MVPColorConstantBuffer.h">
       <Filter>Header Files\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="MVPConstantBuffer.h">
+      <Filter>Header Files\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Coursor3d.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="DxVertexModelDrawer.h">
+      <Filter>Header Files\Drawers</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalAxisDrawer.h">
+      <Filter>Header Files\Drawers</Filter>
+    </ClInclude>
+    <ClInclude Include="IModelDrawer.h">
+      <Filter>Header Files\Drawers</Filter>
+    </ClInclude>
+    <ClInclude Include="Coursor3dDrawer.h">
+      <Filter>Header Files\Drawers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="ps.hlsl">
       <Filter>Source Files\Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="vs.hlsl">
+    <FxCompile Include="vsSingleColor.hlsl">
+      <Filter>Source Files\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="vsVertexColor.hlsl">
       <Filter>Source Files\Shaders</Filter>
     </FxCompile>
   </ItemGroup>

@@ -5,13 +5,14 @@ TorusOptionsWindow::TorusOptionsWindow(std::shared_ptr<Torus> torus)
 {
 	this->torus = torus;
 	this->scale = torus->GetScale();
+	this->translation = torus->GetTranslation();
+	this->rotation = torus->GetRotation();
 	this->R = torus->GetBigRadius();
 	this->r = torus->GetSmallRadius();
 
 	this->largeSlices = torus->GetLargeSlices();
 	this->smallSlices = torus->GetSmallSlices();
 
-	this->translation = torus->GetTranslation();
 	this->torusColor = torus->GetColor();
 }
 
@@ -46,6 +47,16 @@ void TorusOptionsWindow::Render()
 		)
 	{
 		torus->SetScale(scale.x, scale.y, scale.z);
+	}
+
+	ImGui::Text("Torus rotation");
+	if (
+		ImGui::SliderFloat("x##xRotation", &rotation.x, -3.14, 3.14)
+		|| ImGui::SliderFloat("y##yRotation", &rotation.y, -3.14, 3.14)
+		|| ImGui::SliderFloat("z##zRotation", &rotation.z, -3.14, 3.14)
+		)
+	{
+		torus->SetRotation(rotation.x, rotation.y, rotation.z);
 	}
 
 	ImGui::Text("Torus translation");

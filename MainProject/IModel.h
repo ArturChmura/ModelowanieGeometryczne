@@ -1,9 +1,9 @@
 #pragma once
 #include <DirectXMath.h>
-class Model
+class IModel
 {
 public:
-	Model();
+	IModel();
 
 	DirectX::XMFLOAT4X4 GetModelMatrix();
 
@@ -15,6 +15,9 @@ public:
 
 	void SetRotation(float x, float y, float z);
 	DirectX::XMFLOAT3 GetRotation();
+
+	void ScaleFromPoint(DirectX::XMFLOAT3 point, DirectX::XMFLOAT3 scale);
+	void RotateFromPoint(DirectX::XMFLOAT3 globalPoint, DirectX::XMFLOAT3 ratation);
 private:
 	DirectX::XMFLOAT4X4 modelMatrix;
 

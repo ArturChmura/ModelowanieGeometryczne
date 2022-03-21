@@ -5,7 +5,7 @@ ArcCameraModel::ArcCameraModel(XMFLOAT3 targetPosition, float distance, float fi
 	: PerspectiveCamera(fieldOfView, aspectRatio, nearZ, farZ)
 {
 	this->targetPosition = targetPosition;
-	XMFLOAT3 offset = { 0, 0, 1 };
+	XMFLOAT3 offset = { 0, 0, -1 };
 	XMStoreFloat3(&position, XMVectorAdd(XMLoadFloat3(&targetPosition), XMLoadFloat3(&offset)));
 	ChangeDistance(distance);
 }

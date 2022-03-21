@@ -1,5 +1,5 @@
 #pragma once
-#include "Model.h"
+#include "IModel.h"
 #include <vector>
 #include "Vertex.h"
 #include <d3d11.h>
@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <functional>
 
-class VertexModel :public Model
+class VertexModel :public IModel
 {
 public:
 	size_t GetVerticesCount() { return vertices.size(); };
