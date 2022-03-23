@@ -36,8 +36,17 @@ void Scene::AddTorus()
 	torus->SetTranslation(cursor->translation.x, cursor->translation.y, cursor->translation.z);
 	AddModel(torus);
 }
+
 void Scene::AddPoint()
 {
 	auto point = std::make_shared<Point>(cursor->translation);
 	AddModel(point);
+}
+
+void Scene::DeleteModel(int modelId)
+{
+	auto new_end = std::remove_if(models.begin(), models.end(),
+		[modelId](const std::shared_ptr<IModel>& model)
+		{ return model->id == modelId; });
+	models.erase(new_end, models.end());
 }

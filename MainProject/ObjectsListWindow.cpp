@@ -49,6 +49,19 @@ void ObjectsListWindow::Render()
         }
         ImGui::EndListBox();
     }
+    if (composite->modelsMap.size() > 0)
+    {
+        if (ImGui::Button("Remove selected"))
+        {
+            for (auto [id, model] : composite->modelsMap)
+            {
+                scene->DeleteModel(id);
+            }
+            scene->selectedModel = nullptr;
+            composite = std::make_shared<CompositeModel>();
+        }
+    }
+
 
     if (ImGui::Button("Add Torus"))
     {

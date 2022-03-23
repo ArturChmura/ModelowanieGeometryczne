@@ -12,6 +12,7 @@ public:
 	void AddModel(std::shared_ptr<IModel> model);
 	void AddTorus();
 	void AddPoint();
+	void DeleteModel(int modelId);
 	std::vector<std::shared_ptr<IModel>> models;
 
 	std::shared_ptr<Coursor3d> cursor;
