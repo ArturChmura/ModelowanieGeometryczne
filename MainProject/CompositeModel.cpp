@@ -1,11 +1,14 @@
 #include "CompositeModel.h"
 #include "ImGui/imgui.h"
+using namespace DirectX;
+
+using namespace DirectX::SimpleMath;
 
 CompositeModel::CompositeModel()
 {
 	this->centroidCoursor = std::make_shared<Coursor3d>();
 	this->imguiTranslation = this->centroidPosition = { 0,0,0 };
-	this->imguiRotation = this->rotation = { 0,0,0 };
+	this->rotation = Quaternion::Identity;
 	this->imguiScale = this->scale = { 1,1,1 };
 }
 
@@ -80,17 +83,18 @@ DirectX::XMFLOAT3 CompositeModel::GetTranslation()
 	return centroidPosition;
 }
 
-void CompositeModel::SetRotation(float x, float y, float z)
+void CompositeModel::SetRotation(float pitch, float yaw, float roll)
 {
-	DirectX::XMFLOAT3 diff = { x-  rotation.x, y - rotation.y , z - rotation.z };
+	auto e = rotation.ToEuler();
+	DirectX::XMFLOAT3 diff = { pitch - e.x, yaw - e.y , roll - e.z };
 	for (const auto& [key, model] : modelsMap)
 	{
 		model->RotateFromPoint(centroidPosition, diff);
 	}
-	rotation = { x,y,z };
+	rotation = Quaternion::CreateFromYawPitchRoll(yaw, pitch, roll);
 }
 
-DirectX::XMFLOAT3 CompositeModel::GetRotation()
+DirectX::SimpleMath::Quaternion CompositeModel::GetRotation()
 {
 	return rotation;
 }
@@ -131,17 +135,20 @@ void CompositeModel::RenderGUI()
 		SetScale(imguiScale.x, imguiScale.y, imguiScale.z);
 	}
 
+
 	ImGui::Text("Rotation");
+	auto rotationEuler = rotation.ToEuler();
+	rotationEuler = { XMConvertToDegrees(rotationEuler.x),  XMConvertToDegrees(rotationEuler.y),XMConvertToDegrees(rotationEuler.z) };
 	if (
-		ImGui::DragFloat("x##xRotation", &imguiRotation.x, 1.0f)
-		|| ImGui::DragFloat("y##yRotation", &imguiRotation.y, 1.0f)
-		|| ImGui::DragFloat("z##zRotation", &imguiRotation.z, 1.0f)
+		ImGui::DragFloat("x##xRotation", &rotationEuler.x, 1.0f)
+		|| ImGui::DragFloat("y##yRotation", &rotationEuler.y, 1.0f)
+		|| ImGui::DragFloat("z##zRotation", &rotationEuler.z, 1.0f)
 		)
 	{
 		SetRotation(
-			DirectX::XMConvertToRadians(imguiRotation.x), 
-			DirectX::XMConvertToRadians(imguiRotation.y), 
-			DirectX::XMConvertToRadians(imguiRotation.z));
+			DirectX::XMConvertToRadians(rotationEuler.x),
+			DirectX::XMConvertToRadians(rotationEuler.y),
+			DirectX::XMConvertToRadians(rotationEuler.z));
 	}
 
 	ImGui::Text("Translation");

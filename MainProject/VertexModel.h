@@ -21,8 +21,8 @@ public:
 	 void Translate(float x, float y, float z)  override;
 	 DirectX::XMFLOAT3 GetTranslation()  override;
 
-	 void SetRotation(float x, float y, float z)  override;
-	 DirectX::XMFLOAT3 GetRotation()  override;
+	 void SetRotation(float pitch, float yaw, float roll)  override;
+	 DirectX::SimpleMath::Quaternion GetRotation()  override;
 
 	 void ScaleFromPoint(DirectX::XMFLOAT3 point, DirectX::XMFLOAT3 scale)  override;
 	 void RotateFromPoint(DirectX::XMFLOAT3 globalPoint, DirectX::XMFLOAT3 ratation)  override;
@@ -35,8 +35,7 @@ protected:
 	DirectX::XMFLOAT4X4 modelMatrix;
 	DirectX::XMFLOAT3 scale;
 	DirectX::XMFLOAT3 translation;
-	DirectX::XMFLOAT3 rotation;
-	DirectX::XMFLOAT3 rotationEuler;
+	DirectX::SimpleMath::Quaternion rotation;
 	int verticesCount;
 	int indicesCount;
 

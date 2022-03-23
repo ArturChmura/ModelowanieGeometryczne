@@ -14,12 +14,11 @@ public:
 
 
 	DirectX::XMFLOAT3 scale;
-	DirectX::XMFLOAT3 rotation;
+	DirectX::SimpleMath::Quaternion rotation;
 	DirectX::XMFLOAT3 centroidPosition;
 	std::shared_ptr<Coursor3d> centroidCoursor;
 
 	DirectX::XMFLOAT3 imguiScale;
-	DirectX::XMFLOAT3 imguiRotation;
 	DirectX::XMFLOAT3 imguiTranslation;
 	// Inherited via IModel
 	virtual void SetScale(float x, float y, float z) override;
@@ -36,10 +35,10 @@ public:
 	virtual DirectX::XMFLOAT3 GetTranslation() override;
 
 
-	virtual void SetRotation(float x, float y, float z) override;
+	virtual void SetRotation(float pitch, float yaw, float roll) override;
 
 
-	virtual DirectX::XMFLOAT3 GetRotation() override;
+	virtual DirectX::SimpleMath::Quaternion GetRotation() override;
 
 
 	virtual void ScaleFromPoint(DirectX::XMFLOAT3 point, DirectX::XMFLOAT3 scale) override;

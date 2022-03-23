@@ -2,7 +2,9 @@
 #include "Vertex.h"
 #include "MVPColorConstantBuffer.h"
 #include "ImGui/imgui.h"
+
 using namespace DirectX;
+using namespace DirectX::SimpleMath;
 
 Point::Point(DirectX::XMFLOAT3 translation)
 	: IModel()
@@ -79,13 +81,13 @@ DirectX::XMFLOAT3 Point::GetTranslation()
 	return translation;
 }
 
-void Point::SetRotation(float x, float y, float z)
+void Point::SetRotation(float pitch, float yaw, float roll)
 {
 }
 
-DirectX::XMFLOAT3 Point::GetRotation()
+DirectX::SimpleMath::Quaternion Point::GetRotation()
 {
-	return { 0,0,0 };
+	return Quaternion::Identity;
 }
 
 XMMATRIX Point::GetModelMatrix()

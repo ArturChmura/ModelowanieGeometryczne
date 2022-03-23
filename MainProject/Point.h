@@ -26,7 +26,7 @@ public:
 	virtual void SetRotation(float x, float y, float z) override;
 
 
-	virtual DirectX::XMFLOAT3 GetRotation() override;
+	virtual DirectX::SimpleMath::Quaternion GetRotation() override;
 
 
 

@@ -23,8 +23,8 @@ public:
 	virtual void Translate(float x, float y, float z) = 0;
 	virtual DirectX::XMFLOAT3 GetTranslation() = 0;
 
-	virtual void SetRotation(float x, float y, float z) = 0;
-	virtual DirectX::XMFLOAT3 GetRotation() = 0;
+	virtual void SetRotation(float pitch, float yaw, float roll) = 0;
+	virtual DirectX::SimpleMath::Quaternion GetRotation() = 0;
 
 	virtual void ScaleFromPoint(DirectX::XMFLOAT3 point, DirectX::XMFLOAT3 scale) = 0;
 	virtual void RotateFromPoint(DirectX::XMFLOAT3 globalPoint, DirectX::XMFLOAT3 ratation) = 0;

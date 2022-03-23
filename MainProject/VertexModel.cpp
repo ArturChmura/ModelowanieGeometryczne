@@ -104,45 +104,49 @@ DirectX::XMFLOAT3 VertexModel::GetTranslation()
 	return translation;
 }
 
-void VertexModel::SetRotation(float x, float y, float z)
+void VertexModel::SetRotation(float pitch, float yaw, float roll)
 {
-	rotation = { x,y,z };
+	rotation = Quaternion::CreateFromYawPitchRoll(yaw, pitch, roll);
 	UpdateModelMatrix();
 }
 
-XMFLOAT3 VertexModel::GetRotation()
+DirectX::SimpleMath::Quaternion VertexModel::GetRotation()
 {
 	return rotation;
 }
 
 void VertexModel::ScaleFromPoint(XMFLOAT3 globalPoint, XMFLOAT3 scale)
 {
-	auto modelMatrix = this->modelMatrix;
-	auto inverseMatrix = XMMatrixInverse(nullptr, XMLoadFloat4x4(&modelMatrix));
-	auto localPoint = XMVector3Transform(XMLoadFloat3(&globalPoint), inverseMatrix);
 	auto scaleMatrix =
-		XMMatrixTranslationFromVector(-1.0f * localPoint) *
+		XMMatrixTranslationFromVector(-1.0f * globalPoint) *
 		XMMatrixScaling(scale.x, scale.y, scale.z) *
-		XMMatrixTranslationFromVector(localPoint);
+		XMMatrixTranslationFromVector(1.0 * globalPoint);
 
-	XMStoreFloat4x4(&this->modelMatrix, scaleMatrix * XMLoadFloat4x4(&modelMatrix) );
+	XMStoreFloat4x4(&this->modelMatrix, XMLoadFloat4x4(&modelMatrix) * scaleMatrix);
+
+	Matrix m(this->modelMatrix);
+	Vector3 dscale;
+	Quaternion quat;
+	Vector3 translation;
+	m.Decompose(dscale, quat, translation);
+
+
+	this->rotation = quat;
+	this->translation = translation;
+	this->scale = dscale;
+	UpdateModelMatrix();
 }
 
 void VertexModel::RotateFromPoint(XMFLOAT3 globalPoint, XMFLOAT3 rotation)
 {
-	auto elo = this->modelMatrix;
-	auto inverseMatrix = XMMatrixInverse(nullptr, XMLoadFloat4x4(&elo));
-	XMFLOAT4 point4 = { globalPoint.x,globalPoint.y,globalPoint.z, 1.0f };
-	auto localPoint = XMVector3Transform(XMLoadFloat4(&point4), inverseMatrix);
-
 	auto rotationMatrix =
-		XMMatrixTranslationFromVector(-1.0f * localPoint) *
-		XMMatrixRotationX(rotation.x) *
+		XMMatrixTranslationFromVector(-1.0f * globalPoint) *
 		XMMatrixRotationY(rotation.y) *
+		XMMatrixRotationX(rotation.x) *
 		XMMatrixRotationZ(rotation.z) *
-		XMMatrixTranslationFromVector(localPoint);
+		XMMatrixTranslationFromVector(1 * globalPoint);
 
-	this->modelMatrix = rotationMatrix * this->modelMatrix;
+	this->modelMatrix = this->modelMatrix * rotationMatrix;
 
 	Matrix m(this->modelMatrix);
 	Vector3 scale;
@@ -150,30 +154,28 @@ void VertexModel::RotateFromPoint(XMFLOAT3 globalPoint, XMFLOAT3 rotation)
 	Vector3 translation;
 	m.Decompose(scale, quat, translation);
 
-	Vector3 rot = quat.ToEuler();
+	auto del = quat.ToEuler();
+	this->rotation = quat;
+	this->translation = translation;
+	this->scale = scale;
 
-	this->rotation =  rot;
-	this->translation =  translation;
-	this->scale =  scale;
-
-	//UpdateModelMatrix();
+	UpdateModelMatrix();
 }
 
 void VertexModel::UpdateModelMatrix()
 {
-	XMStoreFloat4x4(&modelMatrix,
-		XMMatrixScaling(scale.x, scale.y, scale.z) *
-		GetRotationMatrix() *
-		XMMatrixTranslation(translation.x, translation.y, translation.z)
-	);
+	Matrix scaleMatrix = XMMatrixScaling(scale.x, scale.y, scale.z);
+	auto rotationMatrix = GetRotationMatrix();
+	auto transMatrix = XMMatrixTranslation(translation.x, translation.y, translation.z);
+	modelMatrix = scaleMatrix;
+	modelMatrix = modelMatrix * rotationMatrix;
+	modelMatrix = modelMatrix * transMatrix;
+
 }
 
 DirectX::XMMATRIX VertexModel::GetRotationMatrix()
 {
-	return
-		XMMatrixRotationX(rotation.x) *
-		XMMatrixRotationY(rotation.y) *
-		XMMatrixRotationZ(rotation.z);
+	return Matrix::CreateFromQuaternion(rotation);
 }
 
 void VertexModel::ChangeColor(DirectX::SimpleMath::Vector3 color)
@@ -197,15 +199,19 @@ void VertexModel::RenderGUI()
 	}
 
 	ImGui::Text("Rotation");
-	this->rotationEuler = { XMConvertToDegrees(rotation.x),  XMConvertToDegrees(rotation.y), XMConvertToDegrees(rotation.z) };
+	auto rotationEuler = rotation.ToEuler();
+	rotationEuler = { XMConvertToDegrees(rotationEuler.x),  XMConvertToDegrees(rotationEuler.y),XMConvertToDegrees(rotationEuler.z) };
 	if (
 		ImGui::DragFloat("x##xRotation", &rotationEuler.x, 1.0f)
 		|| ImGui::DragFloat("y##yRotation", &rotationEuler.y, 1.0f)
 		|| ImGui::DragFloat("z##zRotation", &rotationEuler.z, 1.0f)
 		)
 	{
-		this->rotation = { XMConvertToRadians(rotationEuler.x),  XMConvertToRadians(rotationEuler.y), XMConvertToRadians(rotationEuler.z) };
-		UpdateModelMatrix();
+		auto x = XMConvertToRadians(rotationEuler.x);
+		auto y = XMConvertToRadians(rotationEuler.y);
+		auto z = XMConvertToRadians(rotationEuler.z);
+
+		this->SetRotation(x, y, z);
 	}
 
 	ImGui::Text("Translation");
