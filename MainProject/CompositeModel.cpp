@@ -133,12 +133,15 @@ void CompositeModel::RenderGUI()
 
 	ImGui::Text("Rotation");
 	if (
-		ImGui::DragFloat("x##xRotation", &imguiRotation.x, 0.01f)
-		|| ImGui::DragFloat("y##yRotation", &imguiRotation.y, 0.01f)
-		|| ImGui::DragFloat("z##zRotation", &imguiRotation.z, 0.01f)
+		ImGui::DragFloat("x##xRotation", &imguiRotation.x, 1.0f)
+		|| ImGui::DragFloat("y##yRotation", &imguiRotation.y, 1.0f)
+		|| ImGui::DragFloat("z##zRotation", &imguiRotation.z, 1.0f)
 		)
 	{
-		SetRotation(imguiRotation.x, imguiRotation.y, imguiRotation.z);
+		SetRotation(
+			DirectX::XMConvertToRadians(imguiRotation.x), 
+			DirectX::XMConvertToRadians(imguiRotation.y), 
+			DirectX::XMConvertToRadians(imguiRotation.z));
 	}
 
 	ImGui::Text("Translation");

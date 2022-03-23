@@ -197,12 +197,14 @@ void VertexModel::RenderGUI()
 	}
 
 	ImGui::Text("Rotation");
+	this->rotationEuler = { XMConvertToDegrees(rotation.x),  XMConvertToDegrees(rotation.y), XMConvertToDegrees(rotation.z) };
 	if (
-		ImGui::DragFloat("x##xRotation", &rotation.x, 0.01f)
-		|| ImGui::DragFloat("y##yRotation", &rotation.y, 0.01f)
-		|| ImGui::DragFloat("z##zRotation", &rotation.z, 0.01f)
+		ImGui::DragFloat("x##xRotation", &rotationEuler.x, 1.0f)
+		|| ImGui::DragFloat("y##yRotation", &rotationEuler.y, 1.0f)
+		|| ImGui::DragFloat("z##zRotation", &rotationEuler.z, 1.0f)
 		)
 	{
+		this->rotation = { XMConvertToRadians(rotationEuler.x),  XMConvertToRadians(rotationEuler.y), XMConvertToRadians(rotationEuler.z) };
 		UpdateModelMatrix();
 	}
 

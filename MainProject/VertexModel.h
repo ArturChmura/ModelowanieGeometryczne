@@ -36,6 +36,7 @@ protected:
 	DirectX::XMFLOAT3 scale;
 	DirectX::XMFLOAT3 translation;
 	DirectX::XMFLOAT3 rotation;
+	DirectX::XMFLOAT3 rotationEuler;
 	int verticesCount;
 	int indicesCount;
 
