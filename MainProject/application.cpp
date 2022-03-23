@@ -50,7 +50,7 @@ Application::Application(SIZE size)
 	objectsListWindow = std::make_shared<ObjectsListWindow>(scene);
 	propertiesWindow = std::make_shared<PropertiesWindow>(scene);
 	perspectiveCameraOptionsWindow = make_shared<PerspectiveCameraOptionsWindow>(camera);
-	cursorOptionsWindow = make_shared<CursorOptionsWindow>(cursor);
+	cursorOptionsWindow = make_shared<CursorOptionsWindow>(cursor, scene, size);
 	mouseEvents = std::make_shared<MouseEvents>(camera);
 }
 
