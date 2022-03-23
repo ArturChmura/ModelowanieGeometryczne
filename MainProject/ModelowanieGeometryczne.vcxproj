@@ -13,11 +13,11 @@
   <ItemGroup>
     <ClCompile Include="application.cpp" />
     <ClCompile Include="ArcCameraModel.cpp" />
+    <ClCompile Include="CompositeModel.cpp" />
     <ClCompile Include="Coursor3d.cpp" />
-    <ClCompile Include="Coursor3dDrawer.cpp" />
+    <ClCompile Include="CursorOptionsWindow.cpp" />
     <ClCompile Include="dxDevice.cpp" />
     <ClCompile Include="dxStructures.cpp" />
-    <ClCompile Include="DxVertexModelDrawer.cpp" />
     <ClCompile Include="exceptions.cpp" />
     <ClCompile Include="GlobalAxisDrawer.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
@@ -25,27 +25,35 @@
     <ClCompile Include="ImGui\imgui_draw.cpp" />
     <ClCompile Include="ImGui\imgui_impl_dx11.cpp" />
     <ClCompile Include="ImGui\imgui_impl_win32.cpp" />
+    <ClCompile Include="ImGui\imgui_stdlib.cpp" />
     <ClCompile Include="ImGui\imgui_tables.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="IModel.cpp" />
     <ClCompile Include="MouseEvents.cpp" />
+    <ClCompile Include="ObjectsListWindow.cpp" />
     <ClCompile Include="PerspectiveCameraOptionsWindow.cpp" />
-    <ClCompile Include="TorusOptionsWindow.cpp" />
+    <ClCompile Include="Point.cpp" />
+    <ClCompile Include="PropertiesWindow.cpp" />
     <ClCompile Include="PerspectiveCamera.cpp" />
     <ClCompile Include="PerspectiveCamera.h" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Torus.cpp" />
+    <ClCompile Include="VertexModel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
     <ClInclude Include="ArcCameraModel.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CompositeModel.h" />
     <ClInclude Include="Coursor3d.h" />
-    <ClInclude Include="Coursor3dDrawer.h" />
+    <ClInclude Include="CursorOptionsWindow.h" />
+    <ClInclude Include="ImGui\imgui_stdlib.h" />
+    <ClInclude Include="PropertiesWindow.h" />
+    <ClInclude Include="ShaderInfo.h" />
+    <ClInclude Include="MeshInfo.h" />
     <ClInclude Include="MVPColorConstantBuffer.h" />
     <ClInclude Include="dxDevice.h" />
-    <ClInclude Include="DxVertexModelDrawer.h" />
     <ClInclude Include="dxptr.h" />
     <ClInclude Include="dxStructures.h" />
     <ClInclude Include="exceptions.h" />
@@ -59,12 +67,12 @@
     <ClInclude Include="ImGui\imstb_rectpack.h" />
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
-    <ClInclude Include="IModelDrawer.h" />
     <ClInclude Include="IModel.h" />
     <ClInclude Include="MouseEvents.h" />
     <ClInclude Include="MVPConstantBuffer.h" />
+    <ClInclude Include="ObjectsListWindow.h" />
     <ClInclude Include="PerspectiveCameraOptionsWindow.h" />
-    <ClInclude Include="TorusOptionsWindow.h" />
+    <ClInclude Include="Point.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Torus.h" />
     <ClInclude Include="Vertex.h" />
@@ -86,6 +94,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="VSOut.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DirectXTK\DirectXTK_Desktop_2022_Win10.vcxproj">
+      <Project>{e0b52ae7-e160-4d32-bf3f-910b785e5a8e}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -134,6 +147,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -154,6 +168,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

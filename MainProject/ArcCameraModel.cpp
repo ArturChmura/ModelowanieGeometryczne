@@ -62,9 +62,22 @@ void ArcCameraModel::ChangeDistance(float distanceChange)
 	XMStoreFloat(&lengthF, length);
 	if (lengthF == 0)
 	{
-		direction = { 0,0,1 };
+		direction = { 0,0,-1 };
 	}
 
+	auto currentDistanceToTargetVector = XMVector3Length(
+		XMVectorSubtract(
+			XMLoadFloat3(&position),
+			XMLoadFloat3(&targetPosition)
+		)
+	);
+	XMFLOAT3 currentDistanceToTarget;
+	XMStoreFloat3(&currentDistanceToTarget, currentDistanceToTargetVector);
+
+	if (currentDistanceToTarget.x <= -distanceChange)
+	{
+		distanceChange = -currentDistanceToTarget.x + 0.001f;
+	}
 	auto toAdd = -distanceChange * direction;
 	auto newPosition = XMVectorAdd(
 		XMLoadFloat3(&position),

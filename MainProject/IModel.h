@@ -1,31 +1,37 @@
 #pragma once
 #include <DirectXMath.h>
+#include <string>
+#include "ShaderInfo.h"
+#include <memory>
+#include "Camera.h"
+#include "dxDevice.h"
+
 class IModel
 {
 public:
 	IModel();
 
-	DirectX::XMFLOAT4X4 GetModelMatrix();
+	void ChangeName(std::string name);
+	std::string name;
+	int id;
 
-	void SetScale(float x, float y, float z);
-	DirectX::XMFLOAT3 GetScale();
+	virtual void SetScale(float x, float y, float z) = 0;
+	virtual DirectX::XMFLOAT3 GetScale() = 0;
 
-	void SetTranslation(float x, float y, float z);
-	DirectX::XMFLOAT3 GetTranslation();
+	virtual void SetTranslation(float x, float y, float z) = 0;
+	virtual void Translate(float x, float y, float z) = 0;
+	virtual DirectX::XMFLOAT3 GetTranslation() = 0;
 
-	void SetRotation(float x, float y, float z);
-	DirectX::XMFLOAT3 GetRotation();
+	virtual void SetRotation(float x, float y, float z) = 0;
+	virtual DirectX::XMFLOAT3 GetRotation() = 0;
 
-	void ScaleFromPoint(DirectX::XMFLOAT3 point, DirectX::XMFLOAT3 scale);
-	void RotateFromPoint(DirectX::XMFLOAT3 globalPoint, DirectX::XMFLOAT3 ratation);
-private:
-	DirectX::XMFLOAT4X4 modelMatrix;
+	virtual void ScaleFromPoint(DirectX::XMFLOAT3 point, DirectX::XMFLOAT3 scale) = 0;
+	virtual void RotateFromPoint(DirectX::XMFLOAT3 globalPoint, DirectX::XMFLOAT3 ratation) = 0;
 
-	DirectX::XMFLOAT3 scale;
-	DirectX::XMFLOAT3 translation;
-	DirectX::XMFLOAT3 rotation;
+	virtual void Draw(std::shared_ptr<Camera> camera) = 0;
 
-	void UpdateModelMatrix();
+	virtual void RenderGUI();
 
-	DirectX::XMMATRIX GetRotationMatrix();
+	ShaderInfo shaderInfo;
+protected:
 };

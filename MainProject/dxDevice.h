@@ -12,6 +12,10 @@ namespace mini
 class DxDevice
 {
 public:
+	//DxDevice(DxDevice const&) = delete;
+	//void operator=(DxDevice const&) = delete; 
+	inline static std::shared_ptr<DxDevice> instance;
+	
 	explicit DxDevice(ID3D11Device* device, ID3D11DeviceContext* context, IDXGISwapChain* swapChain);
 
 	ID3D11DeviceContext* context() const { return m_context; }

@@ -12,13 +12,15 @@ public:
 	float GetSmallRadius() { return r; }
 	int GetLargeSlices() { return largeSlices; }
 	int GetSmallSlices() { return smallSlices; }
-	DirectX::XMFLOAT3 GetColor() { return color; }
+
 
 	void SetBigRadius(float R);
 	void SetSmallRadius(float r);
 	void SetLargeSlices(int ls);
 	void SetSmallSlices(int ss);
-	void SetColor(DirectX::XMFLOAT3 color);
+
+
+	virtual void RenderGUI() override;
 private:
 
 	float R;

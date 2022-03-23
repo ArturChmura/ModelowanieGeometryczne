@@ -111,9 +111,6 @@
     <ClCompile Include="exceptions.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="TorusOptionsWindow.cpp">
-      <Filter>Source Files\Windows</Filter>
-    </ClCompile>
     <ClCompile Include="MouseEvents.cpp">
       <Filter>Source Files\EventsHandlers</Filter>
     </ClCompile>
@@ -132,17 +129,32 @@
     <ClCompile Include="PerspectiveCameraOptionsWindow.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="DxVertexModelDrawer.cpp">
-      <Filter>Source Files\Drawers</Filter>
-    </ClCompile>
     <ClCompile Include="GlobalAxisDrawer.cpp">
       <Filter>Source Files\Drawers</Filter>
     </ClCompile>
     <ClCompile Include="Coursor3d.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
-    <ClCompile Include="Coursor3dDrawer.cpp">
-      <Filter>Source Files\Drawers</Filter>
+    <ClCompile Include="CursorOptionsWindow.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Point.cpp">
+      <Filter>Source Files\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectsListWindow.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexModel.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertiesWindow.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_stdlib.cpp">
+      <Filter>Resource Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="CompositeModel.cpp">
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -197,9 +209,6 @@
     <ClInclude Include="exceptions.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="TorusOptionsWindow.h">
-      <Filter>Header Files\Windows</Filter>
-    </ClInclude>
     <ClInclude Include="MouseEvents.h">
       <Filter>Header Files\EventsHandlers</Filter>
     </ClInclude>
@@ -227,17 +236,32 @@
     <ClInclude Include="Coursor3d.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
-    <ClInclude Include="DxVertexModelDrawer.h">
-      <Filter>Header Files\Drawers</Filter>
-    </ClInclude>
     <ClInclude Include="GlobalAxisDrawer.h">
       <Filter>Header Files\Drawers</Filter>
     </ClInclude>
-    <ClInclude Include="IModelDrawer.h">
+    <ClInclude Include="CursorOptionsWindow.h">
+      <Filter>Header Files\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Point.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderInfo.h">
       <Filter>Header Files\Drawers</Filter>
     </ClInclude>
-    <ClInclude Include="Coursor3dDrawer.h">
+    <ClInclude Include="ObjectsListWindow.h">
+      <Filter>Header Files\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshInfo.h">
       <Filter>Header Files\Drawers</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertiesWindow.h">
+      <Filter>Header Files\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_stdlib.h">
+      <Filter>Resource Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="CompositeModel.h">
+      <Filter>Header Files\Models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

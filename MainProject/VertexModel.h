@@ -1,24 +1,44 @@
 #pragma once
 #include "IModel.h"
-#include <vector>
-#include "Vertex.h"
-#include <d3d11.h>
 #include <memory>
-#include <stdio.h>
-#include <functional>
+#include "MeshInfo.h"
 
 class VertexModel :public IModel
 {
 public:
-	size_t GetVerticesCount() { return vertices.size(); };
-	size_t GetIndicesCount() { return indices.size(); };
+	VertexModel();
+	size_t GetVerticesCount() { return verticesCount; };
+	size_t GetIndicesCount() { return indicesCount; };
 
-	std::vector<Vertex> GetVertices() { return vertices; };
-	std::vector<int> GetIndices() { return indices; }
+	MeshInfo meshInfo;
+	DirectX::XMFLOAT3 GetColor();
+	void SetColor(DirectX::XMFLOAT3 color);
 
-	std::vector<std::function<void()>> act;
-	DirectX::XMFLOAT3 color;
+	void SetScale(float x, float y, float z) override;
+	 DirectX::XMFLOAT3 GetScale()  override;
+
+	 void SetTranslation(float x, float y, float z)  override;
+	 void Translate(float x, float y, float z)  override;
+	 DirectX::XMFLOAT3 GetTranslation()  override;
+
+	 void SetRotation(float x, float y, float z)  override;
+	 DirectX::XMFLOAT3 GetRotation()  override;
+
+	 void ScaleFromPoint(DirectX::XMFLOAT3 point, DirectX::XMFLOAT3 scale)  override;
+	 void RotateFromPoint(DirectX::XMFLOAT3 globalPoint, DirectX::XMFLOAT3 ratation)  override;
+
+	 void Draw(std::shared_ptr<Camera> camera)  override;
+	 virtual void RenderGUI() override;
 protected:
-	std::vector<Vertex> vertices;
-	std::vector<int> indices;
+	void UpdateModelMatrix();
+	DirectX::XMMATRIX GetRotationMatrix();
+	DirectX::XMFLOAT4X4 modelMatrix;
+	DirectX::XMFLOAT3 scale;
+	DirectX::XMFLOAT3 translation;
+	DirectX::XMFLOAT3 rotation;
+	int verticesCount;
+	int indicesCount;
+
+	// Inherited via IModel
+
 };

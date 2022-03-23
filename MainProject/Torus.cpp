@@ -1,14 +1,15 @@
 #include "Torus.h"
 #include "Helpers.h"
+#include "ImGui/imgui.h"
 
 
 Torus::Torus(float R, float r, unsigned int largeSlices, unsigned int smallSlices)
+	: VertexModel()
 {
 	this->R = R;
 	this->r = r;
 	this->largeSlices = largeSlices;
 	this->smallSlices = smallSlices;
-	this->color = { 1,0,0 };
 	UpdateVertices();
 }
 
@@ -36,18 +37,14 @@ void Torus::SetSmallSlices(int ss)
 	UpdateVertices();
 }
 
-void Torus::SetColor(DirectX::XMFLOAT3 color)
-{
-	this->color = color;
-	UpdateVertices();
-}
+
 
 void Torus::UpdateVertices()
 {
 	auto verticesCount = largeSlices * smallSlices;
 	auto indicesCount = largeSlices * smallSlices * 4;
 
-	std::vector<Vertex> verices = std::vector<Vertex>();
+	std::vector<Vertex> vertices = std::vector<Vertex>();
 	vertices.reserve(verticesCount);
 	std::vector<int> indices = std::vector<int>();
 	indices.reserve(indicesCount);
@@ -62,7 +59,7 @@ void Torus::UpdateVertices()
 			float y = (R + r * cosf(beta)) * sinf(alpha);
 			float z = r * sinf(beta);
 			Vertex vertex = { {x,y,z} };
-			verices.push_back(vertex);
+			vertices.push_back(vertex);
 
 			Pair<int> topLeft = { largeCount, smallCount };
 			Pair<int> topRight = { modulo2(largeCount + 1, largeSlices), smallCount };
@@ -86,10 +83,42 @@ void Torus::UpdateVertices()
 
 		}
 	}
-	this->vertices = verices;
-	this->indices = indices;
+	this->meshInfo.vertexBuffer = DxDevice::instance->CreateVertexBuffer(vertices);
+	this->verticesCount = vertices.size();
 
-	for (auto& f : act) { f(); }
+	this->meshInfo.indexBuffer = DxDevice::instance->CreateVertexBuffer(indices);
+	this->indicesCount = indices.size();
 }
 
 
+
+void Torus::RenderGUI()
+{
+	VertexModel::RenderGUI();
+	ImGui::Text("Torus size");
+	float minSize = 0.1f;
+	if (ImGui::DragFloat("R", &R, 0.2f, minSize))
+	{
+		R = max(R, minSize);
+		r = min(r, R);
+		UpdateVertices();
+	}
+	if (ImGui::DragFloat("r", &r, 0.2f, minSize, R))
+	{
+		r = max(r, minSize);
+		r = min(r, R);
+		UpdateVertices();
+	}
+
+	ImGui::Text("Torus slices");
+	if (ImGui::DragInt("Large", &largeSlices, 1, 2))
+	{
+		largeSlices = max(2, largeSlices);
+		UpdateVertices();
+	}
+	if (ImGui::DragInt("Small", &smallSlices, 1, 2))
+	{
+		smallSlices = max(2, smallSlices);
+		UpdateVertices();
+	}
+}
