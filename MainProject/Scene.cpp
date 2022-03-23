@@ -62,10 +62,12 @@ void Scene::ChangeSelection(int modelId)
 	if (is_selected)
 	{
 		composite->RemoveModel(model);
+		model->ChangeColor({ 1,1,1 });
 	}
 	else
 	{
 		composite->AddModel(model);
+		model->ChangeColor({ 1,0,0 });
 	}
 
 	if (composite->modelsMap.size() == 0)

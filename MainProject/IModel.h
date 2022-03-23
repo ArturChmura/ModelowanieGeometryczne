@@ -5,6 +5,7 @@
 #include <memory>
 #include "Camera.h"
 #include "dxDevice.h"
+#include "SimpleMath.h"
 
 class IModel
 {
@@ -31,6 +32,7 @@ public:
 	virtual void Draw(std::shared_ptr<Camera> camera) = 0;
 
 	virtual void RenderGUI();
+	virtual void ChangeColor(DirectX::SimpleMath::Vector3 color) = 0;
 
 	ShaderInfo shaderInfo;
 protected:

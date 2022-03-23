@@ -49,4 +49,9 @@ private:
 	// Inherited via IModel
 	virtual void RenderGUI() override;
 
+
+	// Inherited via IModel
+	virtual void ChangeColor(DirectX::SimpleMath::Vector3 color) override;
+
+
 };

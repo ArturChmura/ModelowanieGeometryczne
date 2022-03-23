@@ -180,3 +180,8 @@ void Point::RenderGUI()
 	{
 	}
 }
+
+void Point::ChangeColor(DirectX::SimpleMath::Vector3 color)
+{
+	this->meshInfo.color = color;
+}

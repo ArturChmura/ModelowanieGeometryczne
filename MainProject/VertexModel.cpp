@@ -176,6 +176,11 @@ DirectX::XMMATRIX VertexModel::GetRotationMatrix()
 		XMMatrixRotationZ(rotation.z);
 }
 
+void VertexModel::ChangeColor(DirectX::SimpleMath::Vector3 color)
+{
+	this->SetColor(color);
+}
+
 void VertexModel::RenderGUI()
 {
 	IModel::RenderGUI();

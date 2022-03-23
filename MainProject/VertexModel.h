@@ -41,4 +41,9 @@ protected:
 
 	// Inherited via IModel
 
+
+	// Inherited via IModel
+	virtual void ChangeColor(DirectX::SimpleMath::Vector3 color) override;
+
+
 };

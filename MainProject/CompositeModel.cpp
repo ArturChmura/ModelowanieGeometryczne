@@ -151,3 +151,7 @@ void CompositeModel::RenderGUI()
 		SetTranslation(imguiTranslation.x, imguiTranslation.y, imguiTranslation.z);
 	}
 }
+
+void CompositeModel::ChangeColor(DirectX::SimpleMath::Vector3 color)
+{
+}
