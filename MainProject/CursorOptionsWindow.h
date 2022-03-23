@@ -12,7 +12,6 @@ public:
 	void Render();
 	void UpdateScreenCoords();
 	void UpdateCursorPositionFromScreenCoords();
-	DirectX::XMFLOAT3 translation; 
 	std::shared_ptr<Coursor3d> cursor3d;
 	std::shared_ptr<Scene> scene;
 	SIZE windowSize;

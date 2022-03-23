@@ -153,8 +153,6 @@ void VertexModel::RotateFromPoint(XMFLOAT3 globalPoint, XMFLOAT3 rotation)
 	Vector3 rot = quat.ToEuler();
 
 	this->rotation =  rot;
-	auto s = std::to_wstring(rot.x) + L" " + std::to_wstring(rot.y) + L" " + std::to_wstring(rot.z) + L"\n";
-	OutputDebugStringW(s.c_str());
 	this->translation =  translation;
 	this->scale =  scale;
 

@@ -28,7 +28,7 @@ Application::Application(SIZE size)
 
 	auto cursor = std::make_shared<Coursor3d>();
 
-	scene = std::make_shared<Scene>(cursor);
+	scene = std::make_shared<Scene>(cursor, size);
 	XMFLOAT3 targetPosition = { 0,0,0 };
 	auto camera = std::make_shared<ArcCameraModel>(targetPosition, 30, XMConvertToRadians(45), static_cast<float>(size.cx) / size.cy, 0.01f, 1000.0f);
 	scene->AddCamera(camera);
@@ -51,7 +51,7 @@ Application::Application(SIZE size)
 	propertiesWindow = std::make_shared<PropertiesWindow>(scene);
 	perspectiveCameraOptionsWindow = make_shared<PerspectiveCameraOptionsWindow>(camera);
 	cursorOptionsWindow = make_shared<CursorOptionsWindow>(cursor, scene, size);
-	mouseEvents = std::make_shared<MouseEvents>(camera);
+	mouseEvents = std::make_shared<MouseEvents>(camera, scene);
 }
 
 void Application::Render()

@@ -36,7 +36,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
     HWND hwnd = ::CreateWindow(wc.lpszClassName, 
         _T("Dear ImGui DirectX11 Example"), 
         WS_OVERLAPPEDWINDOW, 
-        100, 100, windowSize.cx, windowSize.cy, NULL, NULL, wc.hInstance, NULL);
+        100, 100, windowSize.cx, windowSize.cy + 40, NULL, NULL, wc.hInstance, NULL);
 
     // Initialize Direct3D
     if (!CreateDeviceD3D(hwnd))
@@ -108,6 +108,15 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
             ::DispatchMessage(&msg);
             if (msg.message == WM_QUIT)
                 done = true;
+            else if (msg.message == WM_LBUTTONDOWN)
+            {
+                WORD x = LOWORD(msg.lParam);
+                WORD y = HIWORD(msg.lParam);
+                auto s = std::to_wstring(x) + L" " + std::to_wstring(y) + L"\n";
+                OutputDebugStringW(s.c_str());
+                app->scene->ChangeSelectionFromScreenCoords(x, y);
+            }
+
         }
         if (done)
             break;

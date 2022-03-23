@@ -6,7 +6,6 @@ using namespace DirectX::SimpleMath;
 CursorOptionsWindow::CursorOptionsWindow(std::shared_ptr<Coursor3d> cursor3d, std::shared_ptr<Scene> scene, SIZE windowSize)
 {
 	this->cursor3d = cursor3d;
-	this->translation = cursor3d->translation;
 	this->scene = scene;
 	this->windowSize = windowSize; 
 	UpdateScreenCoords();
@@ -17,12 +16,11 @@ void CursorOptionsWindow::Render()
 	ImGui::Begin("Cursor Options");
 
 	ImGui::Text("Translation");
-	if (ImGui::DragFloat("x", &translation.x) ||
-		ImGui::DragFloat("y", &translation.y) ||
-		ImGui::DragFloat("z", &translation.z)
+	if (ImGui::DragFloat("x", &cursor3d->translation.x) ||
+		ImGui::DragFloat("y", &cursor3d->translation.y) ||
+		ImGui::DragFloat("z", &cursor3d->translation.z)
 		)
 	{
-		cursor3d->translation = { translation.x, translation.y, translation.z };
 	}
 
 	UpdateScreenCoords();
@@ -79,5 +77,5 @@ void CursorOptionsWindow::UpdateCursorPositionFromScreenCoords()
 	newCameraPosition.w = 1;
 	auto newWorld = Vector4::Transform(newCameraPosition, viewMatrxInverted);
 
-	this->translation =  this->cursor3d->translation = { newWorld.x, newWorld.y, newWorld.z };
+	this->cursor3d->translation = { newWorld.x, newWorld.y, newWorld.z };
 }
