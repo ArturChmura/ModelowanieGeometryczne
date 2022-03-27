@@ -19,7 +19,6 @@
     <ClCompile Include="dxDevice.cpp" />
     <ClCompile Include="dxStructures.cpp" />
     <ClCompile Include="exceptions.cpp" />
-    <ClCompile Include="GlobalAxisDrawer.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imgui_demo.cpp" />
     <ClCompile Include="ImGui\imgui_draw.cpp" />
@@ -30,6 +29,9 @@
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="IModel.cpp" />
+    <ClCompile Include="MatrixExt.cpp" />
+    <ClCompile Include="MeshInfo.cpp" />
+    <ClCompile Include="MessageHandler.cpp" />
     <ClCompile Include="MouseEvents.cpp" />
     <ClCompile Include="ObjectsListWindow.cpp" />
     <ClCompile Include="PerspectiveCameraOptionsWindow.cpp" />
@@ -38,6 +40,8 @@
     <ClCompile Include="PerspectiveCamera.cpp" />
     <ClCompile Include="PerspectiveCamera.h" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="ShaderInfoSingleColorVs.cpp" />
+    <ClCompile Include="ShaderInfoVertexColor.cpp" />
     <ClCompile Include="Torus.cpp" />
     <ClCompile Include="VertexModel.cpp" />
   </ItemGroup>
@@ -49,6 +53,8 @@
     <ClInclude Include="Coursor3d.h" />
     <ClInclude Include="CursorOptionsWindow.h" />
     <ClInclude Include="ImGui\imgui_stdlib.h" />
+    <ClInclude Include="MatrixExt.h" />
+    <ClInclude Include="MessageHandler.h" />
     <ClInclude Include="PropertiesWindow.h" />
     <ClInclude Include="ShaderInfo.h" />
     <ClInclude Include="MeshInfo.h" />
@@ -57,7 +63,6 @@
     <ClInclude Include="dxptr.h" />
     <ClInclude Include="dxStructures.h" />
     <ClInclude Include="exceptions.h" />
-    <ClInclude Include="GlobalAxisDrawer.h" />
     <ClInclude Include="Helpers.h" />
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\imgui.h" />
@@ -74,6 +79,8 @@
     <ClInclude Include="PerspectiveCameraOptionsWindow.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="ShaderInfoSingleColorVs.h" />
+    <ClInclude Include="ShaderInfoVertexColor.h" />
     <ClInclude Include="Torus.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexModel.h" />

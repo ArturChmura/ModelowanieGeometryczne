@@ -2,9 +2,9 @@
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_stdlib.h"
 using namespace DirectX;
-IModel::IModel()
+IModel::IModel(std::string name)
 {
-	this->name = "Unnamed";
+	this->name = name;
 	static int id = 0;
 	this->id = ++id;
 }

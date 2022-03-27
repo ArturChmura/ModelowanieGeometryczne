@@ -108,15 +108,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
             ::DispatchMessage(&msg);
             if (msg.message == WM_QUIT)
                 done = true;
-            else if (msg.message == WM_LBUTTONDOWN)
-            {
-                WORD x = LOWORD(msg.lParam);
-                WORD y = HIWORD(msg.lParam);
-                auto s = std::to_wstring(x) + L" " + std::to_wstring(y) + L"\n";
-                OutputDebugStringW(s.c_str());
-                app->scene->ChangeSelectionFromScreenCoords(x, y);
-            }
-
+            app->HandleMessage(msg);
         }
         if (done)
             break;

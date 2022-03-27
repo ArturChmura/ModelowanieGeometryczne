@@ -2,27 +2,28 @@
 #include "IModel.h"
 #include <memory>
 #include "MeshInfo.h"
+#include "ShaderInfoSingleColorVs.h"
 
 class VertexModel :public IModel
 {
 public:
-	VertexModel();
+	VertexModel(std::string name = "VertexModel");
 	size_t GetVerticesCount() { return verticesCount; };
 	size_t GetIndicesCount() { return indicesCount; };
 
 	MeshInfo meshInfo;
-	DirectX::XMFLOAT3 GetColor();
+	DirectX::SimpleMath::Vector3 GetColor();
 	void SetColor(DirectX::XMFLOAT3 color);
 
 	void SetScale(float x, float y, float z) override;
-	 DirectX::XMFLOAT3 GetScale()  override;
+	DirectX::SimpleMath::Vector3 GetScale()  override;
 
 	 void SetTranslation(float x, float y, float z)  override;
 	 void Translate(float x, float y, float z)  override;
-	 DirectX::XMFLOAT3 GetTranslation()  override;
+	 DirectX::SimpleMath::Vector3 GetTranslation()  override;
 
 	 void SetRotation(float pitch, float yaw, float roll)  override;
-	 DirectX::SimpleMath::Quaternion GetRotation()  override;
+	 DirectX::SimpleMath::Vector3 GetRotation()  override;
 
 	 void ScaleFromPoint(DirectX::XMFLOAT3 point, DirectX::XMFLOAT3 scale)  override;
 	 void RotateFromPoint(DirectX::XMFLOAT3 globalPoint, DirectX::XMFLOAT3 ratation)  override;
@@ -31,11 +32,11 @@ public:
 	 virtual void RenderGUI() override;
 protected:
 	void UpdateModelMatrix();
-	DirectX::XMMATRIX GetRotationMatrix();
-	DirectX::XMFLOAT4X4 modelMatrix;
-	DirectX::XMFLOAT3 scale;
-	DirectX::XMFLOAT3 translation;
-	DirectX::SimpleMath::Quaternion rotation;
+	DirectX::SimpleMath::Matrix GetRotationMatrix();
+	DirectX::SimpleMath::Matrix modelMatrix;
+	DirectX::SimpleMath::Vector3 scale;
+	DirectX::SimpleMath::Vector3 translation;
+	DirectX::SimpleMath::Vector3 rotation;
 	int verticesCount;
 	int indicesCount;
 
@@ -44,6 +45,7 @@ protected:
 
 	// Inherited via IModel
 	virtual void ChangeColor(DirectX::SimpleMath::Vector3 color) override;
+	std::shared_ptr<ShaderInfoSingleColorVs> shaderInfoSingleColorVs;
 
 
 };

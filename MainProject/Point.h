@@ -1,6 +1,8 @@
 #pragma once
 #include "VertexModel.h"
 #include "DirectXMath.h"
+#include "ShaderInfoSingleColorVs.h"
+#include "SimpleMath.h"
 class Point : public IModel
 {
 public:
@@ -11,7 +13,7 @@ public:
 	virtual void SetScale(float x, float y, float z) override;
 
 
-	virtual DirectX::XMFLOAT3 GetScale() override;
+	virtual DirectX::SimpleMath::Vector3 GetScale() override;
 
 
 	virtual void SetTranslation(float x, float y, float z) override;
@@ -20,13 +22,13 @@ public:
 	virtual void Translate(float x, float y, float z) override;
 
 
-	virtual DirectX::XMFLOAT3 GetTranslation() override;
+	virtual DirectX::SimpleMath::Vector3 GetTranslation() override;
 
 
 	virtual void SetRotation(float x, float y, float z) override;
 
 
-	virtual DirectX::SimpleMath::Quaternion GetRotation() override;
+	virtual DirectX::SimpleMath::Vector3 GetRotation() override;
 
 
 
@@ -42,7 +44,7 @@ public:
 	MeshInfo meshInfo;
 
 private:
-	DirectX::XMMATRIX GetModelMatrix();
+	DirectX::SimpleMath::Matrix GetModelMatrix();
 	int verticesCount;
 	int indicesCount;
 
@@ -51,7 +53,8 @@ private:
 
 
 	// Inherited via IModel
-	virtual void ChangeColor(DirectX::SimpleMath::Vector3 color) override;
+	virtual void ChangeColor(DirectX::SimpleMath::Vector3 color) override; 
+	std::shared_ptr<ShaderInfoSingleColorVs> shaderInfoSingleColorVs;
 
 
 };

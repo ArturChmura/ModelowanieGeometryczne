@@ -3,27 +3,21 @@
 #include "Vertex.h"
 #include "ImGui/imgui.h"
 #include "SimpleMath.h"
+#include "MatrixExt.h"
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
 
-VertexModel::VertexModel()
+VertexModel::VertexModel(std::string name)
+	:IModel(name)
 {
-	const auto vsBytes = DxDevice::LoadByteCode(L"vsSingleColor.cso");
-	const auto psBytes = DxDevice::LoadByteCode(L"ps.cso");
-	shaderInfo.m_pixelShader = DxDevice::instance->CreatePixelShader(psBytes);
-	shaderInfo.m_vertexShader = DxDevice::instance->CreateVertexShader(vsBytes);
-	std::vector<D3D11_INPUT_ELEMENT_DESC> elements{
-	{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,
-	D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	};
-	shaderInfo.m_layout = DxDevice::instance->CreateInputLayout(elements, vsBytes);
+	this->shaderInfoSingleColorVs = std::make_shared< ShaderInfoSingleColorVs>();
 	this->scale = { 1,1,1 };
 	this->translation = { 0,0,0 };
 	this->rotation = { 0,0,0 };
 	UpdateModelMatrix();
 }
 
-DirectX::XMFLOAT3 VertexModel::GetColor()
+Vector3 VertexModel::GetColor()
 {
 	return meshInfo.color;
 }
@@ -35,43 +29,23 @@ void VertexModel::SetColor(DirectX::XMFLOAT3 color)
 
 void VertexModel::Draw(std::shared_ptr<Camera> camera)
 {
-	DxDevice::instance->context()->IASetPrimitiveTopology(meshInfo.topology);
-	DxDevice::instance->context()->IASetInputLayout(shaderInfo.m_layout.get());
-	DxDevice::instance->context()->VSSetShader(shaderInfo.m_vertexShader.get(), nullptr, 0);
-	DxDevice::instance->context()->PSSetShader(shaderInfo.m_pixelShader.get(), nullptr, 0);
+	meshInfo.SetUpRender();
+	shaderInfoSingleColorVs->SetUpRender();
+	shaderInfoSingleColorVs->SetVertexBuffer(meshInfo.vertexBuffer.get());
 
-	ID3D11Buffer* vbs[] = { meshInfo.vertexBuffer.get() };
-	UINT strides[] = { sizeof(Vertex) };
-	UINT offsets[] = { 0 };
-	DxDevice::instance->context()->IASetVertexBuffers(
-		0, 1, vbs, strides, offsets);
-	DxDevice::instance->context()->IASetIndexBuffer(meshInfo.indexBuffer.get(),
-		DXGI_FORMAT_R32_UINT, 0);
-
-	shaderInfo.constantBuffer = DxDevice::instance->CreateConstantBuffer<MVPColorConstantBuffer>();
-	D3D11_MAPPED_SUBRESOURCE res;
-	DirectX::XMMATRIX mvp;
-	DxDevice::instance->context()->Map(shaderInfo.constantBuffer.get(), 0,
-		D3D11_MAP_WRITE_DISCARD, 0, &res);
-
-	auto constantBufferStruct = MVPColorConstantBuffer();
 	auto m = modelMatrix;
 	auto v = camera->GetViewMatrix();
 	auto p = camera->GetPerspectiveMatrix();
-	constantBufferStruct.mvp =
+	shaderInfoSingleColorVs->constantBufferStruct.mvp =
 		XMLoadFloat4x4(&m) *
 		XMLoadFloat4x4(&v) *
 		XMLoadFloat4x4(&p);
-	constantBufferStruct.color = XMLoadFloat3(&meshInfo.color);
-	memcpy(res.pData, &constantBufferStruct, sizeof(MVPColorConstantBuffer));
-	DxDevice::instance->context()->Unmap(shaderInfo.constantBuffer.get(), 0);
+	shaderInfoSingleColorVs->constantBufferStruct.color = XMLoadFloat3(&meshInfo.color);
 
 
-	ID3D11Buffer* cbs[] = { shaderInfo.constantBuffer.get() };
-	DxDevice::instance->context()->VSSetConstantBuffers(0, 1, cbs);
+	shaderInfoSingleColorVs->CopyConstantBuffers();
 
-	auto count = GetIndicesCount();
-	DxDevice::instance->context()->DrawIndexed(count, 0, 0);
+	DxDevice::instance->context()->DrawIndexed(GetIndicesCount(), 0, 0);
 }
 
 
@@ -82,7 +56,7 @@ void VertexModel::SetScale(float x, float y, float z)
 	UpdateModelMatrix();
 }
 
-DirectX::XMFLOAT3 VertexModel::GetScale()
+Vector3 VertexModel::GetScale()
 {
 	return scale;
 }
@@ -99,18 +73,18 @@ void VertexModel::Translate(float x, float y, float z)
 	UpdateModelMatrix();
 }
 
-DirectX::XMFLOAT3 VertexModel::GetTranslation()
+Vector3 VertexModel::GetTranslation()
 {
 	return translation;
 }
 
-void VertexModel::SetRotation(float pitch, float yaw, float roll)
+void VertexModel::SetRotation(float x, float y, float z)
 {
-	rotation = Quaternion::CreateFromYawPitchRoll(yaw, pitch, roll);
+	rotation = {x,y,z};
 	UpdateModelMatrix();
 }
 
-DirectX::SimpleMath::Quaternion VertexModel::GetRotation()
+Vector3 VertexModel::GetRotation()
 {
 	return rotation;
 }
@@ -122,18 +96,10 @@ void VertexModel::ScaleFromPoint(XMFLOAT3 globalPoint, XMFLOAT3 scale)
 		XMMatrixScaling(scale.x, scale.y, scale.z) *
 		XMMatrixTranslationFromVector(1.0 * globalPoint);
 
-	XMStoreFloat4x4(&this->modelMatrix, XMLoadFloat4x4(&modelMatrix) * scaleMatrix);
+	modelMatrix= modelMatrix * scaleMatrix;
 
-	Matrix m(this->modelMatrix);
-	Vector3 dscale;
-	Quaternion quat;
-	Vector3 translation;
-	m.Decompose(dscale, quat, translation);
-
-
-	this->rotation = quat;
-	this->translation = translation;
-	this->scale = dscale;
+	this->translation = MatrixExt::DecomposeTranslation(modelMatrix);
+	this->scale = MatrixExt::DecomposeScale(modelMatrix);
 	UpdateModelMatrix();
 }
 
@@ -148,16 +114,8 @@ void VertexModel::RotateFromPoint(XMFLOAT3 globalPoint, XMFLOAT3 rotation)
 
 	this->modelMatrix = this->modelMatrix * rotationMatrix;
 
-	Matrix m(this->modelMatrix);
-	Vector3 scale;
-	Quaternion quat;
-	Vector3 translation;
-	m.Decompose(scale, quat, translation);
-
-	auto del = quat.ToEuler();
-	this->rotation = quat;
-	this->translation = translation;
-	this->scale = scale;
+	this->rotation = MatrixExt::DecomposeRotation(modelMatrix);
+	this->translation = MatrixExt::DecomposeTranslation(modelMatrix);
 
 	UpdateModelMatrix();
 }
@@ -173,9 +131,12 @@ void VertexModel::UpdateModelMatrix()
 
 }
 
-DirectX::XMMATRIX VertexModel::GetRotationMatrix()
+Matrix VertexModel::GetRotationMatrix()
 {
-	return Matrix::CreateFromQuaternion(rotation);
+	return
+		Matrix::CreateRotationX(rotation.x) *
+		Matrix::CreateRotationY(rotation.y) *
+		Matrix::CreateRotationZ(rotation.z);
 }
 
 void VertexModel::ChangeColor(DirectX::SimpleMath::Vector3 color)
@@ -187,7 +148,7 @@ void VertexModel::RenderGUI()
 {
 	IModel::RenderGUI();
 	ImGui::Text("Scale");
-	float minScale = 0.1f;
+	float minScale = 0.0f;
 	if (
 		ImGui::DragFloat("x##xScale", &scale.x, 0.1f, minScale)
 		|| ImGui::DragFloat("y##yScale", &scale.y, 0.1f, minScale)
@@ -199,8 +160,7 @@ void VertexModel::RenderGUI()
 	}
 
 	ImGui::Text("Rotation");
-	auto rotationEuler = rotation.ToEuler();
-	rotationEuler = { XMConvertToDegrees(rotationEuler.x),  XMConvertToDegrees(rotationEuler.y),XMConvertToDegrees(rotationEuler.z) };
+	Vector3 rotationEuler = { XMConvertToDegrees(rotation.x),  XMConvertToDegrees(rotation.y),XMConvertToDegrees(rotation.z) };
 	if (
 		ImGui::DragFloat("x##xRotation", &rotationEuler.x, 1.0f)
 		|| ImGui::DragFloat("y##yRotation", &rotationEuler.y, 1.0f)
@@ -210,6 +170,7 @@ void VertexModel::RenderGUI()
 		auto x = XMConvertToRadians(rotationEuler.x);
 		auto y = XMConvertToRadians(rotationEuler.y);
 		auto z = XMConvertToRadians(rotationEuler.z);
+
 
 		this->SetRotation(x, y, z);
 	}

@@ -61,11 +61,17 @@
     <Filter Include="Header Files\Buffers">
       <UniqueIdentifier>{9aaf337d-1dab-467f-aabc-9a8df62e5b70}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Drawers">
+    <Filter Include="Header Files\Shaders">
+      <UniqueIdentifier>{1c88e624-84c6-4c26-9823-66cfb3c44b55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Helpers">
+      <UniqueIdentifier>{410f3a88-879c-462d-96ce-f54da33a6249}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Mesh">
       <UniqueIdentifier>{2c489980-19c5-499c-91c1-bc891257d449}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Drawers">
-      <UniqueIdentifier>{5e058a51-3294-4b4a-b0d2-8e0e39be08ce}</UniqueIdentifier>
+    <Filter Include="Source Files\Mesh">
+      <UniqueIdentifier>{bc543cd8-d5db-4f4d-b1e5-3dc12d6f0c0d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -129,9 +135,6 @@
     <ClCompile Include="PerspectiveCameraOptionsWindow.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="GlobalAxisDrawer.cpp">
-      <Filter>Source Files\Drawers</Filter>
-    </ClCompile>
     <ClCompile Include="Coursor3d.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
@@ -155,6 +158,21 @@
     </ClCompile>
     <ClCompile Include="CompositeModel.cpp">
       <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageHandler.cpp">
+      <Filter>Source Files\EventsHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="MatrixExt.cpp">
+      <Filter>Source Files\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderInfoSingleColorVs.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderInfoVertexColor.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshInfo.cpp">
+      <Filter>Source Files\Mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -236,23 +254,17 @@
     <ClInclude Include="Coursor3d.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
-    <ClInclude Include="GlobalAxisDrawer.h">
-      <Filter>Header Files\Drawers</Filter>
-    </ClInclude>
     <ClInclude Include="CursorOptionsWindow.h">
       <Filter>Header Files\Windows</Filter>
     </ClInclude>
     <ClInclude Include="Point.h">
       <Filter>Header Files\Shapes</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderInfo.h">
-      <Filter>Header Files\Drawers</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectsListWindow.h">
       <Filter>Header Files\Windows</Filter>
     </ClInclude>
     <ClInclude Include="MeshInfo.h">
-      <Filter>Header Files\Drawers</Filter>
+      <Filter>Header Files\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="PropertiesWindow.h">
       <Filter>Header Files\Windows</Filter>
@@ -262,6 +274,21 @@
     </ClInclude>
     <ClInclude Include="CompositeModel.h">
       <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageHandler.h">
+      <Filter>Header Files\EventsHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderInfo.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderInfoSingleColorVs.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderInfoVertexColor.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrixExt.h">
+      <Filter>Header Files\Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -7,16 +7,9 @@ using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
 Point::Point(DirectX::XMFLOAT3 translation)
-	: IModel()
+	: IModel("Point")
 {
-	const auto vsBytes = DxDevice::LoadByteCode(L"vsSingleColor.cso");
-	const auto psBytes = DxDevice::LoadByteCode(L"ps.cso");
-	shaderInfo.m_pixelShader = DxDevice::instance->CreatePixelShader(psBytes);
-	shaderInfo.m_vertexShader = DxDevice::instance->CreateVertexShader(vsBytes);
-	std::vector<D3D11_INPUT_ELEMENT_DESC> elements{
-	{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,
-	D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	};
+	this->shaderInfoSingleColorVs = std::make_shared< ShaderInfoSingleColorVs>();
 	this->SetTranslation(translation.x, translation.y, translation.z);
 	float halfSideLength = 0.1f;
 	std::vector<Vertex> vertices = {
@@ -61,7 +54,7 @@ void Point::SetScale(float x, float y, float z)
 {
 }
 
-DirectX::XMFLOAT3 Point::GetScale()
+Vector3 Point::GetScale()
 {
 	return { 1,1,1 };
 }
@@ -76,7 +69,7 @@ void Point::Translate(float x, float y, float z)
 	translation = { translation.x + x, translation.y + y, translation.z + z };
 }
 
-DirectX::XMFLOAT3 Point::GetTranslation()
+Vector3 Point::GetTranslation()
 {
 	return translation;
 }
@@ -85,84 +78,57 @@ void Point::SetRotation(float pitch, float yaw, float roll)
 {
 }
 
-DirectX::SimpleMath::Quaternion Point::GetRotation()
+Vector3 Point::GetRotation()
 {
-	return Quaternion::Identity;
+	return {0,0,0};
 }
 
-XMMATRIX Point::GetModelMatrix()
+Matrix Point::GetModelMatrix()
 {
-	return XMMatrixTranslation(translation.x, translation.y, translation.z);
+	return Matrix::CreateTranslation(translation.x, translation.y, translation.z);
 }
 
 void Point::ScaleFromPoint(DirectX::XMFLOAT3 globalPoint, DirectX::XMFLOAT3 scale)
 {
-	auto modelMatrix = GetModelMatrix();
-	auto inverseMatrix = XMMatrixInverse(nullptr, modelMatrix);
-	auto localPoint = XMVector3Transform(XMLoadFloat3(&globalPoint), inverseMatrix);
 	auto scaleMatrix =
-		XMMatrixTranslationFromVector(-1.0f * localPoint) *
+		XMMatrixTranslationFromVector(-1.0f * globalPoint) *
 		XMMatrixScaling(scale.x, scale.y, scale.z) *
-		XMMatrixTranslationFromVector(localPoint);
+		XMMatrixTranslationFromVector(1.0 * globalPoint);
 
-	XMFLOAT4X4 m;
-	XMStoreFloat4x4(&m, modelMatrix * scaleMatrix);
+	auto m = GetModelMatrix() * scaleMatrix;
 	this->translation = { m._41, m._42, m._43 };
 }
 
 void Point::RotateFromPoint(DirectX::XMFLOAT3 globalPoint, DirectX::XMFLOAT3 rotation)
 {
-	auto modelMatrix = GetModelMatrix();
-	auto inverseMatrix = XMMatrixInverse(nullptr,modelMatrix);
-	auto localPoint = XMVector3Transform(XMLoadFloat3(&globalPoint), inverseMatrix);
-
 	auto rotationMatrix =
-		XMMatrixTranslationFromVector(-1.0f * localPoint) *
-		XMMatrixRotationX(rotation.x) *
+		XMMatrixTranslationFromVector(-1.0f * globalPoint) *
 		XMMatrixRotationY(rotation.y) *
+		XMMatrixRotationX(rotation.x) *
 		XMMatrixRotationZ(rotation.z) *
-		XMMatrixTranslationFromVector(localPoint);
+		XMMatrixTranslationFromVector(1 * globalPoint);
 
-	XMFLOAT4X4 m;
-	XMStoreFloat4x4(&m, modelMatrix * rotationMatrix);
+	auto modelMatrix = GetModelMatrix();
+	auto m = modelMatrix * rotationMatrix;
 	this->translation = { m._41, m._42, m._43 };
 }
 
 void Point::Draw( std::shared_ptr<Camera> camera)
 {
-	DxDevice::instance->context()->IASetPrimitiveTopology(meshInfo.topology);
-	DxDevice::instance->context()->IASetInputLayout(shaderInfo.m_layout.get());
-	DxDevice::instance->context()->VSSetShader(shaderInfo.m_vertexShader.get(), nullptr, 0);
-	DxDevice::instance->context()->PSSetShader(shaderInfo.m_pixelShader.get(), nullptr, 0);
+	shaderInfoSingleColorVs->SetUpRender();
+	meshInfo.SetUpRender();
 
-	ID3D11Buffer* vbs[] = { meshInfo.vertexBuffer.get() };
-	UINT strides[] = { sizeof(Vertex) };
-	UINT offsets[] = { 0 };
-	DxDevice::instance->context()->IASetVertexBuffers(
-		0, 1, vbs, strides, offsets);
-	DxDevice::instance->context()->IASetIndexBuffer(meshInfo.indexBuffer.get(),
-		DXGI_FORMAT_R32_UINT, 0);
+	shaderInfoSingleColorVs->SetVertexBuffer(meshInfo.vertexBuffer.get());
 
-	shaderInfo.constantBuffer = DxDevice::instance->CreateConstantBuffer<MVPColorConstantBuffer>();
-	D3D11_MAPPED_SUBRESOURCE res;
-	DirectX::XMMATRIX mvp;
-	DxDevice::instance->context()->Map(shaderInfo.constantBuffer.get(), 0,
-		D3D11_MAP_WRITE_DISCARD, 0, &res);
-
-	auto constantBufferStruct = MVPColorConstantBuffer();
 	auto v = camera->GetViewMatrix();
 	auto p = camera->GetPerspectiveMatrix();
-	constantBufferStruct.mvp =
+	shaderInfoSingleColorVs->constantBufferStruct.mvp =
 		GetModelMatrix() *
 		XMLoadFloat4x4(&v) *
 		XMLoadFloat4x4(&p);
-	constantBufferStruct.color = XMLoadFloat3(&meshInfo.color);
-	memcpy(res.pData, &constantBufferStruct, sizeof(MVPColorConstantBuffer));
-	DxDevice::instance->context()->Unmap(shaderInfo.constantBuffer.get(), 0);
+	shaderInfoSingleColorVs->constantBufferStruct.color = XMLoadFloat3(&meshInfo.color);
 
-
-	ID3D11Buffer* cbs[] = { shaderInfo.constantBuffer.get() };
-	DxDevice::instance->context()->VSSetConstantBuffers(0, 1, cbs);
+	shaderInfoSingleColorVs->CopyConstantBuffers();
 
 	DxDevice::instance->context()->DrawIndexed(indicesCount, 0, 0);
 }

@@ -2,7 +2,6 @@
 #include "windowsx.h"
 #include "Torus.h"
 #include "MVPColorConstantBuffer.h"
-#include "GlobalAxisDrawer.h"
 #include "Coursor3d.h"
 #include "Point.h"
 
@@ -29,38 +28,32 @@ Application::Application(SIZE size)
 	auto cursor = std::make_shared<Coursor3d>();
 
 	scene = std::make_shared<Scene>(cursor, size);
+
 	XMFLOAT3 targetPosition = { 0,0,0 };
 	auto camera = std::make_shared<ArcCameraModel>(targetPosition, 30, XMConvertToRadians(45), static_cast<float>(size.cx) / size.cy, 0.01f, 1000.0f);
 	scene->AddCamera(camera);
 
 	backgroundColor = { 0,0,0 };
 
-	auto torus = std::make_shared<Torus>(5, 2, 20, 20);
-	torus->SetTranslation(-10, 0, 0);
-	scene->AddModel(torus);
-
-	torus = std::make_shared<Torus>(5, 2, 20, 20);
-	torus->SetTranslation(10, 0, 0);
-	scene->AddModel(torus);
-
 	/*auto globalAxis = std::make_shared<GlobalAxisDrawer>(m_device);
 	scene->AddModel(globalAxis);*/
-
 
 	objectsListWindow = std::make_shared<ObjectsListWindow>(scene);
 	propertiesWindow = std::make_shared<PropertiesWindow>(scene);
 	perspectiveCameraOptionsWindow = make_shared<PerspectiveCameraOptionsWindow>(camera);
 	cursorOptionsWindow = make_shared<CursorOptionsWindow>(cursor, scene, size);
 	mouseEvents = std::make_shared<MouseEvents>(camera, scene);
+	messageHandler = std::make_shared<MessageHandler>(scene);
 }
 
 void Application::Render()
 {
 	perspectiveCameraOptionsWindow->Render();
 	cursorOptionsWindow->Render();
-	mouseEvents->HandleMouse();
 	objectsListWindow->Render();
 	propertiesWindow->Render();
+	mouseEvents->HandleMouse();
+
 	const float clearColor[] = { backgroundColor.x,backgroundColor.y,backgroundColor.z, 1.0f };
 	DxDevice::instance->context()->ClearRenderTargetView(m_backBuffer.get(), clearColor);
 	DxDevice::instance->context()->ClearDepthStencilView(m_depthBuffer.get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
@@ -77,7 +70,12 @@ void Application::Render()
 	}
 	scene->cursor->Draw(scene->activeCamera);
 }
+
 void Application::Update()
 {
+}
 
+void Application::HandleMessage(MSG message)
+{
+	messageHandler->HandleMessage(message);
 }

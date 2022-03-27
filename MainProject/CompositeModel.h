@@ -13,9 +13,9 @@ public:
 	void UpdateCentroidPosition();
 
 
-	DirectX::XMFLOAT3 scale;
-	DirectX::SimpleMath::Quaternion rotation;
-	DirectX::XMFLOAT3 centroidPosition;
+	DirectX::SimpleMath::Vector3 scale;
+	DirectX::SimpleMath::Vector3 rotation;
+	DirectX::SimpleMath::Vector3 centroidPosition;
 	std::shared_ptr<Coursor3d> centroidCoursor;
 
 	DirectX::XMFLOAT3 imguiScale;
@@ -23,7 +23,7 @@ public:
 	// Inherited via IModel
 	virtual void SetScale(float x, float y, float z) override;
 
-	virtual DirectX::XMFLOAT3 GetScale() override;
+	virtual DirectX::SimpleMath::Vector3 GetScale() override;
 
 
 	virtual void SetTranslation(float x, float y, float z) override;
@@ -32,13 +32,13 @@ public:
 	virtual void Translate(float x, float y, float z) override;
 
 
-	virtual DirectX::XMFLOAT3 GetTranslation() override;
+	virtual DirectX::SimpleMath::Vector3 GetTranslation() override;
 
 
 	virtual void SetRotation(float pitch, float yaw, float roll) override;
 
 
-	virtual DirectX::SimpleMath::Quaternion GetRotation() override;
+	virtual DirectX::SimpleMath::Vector3 GetRotation() override;
 
 
 	virtual void ScaleFromPoint(DirectX::XMFLOAT3 point, DirectX::XMFLOAT3 scale) override;

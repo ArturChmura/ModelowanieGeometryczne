@@ -4,7 +4,7 @@
 
 
 Torus::Torus(float R, float r, unsigned int largeSlices, unsigned int smallSlices)
-	: VertexModel()
+	: VertexModel("Torus")
 {
 	this->R = R;
 	this->r = r;

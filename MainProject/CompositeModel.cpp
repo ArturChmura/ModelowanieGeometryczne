@@ -8,7 +8,7 @@ CompositeModel::CompositeModel()
 {
 	this->centroidCoursor = std::make_shared<Coursor3d>();
 	this->imguiTranslation = this->centroidPosition = { 0,0,0 };
-	this->rotation = Quaternion::Identity;
+	this->rotation = {0,0,0};
 	this->imguiScale = this->scale = { 1,1,1 };
 }
 
@@ -54,7 +54,7 @@ void CompositeModel::SetScale(float x, float y, float z)
 	scale = { x,y,z };
 }
 
-DirectX::XMFLOAT3 CompositeModel::GetScale()
+Vector3 CompositeModel::GetScale()
 {
 	return scale;
 }
@@ -78,23 +78,22 @@ void CompositeModel::Translate(float x, float y, float z)
 	centroidPosition = { centroidPosition.x + x,centroidPosition.y + y,centroidPosition.z + z };
 }
 
-DirectX::XMFLOAT3 CompositeModel::GetTranslation()
+Vector3 CompositeModel::GetTranslation()
 {
 	return centroidPosition;
 }
 
-void CompositeModel::SetRotation(float pitch, float yaw, float roll)
+void CompositeModel::SetRotation(float x, float y, float z)
 {
-	auto e = rotation.ToEuler();
-	DirectX::XMFLOAT3 diff = { pitch - e.x, yaw - e.y , roll - e.z };
+	DirectX::XMFLOAT3 diff = { x - rotation.x, y - rotation.y , z - rotation.z };
 	for (const auto& [key, model] : modelsMap)
 	{
 		model->RotateFromPoint(centroidPosition, diff);
 	}
-	rotation = Quaternion::CreateFromYawPitchRoll(yaw, pitch, roll);
+	rotation = { x, y, z };
 }
 
-DirectX::SimpleMath::Quaternion CompositeModel::GetRotation()
+Vector3 CompositeModel::GetRotation()
 {
 	return rotation;
 }
@@ -137,8 +136,7 @@ void CompositeModel::RenderGUI()
 
 
 	ImGui::Text("Rotation");
-	auto rotationEuler = rotation.ToEuler();
-	rotationEuler = { XMConvertToDegrees(rotationEuler.x),  XMConvertToDegrees(rotationEuler.y),XMConvertToDegrees(rotationEuler.z) };
+	Vector3 rotationEuler = { XMConvertToDegrees(rotation.x),  XMConvertToDegrees(rotation.y),XMConvertToDegrees(rotation.z) };
 	if (
 		ImGui::DragFloat("x##xRotation", &rotationEuler.x, 1.0f)
 		|| ImGui::DragFloat("y##yRotation", &rotationEuler.y, 1.0f)
