@@ -6,6 +6,6 @@ class MatrixExt
 {
 public:
 	static DirectX::SimpleMath::Vector3 DecomposeScale(DirectX::SimpleMath::Matrix matrix);
-	static DirectX::SimpleMath::Vector3 DecomposeTranslation(DirectX::SimpleMath::Matrix matrix);
+	static DirectX::SimpleMath::Vector4 DecomposeTranslation(DirectX::SimpleMath::Matrix matrix);
 	static DirectX::SimpleMath::Vector3 DecomposeRotation(DirectX::SimpleMath::Matrix matrix);
 };

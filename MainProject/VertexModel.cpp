@@ -73,7 +73,7 @@ void VertexModel::Translate(float x, float y, float z)
 	UpdateModelMatrix();
 }
 
-Vector3 VertexModel::GetTranslation()
+Vector4 VertexModel::GetTranslation()
 {
 	return translation;
 }
@@ -89,7 +89,7 @@ Vector3 VertexModel::GetRotation()
 	return rotation;
 }
 
-void VertexModel::ScaleFromPoint(XMFLOAT3 globalPoint, XMFLOAT3 scale)
+void VertexModel::ScaleFromPoint(DirectX::SimpleMath::Vector4 globalPoint, XMFLOAT3 scale)
 {
 	auto scaleMatrix =
 		XMMatrixTranslationFromVector(-1.0f * globalPoint) *
@@ -103,7 +103,7 @@ void VertexModel::ScaleFromPoint(XMFLOAT3 globalPoint, XMFLOAT3 scale)
 	UpdateModelMatrix();
 }
 
-void VertexModel::RotateFromPoint(XMFLOAT3 globalPoint, XMFLOAT3 rotation)
+void VertexModel::RotateFromPoint(DirectX::SimpleMath::Vector4 globalPoint, XMFLOAT3 rotation)
 {
 	auto rotationMatrix =
 		XMMatrixTranslationFromVector(-1.0f * globalPoint) *

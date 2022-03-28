@@ -4,6 +4,7 @@
 #include "MVPColorConstantBuffer.h"
 #include "Coursor3d.h"
 #include "Point.h"
+#include "BezierCurve.h"
 
 using namespace mini;
 using namespace DirectX;
@@ -44,6 +45,26 @@ Application::Application(SIZE size)
 	cursorOptionsWindow = make_shared<CursorOptionsWindow>(cursor, scene, size);
 	mouseEvents = std::make_shared<MouseEvents>(camera, scene);
 	messageHandler = std::make_shared<MessageHandler>(scene);
+
+	auto point = scene->AddPoint();
+	scene->ChangeSelection(point->id);
+	scene->cursor->translation = { 1,1,0 };
+	point = scene->AddPoint();
+	scene->ChangeSelection(point->id);
+	scene->cursor->translation =  { 2,-1,0 };
+	point = scene->AddPoint();
+	scene->ChangeSelection(point->id);
+	scene->cursor->translation =  { 3,0,0 };
+	point = scene->AddPoint();
+	scene->ChangeSelection(point->id);
+	scene->cursor->translation =  { 10,4,0 };
+	point = scene->AddPoint();
+	scene->ChangeSelection(point->id);
+	scene->cursor->translation =  { 16,-2,5 };
+	point = scene->AddPoint();
+	scene->ChangeSelection(point->id);
+
+	scene->AddBezierCurveFromSelectedPoints();
 }
 
 void Application::Render()

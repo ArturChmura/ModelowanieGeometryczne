@@ -6,7 +6,7 @@
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
-Point::Point(DirectX::XMFLOAT3 translation)
+Point::Point(DirectX::SimpleMath::Vector4 translation)
 	: IModel("Point")
 {
 	this->shaderInfoSingleColorVs = std::make_shared< ShaderInfoSingleColorVs>();
@@ -61,15 +61,17 @@ Vector3 Point::GetScale()
 
 void Point::SetTranslation(float x, float y, float z)
 {
-	this->translation = { x,y,z };
+	this->translation = { x,y,z, 1 };
+	OnModelChange();
 }
 
 void Point::Translate(float x, float y, float z)
 {
-	translation = { translation.x + x, translation.y + y, translation.z + z };
+	translation = { translation.x + x, translation.y + y, translation.z + z, 1 };
+	OnModelChange();
 }
 
-Vector3 Point::GetTranslation()
+Vector4 Point::GetTranslation()
 {
 	return translation;
 }
@@ -80,7 +82,23 @@ void Point::SetRotation(float pitch, float yaw, float roll)
 
 Vector3 Point::GetRotation()
 {
-	return {0,0,0};
+	return { 0,0,0 };
+}
+
+std::vector<std::function<void(Point*)>> Point::onSelectCallback;
+void Point::OnSelect()
+{
+	IModel::OnSelect();
+	for (auto f : onSelectCallback)
+		f(this);
+}
+
+std::vector<std::function<void(Point*)>> Point::onAddedToSceneCallback;
+void Point::OnAddedToScene()
+{
+	IModel::OnAddedToScene();
+	for (auto f : onAddedToSceneCallback)
+		f(this);
 }
 
 Matrix Point::GetModelMatrix()
@@ -88,7 +106,7 @@ Matrix Point::GetModelMatrix()
 	return Matrix::CreateTranslation(translation.x, translation.y, translation.z);
 }
 
-void Point::ScaleFromPoint(DirectX::XMFLOAT3 globalPoint, DirectX::XMFLOAT3 scale)
+void Point::ScaleFromPoint(Vector4 globalPoint, DirectX::XMFLOAT3 scale)
 {
 	auto scaleMatrix =
 		XMMatrixTranslationFromVector(-1.0f * globalPoint) *
@@ -97,9 +115,10 @@ void Point::ScaleFromPoint(DirectX::XMFLOAT3 globalPoint, DirectX::XMFLOAT3 scal
 
 	auto m = GetModelMatrix() * scaleMatrix;
 	this->translation = { m._41, m._42, m._43 };
+	OnModelChange();
 }
 
-void Point::RotateFromPoint(DirectX::XMFLOAT3 globalPoint, DirectX::XMFLOAT3 rotation)
+void Point::RotateFromPoint(Vector4 globalPoint, DirectX::XMFLOAT3 rotation)
 {
 	auto rotationMatrix =
 		XMMatrixTranslationFromVector(-1.0f * globalPoint) *
@@ -110,10 +129,11 @@ void Point::RotateFromPoint(DirectX::XMFLOAT3 globalPoint, DirectX::XMFLOAT3 rot
 
 	auto modelMatrix = GetModelMatrix();
 	auto m = modelMatrix * rotationMatrix;
-	this->translation = { m._41, m._42, m._43 };
+	this->translation = { m._41, m._42, m._43, 1};
+	OnModelChange();
 }
 
-void Point::Draw( std::shared_ptr<Camera> camera)
+void Point::Draw(std::shared_ptr<Camera> camera)
 {
 	shaderInfoSingleColorVs->SetUpRender();
 	meshInfo.SetUpRender();
@@ -146,10 +166,16 @@ void Point::RenderGUI()
 		|| ImGui::DragFloat("z##zTransation", &translation.z)
 		)
 	{
+		OnModelChange();
 	}
 }
 
 void Point::ChangeColor(DirectX::SimpleMath::Vector3 color)
 {
 	this->meshInfo.color = color;
+}
+
+void Point::OnModelChange()
+{
+	for (auto f : onModelChangeCallback) f();
 }

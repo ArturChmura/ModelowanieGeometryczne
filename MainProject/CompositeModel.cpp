@@ -7,7 +7,7 @@ using namespace DirectX::SimpleMath;
 CompositeModel::CompositeModel()
 {
 	this->centroidCoursor = std::make_shared<Coursor3d>();
-	this->imguiTranslation = this->centroidPosition = { 0,0,0 };
+	this->imguiTranslation = this->centroidPosition = { 0,0,0,1 };
 	this->rotation = {0,0,0};
 	this->imguiScale = this->scale = { 1,1,1 };
 }
@@ -66,7 +66,7 @@ void CompositeModel::SetTranslation(float x, float y, float z)
 	{
 		model->Translate(diff.x, diff.y, diff.z);
 	}
-	centroidPosition = { x,y,z };
+	centroidPosition = { x,y,z,1 };
 }
 
 void CompositeModel::Translate(float x, float y, float z)
@@ -75,10 +75,10 @@ void CompositeModel::Translate(float x, float y, float z)
 	{
 		model->Translate(x, y, z);
 	}
-	centroidPosition = { centroidPosition.x + x,centroidPosition.y + y,centroidPosition.z + z };
+	centroidPosition = { centroidPosition.x + x,centroidPosition.y + y,centroidPosition.z + z , 1 };
 }
 
-Vector3 CompositeModel::GetTranslation()
+Vector4 CompositeModel::GetTranslation()
 {
 	return centroidPosition;
 }
@@ -98,7 +98,7 @@ Vector3 CompositeModel::GetRotation()
 	return rotation;
 }
 
-void CompositeModel::ScaleFromPoint(DirectX::XMFLOAT3 point, DirectX::XMFLOAT3 scale)
+void CompositeModel::ScaleFromPoint(DirectX::SimpleMath::Vector4 point, DirectX::XMFLOAT3 scale)
 {
 	for (const auto& [key, model] : modelsMap)
 	{
@@ -106,7 +106,7 @@ void CompositeModel::ScaleFromPoint(DirectX::XMFLOAT3 point, DirectX::XMFLOAT3 s
 	}
 }
 
-void CompositeModel::RotateFromPoint(DirectX::XMFLOAT3 globalPoint, DirectX::XMFLOAT3 ratation)
+void CompositeModel::RotateFromPoint(Vector4 globalPoint, DirectX::XMFLOAT3 ratation)
 {
 	for (const auto& [key, model] : modelsMap)
 	{

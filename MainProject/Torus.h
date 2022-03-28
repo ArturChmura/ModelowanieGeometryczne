@@ -29,5 +29,5 @@ private:
 	int smallSlices;
 
 
-	void UpdateVertices();
+	void ResetDrawing();
 };

@@ -43,12 +43,6 @@
     <Filter Include="Source Files\EventsHandlers">
       <UniqueIdentifier>{40883cc6-7405-4a6d-af92-4fa654732a54}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Models">
-      <UniqueIdentifier>{33bf4158-5ebe-4a12-a187-f56778273c19}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Models">
-      <UniqueIdentifier>{88d591c6-db81-4b3f-bdec-31c36799c00d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Shaders">
       <UniqueIdentifier>{4dab86a2-5c13-412a-b1ea-f9cffe1e0db8}</UniqueIdentifier>
     </Filter>
@@ -64,14 +58,14 @@
     <Filter Include="Header Files\Shaders">
       <UniqueIdentifier>{1c88e624-84c6-4c26-9823-66cfb3c44b55}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Helpers">
-      <UniqueIdentifier>{410f3a88-879c-462d-96ce-f54da33a6249}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Mesh">
       <UniqueIdentifier>{2c489980-19c5-499c-91c1-bc891257d449}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Mesh">
       <UniqueIdentifier>{bc543cd8-d5db-4f4d-b1e5-3dc12d6f0c0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Helpers">
+      <UniqueIdentifier>{410f3a88-879c-462d-96ce-f54da33a6249}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -120,9 +114,6 @@
     <ClCompile Include="MouseEvents.cpp">
       <Filter>Source Files\EventsHandlers</Filter>
     </ClCompile>
-    <ClCompile Include="IModel.cpp">
-      <Filter>Source Files\Models</Filter>
-    </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
@@ -135,9 +126,6 @@
     <ClCompile Include="PerspectiveCameraOptionsWindow.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="Coursor3d.cpp">
-      <Filter>Source Files\Models</Filter>
-    </ClCompile>
     <ClCompile Include="CursorOptionsWindow.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
@@ -147,17 +135,11 @@
     <ClCompile Include="ObjectsListWindow.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="VertexModel.cpp">
-      <Filter>Source Files\Models</Filter>
-    </ClCompile>
     <ClCompile Include="PropertiesWindow.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui_stdlib.cpp">
       <Filter>Resource Files\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="CompositeModel.cpp">
-      <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="MessageHandler.cpp">
       <Filter>Source Files\EventsHandlers</Filter>
@@ -173,6 +155,21 @@
     </ClCompile>
     <ClCompile Include="MeshInfo.cpp">
       <Filter>Source Files\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="BezierCurve.cpp">
+      <Filter>Source Files\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="CompositeModel.cpp">
+      <Filter>Source Files\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="Coursor3d.cpp">
+      <Filter>Source Files\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="IModel.cpp">
+      <Filter>Source Files\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexModel.cpp">
+      <Filter>Source Files\Shapes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -230,17 +227,11 @@
     <ClInclude Include="MouseEvents.h">
       <Filter>Header Files\EventsHandlers</Filter>
     </ClInclude>
-    <ClInclude Include="IModel.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Header Files\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexModel.h">
-      <Filter>Header Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="PerspectiveCameraOptionsWindow.h">
       <Filter>Header Files\Windows</Filter>
@@ -250,9 +241,6 @@
     </ClInclude>
     <ClInclude Include="MVPConstantBuffer.h">
       <Filter>Header Files\Buffers</Filter>
-    </ClInclude>
-    <ClInclude Include="Coursor3d.h">
-      <Filter>Header Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="CursorOptionsWindow.h">
       <Filter>Header Files\Windows</Filter>
@@ -272,9 +260,6 @@
     <ClInclude Include="ImGui\imgui_stdlib.h">
       <Filter>Resource Files\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="CompositeModel.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
     <ClInclude Include="MessageHandler.h">
       <Filter>Header Files\EventsHandlers</Filter>
     </ClInclude>
@@ -289,6 +274,21 @@
     </ClInclude>
     <ClInclude Include="MatrixExt.h">
       <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="BezierCurve.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="CompositeModel.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Coursor3d.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="IModel.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexModel.h">
+      <Filter>Header Files\Shapes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

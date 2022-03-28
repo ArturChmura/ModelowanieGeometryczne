@@ -20,4 +20,18 @@ void IModel::RenderGUI()
 	ImGui::InputText("Name##IModelName", &name);
 }
 
+void IModel::OnSelect()
+{
+	this->ChangeColor({ 1.0f, 0.6f, 0.0f });
+}
+
+void IModel::OnDeselect()
+{
+	this->ChangeColor({ 1.0f, 1.0f, 1.0f });
+}
+
+void IModel::OnAddedToScene()
+{
+}
+
 

@@ -9,9 +9,9 @@ Vector3 MatrixExt::DecomposeScale(Matrix matrix)
     return Vector3(x,y,z);
 }
 
-Vector3 MatrixExt::DecomposeTranslation(Matrix matrix)
+Vector4 MatrixExt::DecomposeTranslation(Matrix matrix)
 {
-    return Vector3(matrix._41, matrix._42, matrix._43);
+    return Vector4(matrix._41, matrix._42, matrix._43, matrix._43);
 }
 
 Vector3 MatrixExt::DecomposeRotation(Matrix matrix)

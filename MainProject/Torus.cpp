@@ -10,36 +10,36 @@ Torus::Torus(float R, float r, unsigned int largeSlices, unsigned int smallSlice
 	this->r = r;
 	this->largeSlices = largeSlices;
 	this->smallSlices = smallSlices;
-	UpdateVertices();
+	ResetDrawing();
 }
 
 void Torus::SetBigRadius(float R)
 {
 	this->R = R;
-	UpdateVertices();
+	ResetDrawing();
 }
 
 void Torus::SetSmallRadius(float r)
 {
 	this->r = r;
-	UpdateVertices();
+	ResetDrawing();
 }
 
 void Torus::SetLargeSlices(int ls)
 {
 	this->largeSlices = ls;
-	UpdateVertices();
+	ResetDrawing();
 }
 
 void Torus::SetSmallSlices(int ss)
 {
 	this->smallSlices = ss;
-	UpdateVertices();
+	ResetDrawing();
 }
 
 
 
-void Torus::UpdateVertices()
+void Torus::ResetDrawing()
 {
 	auto verticesCount = largeSlices * smallSlices;
 	auto indicesCount = largeSlices * smallSlices * 4;
@@ -101,24 +101,24 @@ void Torus::RenderGUI()
 	{
 		R = max(R, minSize);
 		r = min(r, R);
-		UpdateVertices();
+		ResetDrawing();
 	}
 	if (ImGui::DragFloat("r", &r, 0.2f, minSize, R))
 	{
 		r = max(r, minSize);
 		r = min(r, R);
-		UpdateVertices();
+		ResetDrawing();
 	}
 
 	ImGui::Text("Torus slices");
 	if (ImGui::DragInt("Large", &largeSlices, 1, 2))
 	{
 		largeSlices = max(2, largeSlices);
-		UpdateVertices();
+		ResetDrawing();
 	}
 	if (ImGui::DragInt("Small", &smallSlices, 1, 2))
 	{
 		smallSlices = max(2, smallSlices);
-		UpdateVertices();
+		ResetDrawing();
 	}
 }

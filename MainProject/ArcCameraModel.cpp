@@ -1,6 +1,8 @@
 #include "ArcCameraModel.h"
 #include "Helpers.h"
+using namespace DirectX::SimpleMath;
 using namespace DirectX;
+
 ArcCameraModel::ArcCameraModel(XMFLOAT3 targetPosition, float distance, float fieldOfView, float aspectRatio, float nearZ, float farZ)
 	: PerspectiveCamera(fieldOfView, aspectRatio, nearZ, farZ)
 {
@@ -10,11 +12,11 @@ ArcCameraModel::ArcCameraModel(XMFLOAT3 targetPosition, float distance, float fi
 	ChangeDistance(distance);
 }
 
-DirectX::XMFLOAT4X4 ArcCameraModel::GetViewMatrix()
+Matrix ArcCameraModel::GetViewMatrix()
 {
 	return viewMatrix;
 }
-DirectX::XMFLOAT4X4 ArcCameraModel::GetPerspectiveMatrix()
+Matrix ArcCameraModel::GetPerspectiveMatrix()
 {
 	return perspectiveMatrix;
 }
@@ -114,9 +116,9 @@ void ArcCameraModel::UpdateViewMatrix()
 
 }
 
-DirectX::XMVECTOR ArcCameraModel::GetCameraDirection()
+Vector3 ArcCameraModel::GetCameraDirection()
 {
-	XMFLOAT3 direction = { targetPosition.x - position.x, targetPosition.y - position.y, targetPosition.z - position.z };
-	auto normalized = XMVector3Normalize(XMLoadFloat3(&direction));
-	return normalized;
+	Vector3 direction = { targetPosition.x - position.x, targetPosition.y - position.y, targetPosition.z - position.z };
+	direction.Normalize();
+	return direction;
 }

@@ -20,13 +20,13 @@ public:
 
 	 void SetTranslation(float x, float y, float z)  override;
 	 void Translate(float x, float y, float z)  override;
-	 DirectX::SimpleMath::Vector3 GetTranslation()  override;
+	 DirectX::SimpleMath::Vector4 GetTranslation()  override;
 
 	 void SetRotation(float pitch, float yaw, float roll)  override;
 	 DirectX::SimpleMath::Vector3 GetRotation()  override;
 
-	 void ScaleFromPoint(DirectX::XMFLOAT3 point, DirectX::XMFLOAT3 scale)  override;
-	 void RotateFromPoint(DirectX::XMFLOAT3 globalPoint, DirectX::XMFLOAT3 ratation)  override;
+	 void ScaleFromPoint(DirectX::SimpleMath::Vector4 point, DirectX::XMFLOAT3 scale)  override;
+	 void RotateFromPoint(DirectX::SimpleMath::Vector4 globalPoint, DirectX::XMFLOAT3 ratation)  override;
 
 	 void Draw(std::shared_ptr<Camera> camera)  override;
 	 virtual void RenderGUI() override;
@@ -35,7 +35,7 @@ protected:
 	DirectX::SimpleMath::Matrix GetRotationMatrix();
 	DirectX::SimpleMath::Matrix modelMatrix;
 	DirectX::SimpleMath::Vector3 scale;
-	DirectX::SimpleMath::Vector3 translation;
+	DirectX::SimpleMath::Vector4 translation;
 	DirectX::SimpleMath::Vector3 rotation;
 	int verticesCount;
 	int indicesCount;

@@ -2,6 +2,7 @@
 #include "Torus.h"
 #include "Point.h"
 #include "SimpleMath.h"
+#include "BezierCurve.h"
 using namespace DirectX::SimpleMath;
 Scene::Scene(std::shared_ptr<Coursor3d> cursor, SIZE windowSize)
 {
@@ -28,22 +29,51 @@ void Scene::SetActiveCamera(std::shared_ptr<Camera> camera)
 }
 
 
+std::shared_ptr<Torus> Scene::AddTorus()
+{
+	auto torus = std::make_shared<Torus>(5.0f, 2.0f, 20, 20);
+	torus->SetTranslation(cursor->translation.x, cursor->translation.y, cursor->translation.z);
+	AddModel(torus);
+	return torus;
+}
+
+std::shared_ptr<Point> Scene::AddPoint()
+{
+	auto point = std::make_shared<Point>(cursor->translation);
+	points.push_back(point);
+	AddModel(point);
+	return point;
+}
+
 void Scene::AddModel(std::shared_ptr<IModel> model)
 {
 	models.push_back(model);
+	model->OnAddedToScene();
 }
 
-void Scene::AddTorus()
+void Scene::AddBezierCurveFromSelectedPoints()
 {
-	auto torus = std::make_shared<Torus>(5, 2, 20, 20);
-	torus->SetTranslation(cursor->translation.x, cursor->translation.y, cursor->translation.z);
-	AddModel(torus);
+	auto selectedPointsSh = GetSelectedPoints();
+	std::vector<Point*> selectedPoints;
+	for (auto point : selectedPointsSh)
+	{
+		selectedPoints.push_back(point.get());
+	}
+	auto bezier = std::make_shared<BezierCurve>(selectedPoints);
+	AddModel(bezier);
 }
 
-void Scene::AddPoint()
+std::vector<std::shared_ptr<Point>> Scene::GetSelectedPoints()
 {
-	auto point = std::make_shared<Point>(cursor->translation);
-	AddModel(point);
+	std::vector<std::shared_ptr<Point>> selectedPoints;
+	for (auto point : points)
+	{
+		if (composite->modelsMap.contains(point->id))
+		{
+			selectedPoints.push_back(point);
+		}
+	}
+	return selectedPoints;
 }
 
 void Scene::DeleteModel(int modelId)
@@ -52,6 +82,11 @@ void Scene::DeleteModel(int modelId)
 		[modelId](const std::shared_ptr<IModel>& model)
 		{ return model->id == modelId; });
 	models.erase(new_end, models.end());
+
+	auto new_end2 = std::remove_if(points.begin(), points.end(),
+		[modelId](const std::shared_ptr<IModel>& model)
+		{ return model->id == modelId; });
+	points.erase(new_end2, points.end());
 }
 
 void Scene::ChangeSelection(int modelId)
@@ -62,12 +97,12 @@ void Scene::ChangeSelection(int modelId)
 	if (is_selected)
 	{
 		composite->RemoveModel(model);
-		model->ChangeColor({ 1,1,1 });
+		model->OnDeselect();
 	}
 	else
 	{
 		composite->AddModel(model);
-		model->ChangeColor({ 1,0,0 });
+		model->OnSelect();
 	}
 
 	if (composite->modelsMap.size() == 0)

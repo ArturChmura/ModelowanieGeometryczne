@@ -1,14 +1,16 @@
 #pragma once
 #include <DirectXMath.h>
+#include <d3d11.h>
+#include "SimpleMath.h"
 
 // Interface
 class Camera
 {
 public:
-	virtual DirectX::XMFLOAT4X4 GetViewMatrix() = 0;
-	virtual DirectX::XMFLOAT4X4 GetPerspectiveMatrix() = 0;
+	virtual DirectX::SimpleMath::Matrix GetViewMatrix() = 0;
+	virtual DirectX::SimpleMath::Matrix GetPerspectiveMatrix() = 0;
 protected:
-	DirectX::XMFLOAT4X4 viewMatrix;
-	DirectX::XMFLOAT4X4 perspectiveMatrix;
-	DirectX::XMFLOAT3 upVector = { 0,1,0 };
+	DirectX::SimpleMath::Matrix viewMatrix;
+	DirectX::SimpleMath::Matrix perspectiveMatrix;
+	DirectX::SimpleMath::Vector3 upVector = { 0,1,0 };
 };

@@ -1,6 +1,5 @@
 #include "PerspectiveCamera.h"
 #include "DirectXMath.h"
-#include <algorithm>
 using namespace DirectX;
 PerspectiveCamera::PerspectiveCamera(float fieldOfView, float aspectRatio, float nearZ, float farZ)
 {
@@ -18,13 +17,13 @@ void PerspectiveCamera::SetFieldOfView(float fov)
 
 void PerspectiveCamera::SetNearZ(float nearZ)
 {
-	this->nearZ = std::min(nearZ, this->farZ - 0.001f);
+	this->nearZ = min(nearZ, this->farZ - 0.001f);
 	UpdatePerspectiveMatrix();
 }
 
 void PerspectiveCamera::SetFarZ(float farZ)
 {
-	this->farZ = std::max(farZ, this->nearZ + 0.001f);
+	this->farZ = max(farZ, this->nearZ + 0.001f);
 	UpdatePerspectiveMatrix();
 }
 

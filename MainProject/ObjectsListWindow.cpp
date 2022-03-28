@@ -10,7 +10,7 @@ ObjectsListWindow::ObjectsListWindow(std::shared_ptr<Scene> scene)
 void ObjectsListWindow::Render()
 {
 	ImGui::Begin("Objects list");
-    if (ImGui::BeginListBox("##ObjectsListBox", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+    if (ImGui::BeginListBox("##ObjectsListBox", ImVec2(-FLT_MIN, 20 * ImGui::GetTextLineHeightWithSpacing())))
     {
         for (int i = 0; i < scene->models.size(); i++)
         {
@@ -50,5 +50,13 @@ void ObjectsListWindow::Render()
     {
         scene->AddPoint();
     }
+    if (scene->GetSelectedPoints().size() > 0)
+    {
+        if (ImGui::Button("Add Bezier Curve"))
+        {
+            scene->AddBezierCurveFromSelectedPoints();
+        }
+    }
+
 	ImGui::End();
 }
