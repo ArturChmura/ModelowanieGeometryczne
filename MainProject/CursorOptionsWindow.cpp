@@ -65,13 +65,12 @@ void CursorOptionsWindow::UpdateCursorPositionFromScreenCoords()
 	auto currentCameraPosition =  Vector4::Transform(currentGlobalPosition, viewMatrx);
 	auto currentPerspectivePosition = Vector4::Transform(currentCameraPosition, perspectiveMatrix);
 	float w = currentPerspectivePosition.w;
-	float z = currentCameraPosition.z;
 	currentPerspectivePosition = currentPerspectivePosition / currentPerspectivePosition.w;
 
 	Vector2 normalizedScreenCoords = { screenCoords.x * 2.0f / windowSize.cx - 1,screenCoords.y * 2.0f / windowSize.cy - 1 };
-
+	 
 	Vector4 newPerspectivePostion = { normalizedScreenCoords.x, normalizedScreenCoords.y, 1 ,1};
-	newPerspectivePostion = newPerspectivePostion * w;
+	newPerspectivePostion = newPerspectivePostion * max(w,-w);
 
 	auto newCameraPosition = Vector4::Transform(newPerspectivePostion, perspectiveMatrixInverted);
 	newCameraPosition.w = 1;
