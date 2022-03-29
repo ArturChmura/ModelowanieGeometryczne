@@ -18,6 +18,7 @@ public:
 	virtual void SetRotation(float pitch, float yaw, float roll) override;
 	virtual DirectX::SimpleMath::Vector3 GetRotation() override;
 	virtual void RotateFromPoint(DirectX::SimpleMath::Vector4 globalPoint, DirectX::XMFLOAT3 ratation) override;
+	void OnRemovedFromScene() override;
 	virtual void Draw(std::shared_ptr<Camera> camera) override;
 	virtual void ChangeColor(DirectX::SimpleMath::Vector3 color) override;
 	virtual void RenderGUI() override;
@@ -27,18 +28,19 @@ public:
 	int verticesCount;
 	float DeCasteljeu(std::vector<float> coefficients, float t);
 	void UpdateVertices();
-	void AddPoint(Point* point);
+	void AddPoint(Point* point); 
+	void RemovePoint(int pointId);
 	std::shared_ptr<ShaderInfoSingleColorVs> shaderInfoSingleColorVs;
 	MeshInfo meshInfo;
 	std::vector<int> selectedIndexes;
 	bool isAddingMode = false;
-	void DrawPolygonChain(bool draw = true);
+	void SetDrawPolygonChain(bool draw = true);
+	void UpdateSlicesCount(std::shared_ptr<Camera> camera);
+
+	std::vector<int> maxSlices; 
 	void ResetDrawing();
-	void UpdateAdaptiveDrawing();
-	int minSlices = 1;
-	std::vector<int> maxSlices;
-	bool adaptiveDrawing = false; 
 private:
-	std::vector<int> currentSlices;
 	bool drawPolygonChain = false;
+	bool resetDrawing = true;
+
 };

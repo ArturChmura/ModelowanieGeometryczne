@@ -26,12 +26,13 @@ public:
 	DirectX::SimpleMath::Vector4 translation;
 	MeshInfo meshInfo;
 
-	static std::vector<std::function<void(Point*)>> onSelectCallback;
+	inline static std::vector<std::function<void(Point*)>> onSelectCallback;
 	virtual void OnSelect() override;
-	static std::vector<std::function<void(Point*)>> onAddedToSceneCallback;
+	inline static std::vector<std::function<void(Point*)>> onAddedToSceneCallback;
 	virtual void OnAddedToScene() override;
-
-	std::vector<std::function<void()>> onModelChangeCallback;
+	std::vector< std::tuple<int, std::function<void(Point*)>>> onRemovedFromSceneCallback;
+	void OnRemovedFromScene() override;
+	std::vector<std::tuple<int, std::function<void()>>> onModelChangeCallback;
 private:
 	DirectX::SimpleMath::Matrix GetModelMatrix();
 	int verticesCount;

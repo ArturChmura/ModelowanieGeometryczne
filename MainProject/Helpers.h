@@ -20,3 +20,4 @@ struct Pair
     T a;
     T b;
 };
+

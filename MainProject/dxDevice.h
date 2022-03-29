@@ -15,6 +15,7 @@ public:
 	//DxDevice(DxDevice const&) = delete;
 	//void operator=(DxDevice const&) = delete; 
 	inline static std::shared_ptr<DxDevice> instance;
+	inline static SIZE winowSize;
 	
 	explicit DxDevice(ID3D11Device* device, ID3D11DeviceContext* context, IDXGISwapChain* swapChain);
 

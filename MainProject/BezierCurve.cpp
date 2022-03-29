@@ -4,62 +4,26 @@
 #include "ImGui/imgui.h"
 #include <algorithm>
 #include "SimpleMath.h"
+#include "Helpers.h"
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 BezierCurve::BezierCurve(std::vector<Point*> points)
 	:IModel("Bezier Curve")
 {
 	this->shaderInfoSingleColorVs = std::make_shared< ShaderInfoSingleColorVs>();
-	this->points = points;
 	for (size_t i = 0; i < points.size(); i++)
 	{
-		points[i]->onModelChangeCallback.push_back([this]() { ResetDrawing(); });
+		AddPoint(points[i]);
 	}
-	ResetDrawing();
-	//this->activeCamera = activeCamera;
-}
-
-void BezierCurve::SetScale(float x, float y, float z)
-{
-}
-
-DirectX::SimpleMath::Vector3 BezierCurve::GetScale()
-{
-	return DirectX::SimpleMath::Vector3();
-}
-
-void BezierCurve::ScaleFromPoint(Vector4 point, DirectX::XMFLOAT3 scale)
-{
-}
-
-void BezierCurve::SetTranslation(float x, float y, float z)
-{
-}
-
-void BezierCurve::Translate(float x, float y, float z)
-{
-}
-
-Vector4 BezierCurve::GetTranslation()
-{
-	return DirectX::SimpleMath::Vector4();
-}
-
-void BezierCurve::SetRotation(float pitch, float yaw, float roll)
-{
-}
-
-DirectX::SimpleMath::Vector3 BezierCurve::GetRotation()
-{
-	return DirectX::SimpleMath::Vector3();
-}
-
-void BezierCurve::RotateFromPoint(Vector4 globalPoint, DirectX::XMFLOAT3 ratation)
-{
 }
 
 void BezierCurve::Draw(std::shared_ptr<Camera> camera)
 {
+	UpdateSlicesCount(camera);
+	if (resetDrawing)
+	{
+		UpdateVertices();
+	}
 	meshInfo.SetUpRender();
 	shaderInfoSingleColorVs->SetUpRender();
 	shaderInfoSingleColorVs->SetVertexBuffer(meshInfo.vertexBuffer.get());
@@ -74,11 +38,7 @@ void BezierCurve::Draw(std::shared_ptr<Camera> camera)
 
 	shaderInfoSingleColorVs->CopyConstantBuffers();
 
-	DxDevice::instance->context()->DrawIndexed(indicesCount, 0, 0); 
-	if (adaptiveDrawing)
-	{
-		UpdateVertices();
-	}
+	DxDevice::instance->context()->DrawIndexed(indicesCount, 0, 0);
 }
 
 void BezierCurve::ChangeColor(DirectX::SimpleMath::Vector3 color)
@@ -126,13 +86,9 @@ void BezierCurve::RenderGUI()
 			}
 			for (auto point : pointsToDelete)
 			{
-				auto new_end = remove_if(points.begin(), points.end(), [pointsToDelete](Point* point) {
-					return std::find(pointsToDelete.begin(), pointsToDelete.end(), point->id) != pointsToDelete.end();
-					});
-				points.erase(new_end, points.end());
+				RemovePoint(point);
 			}
 			selectedIndexes.clear();
-			ResetDrawing();
 		}
 	}
 	if (isAddingMode)
@@ -166,7 +122,7 @@ void BezierCurve::RenderGUI()
 	bool draw = drawPolygonChain;
 	if (ImGui::Checkbox("Draw polygonal chain", &draw))
 	{
-		DrawPolygonChain(draw);
+		SetDrawPolygonChain(draw);
 	}
 }
 
@@ -194,25 +150,26 @@ float BezierCurve::DeCasteljeu(std::vector<float> coefficients, float t)
 
 void BezierCurve::UpdateVertices()
 {
+	resetDrawing = false;
 	std::vector<Vertex> vertices = std::vector<Vertex>();
 	std::vector<int> indices = std::vector<int>();
 
 	int ps = points.size();
-	int count = (ps + 1) / 3;
-	for (int i = 0; i < count; i ++)
+	int sectionCount = (ps + 1) / 3;
+	for (int i = 0; i < sectionCount; i++)
 	{
-		int pointsCount = min(points.size() - (i*3), 4);
+		int pointsCount = min(points.size() - (i * 3), 4);
 		std::vector<float> coefficientsX;
 		std::vector<float> coefficientsY;
 		std::vector<float> coefficientsZ;
 		for (int j = 0; j < pointsCount; j++)
 		{
-			auto translation = points[i*3 + j]->GetTranslation();
+			auto translation = points[i * 3 + j]->GetTranslation();
 			coefficientsX.push_back(translation.x);
 			coefficientsY.push_back(translation.y);
 			coefficientsZ.push_back(translation.z);
 		}
-		int slices = currentSlices[i];
+		int slices = maxSlices[i];
 		float step = 1.0f / slices;
 		for (float t = 0; t <= 1.0f; t += step)
 		{
@@ -227,7 +184,7 @@ void BezierCurve::UpdateVertices()
 		indices.push_back(i);
 		indices.push_back(i + 1);
 	}
-	if (drawPolygonChain)
+	if (drawPolygonChain && points.size() > 1)
 	{
 		auto currentSize = vertices.size();
 		for (int i = 0; i < points.size(); i++)
@@ -236,10 +193,10 @@ void BezierCurve::UpdateVertices()
 			auto translation = point->GetTranslation();
 			vertices.push_back({ {translation.x, translation.y, translation.z } });
 		}
-		for (int i = currentSize; i < vertices.size() - 1; i++)
+		for (int i = currentSize; i < (int)vertices.size() - 1; i++)
 		{
 			indices.push_back(i);
-			indices.push_back(i+1);
+			indices.push_back(i + 1);
 		}
 	}
 
@@ -250,65 +207,139 @@ void BezierCurve::UpdateVertices()
 		this->meshInfo.vertexBuffer = DxDevice::instance->CreateVertexBuffer(vertices);
 		this->meshInfo.indexBuffer = DxDevice::instance->CreateVertexBuffer(indices);
 	}
-	UpdateAdaptiveDrawing();
 }
 
 void BezierCurve::AddPoint(Point* point)
 {
 	this->points.push_back(point);
-	point->onModelChangeCallback.push_back([this]() { ResetDrawing(); });
+	point->onModelChangeCallback.push_back({ id,[this]() { this->ResetDrawing(); } });
+	point->onRemovedFromSceneCallback.push_back({ id,[this](Point* point) { RemovePoint(point->id); } });
 	ResetDrawing();
 }
 
-void BezierCurve::DrawPolygonChain(bool draw)
+void BezierCurve::RemovePoint(int pointId)
+{
+	auto iter = std::find_if(points.begin(), points.end(), [pointId](Point* point) {
+		return point->id == pointId;
+		});
+	auto model = (*iter);
+	points.erase(iter, iter + 1); 
+	auto newEnd = std::remove_if(model->onModelChangeCallback.begin(), model->onModelChangeCallback.end(), [this](std::tuple<int, std::function<void()>> t) { return id == std::get<0>(t); });
+	model->onModelChangeCallback.erase(newEnd, model->onModelChangeCallback.end());
+
+
+	auto newEnd2 = std::remove_if(model->onRemovedFromSceneCallback.begin(), model->onRemovedFromSceneCallback.end(), [this](std::tuple<int, std::function<void(Point*)>> t) { return id == std::get<0>(t); });
+	model->onRemovedFromSceneCallback.erase(newEnd2, model->onRemovedFromSceneCallback.end());
+	ResetDrawing();
+}
+
+void BezierCurve::SetDrawPolygonChain(bool draw)
 {
 	this->drawPolygonChain = draw;
 	ResetDrawing();
 }
 
-void BezierCurve::ResetDrawing()
+void BezierCurve::UpdateSlicesCount(std::shared_ptr<Camera> camera)
 {
-	int count = (points.size() + 1) / 3;
-	currentSlices.resize(count);
-	maxSlices.resize(count);
-	adaptiveDrawing = true;
-	//auto viewMatrix = (**activeCamera).GetViewMatrix();
-	//auto perspectiveMatrix = (**activeCamera).GetPerspectiveMatrix();
-	/*auto PV = perspectiveMatrix * viewMatrix;
-	std::vector<Vector4> camPositions;
+	int segmentsCount = (points.size() + 1) / 3;
+	maxSlices.resize(segmentsCount);
+	auto viewMatrix = camera->GetViewMatrix();
+	auto perspectiveMatrix = camera->GetPerspectiveMatrix();
+	auto PV = viewMatrix * perspectiveMatrix;
+	std::vector<Vector2> camPositions;
+	bool isLargerNow = false;
 	for (size_t i = 0; i < points.size(); i++)
 	{
 		auto point = points[i];
 		auto translation = point->GetTranslation();
-		auto camPosition = Vector4::Transform(translation,PV);
+		auto camPosition = Vector4::Transform(translation, PV);
 		camPosition /= camPosition.w;
-		camPositions.push_back(camPosition);
+		Vector2 xy(
+			(camPosition.x + 1) * DxDevice::winowSize.cx / 2.0f,
+			(camPosition.y + 1) * DxDevice::winowSize.cy / 2.0f
+		);
+
+		camPositions.push_back(xy);
 	}
-	for (int i = 0; i < currentSlices.size(); i++)
+	for (int i = 0; i < segmentsCount; i++)
 	{
 		int pointsCount = min(points.size() - (i * 3), 4);
 		float area = 0.0f;
 		for (int j = 0; j < pointsCount - 1; j++)
 		{
-			area += (camPositions[i * 3 + j] - camPositions[i * 3 + j + 1]).LengthSquared();
+			auto length = (camPositions[i * 3 + j] - camPositions[i * 3 + j + 1]).Length();
+			length = min(length, DxDevice::winowSize.cx * 2);
+			area += length;
 		}
-		currentSlices[i] = minSlices;
-		maxSlices[i] = (int)area;
-	}*/
-	UpdateVertices();
-}
-
-void BezierCurve::UpdateAdaptiveDrawing()
-{
-	bool updated = false;
-	for (size_t i = 0; i < currentSlices.size(); i++)
-	{
-		if (currentSlices[i] < maxSlices[i])
+		int slices = max((int)area, 1);
+		if (maxSlices[i] < slices)
 		{
-			updated = true;
-			currentSlices[i] *= 2;
+			maxSlices[i] = slices;
+			isLargerNow = true;
 		}
 	}
-	adaptiveDrawing = updated;
-	
+	if (isLargerNow)
+	{
+		ResetDrawing();
+	}
+}
+
+void BezierCurve::ResetDrawing()
+{
+	resetDrawing = true;
+}
+
+
+//Unused from IModel;
+void BezierCurve::SetScale(float x, float y, float z)
+{
+}
+
+DirectX::SimpleMath::Vector3 BezierCurve::GetScale()
+{
+	return DirectX::SimpleMath::Vector3();
+}
+
+void BezierCurve::ScaleFromPoint(Vector4 point, DirectX::XMFLOAT3 scale)
+{
+}
+
+void BezierCurve::SetTranslation(float x, float y, float z)
+{
+}
+
+void BezierCurve::Translate(float x, float y, float z)
+{
+}
+
+Vector4 BezierCurve::GetTranslation()
+{
+	return DirectX::SimpleMath::Vector4();
+}
+
+void BezierCurve::SetRotation(float pitch, float yaw, float roll)
+{
+}
+
+DirectX::SimpleMath::Vector3 BezierCurve::GetRotation()
+{
+	return DirectX::SimpleMath::Vector3();
+}
+
+void BezierCurve::RotateFromPoint(Vector4 globalPoint, DirectX::XMFLOAT3 ratation)
+{
+}
+
+void BezierCurve::OnRemovedFromScene()
+{
+	std::vector<int> toDelete;
+	for (auto point : points)
+	{
+		toDelete.push_back(point->id);
+	}
+	for (auto id: toDelete)
+	{
+
+		RemovePoint(id);
+	}
 }

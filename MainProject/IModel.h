@@ -37,6 +37,7 @@ public:
 	virtual void OnSelect();
 	virtual void OnDeselect();
 	virtual void OnAddedToScene();
+	virtual void OnRemovedFromScene();
 
 protected:
 };

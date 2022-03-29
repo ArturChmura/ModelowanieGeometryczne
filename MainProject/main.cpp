@@ -55,6 +55,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
     // Our state
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     DxDevice::instance = std::make_shared<DxDevice>(g_pd3dDevice, g_pd3dDeviceContext, g_pSwapChain);
+    DxDevice::winowSize = windowSize;
     std::shared_ptr<Application> app = std::make_shared<Application>(windowSize);
 
 

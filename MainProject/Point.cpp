@@ -85,7 +85,6 @@ Vector3 Point::GetRotation()
 	return { 0,0,0 };
 }
 
-std::vector<std::function<void(Point*)>> Point::onSelectCallback;
 void Point::OnSelect()
 {
 	IModel::OnSelect();
@@ -93,12 +92,18 @@ void Point::OnSelect()
 		f(this);
 }
 
-std::vector<std::function<void(Point*)>> Point::onAddedToSceneCallback;
 void Point::OnAddedToScene()
 {
 	IModel::OnAddedToScene();
 	for (auto f : onAddedToSceneCallback)
 		f(this);
+}
+
+void Point::OnRemovedFromScene()
+{
+	IModel::OnRemovedFromScene();
+	for (auto f : onRemovedFromSceneCallback)
+		std::get<1>(f)(this);
 }
 
 Matrix Point::GetModelMatrix()
@@ -177,5 +182,5 @@ void Point::ChangeColor(DirectX::SimpleMath::Vector3 color)
 
 void Point::OnModelChange()
 {
-	for (auto f : onModelChangeCallback) f();
+	for (auto f : onModelChangeCallback) std::get<1>(f)();
 }

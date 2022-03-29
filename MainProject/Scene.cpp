@@ -40,6 +40,11 @@ std::shared_ptr<Torus> Scene::AddTorus()
 std::shared_ptr<Point> Scene::AddPoint()
 {
 	auto point = std::make_shared<Point>(cursor->translation);
+	point->onRemovedFromSceneCallback.push_back({ -1,[this](Point* point) {
+		auto newEnd = std::remove_if(points.begin(), points.end(), [point](std::shared_ptr<Point> listpoint) {return listpoint->id == point->id; });
+		points.erase(newEnd, points.end());
+		return;
+			} });
 	points.push_back(point);
 	AddModel(point);
 	return point;
@@ -78,6 +83,10 @@ std::vector<std::shared_ptr<Point>> Scene::GetSelectedPoints()
 
 void Scene::DeleteModel(int modelId)
 {
+	auto modelIter = std::find_if(models.begin(), models.end(), [modelId](std::shared_ptr<IModel> model){ return model->id == modelId; });
+
+	auto model = (*modelIter);
+	model->OnRemovedFromScene();
 	auto new_end = std::remove_if(models.begin(), models.end(),
 		[modelId](const std::shared_ptr<IModel>& model)
 		{ return model->id == modelId; });
@@ -87,6 +96,7 @@ void Scene::DeleteModel(int modelId)
 		[modelId](const std::shared_ptr<IModel>& model)
 		{ return model->id == modelId; });
 	points.erase(new_end2, points.end());
+
 }
 
 void Scene::ChangeSelection(int modelId)

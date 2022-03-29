@@ -34,4 +34,8 @@ void IModel::OnAddedToScene()
 {
 }
 
+void IModel::OnRemovedFromScene()
+{
+}
+
 
