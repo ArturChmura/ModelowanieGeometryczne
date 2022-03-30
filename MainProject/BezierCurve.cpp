@@ -344,4 +344,12 @@ void BezierCurve::OnRemovedFromScene()
 
 		RemovePoint(id);
 	}
+	if (Point::onSelectCallback.size() > 0)
+	{
+		Point::onSelectCallback.pop_back();
+	}
+	if (Point::onAddedToSceneCallback.size() > 0)
+	{
+		Point::onAddedToSceneCallback.pop_back();
+	}
 }
