@@ -37,7 +37,8 @@ public:
 	void SetDrawPolygonChain(bool draw = true);
 	void UpdateSlicesCount(std::shared_ptr<Camera> camera);
 
-	std::vector<int> maxSlices; 
+	std::vector<int> currentSlices;
+	std::vector<int> desiredSlices; 
 	void ResetDrawing();
 private:
 	bool drawPolygonChain = false;

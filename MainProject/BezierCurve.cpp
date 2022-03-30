@@ -169,7 +169,8 @@ void BezierCurve::UpdateVertices()
 			coefficientsY.push_back(translation.y);
 			coefficientsZ.push_back(translation.z);
 		}
-		int slices = maxSlices[i];
+		int slices = desiredSlices[i];
+		currentSlices[i] = slices;
 		float step = 1.0f / slices;
 		for (float t = 0; t <= 1.0f; t += step)
 		{
@@ -242,7 +243,8 @@ void BezierCurve::SetDrawPolygonChain(bool draw)
 void BezierCurve::UpdateSlicesCount(std::shared_ptr<Camera> camera)
 {
 	int segmentsCount = (points.size() + 1) / 3;
-	maxSlices.resize(segmentsCount);
+	desiredSlices.resize(segmentsCount);
+	currentSlices.resize(segmentsCount);
 	auto viewMatrix = camera->GetViewMatrix();
 	auto perspectiveMatrix = camera->GetPerspectiveMatrix();
 	auto PV = viewMatrix * perspectiveMatrix;
@@ -272,11 +274,11 @@ void BezierCurve::UpdateSlicesCount(std::shared_ptr<Camera> camera)
 			area += length;
 		}
 		int slices = max((int)area, 1);
-		if (maxSlices[i] < slices)
+		if (currentSlices[i] < slices)
 		{
-			maxSlices[i] = slices;
 			isLargerNow = true;
 		}
+		desiredSlices[i] = slices;
 	}
 	if (isLargerNow)
 	{
