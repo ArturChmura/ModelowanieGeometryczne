@@ -218,9 +218,8 @@ void BezierCurveC2::OnBezierPointChange(int pointIndex, Vector4 translation)
 	int delta = 0;
 	if ((pointIndex % 3) == 1) // po prawo od bli¿szego 
 	{
-		delta = 1;
-	}
-	else if ((pointIndex % 3) == 2)// po lewo od bli¿szego 
+		delta = 1;	}
+	else if ((pointIndex % 3) == 2) // po lewo od bli¿szego 
 	{
 		delta = -1;
 	}

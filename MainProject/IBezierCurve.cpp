@@ -90,15 +90,25 @@ void IBezierCurve::RenderGUI()
 
 			if (ImGui::Selectable((point->name + "##" + std::to_string(point->id)).c_str(), is_selected))
 			{
-				if (is_selected)
+				auto io = ImGui::GetIO();
+				if (io.KeyCtrl)
 				{
-					auto newEnd = std::remove(selectedIndexes.begin(), selectedIndexes.end(), i);
-					selectedIndexes.erase(newEnd, selectedIndexes.end());
+					if (is_selected)
+					{
+						auto newEnd = std::remove(selectedIndexes.begin(), selectedIndexes.end(), i);
+						selectedIndexes.erase(newEnd, selectedIndexes.end());
+					}
+					else
+					{
+						selectedIndexes.push_back(i);
+					}
 				}
 				else
 				{
+					selectedIndexes.clear();
 					selectedIndexes.push_back(i);
 				}
+
 			}
 
 			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
