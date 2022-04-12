@@ -16,6 +16,7 @@ public:
 	void SetColor(DirectX::XMFLOAT3 color);
 
 	void SetScale(float x, float y, float z) override;
+	virtual void Scale(float x, float y, float z)  override;
 	DirectX::SimpleMath::Vector3 GetScale()  override;
 
 	 void SetTranslation(float x, float y, float z)  override;
@@ -23,6 +24,7 @@ public:
 	 DirectX::SimpleMath::Vector4 GetTranslation()  override;
 
 	 void SetRotation(float pitch, float yaw, float roll)  override;
+	 virtual void Rotate(float x, float y, float z)  override;
 	 DirectX::SimpleMath::Vector3 GetRotation()  override;
 
 	 void ScaleFromPoint(DirectX::SimpleMath::Vector4 point, DirectX::XMFLOAT3 scale)  override;

@@ -22,6 +22,7 @@ public:
 	DirectX::SimpleMath::Vector4 imguiTranslation;
 	// Inherited via IModel
 	virtual void SetScale(float x, float y, float z) override;
+	virtual void Scale(float x, float y, float z)  override;
 
 	virtual DirectX::SimpleMath::Vector3 GetScale() override;
 
@@ -36,6 +37,7 @@ public:
 
 
 	virtual void SetRotation(float pitch, float yaw, float roll) override;
+	virtual void Rotate(float x, float y, float z)  override;
 
 
 	virtual DirectX::SimpleMath::Vector3 GetRotation() override;

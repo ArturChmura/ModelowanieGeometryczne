@@ -56,6 +56,12 @@ void VertexModel::SetScale(float x, float y, float z)
 	UpdateModelMatrix();
 }
 
+void VertexModel::Scale(float x, float y, float z)
+{
+	scale *= { x,y,z };
+	UpdateModelMatrix();
+}
+
 Vector3 VertexModel::GetScale()
 {
 	return scale;
@@ -81,6 +87,12 @@ Vector4 VertexModel::GetTranslation()
 void VertexModel::SetRotation(float x, float y, float z)
 {
 	rotation = {x,y,z};
+	UpdateModelMatrix();
+}
+
+void VertexModel::Rotate(float x, float y, float z)
+{
+	rotation += { x,y,z };
 	UpdateModelMatrix();
 }
 

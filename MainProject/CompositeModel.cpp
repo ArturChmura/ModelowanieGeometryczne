@@ -8,7 +8,7 @@ CompositeModel::CompositeModel()
 {
 	this->centroidCoursor = std::make_shared<Coursor3d>();
 	this->imguiTranslation = this->centroidPosition = { 0,0,0,1 };
-	this->rotation = {0,0,0};
+	this->rotation = { 0,0,0 };
 	this->imguiScale = this->scale = { 1,1,1 };
 }
 
@@ -41,17 +41,21 @@ void CompositeModel::UpdateCentroidPosition()
 		z += translation.z;
 	}
 	this->imguiTranslation = this->centroidPosition = { x / size, y / size, z / size };
-	
+
 }
 
 void CompositeModel::SetScale(float x, float y, float z)
 {
-	DirectX::XMFLOAT3 diff = { x / scale.x, y / scale.y ,z  / scale.z };
+	Scale(x / scale.x, y / scale.y, z / scale.z);
+}
+
+void CompositeModel::Scale(float x, float y, float z)
+{
 	for (const auto& [key, model] : modelsMap)
 	{
-		model->ScaleFromPoint(centroidPosition, diff);
+		model->ScaleFromPoint(centroidPosition, {x,y,z});
 	}
-	scale = { x,y,z };
+	scale *= { x,y,z };
 }
 
 Vector3 CompositeModel::GetScale()
@@ -85,12 +89,16 @@ Vector4 CompositeModel::GetTranslation()
 
 void CompositeModel::SetRotation(float x, float y, float z)
 {
-	DirectX::XMFLOAT3 diff = { x - rotation.x, y - rotation.y , z - rotation.z };
+	Rotate(x - rotation.x, y - rotation.y, z - rotation.z);
+}
+
+void CompositeModel::Rotate(float x, float y, float z)
+{
 	for (const auto& [key, model] : modelsMap)
 	{
-		model->RotateFromPoint(centroidPosition, diff);
+		model->RotateFromPoint(centroidPosition, { x,y,z });
 	}
-	rotation = { x, y, z };
+	rotation = { x + rotation.x, y + rotation.y, z + rotation.z };
 }
 
 Vector3 CompositeModel::GetRotation()

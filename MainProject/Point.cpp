@@ -54,6 +54,10 @@ void Point::SetScale(float x, float y, float z)
 {
 }
 
+void Point::Scale(float x, float y, float z)
+{
+}
+
 Vector3 Point::GetScale()
 {
 	return { 1,1,1 };
@@ -77,6 +81,10 @@ Vector4 Point::GetTranslation()
 }
 
 void Point::SetRotation(float pitch, float yaw, float roll)
+{
+}
+
+void Point::Rotate(float x, float y, float z)
 {
 }
 

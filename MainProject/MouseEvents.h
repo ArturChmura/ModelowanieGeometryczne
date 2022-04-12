@@ -10,7 +10,11 @@ public:
 	void HandleMouse();
 
 private:
-	float rotationSpeedPerPixel = 0.01f;
+	float cameraRotationSpeedPerPixel = 0.01f;
+	float cameraMoveSpeedPerPixel = 1.0f;
+	float objectRotationSpeedPerPixel = 0.01f;
+	float objectScaleSpeedPerPixel = 0.01f;
+	float objectTranslateSpeedPerPixel = 0.05f;
 	std::shared_ptr<ArcCameraModel> camera; 
 	std::shared_ptr<Scene> scene;
 };

@@ -197,6 +197,10 @@ void IBezierCurve::SetScale(float x, float y, float z)
 {
 }
 
+void IBezierCurve::Scale(float x, float y, float z)
+{
+}
+
 DirectX::SimpleMath::Vector3 IBezierCurve::GetScale()
 {
 	return DirectX::SimpleMath::Vector3();
@@ -220,6 +224,10 @@ Vector4 IBezierCurve::GetTranslation()
 }
 
 void IBezierCurve::SetRotation(float pitch, float yaw, float roll)
+{
+}
+
+void IBezierCurve::Rotate(float x, float y, float z)
 {
 }
 

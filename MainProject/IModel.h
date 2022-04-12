@@ -19,6 +19,7 @@ public:
 	int id;
 
 	virtual void SetScale(float x, float y, float z) = 0;
+	virtual void Scale(float x, float y, float z) = 0;
 	virtual DirectX::SimpleMath::Vector3 GetScale() = 0;
 	virtual void ScaleFromPoint(DirectX::SimpleMath::Vector4 point, DirectX::XMFLOAT3 scale) = 0;
 
@@ -26,7 +27,8 @@ public:
 	virtual void Translate(float x, float y, float z) = 0;
 	virtual DirectX::SimpleMath::Vector4 GetTranslation() = 0;
 
-	virtual void SetRotation(float pitch, float yaw, float roll) = 0;
+	virtual void SetRotation(float x, float y, float z) = 0;
+	virtual void Rotate(float x, float y, float z) = 0;
 	virtual DirectX::SimpleMath::Vector3 GetRotation() = 0;
 	virtual void RotateFromPoint(DirectX::SimpleMath::Vector4 globalPoint, DirectX::XMFLOAT3 ratation) = 0;
 
