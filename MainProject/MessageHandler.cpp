@@ -1,5 +1,6 @@
 #include "MessageHandler.h"
 #include "ImGui/imgui.h"
+using namespace DirectX::SimpleMath;
 
 
 MessageHandler::MessageHandler(std::shared_ptr<Scene> scene)
@@ -17,6 +18,21 @@ void MessageHandler::HandleMessage(MSG message)
 	{
 		WORD x = LOWORD(message.lParam);
 		WORD y = HIWORD(message.lParam);
-		scene->ChangeSelectionFromScreenCoords(x, y);
+		auto model = scene->GetModelFromScreenCoords(x, y);
+		if (model)
+		{
+			if (io.KeyCtrl)
+			{
+				scene->ChangeSelection(model);
+			}
+			else
+			{
+				scene->Select(model);
+			}
+		}
+		else
+		{
+			scene->UpdateCursorPositionFromScreenCoords(Vector2(x, y));
+		}
 	}
 }

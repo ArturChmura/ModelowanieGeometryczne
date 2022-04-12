@@ -19,7 +19,16 @@ void ObjectsListWindow::Render()
 
             if (ImGui::Selectable((model->name + "##" + std::to_string(model->id)).c_str(), is_selected))
             {
-                scene->ChangeSelection(model->id);
+                auto io = ImGui::GetIO();
+                if (io.KeyCtrl)
+                {
+                    scene->ChangeSelection(model);
+                }
+                else
+                {
+                    scene->Select(model);
+                }
+                
             }
 
             // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
@@ -32,12 +41,7 @@ void ObjectsListWindow::Render()
     {
         if (ImGui::Button("Remove selected"))
         {
-            for (auto [id, model] : scene->composite->modelsMap)
-            {
-                scene->DeleteModel(id);
-            }
-            scene->selectedModel = nullptr;
-            scene->composite = std::make_shared<CompositeModel>();
+            scene->RemoveSelectedModels();
         }
     }
 
@@ -52,9 +56,13 @@ void ObjectsListWindow::Render()
     }
     if (scene->GetSelectedPoints().size() > 0)
     {
-        if (ImGui::Button("Add Bezier Curve"))
+        if (ImGui::Button("Add Bezier Curve C0"))
         {
-            scene->AddBezierCurveFromSelectedPoints();
+            scene->AddBezierCurveC0FromSelectedPoints();
+        }
+        if (ImGui::Button("Add Bezier Curve C2"))
+        {
+            scene->AddBezierCurveC2FromSelectedPoints();
         }
     }
 

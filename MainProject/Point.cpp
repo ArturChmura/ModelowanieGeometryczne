@@ -6,11 +6,11 @@
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
-Point::Point(DirectX::SimpleMath::Vector4 translation)
+Point::Point(DirectX::SimpleMath::Vector3 location)
 	: IModel("Point")
 {
 	this->shaderInfoSingleColorVs = std::make_shared< ShaderInfoSingleColorVs>();
-	this->SetTranslation(translation.x, translation.y, translation.z);
+	this->SetTranslation(location.x, location.y, location.z);
 	float halfSideLength = 0.1f;
 	std::vector<Vertex> vertices = {
 		{{-halfSideLength, -halfSideLength, -halfSideLength}},
@@ -89,21 +89,21 @@ void Point::OnSelect()
 {
 	IModel::OnSelect();
 	for (auto f : onSelectCallback)
-		f(this);
+		f(IModel::downcasted_shared_from_this<Point>());
 }
 
 void Point::OnAddedToScene()
 {
 	IModel::OnAddedToScene();
 	for (auto f : onAddedToSceneCallback)
-		f(this);
+		f(IModel::downcasted_shared_from_this<Point>());
 }
 
 void Point::OnRemovedFromScene()
 {
 	IModel::OnRemovedFromScene();
 	for (auto f : onRemovedFromSceneCallback)
-		std::get<1>(f)(this);
+		std::get<1>(f)(IModel::downcasted_shared_from_this<Point>());
 }
 
 Matrix Point::GetModelMatrix()
@@ -182,5 +182,5 @@ void Point::ChangeColor(DirectX::SimpleMath::Vector3 color)
 
 void Point::OnModelChange()
 {
-	for (auto f : onModelChangeCallback) std::get<1>(f)();
+	for (auto f : onModelChangeCallback) std::get<1>(f)(IModel::downcasted_shared_from_this<Point>());
 }

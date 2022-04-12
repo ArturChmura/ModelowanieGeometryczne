@@ -13,13 +13,16 @@
   <ItemGroup>
     <ClCompile Include="application.cpp" />
     <ClCompile Include="ArcCameraModel.cpp" />
-    <ClCompile Include="BezierCurve.cpp" />
+    <ClCompile Include="BezierCurveC0.cpp" />
+    <ClCompile Include="BezierCurveC2.cpp" />
     <ClCompile Include="CompositeModel.cpp" />
     <ClCompile Include="Coursor3d.cpp" />
     <ClCompile Include="CursorOptionsWindow.cpp" />
+    <ClCompile Include="DebugWindow.cpp" />
     <ClCompile Include="dxDevice.cpp" />
     <ClCompile Include="dxStructures.cpp" />
     <ClCompile Include="exceptions.cpp" />
+    <ClCompile Include="IBezierCurve.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imgui_demo.cpp" />
     <ClCompile Include="ImGui\imgui_draw.cpp" />
@@ -28,6 +31,7 @@
     <ClCompile Include="ImGui\imgui_stdlib.cpp" />
     <ClCompile Include="ImGui\imgui_tables.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="KeyboardHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="IModel.cpp" />
     <ClCompile Include="MatrixExt.cpp" />
@@ -49,14 +53,19 @@
   <ItemGroup>
     <ClInclude Include="application.h" />
     <ClInclude Include="ArcCameraModel.h" />
-    <ClInclude Include="BezierCurve.h" />
+    <ClInclude Include="BezierCurveC0.h" />
+    <ClInclude Include="BezierCurveC2.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CompositeModel.h" />
     <ClInclude Include="Coursor3d.h" />
     <ClInclude Include="CursorOptionsWindow.h" />
+    <ClInclude Include="DebugWindow.h" />
+    <ClInclude Include="IBezierCurve.h" />
     <ClInclude Include="ImGui\imgui_stdlib.h" />
+    <ClInclude Include="KeyboardHandler.h" />
     <ClInclude Include="MatrixExt.h" />
     <ClInclude Include="MessageHandler.h" />
+    <ClInclude Include="MultipleInheritableEnableSharedFromThis.h" />
     <ClInclude Include="PropertiesWindow.h" />
     <ClInclude Include="ShaderInfo.h" />
     <ClInclude Include="MeshInfo.h" />

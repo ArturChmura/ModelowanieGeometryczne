@@ -8,7 +8,7 @@
 class Point : public IModel
 {
 public:
-	Point(DirectX::SimpleMath::Vector4 translation);
+	Point(DirectX::SimpleMath::Vector3 location);
 
 
 	// Inherited via IModel
@@ -25,14 +25,13 @@ public:
 
 	DirectX::SimpleMath::Vector4 translation;
 	MeshInfo meshInfo;
-
-	inline static std::vector<std::function<void(Point*)>> onSelectCallback;
+	inline static std::vector<std::function<void(std::shared_ptr<Point>)>> onSelectCallback;
 	virtual void OnSelect() override;
-	inline static std::vector<std::function<void(Point*)>> onAddedToSceneCallback;
+	inline static std::vector<std::function<void(std::shared_ptr<Point>)>> onAddedToSceneCallback;
 	virtual void OnAddedToScene() override;
-	std::vector< std::tuple<int, std::function<void(Point*)>>> onRemovedFromSceneCallback;
+	std::vector< std::tuple<int, std::function<void(std::shared_ptr<Point>)>>> onRemovedFromSceneCallback;
 	void OnRemovedFromScene() override;
-	std::vector<std::tuple<int, std::function<void()>>> onModelChangeCallback;
+	std::vector<std::tuple<int, std::function<void(std::shared_ptr<Point>)>>> onModelChangeCallback;
 private:
 	DirectX::SimpleMath::Matrix GetModelMatrix();
 	int verticesCount;
@@ -42,9 +41,9 @@ private:
 	virtual void RenderGUI() override;
 
 	// Inherited via IModel
-	virtual void ChangeColor(DirectX::SimpleMath::Vector3 color) override;
 	void OnModelChange();
 
 	std::shared_ptr<ShaderInfoSingleColorVs> shaderInfoSingleColorVs;
+	virtual void ChangeColor(DirectX::SimpleMath::Vector3 color) override;
 
 };

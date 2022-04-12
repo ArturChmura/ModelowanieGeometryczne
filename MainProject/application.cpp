@@ -4,7 +4,7 @@
 #include "MVPColorConstantBuffer.h"
 #include "Coursor3d.h"
 #include "Point.h"
-#include "BezierCurve.h"
+#include "BezierCurveC0.h"
 
 using namespace mini;
 using namespace DirectX;
@@ -44,27 +44,30 @@ Application::Application(SIZE size)
 	perspectiveCameraOptionsWindow = make_shared<PerspectiveCameraOptionsWindow>(camera);
 	cursorOptionsWindow = make_shared<CursorOptionsWindow>(cursor, scene, size);
 	mouseEvents = std::make_shared<MouseEvents>(camera, scene);
+	keyboardHandler = std::make_shared<KeyboardHandler>(scene);
 	messageHandler = std::make_shared<MessageHandler>(scene);
+	debugWindow = std::make_shared<DebugWindow>();
 
 	auto point = scene->AddPoint();
-	scene->ChangeSelection(point->id);
+	scene->ChangeSelection(point);
 	scene->cursor->translation = { 1,1,0 };
 	point = scene->AddPoint();
-	scene->ChangeSelection(point->id);
+	scene->ChangeSelection(point);
 	scene->cursor->translation =  { 2,-1,0 };
 	point = scene->AddPoint();
-	scene->ChangeSelection(point->id);
-	scene->cursor->translation =  { 3,0,0 };
+	scene->ChangeSelection(point);
+	scene->cursor->translation =  { 3,5,0 };
 	point = scene->AddPoint();
-	scene->ChangeSelection(point->id);
+	scene->ChangeSelection(point);
 	scene->cursor->translation =  { 10,4,0 };
 	point = scene->AddPoint();
-	scene->ChangeSelection(point->id);
+	scene->ChangeSelection(point);
 	scene->cursor->translation =  { 16,-2,5 };
 	point = scene->AddPoint();
-	scene->ChangeSelection(point->id);
+	scene->ChangeSelection(point);
 
-	scene->AddBezierCurveFromSelectedPoints();
+	scene->AddBezierCurveC2FromSelectedPoints();
+	//scene->AddBezierCurveC0FromSelectedPoints();
 }
 
 void Application::Render()
@@ -74,16 +77,20 @@ void Application::Render()
 	objectsListWindow->Render();
 	propertiesWindow->Render();
 	mouseEvents->HandleMouse();
+	keyboardHandler->HandleKeyboard();
+	debugWindow->Render();
 
 	const float clearColor[] = { backgroundColor.x,backgroundColor.y,backgroundColor.z, 1.0f };
 	DxDevice::instance->context()->ClearRenderTargetView(m_backBuffer.get(), clearColor);
 	DxDevice::instance->context()->ClearDepthStencilView(m_depthBuffer.get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 
-	for (size_t i = 0; i < scene->models.size(); i++)
+	for (auto model : scene->models)
 	{
-		auto model = scene->models[i];
-		model->Draw(scene->activeCamera);
+		if (model->GetVisible())
+		{
+			model->Draw(scene->activeCamera);
+		}
 	}
 	if (scene->selectedModel)
 	{

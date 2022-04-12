@@ -11,7 +11,6 @@ public:
 	CursorOptionsWindow(std::shared_ptr<Coursor3d> cursor3d, std::shared_ptr<Scene> scene, SIZE windowSize);
 	void Render();
 	void UpdateScreenCoords();
-	void UpdateCursorPositionFromScreenCoords();
 	std::shared_ptr<Coursor3d> cursor3d;
 	std::shared_ptr<Scene> scene;
 	SIZE windowSize;

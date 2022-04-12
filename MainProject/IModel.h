@@ -7,8 +7,9 @@
 #include "dxDevice.h"
 #include <d3d11.h>
 #include "SimpleMath.h"
+#include "MultipleInheritableEnableSharedFromThis.h"
 
-class IModel
+class IModel: public inheritable_enable_shared_from_this<IModel>
 {
 public:
 	IModel(std::string name = "unnamed");
@@ -33,11 +34,19 @@ public:
 	virtual void Draw(std::shared_ptr<Camera> camera) = 0;
 
 	virtual void RenderGUI();
-	virtual void ChangeColor(DirectX::SimpleMath::Vector3 color) = 0;
 	virtual void OnSelect();
 	virtual void OnDeselect();
+	virtual void ChangeDefaultColor(DirectX::SimpleMath::Vector3 color);
 	virtual void OnAddedToScene();
 	virtual void OnRemovedFromScene();
+	void SetVisible(bool visible);
+	bool GetVisible();
+
+	virtual std::shared_ptr<IModel> SelectFromScreenCoords(float x, float y, DirectX::SimpleMath::Matrix VP);
 
 protected:
+	bool visible = true;
+	DirectX::SimpleMath::Vector3 defaultColor = {1,1,1};
+	DirectX::SimpleMath::Vector3 selectedColor = { 1.0f, 0.6f, 0.0f };
+	virtual void ChangeColor(DirectX::SimpleMath::Vector3 color) = 0;
 };

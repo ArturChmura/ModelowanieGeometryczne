@@ -14,9 +14,11 @@ public:
 	Scene(std::shared_ptr<Coursor3d> cursor, SIZE windowSize);
 	std::shared_ptr<Torus> AddTorus();
 	std::shared_ptr<Point> AddPoint();
-	void AddBezierCurveFromSelectedPoints();
+	void AddBezierCurveC0FromSelectedPoints();
+	void AddBezierCurveC2FromSelectedPoints();
 	void DeleteModel(int modelId);
-	void ChangeSelection(int modelId);
+	void Select(std::shared_ptr<IModel> model);
+	void ChangeSelection(std::shared_ptr<IModel> model);
 	std::vector<std::shared_ptr<IModel>> models;
 	std::vector<std::shared_ptr<Point>> GetSelectedPoints();
 	std::shared_ptr<Coursor3d> cursor;
@@ -29,8 +31,10 @@ public:
 	std::shared_ptr<Camera> activeCamera;
 	std::shared_ptr<CompositeModel> composite; 
 	bool IsSelcted(int modelId); 
-	void ChangeSelectionFromScreenCoords(float x, float y);
+	std::shared_ptr<IModel> GetModelFromScreenCoords(float x, float y);
 	SIZE windowSize;
+	void UpdateCursorPositionFromScreenCoords(DirectX::SimpleMath::Vector2 screenCoords);
+	void RemoveSelectedModels();
 public:
 	void AddModel(std::shared_ptr<IModel> model);
 private:

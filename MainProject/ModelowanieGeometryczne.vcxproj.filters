@@ -37,9 +37,6 @@
     <Filter Include="Source Files\Windows">
       <UniqueIdentifier>{81ae7849-1221-4a6c-b878-d8dcda23cc1c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\EventsHandlers">
-      <UniqueIdentifier>{0c423b19-f6d5-4d2a-ab03-9f374e16121c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\EventsHandlers">
       <UniqueIdentifier>{40883cc6-7405-4a6d-af92-4fa654732a54}</UniqueIdentifier>
     </Filter>
@@ -66,6 +63,15 @@
     </Filter>
     <Filter Include="Source Files\Helpers">
       <UniqueIdentifier>{410f3a88-879c-462d-96ce-f54da33a6249}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\EventsHandlers">
+      <UniqueIdentifier>{0c423b19-f6d5-4d2a-ab03-9f374e16121c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shapes\Curves">
+      <UniqueIdentifier>{ce683d1d-9f8b-4b78-a94f-622dc0b3139c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shapes\Curves">
+      <UniqueIdentifier>{a7f56883-e599-4dd2-b2fb-d2358197e64a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -156,9 +162,6 @@
     <ClCompile Include="MeshInfo.cpp">
       <Filter>Source Files\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="BezierCurve.cpp">
-      <Filter>Source Files\Shapes</Filter>
-    </ClCompile>
     <ClCompile Include="CompositeModel.cpp">
       <Filter>Source Files\Shapes</Filter>
     </ClCompile>
@@ -170,6 +173,21 @@
     </ClCompile>
     <ClCompile Include="VertexModel.cpp">
       <Filter>Source Files\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="BezierCurveC0.cpp">
+      <Filter>Source Files\Shapes\Curves</Filter>
+    </ClCompile>
+    <ClCompile Include="IBezierCurve.cpp">
+      <Filter>Source Files\Shapes\Curves</Filter>
+    </ClCompile>
+    <ClCompile Include="BezierCurveC2.cpp">
+      <Filter>Source Files\Shapes\Curves</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyboardHandler.cpp">
+      <Filter>Source Files\EventsHandlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -275,9 +293,6 @@
     <ClInclude Include="MatrixExt.h">
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="BezierCurve.h">
-      <Filter>Header Files\Shapes</Filter>
-    </ClInclude>
     <ClInclude Include="CompositeModel.h">
       <Filter>Header Files\Shapes</Filter>
     </ClInclude>
@@ -289,6 +304,24 @@
     </ClInclude>
     <ClInclude Include="VertexModel.h">
       <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="IBezierCurve.h">
+      <Filter>Header Files\Shapes\Curves</Filter>
+    </ClInclude>
+    <ClInclude Include="BezierCurveC0.h">
+      <Filter>Header Files\Shapes\Curves</Filter>
+    </ClInclude>
+    <ClInclude Include="BezierCurveC2.h">
+      <Filter>Header Files\Shapes\Curves</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugWindow.h">
+      <Filter>Header Files\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardHandler.h">
+      <Filter>Header Files\EventsHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="MultipleInheritableEnableSharedFromThis.h">
+      <Filter>Header Files\Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

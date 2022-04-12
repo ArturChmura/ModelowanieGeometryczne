@@ -12,6 +12,8 @@
 #include "ObjectsListWindow.h"
 #include "PropertiesWindow.h"
 #include "MessageHandler.h"
+#include "DebugWindow.h"
+#include "KeyboardHandler.h"
 
 
 using namespace mini;
@@ -34,6 +36,8 @@ public:
 	std::shared_ptr<PropertiesWindow> propertiesWindow;
 	std::shared_ptr<PerspectiveCameraOptionsWindow> perspectiveCameraOptionsWindow;
 	std::shared_ptr<CursorOptionsWindow> cursorOptionsWindow;
+	std::shared_ptr<DebugWindow> debugWindow;
 	std::shared_ptr<MouseEvents> mouseEvents;
+	std::shared_ptr<KeyboardHandler> keyboardHandler;
 
 };

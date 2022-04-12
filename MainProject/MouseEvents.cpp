@@ -15,6 +15,7 @@ void MouseEvents::HandleMouse()
 	{
 		return;
 	}
+
 	if (ImGui::IsMouseDown(2))
 	{
 		float x = io.MouseDelta.x;

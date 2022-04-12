@@ -31,7 +31,7 @@ void CursorOptionsWindow::Render()
 		ImGui::DragFloat("X##ScreenCoordsX", &screenCoords.x) ||
 		ImGui::DragFloat("X##ScreenCoordsY", &screenCoords.y))
 	{
-		UpdateCursorPositionFromScreenCoords();
+		scene->UpdateCursorPositionFromScreenCoords(screenCoords);
 	}
 
 
@@ -52,29 +52,4 @@ void CursorOptionsWindow::UpdateScreenCoords()
 	x = (x + 1) / 2.0f * windowSize.cx;
 	y = (y + 1) / 2.0f * windowSize.cy;
 	this->screenCoords = { x,y };
-}
-
-void CursorOptionsWindow::UpdateCursorPositionFromScreenCoords()
-{
-	Matrix viewMatrx = scene->activeCamera->GetViewMatrix();
-	Matrix perspectiveMatrix = scene->activeCamera->GetPerspectiveMatrix();
-	auto perspectiveMatrixInverted = perspectiveMatrix.Invert();
-	auto viewMatrxInverted = viewMatrx.Invert();
-
-	Vector4 currentGlobalPosition(cursor3d->translation.x, cursor3d->translation.y, cursor3d->translation.z, 1);
-	auto currentCameraPosition =  Vector4::Transform(currentGlobalPosition, viewMatrx);
-	auto currentPerspectivePosition = Vector4::Transform(currentCameraPosition, perspectiveMatrix);
-	float w = currentPerspectivePosition.w;
-	currentPerspectivePosition = currentPerspectivePosition / currentPerspectivePosition.w;
-
-	Vector2 normalizedScreenCoords = { screenCoords.x * 2.0f / windowSize.cx - 1,screenCoords.y * 2.0f / windowSize.cy - 1 };
-	 
-	Vector4 newPerspectivePostion = { normalizedScreenCoords.x, normalizedScreenCoords.y, 1 ,1};
-	newPerspectivePostion = newPerspectivePostion * max(w,-w);
-
-	auto newCameraPosition = Vector4::Transform(newPerspectivePostion, perspectiveMatrixInverted);
-	newCameraPosition.w = 1;
-	auto newWorld = Vector4::Transform(newCameraPosition, viewMatrxInverted);
-
-	this->cursor3d->translation = { newWorld.x, newWorld.y, newWorld.z };
 }

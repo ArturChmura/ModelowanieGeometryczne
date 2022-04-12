@@ -2,7 +2,8 @@
 #include "Torus.h"
 #include "Point.h"
 #include "SimpleMath.h"
-#include "BezierCurve.h"
+#include "BezierCurveC0.h"
+#include "BezierCurveC2.h"
 using namespace DirectX::SimpleMath;
 Scene::Scene(std::shared_ptr<Coursor3d> cursor, SIZE windowSize)
 {
@@ -39,8 +40,8 @@ std::shared_ptr<Torus> Scene::AddTorus()
 
 std::shared_ptr<Point> Scene::AddPoint()
 {
-	auto point = std::make_shared<Point>(cursor->translation);
-	point->onRemovedFromSceneCallback.push_back({ -1,[this](Point* point) {
+	auto point = std::make_shared<Point>(Vector3(cursor->translation));
+	point->onRemovedFromSceneCallback.push_back({ -1,[this](std::shared_ptr<Point> point) {
 		auto newEnd = std::remove_if(points.begin(), points.end(), [point](std::shared_ptr<Point> listpoint) {return listpoint->id == point->id; });
 		points.erase(newEnd, points.end());
 		return;
@@ -53,18 +54,21 @@ std::shared_ptr<Point> Scene::AddPoint()
 void Scene::AddModel(std::shared_ptr<IModel> model)
 {
 	models.push_back(model);
+	int i  = model.use_count();
 	model->OnAddedToScene();
 }
 
-void Scene::AddBezierCurveFromSelectedPoints()
+void Scene::AddBezierCurveC0FromSelectedPoints()
 {
 	auto selectedPointsSh = GetSelectedPoints();
-	std::vector<Point*> selectedPoints;
-	for (auto point : selectedPointsSh)
-	{
-		selectedPoints.push_back(point.get());
-	}
-	auto bezier = std::make_shared<BezierCurve>(selectedPoints);
+	auto bezier = std::make_shared<BezierCurveC0>(selectedPointsSh);
+	AddModel(bezier);
+}
+
+void Scene::AddBezierCurveC2FromSelectedPoints()
+{
+	auto selectedPointsSh = GetSelectedPoints();
+	auto bezier = std::make_shared<BezierCurveC2>(selectedPointsSh);
 	AddModel(bezier);
 }
 
@@ -99,11 +103,21 @@ void Scene::DeleteModel(int modelId)
 
 }
 
-void Scene::ChangeSelection(int modelId)
+void Scene::Select(std::shared_ptr<IModel> model)
 {
-	const bool is_selected = IsSelcted(modelId);
-	auto it = std::find_if(models.begin(), models.end(), [modelId](const auto& m) { return m->id == modelId; });
-	auto model = *it;
+	for (auto [id, m] : composite->modelsMap)
+	{
+		m->OnDeselect();
+	}
+	this->composite = std::make_shared<CompositeModel>();
+	this->composite->AddModel(model);
+	this->selectedModel = model;
+	model->OnSelect();
+}
+
+void Scene::ChangeSelection(std::shared_ptr<IModel> model)
+{
+	const bool is_selected = IsSelcted(model->id);
 	if (is_selected)
 	{
 		composite->RemoveModel(model);
@@ -134,30 +148,57 @@ bool Scene::IsSelcted(int modelId)
 	return composite->modelsMap.contains(modelId);
 }
 
-void Scene::ChangeSelectionFromScreenCoords(float x, float y)
+std::shared_ptr<IModel> Scene::GetModelFromScreenCoords(float x, float y)
 {
 	// top left is (0,0)
 	float delta = 10.0f;
+	auto viewMatrix = activeCamera->GetViewMatrix();
+	auto perspectiveMatrix = activeCamera->GetPerspectiveMatrix();
+	auto VP = viewMatrix * perspectiveMatrix;
 	for (auto model : models)
 	{
-		auto p = model->GetTranslation();
-		Vector4 modelPosition = { p.x,p.y,p.z,1 };
-		auto viewMatrix = activeCamera->GetViewMatrix();
-		auto perspectiveMatrix = activeCamera->GetPerspectiveMatrix();
-		auto modelViewPosition = Vector4::Transform(modelPosition, viewMatrix);
-		auto modelPerspectivePosition = Vector4::Transform(modelViewPosition, perspectiveMatrix);
-		modelPerspectivePosition /= modelPerspectivePosition.w;
-		float modelX = (modelPerspectivePosition.x + 1) / 2.0f * windowSize.cx;
-		float modelY = windowSize.cy - (modelPerspectivePosition.y + 1) / 2.0f * windowSize.cy;
-
-		Vector2 modelScreenPos = { modelX, modelY };
-		Vector2 clickScreenPos = { x,y };
-		auto diff = clickScreenPos - modelScreenPos;
-		auto lengthSqrt = diff.LengthSquared();
-		if (lengthSqrt < delta * delta)
+		auto modelPtr = model->SelectFromScreenCoords(x, y, VP);
+		if (modelPtr)
 		{
-			ChangeSelection(model->id);
-			break;
+			return modelPtr;
 		}
 	}
+	return nullptr;
+}
+
+
+void Scene::UpdateCursorPositionFromScreenCoords(Vector2 screenCoords)
+{
+	screenCoords.y = windowSize.cy - screenCoords.y;
+	Matrix viewMatrx = activeCamera->GetViewMatrix();
+	Matrix perspectiveMatrix = activeCamera->GetPerspectiveMatrix();
+	auto perspectiveMatrixInverted = perspectiveMatrix.Invert();
+	auto viewMatrxInverted = viewMatrx.Invert();
+
+	Vector4 currentGlobalPosition(cursor->translation.x, cursor->translation.y, cursor->translation.z, 1);
+	auto currentCameraPosition = Vector4::Transform(currentGlobalPosition, viewMatrx);
+	auto currentPerspectivePosition = Vector4::Transform(currentCameraPosition, perspectiveMatrix);
+	float w = currentPerspectivePosition.w;
+	currentPerspectivePosition = currentPerspectivePosition / currentPerspectivePosition.w;
+
+	Vector2 normalizedScreenCoords = {  screenCoords.x * 2.0f / windowSize.cx - 1,screenCoords.y * 2.0f / windowSize.cy - 1 };
+
+	Vector4 newPerspectivePostion = { normalizedScreenCoords.x, normalizedScreenCoords.y, 1 ,1 };
+	newPerspectivePostion = newPerspectivePostion * max(w, -w);
+
+	auto newCameraPosition = Vector4::Transform(newPerspectivePostion, perspectiveMatrixInverted);
+	newCameraPosition.w = 1;
+	auto newWorld = Vector4::Transform(newCameraPosition, viewMatrxInverted);
+
+	cursor->translation = { newWorld.x, newWorld.y, newWorld.z };
+}
+
+void Scene::RemoveSelectedModels()
+{
+	for (auto [id, model] : composite->modelsMap)
+	{
+		DeleteModel(id);
+	}
+	selectedModel = nullptr;
+	composite = std::make_shared<CompositeModel>();
 }
