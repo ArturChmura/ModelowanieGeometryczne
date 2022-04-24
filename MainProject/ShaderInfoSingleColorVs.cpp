@@ -21,8 +21,6 @@ void ShaderInfoSingleColorVs::SetUpRender()
 	DxDevice::instance->context()->VSSetShader(m_vertexShader.get(), nullptr, 0);
 	DxDevice::instance->context()->GSSetShader(nullptr, nullptr, 0);
 	DxDevice::instance->context()->PSSetShader(m_pixelShader.get(), nullptr, 0);
-
-
 }
 
 void ShaderInfoSingleColorVs::SetVertexBuffer(ID3D11Buffer* vertexBuffer)

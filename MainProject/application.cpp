@@ -66,7 +66,7 @@ Application::Application(SIZE size)
 	}
 	/*for (int i = 0; i < 3; i++)
 	{
-		float x = i;
+		float x = i*10;
 		float y =0;
 		float z = 0;
 

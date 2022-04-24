@@ -2,7 +2,7 @@
 
 #include "IBezierCurve.h"
 #include <array>
-#include "ShaderInfoPolynomial.h"
+#include "VirtualPoint.h"
 
 class BezierCurveInterpolating : public IBezierCurve
 {
@@ -13,13 +13,13 @@ public:
 	// Inherited via IBezierCurve
 	virtual void Draw(std::shared_ptr<Camera> camera) override;
 
-	virtual void UpdateVertices() override;
 
-	std::vector<std::array<DirectX::SimpleMath::Vector3, 4>> coef;
+	std::vector<std::shared_ptr<VirtualPoint>> bezierPoints;
+	// Inherited via IBezierCurve
+	virtual std::vector<DirectX::SimpleMath::Vector3> GetBezierPoints() override;
 
 
-	std::shared_ptr<ShaderInfoPolynomial> shaderInfoPolynomial;
-	int indicesCount = 0;
-	int verticesCount = 0;
-
+	void SetRepresentation(bool bezier);
+	virtual void RenderGUI() override;
+	bool bezierRepresentation = false;
 };

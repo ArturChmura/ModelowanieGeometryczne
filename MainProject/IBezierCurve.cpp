@@ -11,29 +11,81 @@ IBezierCurve::IBezierCurve(std::vector<std::shared_ptr<Point>> points, std::stri
 	{
 		AddPoint(points[i]);
 	}
-	this->shaderInfoSingleColorVs = std::make_shared<ShaderInfoSingleColorVs>();
+	meshInfo.topology = D3D_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_POINTLIST;
 }
 
-float IBezierCurve::DeCasteljeu(std::vector<float> coefficients, float t)
-{
-	int n = coefficients.size();
-	float* piramid = new float[n]();
-	for (int i = 0; i < n; i++)
-	{
-		piramid[i] = coefficients[i];
-	}
-	for (int i = 0; i < n - 1; i++)
-	{
-		int currentSize = n - i;
-		for (int j = 0; j < currentSize - 1; j++)
-		{
-			piramid[j] = piramid[j] * (1 - t) + piramid[j + 1] * t;
-		}
-	}
-	float value = piramid[0];
 
-	delete[] piramid;
-	return value;
+
+void IBezierCurve::UpdateVertices()
+{
+	resetDrawing = false;
+
+	std::vector<VSBezierIn> vertices = std::vector<VSBezierIn>();
+	auto bezierPoints = GetBezierPoints();
+	int ps = bezierPoints.size();
+	int sectionCount = (ps + 1) / 3;
+	for (int i = 0; i < sectionCount; i++)
+	{
+		VSBezierIn in;
+		int pointsCount = min(ps - (i * 3), 4);
+		std::vector<float> coefficientsX;
+		std::vector<float> coefficientsY;
+		std::vector<float> coefficientsZ;
+		Vector3 t1 = 0 < pointsCount ? bezierPoints[i * 3 + 0] : Vector3();
+		Vector3 t2 = 1 < pointsCount ? bezierPoints[i * 3 + 1] : Vector3();
+		Vector3 t3 = 2 < pointsCount ? bezierPoints[i * 3 + 2] : Vector3();
+		Vector3 t4 = 3 < pointsCount ? bezierPoints[i * 3 + 3] : Vector3();
+		in.X = Vector4(t1.x, t2.x, t3.x, t4.x);
+		in.Y = Vector4(t1.y, t2.y, t3.y, t4.y);
+		in.Z = Vector4(t1.z, t2.z, t3.z, t4.z);
+		in.SIZE = pointsCount;
+		vertices.push_back(in);
+	}
+
+	/*if (drawPolygonChain && points.size() > 1)
+	{
+		auto currentSize = vertices.size();
+		for (int i = 0; i < points.size(); i++)
+		{
+			auto point = points[i];
+			auto translation = point->GetTranslation();
+			vertices.push_back({ {translation.x, translation.y, translation.z } });
+		}
+		for (int i = currentSize; i < (int)vertices.size() - 1; i++)
+		{
+			indices.push_back(i);
+			indices.push_back(i + 1);
+		}
+	}*/
+
+	this->verticesCount = vertices.size();
+	//if (verticesCount > 0)
+	{
+		this->meshInfo.vertexBuffer = DxDevice::instance->CreateVertexBuffer(vertices);
+	}
+}
+
+void IBezierCurve::Draw(std::shared_ptr<Camera> camera)
+{
+	if (resetDrawing)
+	{
+		UpdateVertices();
+	}
+
+	meshInfo.SetUpRender();
+	shaders.SetupRender();
+	shaders.vertexShader.SetVertexBuffer(meshInfo.vertexBuffer.get());
+	auto v = camera->GetViewMatrix();
+	auto p = camera->GetPerspectiveMatrix();
+	auto mvp = v * p;
+	GSBezierConstantBuffer gsCB;
+	gsCB.mvp = mvp;
+	gsCB.screenWidth = DxDevice::winowSize.cx;
+	gsCB.screenHeight = DxDevice::winowSize.cy;
+	shaders.geometryShader.SetConstantBuffer(gsCB);
+	shaders.pixelShader.SetConstantBuffer(meshInfo.color);
+
+	DxDevice::instance->context()->Draw(10000, 0);
 }
 
 void IBezierCurve::AddPoint(std::shared_ptr<Point> point)
@@ -231,4 +283,7 @@ DirectX::SimpleMath::Vector3 IBezierCurve::GetRotation()
 
 void IBezierCurve::RotateFromPoint(Vector4 globalPoint, DirectX::XMFLOAT3 ratation)
 {
+
 }
+
+

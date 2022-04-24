@@ -1,6 +1,7 @@
 #pragma once
 #include "IModel.h"
 #include "Point.h"
+#include "BezierShaders.h"
 
 
 class IBezierCurve : public IModel
@@ -8,8 +9,13 @@ class IBezierCurve : public IModel
 public:
 	IBezierCurve(std::vector<std::shared_ptr<Point>> points, std::string name = "IBezierCurve");
 	std::vector<std::shared_ptr<Point>> points;
-	float DeCasteljeu(std::vector<float> coefficients, float t);
-	virtual void UpdateVertices() = 0;
+	virtual std::vector<DirectX::SimpleMath::Vector3> GetBezierPoints() = 0;
+
+	virtual void UpdateVertices();
+
+	int verticesCount;
+	virtual void Draw(std::shared_ptr<Camera> camera) override;
+
 	void AddPoint(std::shared_ptr<Point> point);
 	void RemovePoint(int pointId);
 	void SetDrawPolygonChain(bool draw = true);
@@ -19,6 +25,7 @@ public:
 	virtual void ChangeColor(DirectX::SimpleMath::Vector3 color) override;
 	std::vector<int> selectedIndexes;
 	virtual void RenderGUI() override;
+
 	// Inherited via IModel
 	virtual void SetScale(float x, float y, float z) override;
 	virtual void Scale(float x, float y, float z)  override;
@@ -32,8 +39,8 @@ public:
 	virtual DirectX::SimpleMath::Vector3 GetRotation() override;
 	virtual void RotateFromPoint(DirectX::SimpleMath::Vector4 globalPoint, DirectX::XMFLOAT3 ratation) override;
 
-	std::shared_ptr<ShaderInfoSingleColorVs> shaderInfoSingleColorVs;
 	MeshInfo meshInfo;
+	BezierShaders shaders;
 protected:
 	bool resetDrawing = true;
 	bool drawPolygonChain = false;

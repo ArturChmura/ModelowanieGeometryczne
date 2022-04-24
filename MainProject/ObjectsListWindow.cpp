@@ -64,6 +64,10 @@ void ObjectsListWindow::Render()
         {
             scene->AddBezierCurveC2FromSelectedPoints();
         }
+        if (ImGui::Button("Add Bezier Curve C2 Interpolating"))
+        {
+            scene->AddBezierCurveInterpolatingFromSelectedPoints();
+        }
     }
 
 	ImGui::End();

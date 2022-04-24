@@ -10,7 +10,7 @@ cbuffer transformations : register(b0)
 [maxvertexcount(100)]
 void main(
 	point VSOut input[1],
-	inout LineStream< GSOutput > output
+	inout LineStream<GSOutput> output
 )
 {
     float d = input[0].a.w;
@@ -23,7 +23,5 @@ void main(
 		output.Append(element);
         t += d / 100.0f;
     }
- 
-    
     output.RestartStrip();
 }

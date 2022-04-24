@@ -73,8 +73,11 @@
     <Filter Include="Header Files\Shapes\Curves">
       <UniqueIdentifier>{a7f56883-e599-4dd2-b2fb-d2358197e64a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Shaders\Polynomials">
-      <UniqueIdentifier>{fd111634-6266-43fa-8cfb-c9b6ae9474d9}</UniqueIdentifier>
+    <Filter Include="Source Files\Shaders\Bezier">
+      <UniqueIdentifier>{8c3daec4-389d-4249-89e2-6d1f9f74cd62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shaders\Bezier">
+      <UniqueIdentifier>{4895a159-d809-49fb-8125-7f2fd95958ea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -198,7 +201,16 @@
     <ClCompile Include="BezierCurveInterpolating.cpp">
       <Filter>Source Files\Shapes\Curves</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderInfoPolynomial.cpp">
+    <ClCompile Include="gsBezier.cpp">
+      <Filter>Source Files\Shaders\Bezier</Filter>
+    </ClCompile>
+    <ClCompile Include="vsBezier.cpp">
+      <Filter>Source Files\Shaders\Bezier</Filter>
+    </ClCompile>
+    <ClCompile Include="BezierShaders.cpp">
+      <Filter>Source Files\Shaders\Bezier</Filter>
+    </ClCompile>
+    <ClCompile Include="psConstColor.cpp">
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
   </ItemGroup>
@@ -305,9 +317,6 @@
     <ClInclude Include="MatrixExt.h">
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="CompositeModel.h">
-      <Filter>Header Files\Shapes</Filter>
-    </ClInclude>
     <ClInclude Include="Coursor3d.h">
       <Filter>Header Files\Shapes</Filter>
     </ClInclude>
@@ -341,7 +350,19 @@
     <ClInclude Include="BezierCurveInterpolating.h">
       <Filter>Header Files\Shapes\Curves</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderInfoPolynomial.h">
+    <ClInclude Include="vsBezier.h">
+      <Filter>Header Files\Shaders\Bezier</Filter>
+    </ClInclude>
+    <ClInclude Include="gsBezier.h">
+      <Filter>Header Files\Shaders\Bezier</Filter>
+    </ClInclude>
+    <ClInclude Include="BezierShaders.h">
+      <Filter>Header Files\Shaders\Bezier</Filter>
+    </ClInclude>
+    <ClInclude Include="CompositeModel.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="psConstColor.h">
       <Filter>Header Files\Shaders</Filter>
     </ClInclude>
   </ItemGroup>
@@ -355,22 +376,22 @@
     <FxCompile Include="vsVertexColor.hlsl">
       <Filter>Source Files\Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="vsPolynomial.hlsl">
-      <Filter>Source Files\Shaders\Polynomials</Filter>
-    </FxCompile>
-    <FxCompile Include="gsPolynomial.hlsl">
-      <Filter>Source Files\Shaders\Polynomials</Filter>
-    </FxCompile>
     <FxCompile Include="psConstColor.hlsl">
       <Filter>Source Files\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="vsBezier.hlsl">
+      <Filter>Source Files\Shaders\Bezier</Filter>
+    </FxCompile>
+    <FxCompile Include="gsBezier.hlsl">
+      <Filter>Source Files\Shaders\Bezier</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VSOut.hlsli">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="vsOUtPolynomial.hlsli">
-      <Filter>Source Files\Shaders\Polynomials</Filter>
+    <None Include="bezierStructs.hlsli">
+      <Filter>Source Files\Shaders\Bezier</Filter>
     </None>
   </ItemGroup>
 </Project>

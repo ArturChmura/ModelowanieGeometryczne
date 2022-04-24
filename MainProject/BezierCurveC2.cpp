@@ -16,26 +16,8 @@ void BezierCurveC2::Draw(std::shared_ptr<Camera> camera)
 	{
 		UpdateBezierPoints();
 	}
-	UpdateSlicesCount(camera);
-	if (resetDrawing)
-	{
-		UpdateVertices();
-	}
-	meshInfo.SetUpRender();
-	shaderInfoSingleColorVs->SetUpRender();
-	shaderInfoSingleColorVs->SetVertexBuffer(meshInfo.vertexBuffer.get());
-
-	auto v = camera->GetViewMatrix();
-	auto p = camera->GetPerspectiveMatrix();
-	shaderInfoSingleColorVs->constantBufferStruct.mvp =
-		XMLoadFloat4x4(&v) *
-		XMLoadFloat4x4(&p);
-	shaderInfoSingleColorVs->constantBufferStruct.color = XMLoadFloat3(&meshInfo.color);
-
-
-	shaderInfoSingleColorVs->CopyConstantBuffers();
-
-	DxDevice::instance->context()->DrawIndexed(indicesCount, 0, 0);
+	
+	IBezierCurve::Draw(camera);
 
 	if (bezierRepresentation)
 	{
@@ -73,86 +55,86 @@ void BezierCurveC2::RenderGUI()
 		SetRepresentation(rep);
 	}
 }
-
-void BezierCurveC2::UpdateVertices()
-{
-	resetDrawing = false;
-	std::vector<Vertex> vertices = std::vector<Vertex>();
-	std::vector<int> indices = std::vector<int>();
-	int ps = bezierPoints.size();
-	int sectionCount = (ps + 1) / 3;
-	for (int i = 0; i < sectionCount; i++)
-	{
-		int pointsCount = min(bezierPoints.size() - (i * 3), 4);
-		std::vector<float> coefficientsX;
-		std::vector<float> coefficientsY;
-		std::vector<float> coefficientsZ;
-		for (int j = 0; j < pointsCount; j++)
-		{
-			auto translation = bezierPoints[i * 3 + j]->GetTranslation();
-			coefficientsX.push_back(translation.x);
-			coefficientsY.push_back(translation.y);
-			coefficientsZ.push_back(translation.z);
-		}
-		int slices = desiredSlices[i];
-		currentSlices[i] = slices;
-		float step = 1.0f / slices;
-		for (float t = 0; t <= 1.0f; t += step)
-		{
-			auto x = DeCasteljeu(coefficientsX, t);
-			auto y = DeCasteljeu(coefficientsY, t);
-			auto z = DeCasteljeu(coefficientsZ, t);
-			vertices.push_back({ { x,y,z } });
-		}
-	}
-	for (int i = 0; i < (int)vertices.size() - 1; i++)
-	{
-		indices.push_back(i);
-		indices.push_back(i + 1);
-	}
-	if (drawPolygonChain)
-	{
-		auto currentSize = vertices.size();
-		if (bezierRepresentation)
-		{
-			if (bezierPoints.size() > 1)
-			{
-				for (int i = 0; i < bezierPoints.size(); i++)
-				{
-					auto point = bezierPoints[i];
-					auto translation = point->GetTranslation();
-					vertices.push_back({ {translation.x, translation.y, translation.z } });
-				}
-			}
-		}
-		else
-		{
-			if (points.size() > 1)
-			{
-				for (int i = 0; i < points.size(); i++)
-				{
-					auto point = points[i];
-					auto translation = point->GetTranslation();
-					vertices.push_back({ {translation.x, translation.y, translation.z } });
-				}
-			}
-		}
-		for (int i = currentSize; i < (int)vertices.size() - 1; i++)
-		{
-			indices.push_back(i);
-			indices.push_back(i + 1);
-		}
-
-	}
-
-	this->indicesCount = indices.size();
-	this->verticesCount = vertices.size();
-	if (verticesCount > 0)
-	{
-		this->meshInfo.vertexBuffer = DxDevice::instance->CreateVertexBuffer(vertices);
-		this->meshInfo.indexBuffer = DxDevice::instance->CreateVertexBuffer(indices);
-	}
-}
+//
+//void BezierCurveC2::UpdateVertices()
+//{
+//	resetDrawing = false;
+//	std::vector<Vertex> vertices = std::vector<Vertex>();
+//	std::vector<int> indices = std::vector<int>();
+//	int ps = bezierPoints.size();
+//	int sectionCount = (ps + 1) / 3;
+//	for (int i = 0; i < sectionCount; i++)
+//	{
+//		int pointsCount = min(bezierPoints.size() - (i * 3), 4);
+//		std::vector<float> coefficientsX;
+//		std::vector<float> coefficientsY;
+//		std::vector<float> coefficientsZ;
+//		for (int j = 0; j < pointsCount; j++)
+//		{
+//			auto translation = bezierPoints[i * 3 + j]->GetTranslation();
+//			coefficientsX.push_back(translation.x);
+//			coefficientsY.push_back(translation.y);
+//			coefficientsZ.push_back(translation.z);
+//		}
+//		int slices = desiredSlices[i];
+//		currentSlices[i] = slices;
+//		float step = 1.0f / slices;
+//		for (float t = 0; t <= 1.0f; t += step)
+//		{
+//			auto x = DeCasteljeu(coefficientsX, t);
+//			auto y = DeCasteljeu(coefficientsY, t);
+//			auto z = DeCasteljeu(coefficientsZ, t);
+//			vertices.push_back({ { x,y,z } });
+//		}
+//	}
+//	for (int i = 0; i < (int)vertices.size() - 1; i++)
+//	{
+//		indices.push_back(i);
+//		indices.push_back(i + 1);
+//	}
+//	if (drawPolygonChain)
+//	{
+//		auto currentSize = vertices.size();
+//		if (bezierRepresentation)
+//		{
+//			if (bezierPoints.size() > 1)
+//			{
+//				for (int i = 0; i < bezierPoints.size(); i++)
+//				{
+//					auto point = bezierPoints[i];
+//					auto translation = point->GetTranslation();
+//					vertices.push_back({ {translation.x, translation.y, translation.z } });
+//				}
+//			}
+//		}
+//		else
+//		{
+//			if (points.size() > 1)
+//			{
+//				for (int i = 0; i < points.size(); i++)
+//				{
+//					auto point = points[i];
+//					auto translation = point->GetTranslation();
+//					vertices.push_back({ {translation.x, translation.y, translation.z } });
+//				}
+//			}
+//		}
+//		for (int i = currentSize; i < (int)vertices.size() - 1; i++)
+//		{
+//			indices.push_back(i);
+//			indices.push_back(i + 1);
+//		}
+//
+//	}
+//
+//	this->indicesCount = indices.size();
+//	this->verticesCount = vertices.size();
+//	if (verticesCount > 0)
+//	{
+//		this->meshInfo.vertexBuffer = DxDevice::instance->CreateVertexBuffer(vertices);
+//		this->meshInfo.indexBuffer = DxDevice::instance->CreateVertexBuffer(indices);
+//	}
+//}
 
 inline Vector3 GetMidPoint(Vector3 a, Vector3 b)
 {
@@ -199,10 +181,6 @@ void BezierCurveC2::UpdateBezierPoints()
 		bezierPoints[j++] = std::make_shared<VirtualPoint>(v1);
 		bezierPoints[j++] = std::make_shared<VirtualPoint>(v2);
 	}
-	for (auto point : bezierPoints)
-	{
-		point->ChangeDefaultColor(Vector3(0, 0.5, 1));
-	}
 	for (int i = 0; i < bezierPoints.size(); i++)
 	{
 		auto point = bezierPoints[i];
@@ -241,51 +219,6 @@ void BezierCurveC2::OnBezierPointChange(int pointIndex, Vector4 translation)
 	points[closestDeBooreIndex]->SetTranslation(closeDeBooreTrans.x, closeDeBooreTrans.y, closeDeBooreTrans.z);
 }
 
-void BezierCurveC2::UpdateSlicesCount(std::shared_ptr<Camera> camera)
-{
-	int segmentsCount = (bezierPoints.size() + 1) / 3;
-	desiredSlices.resize(segmentsCount);
-	currentSlices.resize(segmentsCount);
-	auto viewMatrix = camera->GetViewMatrix();
-	auto perspectiveMatrix = camera->GetPerspectiveMatrix();
-	auto PV = viewMatrix * perspectiveMatrix;
-	std::vector<Vector2> camPositions;
-	bool isLargerNow = false;
-	for (size_t i = 0; i < bezierPoints.size(); i++)
-	{
-		auto point = bezierPoints[i];
-		auto translation = point->GetTranslation();
-		auto camPosition = Vector4::Transform(translation, PV);
-		camPosition /= camPosition.w != 0 ? camPosition.w : 1.0;
-		Vector2 xy(
-			(camPosition.x + 1) * DxDevice::winowSize.cx / 2.0f,
-			(camPosition.y + 1) * DxDevice::winowSize.cy / 2.0f
-		);
-
-		camPositions.push_back(xy);
-	}
-	for (int i = 0; i < segmentsCount; i++)
-	{
-		int pointsCount = min(bezierPoints.size() - (i * 3), 4);
-		float area = 0.0f;
-		for (int j = 0; j < pointsCount - 1; j++)
-		{
-			auto length = (camPositions[i * 3 + j] - camPositions[i * 3 + j + 1]).Length() / 5.0f;
-			length = min(length, 100);
-			area += length;
-		}
-		int slices = max((int)area, 1);
-		if (currentSlices[i] < slices)
-		{
-			isLargerNow = true;
-		}
-		desiredSlices[i] = slices;
-	}
-	if (isLargerNow)
-	{
-		ResetDrawing();
-	}
-}
 
 std::shared_ptr<IModel> BezierCurveC2::SelectFromScreenCoords(float x, float y, DirectX::SimpleMath::Matrix VP)
 {
@@ -303,3 +236,14 @@ std::shared_ptr<IModel> BezierCurveC2::SelectFromScreenCoords(float x, float y, 
 
 	return nullptr;
 }
+
+std::vector<DirectX::SimpleMath::Vector3> BezierCurveC2::GetBezierPoints()
+{
+	std::vector<Vector3> bezier(bezierPoints.size());
+	for (int i = 0; i < bezierPoints.size(); i++)
+	{
+		bezier[i] = Vector3(bezierPoints[i]->GetTranslation());
+	}
+	return bezier;
+}
+

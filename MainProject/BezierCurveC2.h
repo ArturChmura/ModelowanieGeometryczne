@@ -16,21 +16,19 @@ public:
 	void SetRepresentation(bool bezier);
 	virtual void RenderGUI() override;
 
-	int indicesCount=0;
-	int verticesCount=0;
-	virtual void UpdateVertices() override;
 	void UpdateBezierPoints();
 
 	void OnBezierPointChange(int pointIndex, DirectX::SimpleMath::Vector4 translation);
 
-	std::vector<int> selectedIndexes;
-	bool isAddingMode = false;
-	void UpdateSlicesCount(std::shared_ptr<Camera> camera);
-
-	std::vector<int> currentSlices;
-	std::vector<int> desiredSlices;
 	bool bezierRepresentation = false;
 	virtual std::shared_ptr<IModel> SelectFromScreenCoords(float x, float y, DirectX::SimpleMath::Matrix VP) override;
+
+	// Inherited via IBezierCurve
+	virtual std::vector<DirectX::SimpleMath::Vector3> GetBezierPoints() override;
+
 private:
+
+
+
 
 };

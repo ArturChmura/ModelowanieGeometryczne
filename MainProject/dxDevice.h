@@ -50,10 +50,9 @@ public:
 		size_t e = vertices.size();
 		size_t t = sizeof(T);
 		size_t s = e * t;
-		auto desc = BufferDescription::VertexBufferDescription(
-			s);
-		return CreateBuffer(reinterpret_cast<const void*>(
-			vertices.data()), desc);
+		s = max(s, 1);
+		auto desc = BufferDescription::VertexBufferDescription(s);
+		return CreateBuffer(s == 0 ? nullptr : reinterpret_cast<const void*>( vertices.data()), desc);
 
 	}
 

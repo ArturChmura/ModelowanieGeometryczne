@@ -16,6 +16,7 @@
     <ClCompile Include="BezierCurveC0.cpp" />
     <ClCompile Include="BezierCurveC2.cpp" />
     <ClCompile Include="BezierCurveInterpolating.cpp" />
+    <ClCompile Include="BezierShaders.cpp" />
     <ClCompile Include="CompositeModel.cpp" />
     <ClCompile Include="Coursor3d.cpp" />
     <ClCompile Include="CursorOptionsWindow.cpp" />
@@ -23,6 +24,7 @@
     <ClCompile Include="dxDevice.cpp" />
     <ClCompile Include="dxStructures.cpp" />
     <ClCompile Include="exceptions.cpp" />
+    <ClCompile Include="gsBezier.cpp" />
     <ClCompile Include="IBezierCurve.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imgui_demo.cpp" />
@@ -45,13 +47,14 @@
     <ClCompile Include="PropertiesWindow.cpp" />
     <ClCompile Include="PerspectiveCamera.cpp" />
     <ClCompile Include="PerspectiveCamera.h" />
+    <ClCompile Include="psConstColor.cpp" />
     <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="ShaderInfoPolynomial.cpp" />
     <ClCompile Include="ShaderInfoSingleColorVs.cpp" />
     <ClCompile Include="ShaderInfoVertexColor.cpp" />
     <ClCompile Include="Torus.cpp" />
     <ClCompile Include="VertexModel.cpp" />
     <ClCompile Include="VirtualPoint.cpp" />
+    <ClCompile Include="vsBezier.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
@@ -59,11 +62,13 @@
     <ClInclude Include="BezierCurveC0.h" />
     <ClInclude Include="BezierCurveC2.h" />
     <ClInclude Include="BezierCurveInterpolating.h" />
+    <ClInclude Include="BezierShaders.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CompositeModel.h" />
     <ClInclude Include="Coursor3d.h" />
     <ClInclude Include="CursorOptionsWindow.h" />
     <ClInclude Include="DebugWindow.h" />
+    <ClInclude Include="gsBezier.h" />
     <ClInclude Include="IBezierCurve.h" />
     <ClInclude Include="ImGui\imgui_stdlib.h" />
     <ClInclude Include="KeyboardHandler.h" />
@@ -71,6 +76,7 @@
     <ClInclude Include="MessageHandler.h" />
     <ClInclude Include="MultipleInheritableEnableSharedFromThis.h" />
     <ClInclude Include="PropertiesWindow.h" />
+    <ClInclude Include="psConstColor.h" />
     <ClInclude Include="ShaderInfo.h" />
     <ClInclude Include="MeshInfo.h" />
     <ClInclude Include="MVPColorConstantBuffer.h" />
@@ -94,16 +100,16 @@
     <ClInclude Include="PerspectiveCameraOptionsWindow.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="ShaderInfoPolynomial.h" />
     <ClInclude Include="ShaderInfoSingleColorVs.h" />
     <ClInclude Include="ShaderInfoVertexColor.h" />
     <ClInclude Include="Torus.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexModel.h" />
     <ClInclude Include="VirtualPoint.h" />
+    <ClInclude Include="vsBezier.h" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="gsPolynomial.hlsl">
+    <FxCompile Include="gsBezier.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
@@ -117,7 +123,7 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="vsPolynomial.hlsl">
+    <FxCompile Include="vsBezier.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
@@ -131,8 +137,8 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="bezierStructs.hlsli" />
     <None Include="VSOut.hlsli" />
-    <None Include="vsOUtPolynomial.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DirectXTK\DirectXTK_Desktop_2022_Win10.vcxproj">
