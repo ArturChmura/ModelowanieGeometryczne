@@ -73,6 +73,9 @@
     <Filter Include="Header Files\Shapes\Curves">
       <UniqueIdentifier>{a7f56883-e599-4dd2-b2fb-d2358197e64a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shaders\Polynomials">
+      <UniqueIdentifier>{fd111634-6266-43fa-8cfb-c9b6ae9474d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxStructures.cpp">
@@ -188,6 +191,15 @@
     </ClCompile>
     <ClCompile Include="KeyboardHandler.cpp">
       <Filter>Source Files\EventsHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="VirtualPoint.cpp">
+      <Filter>Source Files\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="BezierCurveInterpolating.cpp">
+      <Filter>Source Files\Shapes\Curves</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderInfoPolynomial.cpp">
+      <Filter>Source Files\Shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -323,6 +335,15 @@
     <ClInclude Include="MultipleInheritableEnableSharedFromThis.h">
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="VirtualPoint.h">
+      <Filter>Header Files\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="BezierCurveInterpolating.h">
+      <Filter>Header Files\Shapes\Curves</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderInfoPolynomial.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="ps.hlsl">
@@ -334,10 +355,22 @@
     <FxCompile Include="vsVertexColor.hlsl">
       <Filter>Source Files\Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="vsPolynomial.hlsl">
+      <Filter>Source Files\Shaders\Polynomials</Filter>
+    </FxCompile>
+    <FxCompile Include="gsPolynomial.hlsl">
+      <Filter>Source Files\Shaders\Polynomials</Filter>
+    </FxCompile>
+    <FxCompile Include="psConstColor.hlsl">
+      <Filter>Source Files\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VSOut.hlsli">
       <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="vsOUtPolynomial.hlsli">
+      <Filter>Source Files\Shaders\Polynomials</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -7,6 +7,7 @@ using namespace DirectX::SimpleMath;
 BezierCurveC2::BezierCurveC2(std::vector<std::shared_ptr<Point>> points)
 	:IBezierCurve(points, "Bezier Curve C2")
 {
+
 }
 
 void BezierCurveC2::Draw(std::shared_ptr<Camera> camera)
@@ -187,16 +188,16 @@ void BezierCurveC2::UpdateBezierPoints()
 	auto v3 = GetOneThirdPoint(deBoorePoints[1], deBoorePoints[2]);
 	auto v2 = GetMidPoint(v1, v3);
 
-	bezierPoints[0] = std::make_shared<Point>(v2);
+	bezierPoints[0] = std::make_shared<VirtualPoint>(v2);
 	int j = 1;
 	for (int i = 3; i < deBoorePoints.size(); i++)
 	{
-		bezierPoints[j++] = std::make_shared<Point>(v3);
+		bezierPoints[j++] = std::make_shared<VirtualPoint>(v3);
 		v1 = GetTwoThirdPoint(deBoorePoints[i - 2], deBoorePoints[i - 1]);
 		v3 = GetOneThirdPoint(deBoorePoints[i - 1], deBoorePoints[i]);
 		v2 = GetMidPoint(v1, v3);
-		bezierPoints[j++] = std::make_shared<Point>(v1);
-		bezierPoints[j++] = std::make_shared<Point>(v2);
+		bezierPoints[j++] = std::make_shared<VirtualPoint>(v1);
+		bezierPoints[j++] = std::make_shared<VirtualPoint>(v2);
 	}
 	for (auto point : bezierPoints)
 	{
@@ -269,7 +270,7 @@ void BezierCurveC2::UpdateSlicesCount(std::shared_ptr<Camera> camera)
 		float area = 0.0f;
 		for (int j = 0; j < pointsCount - 1; j++)
 		{
-			auto length = (camPositions[i * 3 + j] - camPositions[i * 3 + j + 1]).Length() / 10.0f;
+			auto length = (camPositions[i * 3 + j] - camPositions[i * 3 + j + 1]).Length() / 5.0f;
 			length = min(length, 100);
 			area += length;
 		}

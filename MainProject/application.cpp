@@ -5,6 +5,7 @@
 #include "Coursor3d.h"
 #include "Point.h"
 #include "BezierCurveC0.h"
+#include "BezierCurveInterpolating.h"
 
 using namespace mini;
 using namespace DirectX;
@@ -48,25 +49,49 @@ Application::Application(SIZE size)
 	messageHandler = std::make_shared<MessageHandler>(scene);
 	debugWindow = std::make_shared<DebugWindow>();
 
+	float r = 0, fi = 0, phi = 0;
+	for (int i = 0; i < 10; i++)
+	{
+		float x = r * cosf(fi)* cosf(phi);
+		float y = r * sinf(fi) * cosf(phi);
+		float z = r * sinf(phi);
+
+		scene->cursor->translation = { x,y,z };
+		auto point = scene->AddPoint();
+		scene->ChangeSelection(point);
+
+		r += 3.0f;
+		fi += 1.0f;
+		phi += 1.0f;
+	}
+	/*for (int i = 0; i < 3; i++)
+	{
+		float x = i;
+		float y =0;
+		float z = 0;
+
+		scene->cursor->translation = { x,y,z };
+		auto point = scene->AddPoint();
+		scene->ChangeSelection(point);
+	}*/
+	/*scene->cursor->translation = { 1,1,0 };
 	auto point = scene->AddPoint();
 	scene->ChangeSelection(point);
-	scene->cursor->translation = { 1,1,0 };
-	point = scene->AddPoint();
-	scene->ChangeSelection(point);
-	scene->cursor->translation =  { 2,-1,0 };
-	point = scene->AddPoint();
-	scene->ChangeSelection(point);
-	scene->cursor->translation =  { 3,5,0 };
-	point = scene->AddPoint();
-	scene->ChangeSelection(point);
-	scene->cursor->translation =  { 10,4,0 };
-	point = scene->AddPoint();
-	scene->ChangeSelection(point);
-	scene->cursor->translation =  { 16,-2,5 };
+
+	scene->cursor->translation = { 2,2,0 };
 	point = scene->AddPoint();
 	scene->ChangeSelection(point);
 
-	scene->AddBezierCurveC2FromSelectedPoints();
+	scene->cursor->translation = { 3,1,0 };
+	point = scene->AddPoint();
+	scene->ChangeSelection(point);
+
+	scene->cursor->translation = { 4,1,0 };
+	point = scene->AddPoint();
+	scene->ChangeSelection(point);*/
+
+	scene->AddBezierCurveInterpolatingFromSelectedPoints();
+	//scene->AddBezierCurveC2FromSelectedPoints();
 	//scene->AddBezierCurveC0FromSelectedPoints();
 }
 
@@ -78,7 +103,6 @@ void Application::Render()
 	propertiesWindow->Render();
 	mouseEvents->HandleMouse();
 	keyboardHandler->HandleKeyboard();
-	debugWindow->Render();
 
 	const float clearColor[] = { backgroundColor.x,backgroundColor.y,backgroundColor.z, 1.0f };
 	DxDevice::instance->context()->ClearRenderTargetView(m_backBuffer.get(), clearColor);

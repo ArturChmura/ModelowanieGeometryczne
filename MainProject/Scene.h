@@ -15,7 +15,8 @@ public:
 	std::shared_ptr<Torus> AddTorus();
 	std::shared_ptr<Point> AddPoint();
 	void AddBezierCurveC0FromSelectedPoints();
-	void AddBezierCurveC2FromSelectedPoints();
+	void AddBezierCurveC2FromSelectedPoints(); 
+	void AddBezierCurveInterpolatingFromSelectedPoints();
 	void DeleteModel(int modelId);
 	void Select(std::shared_ptr<IModel> model);
 	void ChangeSelection(std::shared_ptr<IModel> model);

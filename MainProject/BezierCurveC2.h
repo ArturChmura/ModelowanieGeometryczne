@@ -3,20 +3,21 @@
 #include "IBezierCurve.h"
 #include "Point.h"
 #include "ShaderInfoSingleColorVs.h"
+#include "VirtualPoint.h"
 
 class BezierCurveC2 : public IBezierCurve
 {
 public:
 	BezierCurveC2(std::vector<std::shared_ptr<Point>> points);
-	std::vector<std::shared_ptr<Point>> bezierPoints;
+	std::vector<std::shared_ptr<VirtualPoint>> bezierPoints;
 	// Inherited via IModel
 
 	virtual void Draw(std::shared_ptr<Camera> camera) override;
 	void SetRepresentation(bool bezier);
 	virtual void RenderGUI() override;
 
-	int indicesCount;
-	int verticesCount;
+	int indicesCount=0;
+	int verticesCount=0;
 	virtual void UpdateVertices() override;
 	void UpdateBezierPoints();
 

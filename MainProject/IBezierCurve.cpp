@@ -148,14 +148,7 @@ void IBezierCurve::RenderGUI()
 		{
 			isAddingMode = true;
 			auto callback = [this](std::shared_ptr<Point> point) {
-				if (std::any_of(this->points.begin(), this->points.end(), [point](std::shared_ptr<Point> p) {return p->id == point->id; }))
-				{
-
-				}
-				else
-				{
-					AddPoint(point);
-				}
+				AddPoint(point);
 			};
 			Point::onSelectCallback.push_back(callback);
 			Point::onAddedToSceneCallback.push_back(callback);

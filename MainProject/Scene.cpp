@@ -4,6 +4,7 @@
 #include "SimpleMath.h"
 #include "BezierCurveC0.h"
 #include "BezierCurveC2.h"
+#include "BezierCurveInterpolating.h"
 using namespace DirectX::SimpleMath;
 Scene::Scene(std::shared_ptr<Coursor3d> cursor, SIZE windowSize)
 {
@@ -69,6 +70,13 @@ void Scene::AddBezierCurveC2FromSelectedPoints()
 {
 	auto selectedPointsSh = GetSelectedPoints();
 	auto bezier = std::make_shared<BezierCurveC2>(selectedPointsSh);
+	AddModel(bezier);
+}
+
+void Scene::AddBezierCurveInterpolatingFromSelectedPoints()
+{
+	auto selectedPointsSh = GetSelectedPoints();
+	auto bezier = std::make_shared<BezierCurveInterpolating>(selectedPointsSh);
 	AddModel(bezier);
 }
 

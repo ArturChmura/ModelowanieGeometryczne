@@ -15,16 +15,16 @@ ShaderInfoVertexColor::ShaderInfoVertexColor()
 
 	};
 	m_layout = DxDevice::instance->CreateInputLayout(elements, vsBytes);
+	DxDevice::instance->context()->IASetInputLayout(m_layout.get());
+	constantBuffer = DxDevice::instance->CreateConstantBuffer<MVPConstantBuffer>();
 }
 
 void ShaderInfoVertexColor::SetUpRender()
 {
 	DxDevice::instance->context()->IASetInputLayout(m_layout.get());
 	DxDevice::instance->context()->VSSetShader(m_vertexShader.get(), nullptr, 0);
+	DxDevice::instance->context()->GSSetShader(nullptr, nullptr, 0);
 	DxDevice::instance->context()->PSSetShader(m_pixelShader.get(), nullptr, 0);
-	constantBuffer = DxDevice::instance->CreateConstantBuffer<MVPConstantBuffer>();
-	DxDevice::instance->context()->Map(constantBuffer.get(), 0,
-		D3D11_MAP_WRITE_DISCARD, 0, &res);
 }
 
 void ShaderInfoVertexColor::SetVertexBuffer(ID3D11Buffer* vertexBuffer)
@@ -39,6 +39,8 @@ void ShaderInfoVertexColor::SetVertexBuffer(ID3D11Buffer* vertexBuffer)
 
 void ShaderInfoVertexColor::CopyConstantBuffers()
 {
+	DxDevice::instance->context()->Map(constantBuffer.get(), 0,
+		D3D11_MAP_WRITE_DISCARD, 0, &res);
 	memcpy(res.pData, &constantBufferStruct, sizeof(MVPConstantBuffer));
 	DxDevice::instance->context()->Unmap(constantBuffer.get(), 0);
 

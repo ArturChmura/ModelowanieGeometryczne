@@ -15,6 +15,7 @@
     <ClCompile Include="ArcCameraModel.cpp" />
     <ClCompile Include="BezierCurveC0.cpp" />
     <ClCompile Include="BezierCurveC2.cpp" />
+    <ClCompile Include="BezierCurveInterpolating.cpp" />
     <ClCompile Include="CompositeModel.cpp" />
     <ClCompile Include="Coursor3d.cpp" />
     <ClCompile Include="CursorOptionsWindow.cpp" />
@@ -45,16 +46,19 @@
     <ClCompile Include="PerspectiveCamera.cpp" />
     <ClCompile Include="PerspectiveCamera.h" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="ShaderInfoPolynomial.cpp" />
     <ClCompile Include="ShaderInfoSingleColorVs.cpp" />
     <ClCompile Include="ShaderInfoVertexColor.cpp" />
     <ClCompile Include="Torus.cpp" />
     <ClCompile Include="VertexModel.cpp" />
+    <ClCompile Include="VirtualPoint.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
     <ClInclude Include="ArcCameraModel.h" />
     <ClInclude Include="BezierCurveC0.h" />
     <ClInclude Include="BezierCurveC2.h" />
+    <ClInclude Include="BezierCurveInterpolating.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CompositeModel.h" />
     <ClInclude Include="Coursor3d.h" />
@@ -90,16 +94,32 @@
     <ClInclude Include="PerspectiveCameraOptionsWindow.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="ShaderInfoPolynomial.h" />
     <ClInclude Include="ShaderInfoSingleColorVs.h" />
     <ClInclude Include="ShaderInfoVertexColor.h" />
     <ClInclude Include="Torus.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexModel.h" />
+    <ClInclude Include="VirtualPoint.h" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="gsPolynomial.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="psConstColor.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
     <FxCompile Include="ps.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="vsPolynomial.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="vsSingleColor.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
@@ -112,6 +132,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="VSOut.hlsli" />
+    <None Include="vsOUtPolynomial.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DirectXTK\DirectXTK_Desktop_2022_Win10.vcxproj">

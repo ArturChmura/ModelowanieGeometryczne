@@ -17,3 +17,4 @@ VSOut main(VSIn i)
     o.col = float4(color, 1.0f);
     return o;
 }
+

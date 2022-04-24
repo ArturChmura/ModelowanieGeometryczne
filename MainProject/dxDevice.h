@@ -35,7 +35,9 @@ public:
 
 	static std::vector<BYTE> LoadByteCode(const std::wstring& filename);
 
-	mini::dx_ptr<ID3D11VertexShader> CreateVertexShader(std::vector<BYTE> vsCode) const;
+	mini::dx_ptr<ID3D11VertexShader> CreateVertexShader(std::vector<BYTE> vsCode) const; 
+	
+	mini::dx_ptr<ID3D11GeometryShader> CreateGeometryShader(std::vector<BYTE> psCode) const;
 
 	mini::dx_ptr<ID3D11PixelShader> CreatePixelShader(std::vector<BYTE> psCode) const;
 

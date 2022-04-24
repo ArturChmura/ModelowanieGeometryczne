@@ -97,6 +97,16 @@ dx_ptr<ID3D11PixelShader> DxDevice::CreatePixelShader(vector<BYTE> psCode) const
 	return result;
 }
 
+dx_ptr<ID3D11GeometryShader> DxDevice::CreateGeometryShader(vector<BYTE> psCode) const
+{
+	ID3D11GeometryShader* temp;
+	auto hr = m_device->CreateGeometryShader(reinterpret_cast<const void*>(psCode.data()), psCode.size(), nullptr, &temp);
+	dx_ptr<ID3D11GeometryShader> result(temp);
+	if (FAILED(hr))
+		THROW_WINAPI;
+	return result;
+}
+
 dx_ptr<ID3D11InputLayout> DxDevice::CreateInputLayout(const vector<D3D11_INPUT_ELEMENT_DESC> elements, vector<BYTE> vsCode) const
 {
 	ID3D11InputLayout* temp;
