@@ -1,6 +1,5 @@
 #include "VertexModel.h"
 #include "MVPColorConstantBuffer.h"
-#include "Vertex.h"
 #include "ImGui/imgui.h"
 #include "SimpleMath.h"
 #include "MatrixExt.h"
@@ -10,7 +9,6 @@ using namespace DirectX;
 VertexModel::VertexModel(std::string name)
 	:IModel(name)
 {
-	this->shaderInfoSingleColorVs = std::make_shared< ShaderInfoSingleColorVs>();
 	this->scale = { 1,1,1 };
 	this->translation = { 0,0,0 };
 	this->rotation = { 0,0,0 };
@@ -30,20 +28,15 @@ void VertexModel::SetColor(DirectX::XMFLOAT3 color)
 void VertexModel::Draw(std::shared_ptr<Camera> camera)
 {
 	meshInfo.SetUpRender();
-	shaderInfoSingleColorVs->SetUpRender();
-	shaderInfoSingleColorVs->SetVertexBuffer(meshInfo.vertexBuffer.get());
+	shaders.SetupRender();
+	shaders.vertexShader.SetVertexBuffer(meshInfo.vertexBuffer.get());
 
 	auto m = modelMatrix;
 	auto v = camera->GetViewMatrix();
 	auto p = camera->GetPerspectiveMatrix();
-	shaderInfoSingleColorVs->constantBufferStruct.mvp =
-		XMLoadFloat4x4(&m) *
-		XMLoadFloat4x4(&v) *
-		XMLoadFloat4x4(&p);
-	shaderInfoSingleColorVs->constantBufferStruct.color = XMLoadFloat3(&meshInfo.color);
-
-
-	shaderInfoSingleColorVs->CopyConstantBuffers();
+	auto mvp = m * v * p;
+	shaders.vertexShader.SetConstantBuffer(mvp);
+	shaders.pixelShader.SetConstantBuffer(meshInfo.color);
 
 	DxDevice::instance->context()->DrawIndexed(GetIndicesCount(), 0, 0);
 }

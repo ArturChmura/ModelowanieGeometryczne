@@ -21,7 +21,7 @@ float DeCasteljeu(float coef[4], float t, int n)
     return value;
 }
 
-int CalculateSlicesCount(GSIn i)
+int CalculateSlicesCount(GSBezierIn i)
 {
     int n = i.SIZE;
     float4 points[4];
@@ -54,8 +54,8 @@ int CalculateSlicesCount(GSIn i)
 
 [maxvertexcount(256)]
 void main(
-	point GSIn input[1],
-	inout LineStream<GSOutput> output
+	point GSBezierIn input[1],
+	inout LineStream<GSBezierOutput> output
 )
 {
     int slices = CalculateSlicesCount(input[0]);
@@ -88,7 +88,7 @@ void main(
         };
         float z = DeCasteljeu(coefZ, t, input[0].SIZE);
         
-        GSOutput element;
+        GSBezierOutput element;
         element.pos = mul(MVP, float4(x, y, z, 1.0f));
         output.Append(element);
     }

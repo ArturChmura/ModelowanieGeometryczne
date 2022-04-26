@@ -1,7 +1,6 @@
 #pragma once
 #include <DirectXMath.h>
 #include <string>
-#include "ShaderInfo.h"
 #include <memory>
 #include "Camera.h"
 #include "dxDevice.h"

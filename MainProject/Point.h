@@ -1,10 +1,9 @@
 #pragma once
 #include "VertexModel.h"
 #include "DirectXMath.h"
-#include "ShaderInfoSingleColorVs.h"
 #include "SimpleMath.h"
 #include <functional>
-
+#include "LineShader.h"
 class Point : public IModel
 {
 public:
@@ -45,7 +44,7 @@ private:
 	// Inherited via IModel
 	void OnModelChange();
 
-	std::shared_ptr<ShaderInfoSingleColorVs> shaderInfoSingleColorVs;
 	virtual void ChangeColor(DirectX::SimpleMath::Vector3 color) override;
 
+	LineShader shaders;
 };

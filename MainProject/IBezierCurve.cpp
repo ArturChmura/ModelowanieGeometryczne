@@ -75,17 +75,20 @@ void IBezierCurve::Draw(std::shared_ptr<Camera> camera)
 	meshInfo.SetUpRender();
 	shaders.SetupRender();
 	shaders.vertexShader.SetVertexBuffer(meshInfo.vertexBuffer.get());
+
 	auto v = camera->GetViewMatrix();
 	auto p = camera->GetPerspectiveMatrix();
 	auto mvp = v * p;
+
 	GSBezierConstantBuffer gsCB;
 	gsCB.mvp = mvp;
 	gsCB.screenWidth = DxDevice::winowSize.cx;
 	gsCB.screenHeight = DxDevice::winowSize.cy;
 	shaders.geometryShader.SetConstantBuffer(gsCB);
+
 	shaders.pixelShader.SetConstantBuffer(meshInfo.color);
 
-	DxDevice::instance->context()->Draw(10000, 0);
+	DxDevice::instance->context()->Draw(verticesCount, 0);
 }
 
 void IBezierCurve::AddPoint(std::shared_ptr<Point> point)

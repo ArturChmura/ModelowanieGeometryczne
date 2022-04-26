@@ -1,7 +1,7 @@
 #include "Torus.h"
 #include "Helpers.h"
 #include "ImGui/imgui.h"
-
+using namespace DirectX::SimpleMath;
 
 Torus::Torus(float R, float r, unsigned int largeSlices, unsigned int smallSlices)
 	: VertexModel("Torus")
@@ -44,7 +44,7 @@ void Torus::UpdateSlicesCount()
 	auto verticesCount = largeSlices * smallSlices;
 	auto indicesCount = largeSlices * smallSlices * 4;
 
-	std::vector<Vertex> vertices = std::vector<Vertex>();
+	std::vector<VSConstColorIn> vertices = std::vector<VSConstColorIn>();
 	vertices.reserve(verticesCount);
 	std::vector<int> indices = std::vector<int>();
 	indices.reserve(indicesCount);
@@ -58,7 +58,7 @@ void Torus::UpdateSlicesCount()
 			float x = (R + r * cosf(beta)) * cosf(alpha);
 			float y = (R + r * cosf(beta)) * sinf(alpha);
 			float z = r * sinf(beta);
-			Vertex vertex = { {x,y,z} };
+			VSConstColorIn vertex = { Vector3(x,y,z)};
 			vertices.push_back(vertex);
 
 			Pair<int> topLeft = { largeCount, smallCount };

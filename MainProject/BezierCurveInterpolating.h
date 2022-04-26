@@ -23,3 +23,12 @@ public:
 	virtual void RenderGUI() override;
 	bool bezierRepresentation = false;
 };
+
+
+struct Coef
+{
+	DirectX::XMFLOAT4 A;
+	DirectX::XMFLOAT3 B;
+	DirectX::XMFLOAT3 C;
+	DirectX::XMFLOAT3 D;
+};

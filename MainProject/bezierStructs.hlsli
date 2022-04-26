@@ -1,5 +1,5 @@
 
-struct VSIn
+struct VSBezierIn
 {
     float4 x : SV_POSITION;
     float4 y : Y;
@@ -7,7 +7,7 @@ struct VSIn
     int SIZE : SIZE;
 };
 
-struct GSIn
+struct GSBezierIn
 {
     float4 x : SV_POSITION;
     float4 y : Y;
@@ -15,7 +15,7 @@ struct GSIn
     int SIZE : SIZE;
 };
 
-struct GSOutput
+struct GSBezierOutput
 {
     float4 pos : SV_POSITION;
 };

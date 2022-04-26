@@ -2,7 +2,7 @@
 #include "IModel.h"
 #include <memory>
 #include "MeshInfo.h"
-#include "ShaderInfoSingleColorVs.h"
+#include "LineShader.h"
 
 class VertexModel :public IModel
 {
@@ -47,7 +47,8 @@ protected:
 
 	// Inherited via IModel
 	virtual void ChangeColor(DirectX::SimpleMath::Vector3 color) override;
-	std::shared_ptr<ShaderInfoSingleColorVs> shaderInfoSingleColorVs;
+
+	LineShader shaders;
 
 
 };

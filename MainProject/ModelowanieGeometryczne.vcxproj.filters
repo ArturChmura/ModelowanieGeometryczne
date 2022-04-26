@@ -159,12 +159,6 @@
     <ClCompile Include="MatrixExt.cpp">
       <Filter>Source Files\Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderInfoSingleColorVs.cpp">
-      <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
-    <ClCompile Include="ShaderInfoVertexColor.cpp">
-      <Filter>Source Files\Shaders</Filter>
-    </ClCompile>
     <ClCompile Include="MeshInfo.cpp">
       <Filter>Source Files\Mesh</Filter>
     </ClCompile>
@@ -204,13 +198,28 @@
     <ClCompile Include="gsBezier.cpp">
       <Filter>Source Files\Shaders\Bezier</Filter>
     </ClCompile>
-    <ClCompile Include="vsBezier.cpp">
-      <Filter>Source Files\Shaders\Bezier</Filter>
-    </ClCompile>
     <ClCompile Include="BezierShaders.cpp">
       <Filter>Source Files\Shaders\Bezier</Filter>
     </ClCompile>
     <ClCompile Include="psConstColor.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="psColor.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="vsBezier.cpp">
+      <Filter>Source Files\Shaders\Bezier</Filter>
+    </ClCompile>
+    <ClCompile Include="vsColor.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="vsConstColor.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="LineColorShaders.cpp">
+      <Filter>Source Files\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="LineShader.cpp">
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
   </ItemGroup>
@@ -235,9 +244,6 @@
     </ClInclude>
     <ClInclude Include="Torus.h">
       <Filter>Header Files\Shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="Vertex.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\imconfig.h">
       <Filter>Resource Files\ImGui</Filter>
@@ -305,15 +311,6 @@
     <ClInclude Include="MessageHandler.h">
       <Filter>Header Files\EventsHandlers</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderInfo.h">
-      <Filter>Header Files\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderInfoSingleColorVs.h">
-      <Filter>Header Files\Shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderInfoVertexColor.h">
-      <Filter>Header Files\Shaders</Filter>
-    </ClInclude>
     <ClInclude Include="MatrixExt.h">
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
@@ -365,33 +362,48 @@
     <ClInclude Include="psConstColor.h">
       <Filter>Header Files\Shaders</Filter>
     </ClInclude>
+    <ClInclude Include="psColor.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="vsConstColor.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="vsColor.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="LineColorShaders.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="LineShader.h">
+      <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="ps.hlsl">
-      <Filter>Source Files\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="vsSingleColor.hlsl">
-      <Filter>Source Files\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="vsVertexColor.hlsl">
+    <FxCompile Include="psColor.hlsl">
       <Filter>Source Files\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="psConstColor.hlsl">
       <Filter>Source Files\Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="vsBezier.hlsl">
-      <Filter>Source Files\Shaders\Bezier</Filter>
-    </FxCompile>
     <FxCompile Include="gsBezier.hlsl">
       <Filter>Source Files\Shaders\Bezier</Filter>
     </FxCompile>
+    <FxCompile Include="vsBezier.hlsl">
+      <Filter>Source Files\Shaders\Bezier</Filter>
+    </FxCompile>
+    <FxCompile Include="vsColor.hlsl">
+      <Filter>Source Files\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="vsConstColor.hlsl">
+      <Filter>Source Files\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="VSOut.hlsli">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
     <None Include="bezierStructs.hlsli">
       <Filter>Source Files\Shaders\Bezier</Filter>
+    </None>
+    <None Include="VSColorOut.hlsli">
+      <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

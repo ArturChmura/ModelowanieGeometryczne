@@ -1,8 +1,8 @@
 #include "bezierStructs.hlsli"
 
-GSIn main(VSIn i)
+GSBezierIn main(VSBezierIn i)
 {
-    GSIn o;
+    GSBezierIn o;
     o.x = i.x;
     o.y = i.y;
     o.z = i.z;

@@ -1,6 +1,5 @@
 #include "BezierCurveInterpolating.h"
 #include "Helpers.h"
-#include "Vertex.h"
 #include "ImGui/imgui.h"
 
 using namespace DirectX::SimpleMath;
@@ -114,7 +113,10 @@ void BezierCurveInterpolating::CalculatePolynomials()
 
 void BezierCurveInterpolating::Draw(std::shared_ptr<Camera> camera)
 {
-	CalculatePolynomials();
+	if (resetDrawing)
+	{
+		CalculatePolynomials();
+	}
 	IBezierCurve::Draw(camera);
 
 	if (bezierRepresentation)

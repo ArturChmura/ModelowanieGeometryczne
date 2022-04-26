@@ -1,6 +1,5 @@
 #include "BezierCurveC0.h"
 #include <iterator>
-#include "Vertex.h"
 #include "ImGui/imgui.h"
 #include <algorithm>
 #include "SimpleMath.h"

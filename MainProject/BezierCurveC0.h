@@ -2,7 +2,6 @@
 
 #include "IBezierCurve.h"
 #include "Point.h"
-#include "ShaderInfoSingleColorVs.h"
 
 class BezierCurveC0 : public IBezierCurve
 {

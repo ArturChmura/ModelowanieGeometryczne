@@ -2,7 +2,6 @@
 
 #include "IBezierCurve.h"
 #include "Point.h"
-#include "ShaderInfoSingleColorVs.h"
 #include "VirtualPoint.h"
 
 class BezierCurveC2 : public IBezierCurve

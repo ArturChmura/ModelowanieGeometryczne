@@ -1,5 +1,4 @@
 #include "BezierCurveC2.h"
-#include "Vertex.h"
 #include "ImGui/imgui.h"
 using namespace DirectX;
 using namespace DirectX::SimpleMath;

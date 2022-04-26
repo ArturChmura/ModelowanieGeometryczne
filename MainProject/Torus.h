@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include "Triangulation.h"
 #include "VertexModel.h"
 
 class Torus : public VertexModel

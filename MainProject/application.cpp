@@ -91,16 +91,16 @@ Application::Application(SIZE size)
 	scene->ChangeSelection(point);*/
 
 	scene->AddBezierCurveInterpolatingFromSelectedPoints();
-	//scene->AddBezierCurveC2FromSelectedPoints();
-	//scene->AddBezierCurveC0FromSelectedPoints();
+	scene->AddBezierCurveC2FromSelectedPoints();
+	scene->AddBezierCurveC0FromSelectedPoints();
+
+
+	scene->cursor->translation = { 10,10,10 };
+	scene->AddTorus();
 }
 
 void Application::Render()
 {
-	perspectiveCameraOptionsWindow->Render();
-	cursorOptionsWindow->Render();
-	objectsListWindow->Render();
-	propertiesWindow->Render();
 	mouseEvents->HandleMouse();
 	keyboardHandler->HandleKeyboard();
 
@@ -121,6 +121,12 @@ void Application::Render()
 		scene->selectedModel->Draw(scene->activeCamera);
 	}
 	scene->cursor->Draw(scene->activeCamera);
+
+
+	perspectiveCameraOptionsWindow->Render();
+	cursorOptionsWindow->Render();
+	objectsListWindow->Render();
+	propertiesWindow->Render();
 }
 
 void Application::Update()

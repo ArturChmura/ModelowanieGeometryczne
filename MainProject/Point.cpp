@@ -1,5 +1,4 @@
 #include "Point.h"
-#include "Vertex.h"
 #include "MVPColorConstantBuffer.h"
 #include "ImGui/imgui.h"
 
@@ -9,19 +8,18 @@ using namespace DirectX::SimpleMath;
 Point::Point(DirectX::SimpleMath::Vector3 location)
 	: IModel("Point")
 {
-	this->shaderInfoSingleColorVs = std::make_shared< ShaderInfoSingleColorVs>();
 	this->SetTranslation(location.x, location.y, location.z);
 	float halfSideLength = 0.1f;
-	std::vector<Vertex> vertices = {
-		{{-halfSideLength, -halfSideLength, -halfSideLength}},
-		{{-halfSideLength, halfSideLength, -halfSideLength}},
-		{{halfSideLength, halfSideLength, -halfSideLength}},
-		{{halfSideLength, -halfSideLength, -halfSideLength}},
-		{{-halfSideLength, -halfSideLength, halfSideLength}},
-		{{-halfSideLength, halfSideLength, halfSideLength}},
-		{{halfSideLength, halfSideLength, halfSideLength}},
-		{{halfSideLength, -halfSideLength, halfSideLength}}
-	};
+	std::vector<VSConstColorIn> vertices = {
+		{ Vector3(-halfSideLength, -halfSideLength, -halfSideLength)},
+		{ Vector3(-halfSideLength, halfSideLength, -halfSideLength)},
+		{ Vector3(halfSideLength, halfSideLength, -halfSideLength)},
+		{ Vector3(halfSideLength, -halfSideLength, -halfSideLength)},
+		{ Vector3(-halfSideLength, -halfSideLength, halfSideLength)},
+		{ Vector3(-halfSideLength, halfSideLength, halfSideLength)},
+		{ Vector3(halfSideLength, halfSideLength, halfSideLength)},
+		{ Vector3(halfSideLength, -halfSideLength, halfSideLength)}
+			};
 	std::vector<int> indices = {
 		0,1,2,
 		0,2,3, // front
@@ -142,26 +140,23 @@ void Point::RotateFromPoint(Vector4 globalPoint, DirectX::XMFLOAT3 rotation)
 
 	auto modelMatrix = GetModelMatrix();
 	auto m = modelMatrix * rotationMatrix;
-	this->translation = { m._41, m._42, m._43, 1};
+	this->translation = { m._41, m._42, m._43, 1 };
 	OnModelChange();
 }
 
 void Point::Draw(std::shared_ptr<Camera> camera)
 {
-	shaderInfoSingleColorVs->SetUpRender();
 	meshInfo.SetUpRender();
-
-	shaderInfoSingleColorVs->SetVertexBuffer(meshInfo.vertexBuffer.get());
+	shaders.SetupRender();
+	shaders.vertexShader.SetVertexBuffer(meshInfo.vertexBuffer.get());
 
 	auto v = camera->GetViewMatrix();
 	auto p = camera->GetPerspectiveMatrix();
-	shaderInfoSingleColorVs->constantBufferStruct.mvp =
-		GetModelMatrix() *
-		XMLoadFloat4x4(&v) *
-		XMLoadFloat4x4(&p);
-	shaderInfoSingleColorVs->constantBufferStruct.color = XMLoadFloat3(&meshInfo.color);
+	auto mvp = GetModelMatrix() * v * p;
 
-	shaderInfoSingleColorVs->CopyConstantBuffers();
+	shaders.vertexShader.SetConstantBuffer(mvp);
+
+	shaders.pixelShader.SetConstantBuffer(meshInfo.color);
 
 	DxDevice::instance->context()->DrawIndexed(indicesCount, 0, 0);
 }
