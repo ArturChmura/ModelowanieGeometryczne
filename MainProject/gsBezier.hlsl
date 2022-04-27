@@ -13,7 +13,7 @@ float DeCasteljeu(float coef[4], float t, int n)
         int currentSize = n - i;
         for (int j = 0; j < currentSize - 1; j++)
         {
-            coef[j] = coef[j] * (1 - t) + coef[j + 1] * t;
+            coef[j] = coef[j] * (1.0f - t) + coef[j + 1] * t;
         }
     }
     float value = coef[0];
@@ -60,27 +60,23 @@ void main(
 {
     int slices = CalculateSlicesCount(input[0]);
     float step = 1.0f / slices;
-	
-    for (float t = 0; t <= 1.0f; t += step)
+    for (float t = 0.0f; t <= 1.0f; t += step)
     {
-        float coefX[4] =
-        {
+        float coefX[4] = {
             input[0].x.x,
             input[0].x.y,
             input[0].x.z,
             input[0].x.w
         };
         float x = DeCasteljeu(coefX, t, input[0].SIZE);
-        float coefY[4] =
-        {
+        float coefY[4] = {
             input[0].y.x,
             input[0].y.y,
             input[0].y.z,
             input[0].y.w
         };
         float y = DeCasteljeu(coefY, t, input[0].SIZE);
-        float coefZ[4] =
-        {
+        float coefZ[4] = {
             input[0].z.x,
             input[0].z.y,
             input[0].z.z,
@@ -88,7 +84,7 @@ void main(
         };
         float z = DeCasteljeu(coefZ, t, input[0].SIZE);
         
-        GSBezierOutput element;
+        GSBezierOutput element = (GSBezierOutput)0;
         element.pos = mul(MVP, float4(x, y, z, 1.0f));
         output.Append(element);
     }

@@ -1,6 +1,7 @@
 #include "Torus.h"
 #include "Helpers.h"
 #include "ImGui/imgui.h"
+#include "vsConstColor.h"
 using namespace DirectX::SimpleMath;
 
 Torus::Torus(float R, float r, unsigned int largeSlices, unsigned int smallSlices)

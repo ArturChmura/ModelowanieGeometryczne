@@ -20,4 +20,9 @@ private:
 
 
 
+
+	// Inherited via IBezierCurve
+	virtual std::vector<DirectX::SimpleMath::Vector3> GetPolygonChainPoints() override;
+
+
 };

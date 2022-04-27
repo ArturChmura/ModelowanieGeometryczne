@@ -3,6 +3,7 @@
 #include "ImGui/imgui.h"
 #include "SimpleMath.h"
 #include "MatrixExt.h"
+#include "ShadersManager.h"
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
 
@@ -28,15 +29,21 @@ void VertexModel::SetColor(DirectX::XMFLOAT3 color)
 void VertexModel::Draw(std::shared_ptr<Camera> camera)
 {
 	meshInfo.SetUpRender();
-	shaders.SetupRender();
-	shaders.vertexShader.SetVertexBuffer(meshInfo.vertexBuffer.get());
+
+	DxDevice::instance->context()->IASetInputLayout(ShadersManager::vsConstColor->m_layout.get());
+	DxDevice::instance->context()->VSSetShader(ShadersManager::vsConstColor->m_vertexShader.get(), nullptr, 0);
+	DxDevice::instance->context()->GSSetShader(nullptr, nullptr, 0);
+	DxDevice::instance->context()->PSSetShader(ShadersManager::psConstColor->m_pixelShader.get(), nullptr, 0);
+
+	ShadersManager::vsConstColor->SetVertexBuffer(meshInfo.vertexBuffer.get());
 
 	auto m = modelMatrix;
 	auto v = camera->GetViewMatrix();
 	auto p = camera->GetPerspectiveMatrix();
 	auto mvp = m * v * p;
-	shaders.vertexShader.SetConstantBuffer(mvp);
-	shaders.pixelShader.SetConstantBuffer(meshInfo.color);
+	ShadersManager::vsConstColor->SetConstantBuffer(mvp);
+
+	ShadersManager::psConstColor->SetConstantBuffer(meshInfo.color);
 
 	DxDevice::instance->context()->DrawIndexed(GetIndicesCount(), 0, 0);
 }

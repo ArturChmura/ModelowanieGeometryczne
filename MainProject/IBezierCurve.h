@@ -1,7 +1,7 @@
 #pragma once
 #include "IModel.h"
 #include "Point.h"
-#include "BezierShaders.h"
+#include "PolygonalChain.h"
 
 
 class IBezierCurve : public IModel
@@ -10,6 +10,7 @@ public:
 	IBezierCurve(std::vector<std::shared_ptr<Point>> points, std::string name = "IBezierCurve");
 	std::vector<std::shared_ptr<Point>> points;
 	virtual std::vector<DirectX::SimpleMath::Vector3> GetBezierPoints() = 0;
+	virtual std::vector<DirectX::SimpleMath::Vector3> GetPolygonChainPoints() = 0;
 
 	virtual void UpdateVertices();
 
@@ -40,7 +41,7 @@ public:
 	virtual void RotateFromPoint(DirectX::SimpleMath::Vector4 globalPoint, DirectX::XMFLOAT3 ratation) override;
 
 	MeshInfo meshInfo;
-	BezierShaders shaders;
+	std::shared_ptr<PolygonalChain> polygonalChain;
 protected:
 	bool resetDrawing = true;
 	bool drawPolygonChain = false;

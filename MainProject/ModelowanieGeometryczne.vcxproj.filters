@@ -198,9 +198,6 @@
     <ClCompile Include="gsBezier.cpp">
       <Filter>Source Files\Shaders\Bezier</Filter>
     </ClCompile>
-    <ClCompile Include="BezierShaders.cpp">
-      <Filter>Source Files\Shaders\Bezier</Filter>
-    </ClCompile>
     <ClCompile Include="psConstColor.cpp">
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
@@ -216,10 +213,10 @@
     <ClCompile Include="vsConstColor.cpp">
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="LineColorShaders.cpp">
-      <Filter>Source Files\Shaders</Filter>
+    <ClCompile Include="PolygonalChain.cpp">
+      <Filter>Source Files\Shapes</Filter>
     </ClCompile>
-    <ClCompile Include="LineShader.cpp">
+    <ClCompile Include="ShadersManager.cpp">
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
   </ItemGroup>
@@ -353,9 +350,6 @@
     <ClInclude Include="gsBezier.h">
       <Filter>Header Files\Shaders\Bezier</Filter>
     </ClInclude>
-    <ClInclude Include="BezierShaders.h">
-      <Filter>Header Files\Shaders\Bezier</Filter>
-    </ClInclude>
     <ClInclude Include="CompositeModel.h">
       <Filter>Header Files\Shapes</Filter>
     </ClInclude>
@@ -371,10 +365,10 @@
     <ClInclude Include="vsColor.h">
       <Filter>Header Files\Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="LineColorShaders.h">
-      <Filter>Header Files\Shaders</Filter>
+    <ClInclude Include="PolygonalChain.h">
+      <Filter>Header Files\Shapes</Filter>
     </ClInclude>
-    <ClInclude Include="LineShader.h">
+    <ClInclude Include="ShadersManager.h">
       <Filter>Header Files\Shaders</Filter>
     </ClInclude>
   </ItemGroup>

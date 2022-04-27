@@ -1,6 +1,7 @@
 #include "IBezierCurve.h"
 #include "ImGui/imgui.h"
 #include <algorithm>
+#include "ShadersManager.h"
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
@@ -42,26 +43,16 @@ void IBezierCurve::UpdateVertices()
 		vertices.push_back(in);
 	}
 
-	/*if (drawPolygonChain && points.size() > 1)
-	{
-		auto currentSize = vertices.size();
-		for (int i = 0; i < points.size(); i++)
-		{
-			auto point = points[i];
-			auto translation = point->GetTranslation();
-			vertices.push_back({ {translation.x, translation.y, translation.z } });
-		}
-		for (int i = currentSize; i < (int)vertices.size() - 1; i++)
-		{
-			indices.push_back(i);
-			indices.push_back(i + 1);
-		}
-	}*/
-
 	this->verticesCount = vertices.size();
 	//if (verticesCount > 0)
 	{
 		this->meshInfo.vertexBuffer = DxDevice::instance->CreateVertexBuffer(vertices);
+	}
+
+	if (drawPolygonChain)
+	{
+		auto points = GetPolygonChainPoints();
+		polygonalChain = std::make_shared<PolygonalChain>(points);
 	}
 }
 
@@ -73,8 +64,13 @@ void IBezierCurve::Draw(std::shared_ptr<Camera> camera)
 	}
 
 	meshInfo.SetUpRender();
-	shaders.SetupRender();
-	shaders.vertexShader.SetVertexBuffer(meshInfo.vertexBuffer.get());
+
+	DxDevice::instance->context()->IASetInputLayout(ShadersManager::vsBezier->m_layout.get());
+	DxDevice::instance->context()->VSSetShader(ShadersManager::vsBezier->m_vertexShader.get(), nullptr, 0);
+	DxDevice::instance->context()->GSSetShader(ShadersManager::gsBezier->m_geometryShader.get(), nullptr, 0);
+	DxDevice::instance->context()->PSSetShader(ShadersManager::psConstColor->m_pixelShader.get(), nullptr, 0);
+
+	ShadersManager::vsBezier->SetVertexBuffer(meshInfo.vertexBuffer.get());
 
 	auto v = camera->GetViewMatrix();
 	auto p = camera->GetPerspectiveMatrix();
@@ -84,11 +80,16 @@ void IBezierCurve::Draw(std::shared_ptr<Camera> camera)
 	gsCB.mvp = mvp;
 	gsCB.screenWidth = DxDevice::winowSize.cx;
 	gsCB.screenHeight = DxDevice::winowSize.cy;
-	shaders.geometryShader.SetConstantBuffer(gsCB);
+	ShadersManager::gsBezier->SetConstantBuffer(gsCB);
 
-	shaders.pixelShader.SetConstantBuffer(meshInfo.color);
+	ShadersManager::psConstColor->SetConstantBuffer(meshInfo.color);
 
 	DxDevice::instance->context()->Draw(verticesCount, 0);
+
+	if (drawPolygonChain && polygonalChain)
+	{
+		polygonalChain->Draw(camera);
+	}
 }
 
 void IBezierCurve::AddPoint(std::shared_ptr<Point> point)
@@ -118,6 +119,10 @@ void IBezierCurve::RemovePoint(int pointId)
 void IBezierCurve::SetDrawPolygonChain(bool draw)
 {
 	this->drawPolygonChain = draw;
+	if (drawPolygonChain)
+	{
+
+	}
 	ResetDrawing();
 }
 

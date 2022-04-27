@@ -157,3 +157,8 @@ void BezierCurveInterpolating::RenderGUI()
 	}
 }
 
+std::vector<DirectX::SimpleMath::Vector3> BezierCurveInterpolating::GetPolygonChainPoints()
+{
+	return GetBezierPoints();
+}
+

@@ -1,5 +1,6 @@
 #include "Coursor3d.h"
 #include "MVPConstantBuffer.h"
+#include "ShadersManager.h"
 
 using namespace DirectX::SimpleMath;
 
@@ -27,8 +28,14 @@ void Coursor3d::Draw(std::shared_ptr<Camera> camera)
 	
 
 	DxDevice::instance->context()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
-	shaders.SetupRender();
-	shaders.vertexShader.SetVertexBuffer(vertexBuffer.get());
+
+	DxDevice::instance->context()->IASetInputLayout(ShadersManager::vsColor->m_layout.get());
+	DxDevice::instance->context()->VSSetShader(ShadersManager::vsColor->m_vertexShader.get(), nullptr, 0);
+	DxDevice::instance->context()->GSSetShader(nullptr, nullptr, 0);
+	DxDevice::instance->context()->PSSetShader(ShadersManager::psColor->m_pixelShader.get(), nullptr, 0);
+
+
+	ShadersManager::vsColor->SetVertexBuffer(vertexBuffer.get());
 	
 
 	auto v = camera->GetViewMatrix();
@@ -38,7 +45,7 @@ void Coursor3d::Draw(std::shared_ptr<Camera> camera)
 		v *
 		p;
 
-	shaders.vertexShader.SetConstantBuffer(mvp);
+	ShadersManager::vsColor->SetConstantBuffer(mvp);
 
 	auto count = 6;
 	DxDevice::instance->context()->Draw(count, 0);

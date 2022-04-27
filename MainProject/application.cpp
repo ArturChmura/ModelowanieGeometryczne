@@ -6,6 +6,7 @@
 #include "Point.h"
 #include "BezierCurveC0.h"
 #include "BezierCurveInterpolating.h"
+#include "ShadersManager.h"
 
 using namespace mini;
 using namespace DirectX;
@@ -26,6 +27,8 @@ Application::Application(SIZE size)
 
 	Viewport viewport{ size };
 	DxDevice::instance->context()->RSSetViewports(1, &viewport);
+
+	ShadersManager::LoadShaders();
 
 	auto cursor = std::make_shared<Coursor3d>();
 
@@ -90,13 +93,13 @@ Application::Application(SIZE size)
 	point = scene->AddPoint();
 	scene->ChangeSelection(point);*/
 
-	scene->AddBezierCurveInterpolatingFromSelectedPoints();
+	//scene->AddBezierCurveInterpolatingFromSelectedPoints();
 	scene->AddBezierCurveC2FromSelectedPoints();
-	scene->AddBezierCurveC0FromSelectedPoints();
+	//scene->AddBezierCurveC0FromSelectedPoints();
 
 
 	scene->cursor->translation = { 10,10,10 };
-	scene->AddTorus();
+	//scene->AddTorus();
 }
 
 void Application::Render()

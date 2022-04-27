@@ -3,7 +3,6 @@
 #include "DirectXMath.h"
 #include "SimpleMath.h"
 #include <functional>
-#include "LineShader.h"
 class Point : public IModel
 {
 public:
@@ -46,5 +45,4 @@ private:
 
 	virtual void ChangeColor(DirectX::SimpleMath::Vector3 color) override;
 
-	LineShader shaders;
 };

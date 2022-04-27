@@ -1,6 +1,7 @@
 #include "Point.h"
 #include "MVPColorConstantBuffer.h"
 #include "ImGui/imgui.h"
+#include "ShadersManager.h"
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -147,16 +148,20 @@ void Point::RotateFromPoint(Vector4 globalPoint, DirectX::XMFLOAT3 rotation)
 void Point::Draw(std::shared_ptr<Camera> camera)
 {
 	meshInfo.SetUpRender();
-	shaders.SetupRender();
-	shaders.vertexShader.SetVertexBuffer(meshInfo.vertexBuffer.get());
+	DxDevice::instance->context()->IASetInputLayout(ShadersManager::vsConstColor->m_layout.get());
+	DxDevice::instance->context()->VSSetShader(ShadersManager::vsConstColor->m_vertexShader.get(), nullptr, 0);
+	DxDevice::instance->context()->GSSetShader(nullptr, nullptr, 0);
+	DxDevice::instance->context()->PSSetShader(ShadersManager::psConstColor->m_pixelShader.get(), nullptr, 0);
+
+	ShadersManager::vsConstColor->SetVertexBuffer(meshInfo.vertexBuffer.get());
 
 	auto v = camera->GetViewMatrix();
 	auto p = camera->GetPerspectiveMatrix();
 	auto mvp = GetModelMatrix() * v * p;
 
-	shaders.vertexShader.SetConstantBuffer(mvp);
+	ShadersManager::vsConstColor->SetConstantBuffer(mvp);
 
-	shaders.pixelShader.SetConstantBuffer(meshInfo.color);
+	ShadersManager::psConstColor->SetConstantBuffer(meshInfo.color);
 
 	DxDevice::instance->context()->DrawIndexed(indicesCount, 0, 0);
 }

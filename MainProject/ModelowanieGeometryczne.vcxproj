@@ -16,7 +16,6 @@
     <ClCompile Include="BezierCurveC0.cpp" />
     <ClCompile Include="BezierCurveC2.cpp" />
     <ClCompile Include="BezierCurveInterpolating.cpp" />
-    <ClCompile Include="BezierShaders.cpp" />
     <ClCompile Include="CompositeModel.cpp" />
     <ClCompile Include="Coursor3d.cpp" />
     <ClCompile Include="CursorOptionsWindow.cpp" />
@@ -35,8 +34,6 @@
     <ClCompile Include="ImGui\imgui_tables.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
     <ClCompile Include="KeyboardHandler.cpp" />
-    <ClCompile Include="LineColorShaders.cpp" />
-    <ClCompile Include="LineShader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="IModel.cpp" />
     <ClCompile Include="MatrixExt.cpp" />
@@ -46,12 +43,14 @@
     <ClCompile Include="ObjectsListWindow.cpp" />
     <ClCompile Include="PerspectiveCameraOptionsWindow.cpp" />
     <ClCompile Include="Point.cpp" />
+    <ClCompile Include="PolygonalChain.cpp" />
     <ClCompile Include="PropertiesWindow.cpp" />
     <ClCompile Include="PerspectiveCamera.cpp" />
     <ClCompile Include="PerspectiveCamera.h" />
     <ClCompile Include="psColor.cpp" />
     <ClCompile Include="psConstColor.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="ShadersManager.cpp" />
     <ClCompile Include="Torus.cpp" />
     <ClCompile Include="VertexModel.cpp" />
     <ClCompile Include="VirtualPoint.cpp" />
@@ -65,7 +64,6 @@
     <ClInclude Include="BezierCurveC0.h" />
     <ClInclude Include="BezierCurveC2.h" />
     <ClInclude Include="BezierCurveInterpolating.h" />
-    <ClInclude Include="BezierShaders.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CompositeModel.h" />
     <ClInclude Include="Coursor3d.h" />
@@ -75,11 +73,10 @@
     <ClInclude Include="IBezierCurve.h" />
     <ClInclude Include="ImGui\imgui_stdlib.h" />
     <ClInclude Include="KeyboardHandler.h" />
-    <ClInclude Include="LineColorShaders.h" />
-    <ClInclude Include="LineShader.h" />
     <ClInclude Include="MatrixExt.h" />
     <ClInclude Include="MessageHandler.h" />
     <ClInclude Include="MultipleInheritableEnableSharedFromThis.h" />
+    <ClInclude Include="PolygonalChain.h" />
     <ClInclude Include="PropertiesWindow.h" />
     <ClInclude Include="psColor.h" />
     <ClInclude Include="psConstColor.h" />
@@ -105,6 +102,7 @@
     <ClInclude Include="PerspectiveCameraOptionsWindow.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="ShadersManager.h" />
     <ClInclude Include="Torus.h" />
     <ClInclude Include="VertexModel.h" />
     <ClInclude Include="VirtualPoint.h" />
@@ -118,6 +116,7 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+      <DisableOptimizations Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DisableOptimizations>
     </FxCompile>
     <FxCompile Include="psConstColor.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
