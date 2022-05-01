@@ -79,6 +79,12 @@
     <Filter Include="Header Files\Shaders\Bezier">
       <UniqueIdentifier>{4895a159-d809-49fb-8125-7f2fd95958ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Camera\CameraMovement">
+      <UniqueIdentifier>{b92e5dda-3ef5-4aa9-8032-6bb8ded03a49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Names">
+      <UniqueIdentifier>{e81c56c3-33d2-436c-b96a-a5a33d0d8ad8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxStructures.cpp">
@@ -135,7 +141,7 @@
     <ClCompile Include="PerspectiveCamera.cpp">
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="PerspectiveCameraOptionsWindow.cpp">
+    <ClCompile Include="CameraOptionsWindow.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
     <ClCompile Include="CursorOptionsWindow.cpp">
@@ -219,6 +225,15 @@
     <ClCompile Include="ShadersManager.cpp">
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
+    <ClCompile Include="StereoscopicCamera.cpp">
+      <Filter>Source Files\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Named.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dxptr.h">
@@ -232,9 +247,6 @@
     </ClInclude>
     <ClInclude Include="application.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ArcCameraModel.h">
-      <Filter>Header Files\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Helpers.h">
       <Filter>Header Files\Helpers</Filter>
@@ -275,10 +287,7 @@
     <ClInclude Include="Scene.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="PerspectiveCameraOptionsWindow.h">
+    <ClInclude Include="CameraOptionsWindow.h">
       <Filter>Header Files\Windows</Filter>
     </ClInclude>
     <ClInclude Include="MVPColorConstantBuffer.h">
@@ -370,6 +379,21 @@
     </ClInclude>
     <ClInclude Include="ShadersManager.h">
       <Filter>Header Files\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="StereoscopicCamera.h">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="ArcCameraModel.h">
+      <Filter>Header Files\Camera\CameraMovement</Filter>
+    </ClInclude>
+    <ClInclude Include="ICameraMovement.h">
+      <Filter>Header Files\Camera\CameraMovement</Filter>
+    </ClInclude>
+    <ClInclude Include="Named.h">
+      <Filter>Header Files\Names</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

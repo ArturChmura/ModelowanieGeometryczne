@@ -7,7 +7,7 @@
 #include "Torus.h"
 #include "Scene.h"
 #include "MouseEvents.h"
-#include "PerspectiveCameraOptionsWindow.h"
+#include "CameraOptionsWindow.h"
 #include "CursorOptionsWindow.h"
 #include "ObjectsListWindow.h"
 #include "PropertiesWindow.h"
@@ -34,7 +34,7 @@ public:
 	std::shared_ptr<MessageHandler> messageHandler;
 	std::shared_ptr<ObjectsListWindow> objectsListWindow;
 	std::shared_ptr<PropertiesWindow> propertiesWindow;
-	std::shared_ptr<PerspectiveCameraOptionsWindow> perspectiveCameraOptionsWindow;
+	std::shared_ptr<CameraOptionsWindow> cameraOptionsWindow;
 	std::shared_ptr<CursorOptionsWindow> cursorOptionsWindow;
 	std::shared_ptr<DebugWindow> debugWindow;
 	std::shared_ptr<MouseEvents> mouseEvents;

@@ -21,15 +21,6 @@ void Scene::AddCamera(std::shared_ptr<Camera> camera)
 	}
 }
 
-void Scene::SetActiveCamera(std::shared_ptr<Camera> camera)
-{
-	if (std::find(cameras.begin(), cameras.end(), camera) == cameras.end())
-	{
-		cameras.push_back(camera);
-	}
-	activeCamera = camera;
-}
-
 
 std::shared_ptr<Torus> Scene::AddTorus()
 {
@@ -209,4 +200,20 @@ void Scene::RemoveSelectedModels()
 	}
 	selectedModel = nullptr;
 	composite = std::make_shared<CompositeModel>();
+}
+
+void Scene::DrawScene()
+{
+	for (auto model : models)
+	{
+		if (model->GetVisible())
+		{
+			model->Draw(activeCamera);
+		}
+	}
+	if (selectedModel)
+	{
+		selectedModel->Draw(activeCamera);
+	}
+	cursor->Draw(activeCamera);
 }

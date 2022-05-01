@@ -16,6 +16,7 @@
     <ClCompile Include="BezierCurveC0.cpp" />
     <ClCompile Include="BezierCurveC2.cpp" />
     <ClCompile Include="BezierCurveInterpolating.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CompositeModel.cpp" />
     <ClCompile Include="Coursor3d.cpp" />
     <ClCompile Include="CursorOptionsWindow.cpp" />
@@ -40,8 +41,9 @@
     <ClCompile Include="MeshInfo.cpp" />
     <ClCompile Include="MessageHandler.cpp" />
     <ClCompile Include="MouseEvents.cpp" />
+    <ClCompile Include="Named.cpp" />
     <ClCompile Include="ObjectsListWindow.cpp" />
-    <ClCompile Include="PerspectiveCameraOptionsWindow.cpp" />
+    <ClCompile Include="CameraOptionsWindow.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="PolygonalChain.cpp" />
     <ClCompile Include="PropertiesWindow.cpp" />
@@ -51,6 +53,7 @@
     <ClCompile Include="psConstColor.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShadersManager.cpp" />
+    <ClCompile Include="StereoscopicCamera.cpp" />
     <ClCompile Include="Torus.cpp" />
     <ClCompile Include="VertexModel.cpp" />
     <ClCompile Include="VirtualPoint.cpp" />
@@ -71,11 +74,13 @@
     <ClInclude Include="DebugWindow.h" />
     <ClInclude Include="gsBezier.h" />
     <ClInclude Include="IBezierCurve.h" />
+    <ClInclude Include="ICameraMovement.h" />
     <ClInclude Include="ImGui\imgui_stdlib.h" />
     <ClInclude Include="KeyboardHandler.h" />
     <ClInclude Include="MatrixExt.h" />
     <ClInclude Include="MessageHandler.h" />
     <ClInclude Include="MultipleInheritableEnableSharedFromThis.h" />
+    <ClInclude Include="Named.h" />
     <ClInclude Include="PolygonalChain.h" />
     <ClInclude Include="PropertiesWindow.h" />
     <ClInclude Include="psColor.h" />
@@ -99,10 +104,11 @@
     <ClInclude Include="MouseEvents.h" />
     <ClInclude Include="MVPConstantBuffer.h" />
     <ClInclude Include="ObjectsListWindow.h" />
-    <ClInclude Include="PerspectiveCameraOptionsWindow.h" />
+    <ClInclude Include="CameraOptionsWindow.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ShadersManager.h" />
+    <ClInclude Include="StereoscopicCamera.h" />
     <ClInclude Include="Torus.h" />
     <ClInclude Include="VertexModel.h" />
     <ClInclude Include="VirtualPoint.h" />

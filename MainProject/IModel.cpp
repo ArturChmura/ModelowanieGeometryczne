@@ -4,17 +4,9 @@
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
 IModel::IModel(std::string name)
+	:Named(name)
 {
-	this->name = name;
-	static int id = 0;
-	this->id = ++id;
 }
-
-void IModel::ChangeName(std::string name)
-{
-	this->name = name;
-}
-
 
 void IModel::RenderGUI()
 {

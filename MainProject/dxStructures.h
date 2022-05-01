@@ -38,3 +38,9 @@ struct Texture2DDescription : D3D11_TEXTURE2D_DESC
 	static Texture2DDescription DepthStencilDescription(
 		UINT width, UINT height);
 };
+
+
+struct BlendDescription : D3D11_BLEND_DESC
+{
+	BlendDescription();
+};

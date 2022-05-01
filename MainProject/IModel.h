@@ -1,21 +1,18 @@
 #pragma once
 #include <DirectXMath.h>
-#include <string>
 #include <memory>
 #include "Camera.h"
 #include "dxDevice.h"
 #include <d3d11.h>
 #include "SimpleMath.h"
 #include "MultipleInheritableEnableSharedFromThis.h"
+#include "Named.h"
 
-class IModel: public inheritable_enable_shared_from_this<IModel>
+class IModel: public inheritable_enable_shared_from_this<IModel>, public Named
 {
 public:
 	IModel(std::string name = "unnamed");
 
-	void ChangeName(std::string name);
-	std::string name;
-	int id;
 
 	virtual void SetScale(float x, float y, float z) = 0;
 	virtual void Scale(float x, float y, float z) = 0;

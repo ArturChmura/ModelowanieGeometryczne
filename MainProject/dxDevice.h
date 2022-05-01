@@ -75,6 +75,9 @@ public:
 	}
 
 
+	mini::dx_ptr<ID3D11BlendState> CreateBlendState(const BlendDescription& desc = {}) const;
+
+
 private:
 
 	ID3D11Device* m_device;

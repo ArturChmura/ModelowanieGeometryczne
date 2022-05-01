@@ -7,6 +7,8 @@
 #include "BezierCurveC0.h"
 #include "BezierCurveInterpolating.h"
 #include "ShadersManager.h"
+#include "PerspectiveCamera.h"
+#include "StereoscopicCamera.h"
 
 using namespace mini;
 using namespace DirectX;
@@ -35,8 +37,12 @@ Application::Application(SIZE size)
 	scene = std::make_shared<Scene>(cursor, size);
 
 	XMFLOAT3 targetPosition = { 0,0,0 };
-	auto camera = std::make_shared<ArcCameraModel>(targetPosition, 30, XMConvertToRadians(45), static_cast<float>(size.cx) / size.cy, 0.01f, 1000.0f);
-	scene->AddCamera(camera);
+	auto arcCameraMovement = std::make_shared<ArcCameraModel>(targetPosition, 30);
+	auto perspectiveCamera = std::make_shared<PerspectiveCamera>(arcCameraMovement,XMConvertToRadians(45), static_cast<float>(size.cx) / size.cy, 0.1f, 1000.0f);
+	auto stereoscopicCamera = std::make_shared<StereoscopicCamera>(arcCameraMovement, XMConvertToRadians(45), static_cast<float>(size.cx) / size.cy, 0.1f, 1000.0f, 2, 100);
+
+	scene->AddCamera(perspectiveCamera);
+	scene->AddCamera(stereoscopicCamera);
 
 	backgroundColor = { 0,0,0 };
 
@@ -45,20 +51,22 @@ Application::Application(SIZE size)
 
 	objectsListWindow = std::make_shared<ObjectsListWindow>(scene);
 	propertiesWindow = std::make_shared<PropertiesWindow>(scene);
-	perspectiveCameraOptionsWindow = make_shared<PerspectiveCameraOptionsWindow>(camera);
-	cursorOptionsWindow = make_shared<CursorOptionsWindow>(cursor, scene, size);
-	mouseEvents = std::make_shared<MouseEvents>(camera, scene);
+	cameraOptionsWindow = std::make_shared<CameraOptionsWindow>();
+	cursorOptionsWindow = std::make_shared<CursorOptionsWindow>(cursor, scene, size);
+	mouseEvents = std::make_shared<MouseEvents>(arcCameraMovement, scene);
 	keyboardHandler = std::make_shared<KeyboardHandler>(scene);
 	messageHandler = std::make_shared<MessageHandler>(scene);
 	debugWindow = std::make_shared<DebugWindow>();
 
+
+
 	float r = 0, fi = 0, phi = 0;
 	for (int i = 0; i < 10; i++)
 	{
-		float x = r * cosf(fi)* cosf(phi);
+		float x = r * cosf(fi) * cosf(phi);
 		float y = r * sinf(fi) * cosf(phi);
 		float z = r * sinf(phi);
-
+		z = 0;
 		scene->cursor->translation = { x,y,z };
 		auto point = scene->AddPoint();
 		scene->ChangeSelection(point);
@@ -67,6 +75,9 @@ Application::Application(SIZE size)
 		fi += 1.0f;
 		phi += 1.0f;
 	}
+
+
+
 	/*for (int i = 0; i < 3; i++)
 	{
 		float x = i*10;
@@ -93,47 +104,38 @@ Application::Application(SIZE size)
 	point = scene->AddPoint();
 	scene->ChangeSelection(point);*/
 
-	//scene->AddBezierCurveInterpolatingFromSelectedPoints();
-	scene->AddBezierCurveC2FromSelectedPoints();
+	scene->AddBezierCurveInterpolatingFromSelectedPoints();
+	//scene->AddBezierCurveC2FromSelectedPoints();
 	//scene->AddBezierCurveC0FromSelectedPoints();
 
 
 	scene->cursor->translation = { 10,10,10 };
-	//scene->AddTorus();
+	scene->AddTorus();
+
 }
 
 void Application::Render()
 {
-	mouseEvents->HandleMouse();
-	keyboardHandler->HandleKeyboard();
-
 	const float clearColor[] = { backgroundColor.x,backgroundColor.y,backgroundColor.z, 1.0f };
+
 	DxDevice::instance->context()->ClearRenderTargetView(m_backBuffer.get(), clearColor);
 	DxDevice::instance->context()->ClearDepthStencilView(m_depthBuffer.get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
+	scene->activeCamera->RenderScene(scene);
 
-	for (auto model : scene->models)
-	{
-		if (model->GetVisible())
-		{
-			model->Draw(scene->activeCamera);
-		}
-	}
-	if (scene->selectedModel)
-	{
-		scene->selectedModel->Draw(scene->activeCamera);
-	}
-	scene->cursor->Draw(scene->activeCamera);
-
-
-	perspectiveCameraOptionsWindow->Render();
+	cameraOptionsWindow->Render(scene);
 	cursorOptionsWindow->Render();
 	objectsListWindow->Render();
 	propertiesWindow->Render();
 }
 
+
+
+
 void Application::Update()
 {
+	mouseEvents->HandleMouse();
+	keyboardHandler->HandleKeyboard();
 }
 
 void Application::HandleMessage(MSG message)

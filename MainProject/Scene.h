@@ -27,7 +27,6 @@ public:
 	std::vector<std::shared_ptr<Point>> points;
 
 	void AddCamera(std::shared_ptr<Camera> camera);
-	void SetActiveCamera(std::shared_ptr<Camera> camera);
 	std::vector<std::shared_ptr<Camera>> cameras;
 	std::shared_ptr<Camera> activeCamera;
 	std::shared_ptr<CompositeModel> composite; 
@@ -36,6 +35,8 @@ public:
 	SIZE windowSize;
 	void UpdateCursorPositionFromScreenCoords(DirectX::SimpleMath::Vector2 screenCoords);
 	void RemoveSelectedModels();
+
+	void DrawScene();
 public:
 	void AddModel(std::shared_ptr<IModel> model);
 private:

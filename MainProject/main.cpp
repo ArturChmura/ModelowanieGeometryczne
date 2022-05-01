@@ -9,7 +9,6 @@
 #include <tchar.h>
 #include <DirectXMath.h>
 #include "dxDevice.h"
-#include "ArcCameraModel.h"
 #include "Torus.h"
 #include "application.h"
 #include "MouseEvents.h"
@@ -25,7 +24,7 @@ void CleanupDeviceD3D();
 void CreateRenderTarget();
 void CleanupRenderTarget();
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-SIZE windowSize = { 1920,1080 };
+SIZE windowSize = { 1600,1200 };
 // Main code
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine, int cmdShow)
 {

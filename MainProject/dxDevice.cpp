@@ -126,3 +126,14 @@ DxDevice::CreateDepthStencilView(SIZE size) const {
 	return CreateDepthStencilView(texture);
 
 }
+
+
+dx_ptr<ID3D11BlendState> DxDevice::CreateBlendState(const BlendDescription& desc) const
+{
+	ID3D11BlendState* s = nullptr;
+	auto hr = m_device->CreateBlendState(&desc, &s);
+	dx_ptr<ID3D11BlendState> state(s);
+	if (FAILED(hr))
+		THROW_DX(hr);
+	return state;
+}

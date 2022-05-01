@@ -1,10 +1,12 @@
 #include "ArcCameraModel.h"
 #include "Helpers.h"
+#include "ImGui/imgui.h"
+
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
 
-ArcCameraModel::ArcCameraModel(XMFLOAT3 targetPosition, float distance, float fieldOfView, float aspectRatio, float nearZ, float farZ)
-	: PerspectiveCamera(fieldOfView, aspectRatio, nearZ, farZ)
+
+ArcCameraModel::ArcCameraModel(DirectX::SimpleMath::Vector3 targetPosition, float distance)
 {
 	this->targetPosition = targetPosition;
 	XMFLOAT3 offset = { 0, 0, -1 };
@@ -16,10 +18,7 @@ Matrix ArcCameraModel::GetViewMatrix()
 {
 	return viewMatrix;
 }
-Matrix ArcCameraModel::GetPerspectiveMatrix()
-{
-	return perspectiveMatrix;
-}
+
 void ArcCameraModel::Rotate(float firstAxis, float secondAxis)
 {
 	firstAxis = -firstAxis;
@@ -101,7 +100,7 @@ void ArcCameraModel::LookAt(float x, float y, float z)
 void ArcCameraModel::UpdateViewMatrix()
 {
 	auto target = targetPosition;
-	if (XMVector3Equal(XMLoadFloat3(&position), XMLoadFloat3(&targetPosition)))
+	if (position == targetPosition)
 	{
 		target = { position.x , position.y ,position.z + 1 };
 	}
@@ -110,7 +109,6 @@ void ArcCameraModel::UpdateViewMatrix()
 		DirectX::XMLoadFloat3(&target),
 		DirectX::XMLoadFloat3(&upVector)
 	);
-
 
 	DirectX::XMStoreFloat4x4(&viewMatrix, matrix);
 
@@ -121,4 +119,9 @@ Vector3 ArcCameraModel::GetCameraDirection()
 	Vector3 direction = { targetPosition.x - position.x, targetPosition.y - position.y, targetPosition.z - position.z };
 	direction.Normalize();
 	return direction;
+}
+
+void ArcCameraModel::DrawGUI()
+{
+	
 }

@@ -1,15 +1,12 @@
 #pragma once
-#include <DirectXMath.h>
-#include "PerspectiveCamera.h"
-using namespace DirectX;
+#include "ICameraMovement.h"
 
-class ArcCameraModel: public PerspectiveCamera
+class ArcCameraModel: public ICameraMovement
 {
 public:
-	ArcCameraModel(XMFLOAT3 targetPosition, float distance, float fieldOfView, float aspectRatio, float nearZ, float farZ);
+	ArcCameraModel(DirectX::SimpleMath::Vector3 targetPosition, float distance);
 		
-	DirectX::SimpleMath::Matrix GetViewMatrix();
-	DirectX::SimpleMath::Matrix GetPerspectiveMatrix();
+	DirectX::SimpleMath::Matrix GetViewMatrix() override;
 
 	void Rotate(float firstAxis, float secondAxis);
 	void ChangeDistance(float distanceChange);
@@ -18,6 +15,12 @@ public:
 private:
 	DirectX::SimpleMath::Vector3 position;
 	DirectX::SimpleMath::Vector3 targetPosition;
+	DirectX::SimpleMath::Matrix viewMatrix;
+	DirectX::SimpleMath::Vector3 upVector = { 0,1,0 };
 	void UpdateViewMatrix();
 	DirectX::SimpleMath::Vector3 GetCameraDirection();
+
+	// Inherited via ICameraMovement
+	virtual void DrawGUI() override;
+
 };

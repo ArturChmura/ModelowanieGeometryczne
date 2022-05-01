@@ -1,21 +1,40 @@
 #pragma once
 #include "Camera.h"
+#include "ICameraMovement.h"
 class PerspectiveCamera : public Camera
 {
 public:
-	PerspectiveCamera(float fieldOfView, float aspectRatio, float nearZ, float farZ);
+	PerspectiveCamera( std::shared_ptr<ICameraMovement> cameraMovement,float fieldOfView, float aspectRatio, float nearZ, float farZ, std::string name = "Perspective Camera");
+
 	void SetFieldOfView(float fov);
-	void SetNearZ(float nearZ);
-	void SetFarZ(float farZ);
-	void SetAspectRatio(float aspectRatio);
 	float GetFieldOfView() { return fieldOfView; }
+
+	void SetNearZ(float nearZ);
+	float GetNearZ() { return nearZ; }
+
+	void SetFarZ(float farZ);
+	float GetFarZ() { return farZ; }
+
+	void SetAspectRatio(float aspectRatio);
 	float GetAspectRatio() { return aspectRatio; }
-	float GetNearZ( ) { return nearZ; }
-	float GetFarZ( ) { return farZ; }
+
+	virtual DirectX::SimpleMath::Matrix GetPerspectiveMatrix() override;
+
 protected:
 	float fieldOfView;
 	float aspectRatio;
 	float nearZ;
 	float farZ;
-	void UpdatePerspectiveMatrix();
+	virtual void UpdatePerspectiveMatrix();
+
+	DirectX::SimpleMath::Matrix perspectiveMatrix;
+
+	// Inherited via Camera
+	virtual DirectX::SimpleMath::Matrix GetViewMatrix() override;
+
+	virtual void DrawGUI() override;
+
+	// Inherited via Camera
+	virtual void RenderScene(std::shared_ptr<Scene> scene) override;
+
 };

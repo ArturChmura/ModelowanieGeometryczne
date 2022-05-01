@@ -186,3 +186,5 @@ namespace mini
  * Throws a CustomException with a given message.
  *****************************************************************************/
 #define THROW(message) throw mini::CustomException(__AT__, message)
+
+#define THROW_DX(hr) throw mini::WinAPIException(__AT__, hr)
