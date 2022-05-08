@@ -114,10 +114,14 @@ void StereoscopicCamera::DrawGUI()
 		SetFocusLenght(focusLength);
 	}
 	float eyeDistance = GetEyeDistance();
-	if (ImGui::SliderFloat("Eye Distance", &eyeDistance, 0.1, 50.0f))
+	if (ImGui::SliderFloat("Eye Distance", &eyeDistance, 0.0, 50.0f))
 	{
 		SetEyeDistance(eyeDistance);
 	}
+
+	if (ImGui::ColorPicker3("Left Eye Color", leftEyeColors, ImGuiColorEditFlags_::ImGuiColorEditFlags_DisplayRGB));
+	if (ImGui::ColorPicker3("Right Eye Color", rightEyeColors, ImGuiColorEditFlags_::ImGuiColorEditFlags_DisplayRGB));
+
 }
 
 DirectX::SimpleMath::Matrix StereoscopicCamera::CreatePerspectiveMatrix(float l, float r)

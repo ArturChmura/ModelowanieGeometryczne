@@ -109,7 +109,8 @@ void Point::OnAddedToScene()
 void Point::OnRemovedFromScene()
 {
 	IModel::OnRemovedFromScene();
-	for (auto f : onRemovedFromSceneCallback)
+	auto vec = onRemovedFromSceneCallback;
+	for (auto f : vec)
 		std::get<1>(f)(IModel::downcasted_shared_from_this<Point>());
 }
 

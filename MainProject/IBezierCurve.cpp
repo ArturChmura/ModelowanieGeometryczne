@@ -105,6 +105,10 @@ void IBezierCurve::RemovePoint(int pointId)
 	auto iter = std::find_if(points.begin(), points.end(), [pointId](std::shared_ptr<Point> point) {
 		return point->id == pointId;
 		});
+	if (iter == points.end())
+	{
+		return;
+	}
 	auto model = (*iter);
 	points.erase(iter, iter + 1);
 	auto newEnd = std::remove_if(model->onModelChangeCallback.begin(), model->onModelChangeCallback.end(), [this](std::tuple<int, std::function<void(std::shared_ptr<Point>)>> t) { return id == std::get<0>(t); });
@@ -147,8 +151,7 @@ void IBezierCurve::RenderGUI()
 		{
 			auto point = points[i];
 			const bool is_selected = std::find(selectedIndexes.begin(), selectedIndexes.end(), i) != selectedIndexes.end();
-
-			if (ImGui::Selectable((point->name + "##" + std::to_string(point->id)).c_str(), is_selected))
+			if (ImGui::Selectable((point->name + "##"+ std::to_string(i)).c_str(), is_selected))
 			{
 				auto io = ImGui::GetIO();
 				if (io.KeyCtrl)

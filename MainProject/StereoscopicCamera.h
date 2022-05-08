@@ -26,6 +26,6 @@ private:
 	DirectX::SimpleMath::Matrix CreatePerspectiveMatrix(float l, float r);
 	DirectX::SimpleMath::Matrix leftPerspectiveMatrix;
 	DirectX::SimpleMath::Matrix rightPerspectiveMatrix;
-	float leftEyeColors[4] = { 1.0f,0.0f,0.0f,1.0f };
-	float rightEyeColors[4] = { 0.0f,1.0f,1.0f,1.0f };
+	float leftEyeColors[4] = { 0.0f,1.0f,1.0f,1.0f };
+	float rightEyeColors[4] =  { 1.0f, 0.0f, 0.0f, 1.0f };
 };
