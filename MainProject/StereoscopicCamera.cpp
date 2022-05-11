@@ -12,6 +12,21 @@ StereoscopicCamera::StereoscopicCamera(std::shared_ptr<ICameraMovement> cameraMo
 	this->eyeDistance = eyeDistance;
 	this->focusLength = focusLength;
 	UpdatePerspectiveMatrix();
+
+
+	BlendDescription addBsDesc;
+	addBsDesc.RenderTarget[0].BlendEnable = true;
+	addBsDesc.RenderTarget[0].SrcBlend = D3D11_BLEND::D3D11_BLEND_BLEND_FACTOR;
+	addBsDesc.RenderTarget[0].DestBlend = D3D11_BLEND::D3D11_BLEND_ONE;
+	addBsDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
+	m_bsAddLeftEye = DxDevice::instance->CreateBlendState(addBsDesc);
+
+
+	addBsDesc.RenderTarget[0].BlendEnable = true;
+	addBsDesc.RenderTarget[0].SrcBlend = D3D11_BLEND::D3D11_BLEND_BLEND_FACTOR;
+	addBsDesc.RenderTarget[0].DestBlend = D3D11_BLEND::D3D11_BLEND_ONE;
+	addBsDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
+	m_bsAddRightEye = DxDevice::instance->CreateBlendState(addBsDesc);
 }
 
 void StereoscopicCamera::SetEyeDistance(float eyeDistance)
@@ -87,20 +102,11 @@ void StereoscopicCamera::RenderScene(std::shared_ptr<Scene> scene)
 	int BS_MASK = 0xffffffff;
 
 	SetEye(true);
-	BlendDescription addBsDesc;
-	addBsDesc.RenderTarget[0].BlendEnable = true;
-	addBsDesc.RenderTarget[0].SrcBlend = D3D11_BLEND::D3D11_BLEND_BLEND_FACTOR;
-	auto m_bsAdd = DxDevice::instance->CreateBlendState(addBsDesc);
-	DxDevice::instance->context()->OMSetBlendState(m_bsAdd.get(), this->leftEyeColors, BS_MASK);
+	DxDevice::instance->context()->OMSetBlendState(m_bsAddLeftEye.get(), this->leftEyeColors, BS_MASK);
 	scene->DrawScene();
 
 	SetEye(false);
-	addBsDesc.RenderTarget[0].BlendEnable = true;
-	addBsDesc.RenderTarget[0].SrcBlend = D3D11_BLEND::D3D11_BLEND_BLEND_FACTOR;
-	addBsDesc.RenderTarget[0].DestBlend = D3D11_BLEND::D3D11_BLEND_ONE;
-	addBsDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
-	m_bsAdd = DxDevice::instance->CreateBlendState(addBsDesc);
-	DxDevice::instance->context()->OMSetBlendState(m_bsAdd.get(), this->rightEyeColors, BS_MASK);
+	DxDevice::instance->context()->OMSetBlendState(m_bsAddRightEye.get(), this->rightEyeColors, BS_MASK);
 	scene->DrawScene();
 }
 
