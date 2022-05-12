@@ -30,12 +30,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
 {
     // Create application window
     //ImGui_ImplWin32_EnableDpiAwareness();
-    WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(NULL), NULL, NULL, NULL, NULL, _T("ImGui Example"), NULL };
+    WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(NULL), NULL, NULL, NULL, NULL, _T("Dino klasa"), NULL };
     ::RegisterClassEx(&wc);
     HWND hwnd = ::CreateWindow(wc.lpszClassName, 
-        _T("Dear ImGui DirectX11 Example"), 
+        _T("DINO <3"), 
         WS_OVERLAPPEDWINDOW, 
-        100, 100, windowSize.cx, windowSize.cy + 40, NULL, NULL, wc.hInstance, NULL);
+        100, 100, windowSize.cx, windowSize.cy, NULL, NULL, wc.hInstance, NULL);
 
     // Initialize Direct3D
     if (!CreateDeviceD3D(hwnd))
@@ -47,17 +47,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
     // Show the window
     ::ShowWindow(hwnd, SW_SHOWDEFAULT);
     ::UpdateWindow(hwnd);
-
+    
     // Setup Dear ImGui context
     
 
-    // Our state
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-    DxDevice::instance = std::make_shared<DxDevice>(g_pd3dDevice, g_pd3dDeviceContext, g_pSwapChain);
-    DxDevice::winowSize = windowSize;
-    std::shared_ptr<Application> app = std::make_shared<Application>(windowSize);
-
-
+   
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -80,6 +74,14 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
     // Setup Platform/Renderer backends
     ImGui_ImplWin32_Init(hwnd);
     ImGui_ImplDX11_Init(g_pd3dDevice, g_pd3dDeviceContext);
+
+     // Our state
+    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    DxDevice::instance = std::make_shared<DxDevice>(g_pd3dDevice, g_pd3dDeviceContext, g_pSwapChain);
+    DxDevice::winowSize = windowSize;
+    DxDevice::g_mainRenderTargetView = g_mainRenderTargetView;
+    DxDevice::g_depthBufferTargetView = DxDevice::instance->CreateDepthStencilView(windowSize);
+    std::shared_ptr<Application> app = std::make_shared<Application>(windowSize);
 
     // Load Fonts
     // - If no fonts are loaded, dear imgui will use the default font. You can also load multiple fonts and use ImGui::PushFont()/PopFont() to select them.
@@ -112,14 +114,17 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
         }
         if (done)
             break;
+        //g_pd3dDeviceContext->OMSetRenderTargets(1, &g_mainRenderTargetView, g_depthBufferTargetView);
+        g_pd3dDeviceContext->OMSetRenderTargets(1, &g_mainRenderTargetView, DxDevice::g_depthBufferTargetView.get());
+        //g_pd3dDeviceContext->OMSetRenderTargets(1, &g_mainRenderTargetView, NULL);
+
+        app->Update();
+        app->Render();
         // Start the Dear ImGui frame
         ImGui_ImplDX11_NewFrame();
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
-        g_pd3dDeviceContext->OMSetRenderTargets(1, &g_mainRenderTargetView, NULL);
-
-        app->Update();
-        app->Render();
+        app->RenderGui();
         ImGui::Render();
 
         ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
@@ -191,6 +196,7 @@ void CreateRenderTarget()
     ID3D11Texture2D* pBackBuffer;
     g_pSwapChain->GetBuffer(0, IID_PPV_ARGS(&pBackBuffer));
     g_pd3dDevice->CreateRenderTargetView(pBackBuffer, NULL, &g_mainRenderTargetView);
+    DxDevice::g_mainRenderTargetView = g_mainRenderTargetView;
     pBackBuffer->Release();
 }
 
