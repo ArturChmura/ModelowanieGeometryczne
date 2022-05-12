@@ -1,4 +1,5 @@
 #pragma once
+// ReSharper disable once CppUnusedIncludeDirective 
 #include <d3d11.h>
 
 struct SwapChainDescription : DXGI_SWAP_CHAIN_DESC

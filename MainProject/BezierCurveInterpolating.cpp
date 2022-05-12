@@ -1,4 +1,5 @@
 #include "BezierCurveInterpolating.h"
+#include <array>
 #include "Helpers.h"
 #include "ImGui/imgui.h"
 

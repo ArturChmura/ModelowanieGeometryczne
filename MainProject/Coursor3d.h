@@ -1,5 +1,6 @@
 #pragma once
 #include  "IModel.h"
+#include <d3d11.h>
 #include "SimpleMath.h"
 
 class Coursor3d

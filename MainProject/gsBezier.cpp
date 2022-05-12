@@ -1,6 +1,5 @@
 #include "gsBezier.h"
 #include "dxDevice.h"
-#include <utility> 
 using namespace DirectX::SimpleMath;
 GSBezier::GSBezier()
 {

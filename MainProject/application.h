@@ -1,10 +1,6 @@
 #pragma once
 #include "window.h"
-#include "dxDevice.h"
-#include <list>
 #include <memory>
-#include "ArcCameraModel.h"
-#include "Torus.h"
 #include "Scene.h"
 #include "MouseEvents.h"
 #include "CameraOptionsWindow.h"

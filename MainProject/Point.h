@@ -1,6 +1,7 @@
 #pragma once
 #include "VertexModel.h"
 #include "DirectXMath.h"
+#include <d3d11.h>
 #include "SimpleMath.h"
 #include <functional>
 class Point : public IModel

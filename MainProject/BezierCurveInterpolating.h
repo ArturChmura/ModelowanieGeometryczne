@@ -1,7 +1,6 @@
 #pragma once
 
 #include "IBezierCurve.h"
-#include <array>
 #include "VirtualPoint.h"
 
 class BezierCurveInterpolating : public IBezierCurve

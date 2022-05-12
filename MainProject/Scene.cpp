@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include "Torus.h"
 #include "Point.h"
+#include <d3d11.h>
 #include "SimpleMath.h"
 #include "BezierCurveC0.h"
 #include "BezierCurveC2.h"

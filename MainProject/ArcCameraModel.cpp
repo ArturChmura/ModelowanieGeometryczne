@@ -1,6 +1,5 @@
 #include "ArcCameraModel.h"
 #include "Helpers.h"
-#include "ImGui/imgui.h"
 
 using namespace DirectX::SimpleMath;
 using namespace DirectX;

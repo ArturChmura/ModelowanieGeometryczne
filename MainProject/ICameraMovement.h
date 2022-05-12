@@ -1,6 +1,6 @@
 #pragma once
 
-#include <DirectXMath.h>
+// ReSharper disable once CppUnusedIncludeDirective 
 #include <d3d11.h>
 #include "SimpleMath.h"
 

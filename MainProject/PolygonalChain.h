@@ -3,6 +3,7 @@
 #include <memory>
 #include "Camera.h"
 #include "Point.h"
+#include <d3d11.h>
 #include "SimpleMath.h"
 
 class PolygonalChain

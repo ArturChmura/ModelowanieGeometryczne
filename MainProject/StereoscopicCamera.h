@@ -24,12 +24,10 @@ private:
 	float eyeDistance;
 	float focusLength;
 
-	DirectX::SimpleMath::Matrix CreatePerspectiveMatrix(float l, float r);
 	DirectX::SimpleMath::Matrix leftPerspectiveMatrix;
 	DirectX::SimpleMath::Matrix rightPerspectiveMatrix;
 	float leftEyeColors[4] = { 0.0f,1.0f,1.0f,1.0f };
 	float rightEyeColors[4] =  { 1.0f, 0.0f, 0.0f, 1.0f };
 
-	mini::dx_ptr<ID3D11BlendState> m_bsAddLeftEye;
-	mini::dx_ptr<ID3D11BlendState> m_bsAddRightEye;
+	mini::dx_ptr<ID3D11BlendState> m_bsAdd;
 };

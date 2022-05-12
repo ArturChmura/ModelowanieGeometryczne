@@ -1,8 +1,7 @@
 #pragma once
 #include "dxptr.h"
+// ReSharper disable once CppUnusedIncludeDirective 
 #include <d3d11.h>
-#include <vector>
-#include <DirectXMath.h>
 #include <SimpleMath.h>
 
 class MeshInfo

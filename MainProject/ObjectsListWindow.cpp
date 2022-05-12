@@ -1,6 +1,5 @@
 #include "ObjectsListWindow.h"
 #include "ImGui/imgui.h"
-#include <unordered_set>
 #include "CompositeModel.h"
 ObjectsListWindow::ObjectsListWindow(std::shared_ptr<Scene> scene)
 {

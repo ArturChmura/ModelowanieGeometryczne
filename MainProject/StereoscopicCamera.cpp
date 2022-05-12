@@ -19,14 +19,7 @@ StereoscopicCamera::StereoscopicCamera(std::shared_ptr<ICameraMovement> cameraMo
 	addBsDesc.RenderTarget[0].SrcBlend = D3D11_BLEND::D3D11_BLEND_BLEND_FACTOR;
 	addBsDesc.RenderTarget[0].DestBlend = D3D11_BLEND::D3D11_BLEND_ONE;
 	addBsDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
-	m_bsAddLeftEye = DxDevice::instance->CreateBlendState(addBsDesc);
-
-
-	addBsDesc.RenderTarget[0].BlendEnable = true;
-	addBsDesc.RenderTarget[0].SrcBlend = D3D11_BLEND::D3D11_BLEND_BLEND_FACTOR;
-	addBsDesc.RenderTarget[0].DestBlend = D3D11_BLEND::D3D11_BLEND_ONE;
-	addBsDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
-	m_bsAddRightEye = DxDevice::instance->CreateBlendState(addBsDesc);
+	m_bsAdd = DxDevice::instance->CreateBlendState(addBsDesc);
 }
 
 void StereoscopicCamera::SetEyeDistance(float eyeDistance)
@@ -59,7 +52,7 @@ void StereoscopicCamera::SetEye(bool isLeftEye)
 DirectX::SimpleMath::Matrix StereoscopicCamera::GetViewMatrix()
 {
 	auto normalViewMatrix = cameraMovement->GetViewMatrix();
-	float offset = isLeftEye ? -eyeDistance / 2.0f : eyeDistance / 2.0f;
+	float offset = isLeftEye ? eyeDistance / 2.0f : -eyeDistance / 2.0f;
 	Matrix viewMatrix = normalViewMatrix * Matrix::CreateTranslation(offset, 0, 0);
 	return viewMatrix;
 }
@@ -73,7 +66,8 @@ void StereoscopicCamera::UpdatePerspectiveMatrix()
 {
 	float height = tanf(fieldOfView / 2.0f) * focusLength * 2;
 	float width = aspectRatio * height;
-
+	
+	float h = height * nearZ / focusLength;
 	//left eye
 	{
 		float L = -(width - eyeDistance) / 2.0f;
@@ -82,7 +76,7 @@ void StereoscopicCamera::UpdatePerspectiveMatrix()
 		float R = width + L;
 		float r = R * nearZ / focusLength;
 
-		leftPerspectiveMatrix = this->CreatePerspectiveMatrix(l, r);
+		leftPerspectiveMatrix = DirectX::XMMatrixPerspectiveOffCenterLH(l, r, -h / 2, h / 2, nearZ, farZ);
 	}
 
 	//right eye
@@ -93,7 +87,7 @@ void StereoscopicCamera::UpdatePerspectiveMatrix()
 		float L = -(width - R);
 		float l = L * nearZ / focusLength;
 
-		rightPerspectiveMatrix = this->CreatePerspectiveMatrix(l, r);
+		rightPerspectiveMatrix = DirectX::XMMatrixPerspectiveOffCenterLH(l, r, -h / 2, h / 2, nearZ, farZ);
 	}
 }
 
@@ -102,13 +96,14 @@ void StereoscopicCamera::RenderScene(std::shared_ptr<Scene> scene)
 	int BS_MASK = 0xffffffff;
 
 	SetEye(true);
-	DxDevice::instance->context()->OMSetBlendState(m_bsAddLeftEye.get(), this->leftEyeColors, BS_MASK);
+	DxDevice::instance->context()->OMSetBlendState(m_bsAdd.get(), this->leftEyeColors, BS_MASK);
 	scene->DrawScene();
 
 	SetEye(false);
-	DxDevice::instance->context()->OMSetBlendState(m_bsAddRightEye.get(), this->rightEyeColors, BS_MASK);
+	DxDevice::instance->context()->OMSetBlendState(m_bsAdd.get(), this->rightEyeColors, BS_MASK);
 	scene->DrawScene();
 }
+
 
 void StereoscopicCamera::DrawGUI()
 {
@@ -129,16 +124,3 @@ void StereoscopicCamera::DrawGUI()
 	if (ImGui::ColorPicker3("Right Eye Color", rightEyeColors, ImGuiColorEditFlags_::ImGuiColorEditFlags_DisplayRGB));
 
 }
-
-DirectX::SimpleMath::Matrix StereoscopicCamera::CreatePerspectiveMatrix(float l, float r)
-{
-	auto matrix = Matrix(
-		2 * nearZ / (r - l), 0, (r + l) / (r - l), 0,
-		0, 1 / tanf(fieldOfView / 2), 0, 0,
-		0, 0, (farZ + nearZ) / (farZ - nearZ), (-2 * farZ * nearZ) / (farZ - nearZ),
-		0, 0, 1, 0
-	);
-
-	return matrix.Transpose();
-}
-

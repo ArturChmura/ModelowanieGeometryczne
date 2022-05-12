@@ -1,8 +1,8 @@
 #pragma once
 #include <memory>
 #include "dxptr.h"
+// ReSharper disable once CppUnusedIncludeDirective 
 #include <d3d11.h>
-#include "SimpleMath.h"
 
 class PSColor
 {

@@ -3,6 +3,7 @@
 #include <memory>
 #include "Coursor3d.h"
 #include "Scene.h"
+#include <d3d11.h>
 #include "SimpleMath.h"
 
 class CursorOptionsWindow

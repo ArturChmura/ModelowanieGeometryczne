@@ -5,11 +5,11 @@
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_win32.h"
 #include "ImGui/imgui_impl_dx11.h"
+// ReSharper disable once CppUnusedIncludeDirective 
 #include <d3d11.h>
 #include <tchar.h>
 #include <DirectXMath.h>
 #include "dxDevice.h"
-#include "Torus.h"
 #include "application.h"
 #include "MouseEvents.h"
 // Data

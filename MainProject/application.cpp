@@ -1,11 +1,7 @@
 #include "application.h"
-#include "windowsx.h"
-#include "Torus.h"
 #include "MVPColorConstantBuffer.h"
 #include "Coursor3d.h"
 #include "Point.h"
-#include "BezierCurveC0.h"
-#include "BezierCurveInterpolating.h"
 #include "ShadersManager.h"
 #include "PerspectiveCamera.h"
 #include "StereoscopicCamera.h"
@@ -37,17 +33,14 @@ Application::Application(SIZE size)
 	scene = std::make_shared<Scene>(cursor, size);
 
 	XMFLOAT3 targetPosition = { 0,0,0 };
-	auto arcCameraMovement = std::make_shared<ArcCameraModel>(targetPosition, 30);
+	auto arcCameraMovement = std::make_shared<ArcCameraModel>(targetPosition, 30.0f);
 	auto perspectiveCamera = std::make_shared<PerspectiveCamera>(arcCameraMovement,XMConvertToRadians(45), static_cast<float>(size.cx) / size.cy, 0.1f, 1000.0f);
-	auto stereoscopicCamera = std::make_shared<StereoscopicCamera>(arcCameraMovement, XMConvertToRadians(45), static_cast<float>(size.cx) / size.cy, 0.1f, 1000.0f, 2, 100);
+	auto stereoscopicCamera = std::make_shared<StereoscopicCamera>(arcCameraMovement, XMConvertToRadians(45), static_cast<float>(size.cx) / size.cy, 0.1f, 1000.0f, 2.0f, 100.0f);
 
 	scene->AddCamera(perspectiveCamera);
 	scene->AddCamera(stereoscopicCamera);
 
 	backgroundColor = { 0,0,0 };
-
-	/*auto globalAxis = std::make_shared<GlobalAxisDrawer>(m_device);
-	scene->AddModel(globalAxis);*/
 
 	objectsListWindow = std::make_shared<ObjectsListWindow>(scene);
 	propertiesWindow = std::make_shared<PropertiesWindow>(scene);
@@ -71,38 +64,10 @@ Application::Application(SIZE size)
 		auto point = scene->AddPoint();
 		scene->ChangeSelection(point);
 
-		r += 3.0f;
-		fi += 1.0f;
-		phi += 1.0f;
+		r += 1.0f;
+		fi += 0.2f;
+		phi += 0.2f;
 	}
-
-
-
-	/*for (int i = 0; i < 3; i++)
-	{
-		float x = i*10;
-		float y =0;
-		float z = 0;
-
-		scene->cursor->translation = { x,y,z };
-		auto point = scene->AddPoint();
-		scene->ChangeSelection(point);
-	}*/
-	/*scene->cursor->translation = { 1,1,0 };
-	auto point = scene->AddPoint();
-	scene->ChangeSelection(point);
-
-	scene->cursor->translation = { 2,2,0 };
-	point = scene->AddPoint();
-	scene->ChangeSelection(point);
-
-	scene->cursor->translation = { 3,1,0 };
-	point = scene->AddPoint();
-	scene->ChangeSelection(point);
-
-	scene->cursor->translation = { 4,1,0 };
-	point = scene->AddPoint();
-	scene->ChangeSelection(point);*/
 
 	scene->AddBezierCurveInterpolatingFromSelectedPoints();
 	//scene->AddBezierCurveC2FromSelectedPoints();

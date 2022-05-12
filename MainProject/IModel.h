@@ -3,6 +3,8 @@
 #include <memory>
 #include "Camera.h"
 #include "dxDevice.h"
+// ReSharper disable once CppUnusedIncludeDirective 
+#include <d3d11.h>
 #include <d3d11.h>
 #include "SimpleMath.h"
 #include "MultipleInheritableEnableSharedFromThis.h"

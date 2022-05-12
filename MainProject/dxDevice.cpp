@@ -1,6 +1,5 @@
 #include "dxDevice.h"
 #include "exceptions.h"
-#include "window.h"
 #include "dxStructures.h"
 #include <fstream>
 

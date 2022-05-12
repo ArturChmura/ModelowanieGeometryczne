@@ -1,5 +1,4 @@
 #pragma once
-#include "Helpers.h"
 #include "ArcCameraModel.h"
 #include <memory>
 #include "Scene.h"
