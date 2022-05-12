@@ -16,13 +16,10 @@
 static ID3D11Device*            g_pd3dDevice = NULL;
 static ID3D11DeviceContext*     g_pd3dDeviceContext = NULL;
 static IDXGISwapChain*          g_pSwapChain = NULL;
-static ID3D11RenderTargetView*  g_mainRenderTargetView = NULL;
 
 // Forward declarations of helper functions
 bool CreateDeviceD3D(HWND hWnd);
 void CleanupDeviceD3D();
-void CreateRenderTarget();
-void CleanupRenderTarget();
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 SIZE windowSize = { 1600,1200 };
 // Main code
@@ -35,7 +32,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
     HWND hwnd = ::CreateWindow(wc.lpszClassName, 
         _T("DINO <3"), 
         WS_OVERLAPPEDWINDOW, 
-        100, 100, windowSize.cx, windowSize.cy, NULL, NULL, wc.hInstance, NULL);
+        0, 0, windowSize.cx, windowSize.cy, NULL, NULL, wc.hInstance, NULL);
 
     // Initialize Direct3D
     if (!CreateDeviceD3D(hwnd))
@@ -76,11 +73,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
     ImGui_ImplDX11_Init(g_pd3dDevice, g_pd3dDeviceContext);
 
      // Our state
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     DxDevice::instance = std::make_shared<DxDevice>(g_pd3dDevice, g_pd3dDeviceContext, g_pSwapChain);
-    DxDevice::winowSize = windowSize;
-    DxDevice::g_mainRenderTargetView = g_mainRenderTargetView;
-    DxDevice::g_depthBufferTargetView = DxDevice::instance->CreateDepthStencilView(windowSize);
+    DxDevice::windowSize = windowSize;
     std::shared_ptr<Application> app = std::make_shared<Application>(windowSize);
 
     // Load Fonts
@@ -114,19 +108,18 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
         }
         if (done)
             break;
-        //g_pd3dDeviceContext->OMSetRenderTargets(1, &g_mainRenderTargetView, g_depthBufferTargetView);
-        g_pd3dDeviceContext->OMSetRenderTargets(1, &g_mainRenderTargetView, DxDevice::g_depthBufferTargetView.get());
-        //g_pd3dDeviceContext->OMSetRenderTargets(1, &g_mainRenderTargetView, NULL);
 
         app->Update();
         app->Render();
+
         // Start the Dear ImGui frame
         ImGui_ImplDX11_NewFrame();
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
-        app->RenderGui();
-        ImGui::Render();
 
+        app->RenderGui();
+
+        ImGui::Render();
         ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
         // Update and Render additional Platform Windows
         if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -135,7 +128,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
             ImGui::RenderPlatformWindowsDefault();
         }
 
-        ////g_pSwapChain->Present(1, 0); // Present with vsync
+        //g_pSwapChain->Present(1, 0); // Present with vsync
         g_pSwapChain->Present(0, 0); // Present without vsync
     }
 
@@ -179,30 +172,14 @@ bool CreateDeviceD3D(HWND hWnd)
     if (D3D11CreateDeviceAndSwapChain(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, createDeviceFlags, featureLevelArray, 2, D3D11_SDK_VERSION, &sd, &g_pSwapChain, &g_pd3dDevice, &featureLevel, &g_pd3dDeviceContext) != S_OK)
         return false;
 
-    CreateRenderTarget();
     return true;
 }
 
 void CleanupDeviceD3D()
 {
-    CleanupRenderTarget();
     if (g_pSwapChain) { g_pSwapChain->Release(); g_pSwapChain = NULL; }
     if (g_pd3dDeviceContext) { g_pd3dDeviceContext->Release(); g_pd3dDeviceContext = NULL; }
     if (g_pd3dDevice) { g_pd3dDevice->Release(); g_pd3dDevice = NULL; }
-}
-
-void CreateRenderTarget()
-{
-    ID3D11Texture2D* pBackBuffer;
-    g_pSwapChain->GetBuffer(0, IID_PPV_ARGS(&pBackBuffer));
-    g_pd3dDevice->CreateRenderTargetView(pBackBuffer, NULL, &g_mainRenderTargetView);
-    DxDevice::g_mainRenderTargetView = g_mainRenderTargetView;
-    pBackBuffer->Release();
-}
-
-void CleanupRenderTarget()
-{
-    if (g_mainRenderTargetView) { g_mainRenderTargetView->Release(); g_mainRenderTargetView = NULL; }
 }
 
 // Forward declare message handler from imgui_impl_win32.cpp
@@ -223,9 +200,7 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
     case WM_SIZE:
         if (g_pd3dDevice != NULL && wParam != SIZE_MINIMIZED)
         {
-            CleanupRenderTarget();
-            g_pSwapChain->ResizeBuffers(0, (UINT)LOWORD(lParam), (UINT)HIWORD(lParam), DXGI_FORMAT_UNKNOWN, 0);
-            CreateRenderTarget();
+            //g_pSwapChain->ResizeBuffers(0, (UINT)LOWORD(lParam), (UINT)HIWORD(lParam), DXGI_FORMAT_UNKNOWN, 0);
         }
         return 0;
     case WM_SYSCOMMAND:

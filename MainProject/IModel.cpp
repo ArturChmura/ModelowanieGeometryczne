@@ -56,8 +56,8 @@ std::shared_ptr<IModel> IModel::SelectFromScreenCoords(float x, float y, Matrix 
 	Vector4 modelPosition = { p.x,p.y,p.z,1 };
 	auto modelPerspectivePosition = Vector4::Transform(modelPosition, VP);
 	modelPerspectivePosition /= modelPerspectivePosition.w;
-	float modelX = (modelPerspectivePosition.x + 1) / 2.0f * DxDevice::winowSize.cx;
-	float modelY = DxDevice::winowSize.cy - (modelPerspectivePosition.y + 1) / 2.0f * DxDevice::winowSize.cy;
+	float modelX = (modelPerspectivePosition.x + 1) / 2.0f * DxDevice::windowSize.cx;
+	float modelY = DxDevice::windowSize.cy - (modelPerspectivePosition.y + 1) / 2.0f * DxDevice::windowSize.cy;
 
 	Vector2 modelScreenPos = { modelX, modelY };
 	Vector2 clickScreenPos = { x,y };

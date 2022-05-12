@@ -78,8 +78,8 @@ void IBezierCurve::Draw(std::shared_ptr<Camera> camera)
 
 	GSBezierConstantBuffer gsCB;
 	gsCB.mvp = mvp;
-	gsCB.screenWidth = DxDevice::winowSize.cx;
-	gsCB.screenHeight = DxDevice::winowSize.cy;
+	gsCB.screenWidth = DxDevice::windowSize.cx;
+	gsCB.screenHeight = DxDevice::windowSize.cy;
 	ShadersManager::gsBezier->SetConstantBuffer(gsCB);
 
 	ShadersManager::psConstColor->SetConstantBuffer(meshInfo.color);

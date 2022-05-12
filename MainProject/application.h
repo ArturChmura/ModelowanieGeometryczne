@@ -21,8 +21,8 @@ public:
 	void RenderGui();
 	void Update();
 	void HandleMessage(MSG message);
-	//mini::dx_ptr<ID3D11RenderTargetView> m_backBuffer;
-	//mini::dx_ptr<ID3D11DepthStencilView> m_depthBuffer;
+	mini::dx_ptr<ID3D11RenderTargetView> m_backBuffer;
+	mini::dx_ptr<ID3D11DepthStencilView> m_depthBuffer;
 
 	DirectX::XMFLOAT3 backgroundColor;
 

@@ -15,9 +15,7 @@ public:
 	//DxDevice(DxDevice const&) = delete;
 	//void operator=(DxDevice const&) = delete; 
 	inline static std::shared_ptr<DxDevice> instance;
-	inline static SIZE winowSize;
-	inline static ID3D11RenderTargetView* g_mainRenderTargetView = NULL;
-	inline static mini::dx_ptr<ID3D11DepthStencilView> g_depthBufferTargetView = NULL;
+	inline static SIZE windowSize;
 	
 	explicit DxDevice(ID3D11Device* device, ID3D11DeviceContext* context, IDXGISwapChain* swapChain);
 

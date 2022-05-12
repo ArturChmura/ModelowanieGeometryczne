@@ -12,13 +12,12 @@ using namespace DirectX;
 Application::Application(SIZE size)
 {
 	ID3D11Texture2D* temp = nullptr;
-	//DxDevice::instance->swapChain()->GetBuffer(0,__uuidof(ID3D11Texture2D),
-	//	reinterpret_cast<void**>(&temp));
+	DxDevice::instance->swapChain()->GetBuffer(0,__uuidof(ID3D11Texture2D),
+		reinterpret_cast<void**>(&temp));
 
-	//const dx_ptr<ID3D11Texture2D> backTexture{ temp };
-	//m_backBuffer = DxDevice::instance->CreateRenderTargetView(backTexture);
-
-	//m_depthBuffer = DxDevice::instance->CreateDepthStencilView(size);
+	const dx_ptr<ID3D11Texture2D> backTexture{ temp };
+	m_backBuffer = DxDevice::instance->CreateRenderTargetView(backTexture);
+	m_depthBuffer = DxDevice::instance->CreateDepthStencilView(size);
 
 	Viewport viewport{ size };
 	DxDevice::instance->context()->RSSetViewports(1, &viewport);
@@ -78,15 +77,18 @@ Application::Application(SIZE size)
 
 	scene->cursor->translation = { 10,10,10 };
 	//scene->AddTorus();
-
+	auto backBuffer = m_backBuffer.get();
+	DxDevice::instance->context()->OMSetRenderTargets(1, &backBuffer, m_depthBuffer.get());
 }
 
 void Application::Render()
 {
 	const float clearColor[] = { backgroundColor.x,backgroundColor.y,backgroundColor.z, 1.0f };
 
-	DxDevice::instance->context()->ClearRenderTargetView(DxDevice::g_mainRenderTargetView, clearColor);
-	DxDevice::instance->context()->ClearDepthStencilView(DxDevice::g_depthBufferTargetView.get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	auto backBuffer = m_backBuffer.get();
+	DxDevice::instance->context()->OMSetRenderTargets(1, &backBuffer, m_depthBuffer.get());
+	DxDevice::instance->context()->ClearRenderTargetView(m_backBuffer.get(), clearColor);
+	DxDevice::instance->context()->ClearDepthStencilView(m_depthBuffer.get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	scene->activeCamera->RenderScene(scene);
 }
