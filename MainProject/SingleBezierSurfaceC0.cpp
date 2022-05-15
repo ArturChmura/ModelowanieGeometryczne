@@ -109,6 +109,17 @@ void SingleBezierSurfaceC0::UpdateVertices()
 	this->meshInfo.vertexBuffer = DxDevice::instance->CreateVertexBuffer(vertices);
 }
 
+void SingleBezierSurfaceC0::OnRemovedFromScene()
+{
+	for (auto points2 : points)
+	{
+		for (auto point : points2)
+		{
+			point->onRemovedFromSceneCallback.Remove(id);
+		}
+	}
+}
+
 void SingleBezierSurfaceC0::SetScale(float x, float y, float z)
 {
 }

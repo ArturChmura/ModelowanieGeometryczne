@@ -24,6 +24,7 @@ public:
 
 	void UpdateVertices();
 
+	void OnRemovedFromScene();
 	// Inherited via IModel
 	virtual void SetScale(float x, float y, float z) override;
 
