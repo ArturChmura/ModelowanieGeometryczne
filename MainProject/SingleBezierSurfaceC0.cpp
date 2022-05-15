@@ -33,6 +33,7 @@ void SingleBezierSurfaceC0::Draw(std::shared_ptr<Camera> camera)
 	DxDevice::instance->context()->PSSetShader(ShadersManager::psConstColor->m_pixelShader.get(), nullptr, 0);
 
 	ShadersManager::vsSurfaceBezier->SetVertexBuffer(meshInfo.vertexBuffer.get());
+	ShadersManager::psConstColor->SetConstantBuffer(meshInfo.color);
 
 	auto v = camera->GetViewMatrix();
 	auto p = camera->GetPerspectiveMatrix();
@@ -56,9 +57,6 @@ void SingleBezierSurfaceC0::Draw(std::shared_ptr<Camera> camera)
 	}
 
 	ShadersManager::gsSurfaceBezier->SetConstantBuffer(gsCB);
-
-	ShadersManager::psConstColor->SetConstantBuffer(meshInfo.color);
-
 	DxDevice::instance->context()->Draw(verticalSlices + 1, 0);
 
 	for (int i = 0; i < 16; i++)
@@ -73,8 +71,8 @@ void SingleBezierSurfaceC0::Draw(std::shared_ptr<Camera> camera)
 	}
 
 	gsCB.slices = verticalSlices;
-	ShadersManager::gsSurfaceBezier->SetConstantBuffer(gsCB);
 
+	ShadersManager::gsSurfaceBezier->SetConstantBuffer(gsCB);
 	DxDevice::instance->context()->Draw(horizontalSlices + 1, verticalSlices + 1);
 
 }
@@ -175,12 +173,12 @@ void SingleBezierSurfaceC0::ChangeColor(DirectX::SimpleMath::Vector3 color)
 void SingleBezierSurfaceC0::RenderGUI()
 {
 	if (
-		ImGui::DragInt("Horizontal Slices Count", &horizontalSlices, 1, 1,  INT_MAX) ||
-		ImGui::DragInt("Vertical Slices Count", &verticalSlices, 1, 1,  INT_MAX)
+		ImGui::DragInt("Horizontal Slices Count", &horizontalSlices, 1, 1,  255) ||
+		ImGui::DragInt("Vertical Slices Count", &verticalSlices, 1, 1,  255)
 		)
 	{
-		horizontalSlices = max(horizontalSlices, 1);
-		verticalSlices = max(verticalSlices, 1);
+		horizontalSlices = min( max(horizontalSlices, 1),255);
+		verticalSlices = min(max(verticalSlices, 1),255);
 		resetDrawing = true;
 	}
 }
