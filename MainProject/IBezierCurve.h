@@ -41,7 +41,6 @@ public:
 	virtual void RotateFromPoint(DirectX::SimpleMath::Vector4 globalPoint, DirectX::XMFLOAT3 ratation) override;
 
 	MeshInfo meshInfo;
-	std::shared_ptr<PolygonalChain> polygonalChain;
 protected:
 	bool resetDrawing = true;
 	bool drawPolygonChain = false;

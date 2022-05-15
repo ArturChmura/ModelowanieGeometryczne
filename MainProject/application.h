@@ -10,6 +10,7 @@
 #include "MessageHandler.h"
 #include "DebugWindow.h"
 #include "KeyboardHandler.h"
+#include "ObjectAdderWindow.h"
 
 
 using namespace mini;
@@ -28,12 +29,9 @@ public:
 
 	std::shared_ptr<Scene> scene;
 
+	std::vector< std::shared_ptr < IGuiWindow>> guiWindows;
+
 	std::shared_ptr<MessageHandler> messageHandler;
-	std::shared_ptr<ObjectsListWindow> objectsListWindow;
-	std::shared_ptr<PropertiesWindow> propertiesWindow;
-	std::shared_ptr<CameraOptionsWindow> cameraOptionsWindow;
-	std::shared_ptr<CursorOptionsWindow> cursorOptionsWindow;
-	std::shared_ptr<DebugWindow> debugWindow;
 	std::shared_ptr<MouseEvents> mouseEvents;
 	std::shared_ptr<KeyboardHandler> keyboardHandler;
 

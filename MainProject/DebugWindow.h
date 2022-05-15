@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
+#include "IGuiWindow.h"
 
-class DebugWindow
+class DebugWindow : public IGuiWindow
 {
 public:
 	void Render();

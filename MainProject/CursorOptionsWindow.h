@@ -5,8 +5,9 @@
 #include "Scene.h"
 #include <d3d11.h>
 #include "SimpleMath.h"
+#include "IGuiWindow.h"
 
-class CursorOptionsWindow
+class CursorOptionsWindow : public IGuiWindow
 {
 public:
 	CursorOptionsWindow(std::shared_ptr<Coursor3d> cursor3d, std::shared_ptr<Scene> scene, SIZE windowSize);

@@ -1,0 +1,28 @@
+#include "vsSurfaceBezier.h"
+#include "dxDevice.h"
+
+
+VSSurfaceBezier::VSSurfaceBezier()
+{
+	const auto vsBytes = DxDevice::LoadByteCode(L"vsSurfaceBezier.cso");
+
+	m_vertexShader = DxDevice::instance->CreateVertexShader(vsBytes);
+
+	std::vector<D3D11_INPUT_ELEMENT_DESC> elements{
+
+	{ "SV_POSITION", 0, DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+
+	};
+
+	m_layout = DxDevice::instance->CreateInputLayout(elements, vsBytes);
+}
+
+void VSSurfaceBezier::SetVertexBuffer(ID3D11Buffer* vertexBuffer)
+{
+	ID3D11Buffer* vbs[] = { vertexBuffer };
+	UINT strides[] = { sizeof(SurfaceBezierIn) };
+	UINT offsets[] = { 0 };
+	DxDevice::instance->context()->IASetVertexBuffers(
+		0, 1, vbs, strides, offsets);
+
+}

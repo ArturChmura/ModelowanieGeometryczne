@@ -26,14 +26,14 @@ void Scene::AddCamera(std::shared_ptr<Camera> camera)
 std::shared_ptr<Torus> Scene::AddTorus()
 {
 	auto torus = std::make_shared<Torus>(5.0f, 2.0f, 20, 20);
-	torus->SetTranslation(cursor->translation.x, cursor->translation.y, cursor->translation.z);
+	torus->SetTranslation(cursor->GetTranslation().x, cursor->GetTranslation().y, cursor->GetTranslation().z );
 	AddModel(torus);
 	return torus;
 }
 
 std::shared_ptr<Point> Scene::AddPoint()
 {
-	auto point = std::make_shared<Point>(Vector3(cursor->translation));
+	auto point = std::make_shared<Point>(cursor->GetTranslation());
 	point->onRemovedFromSceneCallback.push_back({ -1,[this](std::shared_ptr<Point> point) {
 		auto newEnd = std::remove_if(points.begin(), points.end(), [point](std::shared_ptr<Point> listpoint) {return listpoint->id == point->id; });
 		points.erase(newEnd, points.end());
@@ -47,7 +47,6 @@ std::shared_ptr<Point> Scene::AddPoint()
 void Scene::AddModel(std::shared_ptr<IModel> model)
 {
 	models.push_back(model);
-	int i  = model.use_count();
 	model->OnAddedToScene();
 }
 
@@ -88,7 +87,10 @@ std::vector<std::shared_ptr<Point>> Scene::GetSelectedPoints()
 void Scene::DeleteModel(int modelId)
 {
 	auto modelIter = std::find_if(models.begin(), models.end(), [modelId](std::shared_ptr<IModel> model){ return model->id == modelId; });
-
+	if (modelIter == models.end())
+	{
+		return;
+	}
 	auto model = (*modelIter);
 	model->OnRemovedFromScene();
 	auto new_end = std::remove_if(models.begin(), models.end(),
@@ -101,6 +103,7 @@ void Scene::DeleteModel(int modelId)
 		{ return model->id == modelId; });
 	points.erase(new_end2, points.end());
 
+	composite->RemoveModel(model);
 }
 
 void Scene::Select(std::shared_ptr<IModel> model)
@@ -111,7 +114,7 @@ void Scene::Select(std::shared_ptr<IModel> model)
 	}
 	this->composite = std::make_shared<CompositeModel>();
 	this->composite->AddModel(model);
-	this->selectedModel = model;
+	this->selectedModel = composite;
 	model->OnSelect();
 }
 
@@ -132,10 +135,6 @@ void Scene::ChangeSelection(std::shared_ptr<IModel> model)
 	if (composite->modelsMap.size() == 0)
 	{
 		selectedModel = nullptr;
-	}
-	else if (composite->modelsMap.size() == 1)
-	{
-		selectedModel = composite->modelsMap.begin()->second;
 	}
 	else
 	{
@@ -175,7 +174,7 @@ void Scene::UpdateCursorPositionFromScreenCoords(Vector2 screenCoords)
 	auto perspectiveMatrixInverted = perspectiveMatrix.Invert();
 	auto viewMatrxInverted = viewMatrx.Invert();
 
-	Vector4 currentGlobalPosition(cursor->translation.x, cursor->translation.y, cursor->translation.z, 1);
+	Vector4 currentGlobalPosition(cursor->GetTranslation().x, cursor->GetTranslation().y, cursor->GetTranslation().z, 1);
 	auto currentCameraPosition = Vector4::Transform(currentGlobalPosition, viewMatrx);
 	auto currentPerspectivePosition = Vector4::Transform(currentCameraPosition, perspectiveMatrix);
 	float w = currentPerspectivePosition.w;
@@ -190,17 +189,16 @@ void Scene::UpdateCursorPositionFromScreenCoords(Vector2 screenCoords)
 	newCameraPosition.w = 1;
 	auto newWorld = Vector4::Transform(newCameraPosition, viewMatrxInverted);
 
-	cursor->translation = { newWorld.x, newWorld.y, newWorld.z };
+	cursor->SetPosition(Vector3(newWorld));
 }
 
 void Scene::RemoveSelectedModels()
 {
-	for (auto [id, model] : composite->modelsMap)
+	auto map = composite->modelsMap;
+	for (auto [id, model] : map)
 	{
 		DeleteModel(id);
 	}
-	selectedModel = nullptr;
-	composite = std::make_shared<CompositeModel>();
 }
 
 void Scene::DrawScene()
@@ -215,6 +213,10 @@ void Scene::DrawScene()
 	if (selectedModel)
 	{
 		selectedModel->Draw(activeCamera);
+	}
+	if (previewModel)
+	{
+		previewModel->Draw(activeCamera);
 	}
 	cursor->Draw(activeCamera);
 }

@@ -16,11 +16,13 @@ void CursorOptionsWindow::Render()
 	ImGui::Begin("Cursor Options");
 
 	ImGui::Text("Translation");
-	if (ImGui::DragFloat("x", &cursor3d->translation.x) ||
-		ImGui::DragFloat("y", &cursor3d->translation.y) ||
-		ImGui::DragFloat("z", &cursor3d->translation.z)
+	auto translation = cursor3d->GetTranslation();
+	if (ImGui::DragFloat("x", &translation.x) ||
+		ImGui::DragFloat("y", &translation.y) ||
+		ImGui::DragFloat("z", &translation.z)
 		)
 	{
+		cursor3d->SetPosition(translation);
 	}
 
 	UpdateScreenCoords();
@@ -42,7 +44,7 @@ void CursorOptionsWindow::UpdateScreenCoords()
 {
 	auto viewMatrx = scene->activeCamera->GetViewMatrix();
 	auto perspectiveMatrix = scene->activeCamera->GetPerspectiveMatrix();
-	Vector4 point(cursor3d->translation.x, cursor3d->translation.y, cursor3d->translation.z, 1);
+	Vector4 point(cursor3d->GetTranslation().x, cursor3d->GetTranslation().y, cursor3d->GetTranslation().z, 1);
 
 	auto pos = Vector4::Transform(point, viewMatrx);
 	pos = Vector4::Transform(pos, perspectiveMatrix);

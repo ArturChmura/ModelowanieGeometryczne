@@ -85,6 +85,18 @@
     <Filter Include="Header Files\Names">
       <UniqueIdentifier>{e81c56c3-33d2-436c-b96a-a5a33d0d8ad8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shapes\Surfaces">
+      <UniqueIdentifier>{163c1870-18fd-4590-8292-a7f7f25bd484}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shapes\Surfaces">
+      <UniqueIdentifier>{05abcba3-1436-43f8-ac02-7a389ef27f6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders\Bezier\Surface">
+      <UniqueIdentifier>{5e3850cd-554c-4a25-9609-e80a5e5d63ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shaders\Bezier\Surfaces">
+      <UniqueIdentifier>{a329a161-2f93-47a5-bb86-124586ed8251}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxStructures.cpp">
@@ -189,9 +201,6 @@
     <ClCompile Include="BezierCurveC2.cpp">
       <Filter>Source Files\Shapes\Curves</Filter>
     </ClCompile>
-    <ClCompile Include="DebugWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="KeyboardHandler.cpp">
       <Filter>Source Files\EventsHandlers</Filter>
     </ClCompile>
@@ -231,8 +240,32 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="BezierSurfaceC0.cpp">
+      <Filter>Source Files\Shapes\Surfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="SingleBezierSurfaceC0.cpp">
+      <Filter>Source Files\Shapes\Surfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="vsSurfaceBezier.cpp">
+      <Filter>Source Files\Shaders\Bezier\Surface</Filter>
+    </ClCompile>
+    <ClCompile Include="gsSurfaceBezier.cpp">
+      <Filter>Source Files\Shaders\Bezier\Surface</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectAdderWindow.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="BezierSurfaceAdderWindow.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Callback.cpp">
+      <Filter>Source Files\Helpers</Filter>
+    </ClCompile>
     <ClCompile Include="Named.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugWindow.cpp">
+      <Filter>Source Files\Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -395,6 +428,30 @@
     <ClInclude Include="Named.h">
       <Filter>Header Files\Names</Filter>
     </ClInclude>
+    <ClInclude Include="BezierSurfaceC0.h">
+      <Filter>Header Files\Shapes\Surfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="SingleBezierSurfaceC0.h">
+      <Filter>Header Files\Shapes\Surfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="vsSurfaceBezier.h">
+      <Filter>Header Files\Shaders\Bezier\Surfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="gsSurfaceBezier.h">
+      <Filter>Header Files\Shaders\Bezier\Surfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectAdderWindow.h">
+      <Filter>Header Files\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="BezierSurfaceAdderWindow.h">
+      <Filter>Header Files\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="IGuiWindow.h">
+      <Filter>Header Files\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Callback.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="psColor.hlsl">
@@ -415,6 +472,12 @@
     <FxCompile Include="vsConstColor.hlsl">
       <Filter>Source Files\Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="vsSurfaceBezier.hlsl">
+      <Filter>Source Files\Shaders\Bezier\Surface</Filter>
+    </FxCompile>
+    <FxCompile Include="gsSurfaceBezier.hlsl">
+      <Filter>Source Files\Shaders\Bezier\Surface</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="bezierStructs.hlsli">
@@ -422,6 +485,12 @@
     </None>
     <None Include="VSColorOut.hlsli">
       <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="surfaceBezierStructs.hlsli">
+      <Filter>Source Files\Shaders\Bezier\Surface</Filter>
+    </None>
+    <None Include="DeCasteljeu.hlsli">
+      <Filter>Source Files\Shaders\Bezier</Filter>
     </None>
   </ItemGroup>
 </Project>

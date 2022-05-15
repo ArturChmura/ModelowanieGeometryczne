@@ -124,12 +124,24 @@ void CompositeModel::RotateFromPoint(Vector4 globalPoint, DirectX::XMFLOAT3 rata
 
 void CompositeModel::Draw(std::shared_ptr<Camera> camera)
 {
-	this->centroidCoursor->translation = this->centroidPosition;
+	this->centroidCoursor->SetPosition(Vector3(centroidPosition));
 	this->centroidCoursor->Draw(camera);
 }
 
 void CompositeModel::RenderGUI()
 {
+	if (modelsMap.size() == 0)
+	{
+		return;
+	}
+	if (modelsMap.size() == 1)
+	{
+		for (auto [_,model]:modelsMap)
+		{
+			model->RenderGUI();
+		}
+		return;
+	}
 	ImGui::Text("Scale");
 	float minScale = 0.1f;
 	if (

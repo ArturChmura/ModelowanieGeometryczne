@@ -29,9 +29,7 @@ void IBezierCurve::UpdateVertices()
 	{
 		VSBezierIn in;
 		int pointsCount = min(ps - (i * 3), 4);
-		std::vector<float> coefficientsX;
-		std::vector<float> coefficientsY;
-		std::vector<float> coefficientsZ;
+
 		Vector3 t1 = 0 < pointsCount ? bezierPoints[i * 3 + 0] : Vector3();
 		Vector3 t2 = 1 < pointsCount ? bezierPoints[i * 3 + 1] : Vector3();
 		Vector3 t3 = 2 < pointsCount ? bezierPoints[i * 3 + 2] : Vector3();
@@ -47,12 +45,6 @@ void IBezierCurve::UpdateVertices()
 	//if (verticesCount > 0)
 	{
 		this->meshInfo.vertexBuffer = DxDevice::instance->CreateVertexBuffer(vertices);
-	}
-
-	if (drawPolygonChain)
-	{
-		auto points = GetPolygonChainPoints();
-		polygonalChain = std::make_shared<PolygonalChain>(points);
 	}
 }
 
@@ -86,9 +78,10 @@ void IBezierCurve::Draw(std::shared_ptr<Camera> camera)
 
 	DxDevice::instance->context()->Draw(verticesCount, 0);
 
-	if (drawPolygonChain && polygonalChain)
+	if (drawPolygonChain)
 	{
-		polygonalChain->Draw(camera);
+		auto points = GetPolygonChainPoints();
+		PolygonalChain::Draw(camera, points);
 	}
 }
 
@@ -123,11 +116,6 @@ void IBezierCurve::RemovePoint(int pointId)
 void IBezierCurve::SetDrawPolygonChain(bool draw)
 {
 	this->drawPolygonChain = draw;
-	if (drawPolygonChain)
-	{
-
-	}
-	ResetDrawing();
 }
 
 void IBezierCurve::ResetDrawing()

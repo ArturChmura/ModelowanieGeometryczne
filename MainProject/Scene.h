@@ -25,6 +25,7 @@ public:
 	std::shared_ptr<Coursor3d> cursor;
 	std::shared_ptr<IModel> selectedModel; 
 	std::vector<std::shared_ptr<Point>> points;
+	std::shared_ptr<IModel> previewModel;
 
 	void AddCamera(std::shared_ptr<Camera> camera);
 	std::vector<std::shared_ptr<Camera>> cameras;

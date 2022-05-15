@@ -5,6 +5,7 @@
 #include "ShadersManager.h"
 #include "PerspectiveCamera.h"
 #include "StereoscopicCamera.h"
+#include "BezierSurfaceC0.h"
 
 using namespace mini;
 using namespace DirectX;
@@ -12,7 +13,7 @@ using namespace DirectX;
 Application::Application(SIZE size)
 {
 	ID3D11Texture2D* temp = nullptr;
-	DxDevice::instance->swapChain()->GetBuffer(0,__uuidof(ID3D11Texture2D),
+	DxDevice::instance->swapChain()->GetBuffer(0, __uuidof(ID3D11Texture2D),
 		reinterpret_cast<void**>(&temp));
 
 	const dx_ptr<ID3D11Texture2D> backTexture{ temp };
@@ -30,53 +31,53 @@ Application::Application(SIZE size)
 
 	XMFLOAT3 targetPosition = { 0,0,0 };
 	auto arcCameraMovement = std::make_shared<ArcCameraModel>(targetPosition, 30.0f);
-	auto perspectiveCamera = std::make_shared<PerspectiveCamera>(arcCameraMovement,XMConvertToRadians(45), static_cast<float>(size.cx) / size.cy, 0.1f, 1000.0f);
+	auto perspectiveCamera = std::make_shared<PerspectiveCamera>(arcCameraMovement, XMConvertToRadians(45), static_cast<float>(size.cx) / size.cy, 0.1f, 1000.0f);
 	auto stereoscopicCamera = std::make_shared<StereoscopicCamera>(arcCameraMovement, XMConvertToRadians(45), static_cast<float>(size.cx) / size.cy, 0.1f, 1000.0f, 2.0f, 100.0f);
 
 	scene->AddCamera(perspectiveCamera);
 	scene->AddCamera(stereoscopicCamera);
 
-	backgroundColor = { 0,0,0 };
+	backgroundColor = { 0.1f,0.1f,0.1f };
 
-	objectsListWindow = std::make_shared<ObjectsListWindow>(scene);
-	propertiesWindow = std::make_shared<PropertiesWindow>(scene);
-	cameraOptionsWindow = std::make_shared<CameraOptionsWindow>();
-	cursorOptionsWindow = std::make_shared<CursorOptionsWindow>(cursor, scene, size);
+	guiWindows.push_back(std::make_shared<ObjectsListWindow>(scene));
+	guiWindows.push_back(std::make_shared<ObjectAdderWindow>(scene));
+	guiWindows.push_back(std::make_shared<PropertiesWindow>(scene));
+	guiWindows.push_back(std::make_shared<CameraOptionsWindow>(scene));
+	guiWindows.push_back(std::make_shared<CursorOptionsWindow>(cursor, scene, size));
+	//guiWindows.push_back(std::make_shared<DebugWindow>());
+
+
 	mouseEvents = std::make_shared<MouseEvents>(arcCameraMovement, scene);
 	keyboardHandler = std::make_shared<KeyboardHandler>(scene);
 	messageHandler = std::make_shared<MessageHandler>(scene);
-	debugWindow = std::make_shared<DebugWindow>();
 
+	float r = 0, fi = 0, phi = 0;
+	int pointsCount = 6;
+	for (int i = 0; i < pointsCount; i++)
+	{
+		float x = r * cosf(fi) * cosf(phi);
+		float y = r * sinf(fi) * cosf(phi);
+		float z = r * sinf(phi);
+		//z = 0;
+		scene->cursor->SetPosition({ x,y,z });
+		auto point = scene->AddPoint();
+		scene->ChangeSelection(point);
 
+		r += 100.0f / pointsCount;
+		fi += 0.13f;
+		phi += 0.2f;
+	}
 
-	//float r = 0, fi = 0, phi = 0;
-	//for (int i = 0; i < 10; i++)
-	//{
-	//	float x = r * cosf(fi) * cosf(phi);
-	//	float y = r * sinf(fi) * cosf(phi);
-	//	float z = r * sinf(phi);
-	//	z = 0;
-	//	scene->cursor->translation = { x,y,z };
-	//	auto point = scene->AddPoint();
-	//	scene->ChangeSelection(point);
-
-	//	r += 1.0f;
-	//	fi += 0.2f;
-	//	phi += 0.2f;
-	//}
-	scene->cursor->translation = { 0,0,0 };
-	auto point = scene->AddPoint();
-	scene->cursor->translation = { 0,0,5 };
-	point = scene->AddPoint();
-	scene->ChangeSelection(point);
-
-	//scene->AddBezierCurveInterpolatingFromSelectedPoints();
+	scene->AddBezierCurveInterpolatingFromSelectedPoints();
 	//scene->AddBezierCurveC2FromSelectedPoints();
 	//scene->AddBezierCurveC0FromSelectedPoints();
 
+	scene->cursor->SetPosition({ 10,10,10 });
+	scene->AddTorus();
 
-	scene->cursor->translation = { 10,10,10 };
-	//scene->AddTorus();
+	auto surface = std::make_shared<BezierSurfaceC0>(2, 1, 10, 10, false, scene->cursor->GetTranslation());
+	scene->AddModel(surface);
+
 	auto backBuffer = m_backBuffer.get();
 	DxDevice::instance->context()->OMSetRenderTargets(1, &backBuffer, m_depthBuffer.get());
 }
@@ -87,6 +88,7 @@ void Application::Render()
 
 	auto backBuffer = m_backBuffer.get();
 	DxDevice::instance->context()->OMSetRenderTargets(1, &backBuffer, m_depthBuffer.get());
+
 	DxDevice::instance->context()->ClearRenderTargetView(m_backBuffer.get(), clearColor);
 	DxDevice::instance->context()->ClearDepthStencilView(m_depthBuffer.get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
@@ -95,13 +97,11 @@ void Application::Render()
 
 void Application::RenderGui()
 {
-	cameraOptionsWindow->Render(scene);
-	cursorOptionsWindow->Render();
-	objectsListWindow->Render();
-	propertiesWindow->Render();
+	for (int i = 0; i < guiWindows.size(); i++)
+	{
+		guiWindows[i]->Render();
+	}
 }
-
-
 
 
 void Application::Update()

@@ -45,29 +45,8 @@ void ObjectsListWindow::Render()
     }
 
 
-    if (ImGui::Button("Add Torus"))
-    {
-        scene->AddTorus();
-    }
-    if (ImGui::Button("Add Point"))
-    {
-        scene->AddPoint();
-    }
-    if (scene->GetSelectedPoints().size() > 0)
-    {
-        if (ImGui::Button("Add Bezier Curve C0"))
-        {
-            scene->AddBezierCurveC0FromSelectedPoints();
-        }
-        if (ImGui::Button("Add Bezier Curve C2"))
-        {
-            scene->AddBezierCurveC2FromSelectedPoints();
-        }
-        if (ImGui::Button("Add Bezier Curve C2 Interpolating"))
-        {
-            scene->AddBezierCurveInterpolatingFromSelectedPoints();
-        }
-    }
 
 	ImGui::End();
+
+
 }

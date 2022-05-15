@@ -7,18 +7,21 @@
 #include "SimpleMath.h"
 
 __declspec(align(16))
-struct GSBezierConstantBuffer
+struct GSSurfaceBezierConstantBuffer
 {
 	DirectX::SimpleMath::Matrix mvp;
-	int screenWidth;
-	int screenHeight;
+	float X[16];
+	float Y[16];
+	float Z[16];
+	int slices;
 };
-class GSBezier
+
+class GSSurfaceBezier
 {
 public:
-	GSBezier();
+	GSSurfaceBezier();
 
 	mini::dx_ptr<ID3D11GeometryShader> m_geometryShader;
 	mini::dx_ptr<ID3D11Buffer> constantBufferGS;
-	void SetConstantBuffer(GSBezierConstantBuffer buffer);
+	void SetConstantBuffer(GSSurfaceBezierConstantBuffer buffer);
 };

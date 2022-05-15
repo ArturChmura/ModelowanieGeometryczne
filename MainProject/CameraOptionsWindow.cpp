@@ -2,7 +2,7 @@
 #include "ImGui/imgui.h"
 
 
-void CameraOptionsWindow::Render(std::shared_ptr<Scene> scene)
+void CameraOptionsWindow::Render()
 {
 	ImGui::Begin("Camera Options");
 
@@ -29,3 +29,7 @@ void CameraOptionsWindow::Render(std::shared_ptr<Scene> scene)
 	ImGui::End();
 }
 
+CameraOptionsWindow::CameraOptionsWindow(std::shared_ptr<Scene> scene)
+{
+    this->scene = scene;
+}

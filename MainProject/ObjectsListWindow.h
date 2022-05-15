@@ -1,8 +1,9 @@
 #pragma once
 #include <memory>
 #include "Scene.h"
+#include "IGuiWindow.h"
 
-class ObjectsListWindow
+class ObjectsListWindow : public IGuiWindow
 {
 public:
 	ObjectsListWindow(std::shared_ptr<Scene> scene);
