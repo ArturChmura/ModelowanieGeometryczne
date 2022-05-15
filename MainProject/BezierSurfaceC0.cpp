@@ -72,13 +72,6 @@ void BezierSurfaceC0::Draw(std::shared_ptr<Camera> camera)
 	{
 		singleSurfaces[i]->Draw(camera);
 	}
-	for (int i = 0; i < points.size(); i++)
-	{
-		for (int j = 0; j < points[i].size(); j++)
-		{
-			points[i][j]->Draw(camera);
-		}
-	}
 
 	if (drawPolygonChain)
 	{
@@ -167,6 +160,11 @@ std::shared_ptr<IModel> BezierSurfaceC0::SelectFromScreenCoords(float x, float y
 		
 	}
 	return nullptr;
+}
+
+std::vector<std::vector<std::shared_ptr<Point>>> BezierSurfaceC0::GetPoints()
+{
+	return points;
 }
 
 void BezierSurfaceC0::SetScale(float x, float y, float z)

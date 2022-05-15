@@ -108,9 +108,9 @@ void Point::OnAddedToScene()
 void Point::OnRemovedFromScene()
 {
 	IModel::OnRemovedFromScene();
-	auto vec = onRemovedFromSceneCallback;
+	auto vec = onRemovedFromSceneCallback.functions;
 	for (auto f : vec)
-		std::get<1>(f)(IModel::downcasted_shared_from_this<Point>());
+		f(IModel::downcasted_shared_from_this<Point>());
 }
 
 Matrix Point::GetModelMatrix()

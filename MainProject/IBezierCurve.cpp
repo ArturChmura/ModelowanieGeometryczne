@@ -89,7 +89,7 @@ void IBezierCurve::AddPoint(std::shared_ptr<Point> point)
 {
 	this->points.push_back(point);
 	point->onModelChangeCallback.push_back({ id,[this](std::shared_ptr<Point> point) { this->ResetDrawing(); } });
-	point->onRemovedFromSceneCallback.push_back({ id,[this](std::shared_ptr < Point> point) { RemovePoint(point->id); } });
+	point->onRemovedFromSceneCallback.Add([this](std::shared_ptr < Point> point) { RemovePoint(point->id); }, id);
 	ResetDrawing();
 }
 
@@ -107,9 +107,7 @@ void IBezierCurve::RemovePoint(int pointId)
 	auto newEnd = std::remove_if(model->onModelChangeCallback.begin(), model->onModelChangeCallback.end(), [this](std::tuple<int, std::function<void(std::shared_ptr<Point>)>> t) { return id == std::get<0>(t); });
 	model->onModelChangeCallback.erase(newEnd, model->onModelChangeCallback.end());
 
-
-	auto newEnd2 = std::remove_if(model->onRemovedFromSceneCallback.begin(), model->onRemovedFromSceneCallback.end(), [this](std::tuple<int, std::function<void(std::shared_ptr<Point>)>> t) { return id == std::get<0>(t); });
-	model->onRemovedFromSceneCallback.erase(newEnd2, model->onRemovedFromSceneCallback.end());
+	model->onRemovedFromSceneCallback.Remove(id);
 	ResetDrawing();
 }
 

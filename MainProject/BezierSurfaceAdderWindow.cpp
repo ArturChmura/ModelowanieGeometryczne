@@ -1,6 +1,5 @@
 #include "BezierSurfaceAdderWindow.h"
 #include "ImGui/imgui.h"
-#include "BezierSurfaceC0.h"
 
 #include <string>
 
@@ -43,8 +42,16 @@ void BezierSurfaceAdderWindow::Render()
 	if (ImGui::Button("Dodaj model"))
 	{
 		*(this->open) = false;
-		this->scene->AddModel(this->scene->previewModel);
+		this->scene->AddModel(surface);
 		this->scene->previewModel = nullptr;
+		for (auto points : this->surface->GetPoints())
+		{
+			for (auto point : points)
+			{
+				this->scene->AddPoint(point);
+				point->onRemovedFromSceneCallback.Add([scene = scene, surface = surface](std::shared_ptr<Point> p) {scene->DeleteModel(surface->id); }, surface->id);
+			}
+		}
 	}
 
 	ImGui::End();
@@ -52,5 +59,6 @@ void BezierSurfaceAdderWindow::Render()
 
 void BezierSurfaceAdderWindow::SetPreview()
 {
-	this->scene->previewModel = std::make_shared<BezierSurfaceC0>(horizontalSlicesCount, verticalSlicesCount, width, height, cylinder, scene->cursor->GetTranslation());
+	this->surface =  std::make_shared<BezierSurfaceC0>(horizontalSlicesCount, verticalSlicesCount, width, height, cylinder, scene->cursor->GetTranslation());
+	this->scene->previewModel = surface;
 }

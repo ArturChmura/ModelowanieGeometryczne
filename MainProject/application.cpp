@@ -75,8 +75,6 @@ Application::Application(SIZE size)
 	scene->cursor->SetPosition({ 10,10,10 });
 	scene->AddTorus();
 
-	auto surface = std::make_shared<BezierSurfaceC0>(2, 1, 10, 10, false, scene->cursor->GetTranslation());
-	scene->AddModel(surface);
 
 	auto backBuffer = m_backBuffer.get();
 	DxDevice::instance->context()->OMSetRenderTargets(1, &backBuffer, m_depthBuffer.get());

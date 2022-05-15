@@ -4,6 +4,8 @@
 #include <d3d11.h>
 #include "SimpleMath.h"
 #include <functional>
+#include "Callback.h"
+
 class Point : public IModel
 {
 public:
@@ -30,8 +32,9 @@ public:
 	virtual void OnSelect() override;
 	inline static std::vector<std::function<void(std::shared_ptr<Point>)>> onAddedToSceneCallback;
 	virtual void OnAddedToScene() override;
-	std::vector< std::tuple<int, std::function<void(std::shared_ptr<Point>)>>> onRemovedFromSceneCallback;
+	Callback<void(std::shared_ptr<Point>)> onRemovedFromSceneCallback;
 	void OnRemovedFromScene() override;
+
 	std::vector<std::tuple<int, std::function<void(std::shared_ptr<Point>)>>> onModelChangeCallback;
 private:
 	DirectX::SimpleMath::Matrix GetModelMatrix();

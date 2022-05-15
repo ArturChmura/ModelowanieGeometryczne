@@ -14,6 +14,8 @@ public:
 	Scene(std::shared_ptr<Coursor3d> cursor, SIZE windowSize);
 	std::shared_ptr<Torus> AddTorus();
 	std::shared_ptr<Point> AddPoint();
+	void AddPoint(std::shared_ptr<Point> point);
+	void AddModel(std::shared_ptr<IModel> model);
 	void AddBezierCurveC0FromSelectedPoints();
 	void AddBezierCurveC2FromSelectedPoints(); 
 	void AddBezierCurveInterpolatingFromSelectedPoints();
@@ -39,6 +41,5 @@ public:
 
 	void DrawScene();
 public:
-	void AddModel(std::shared_ptr<IModel> model);
 private:
 };

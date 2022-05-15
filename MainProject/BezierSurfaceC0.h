@@ -21,7 +21,7 @@ public:
 	virtual void Draw(std::shared_ptr<Camera> camera) override;
 	virtual void RenderGUI() override;
 	virtual std::shared_ptr<IModel> SelectFromScreenCoords(float x, float y, DirectX::SimpleMath::Matrix VP) override;
-
+	std::vector<std::vector<std::shared_ptr<Point>>> GetPoints();
 	// Inherited via IModel
 	virtual void SetScale(float x, float y, float z) override;
 
