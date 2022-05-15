@@ -25,7 +25,6 @@ public:
 	std::vector<std::shared_ptr<IModel>> models;
 	std::vector<std::shared_ptr<Point>> GetSelectedPoints();
 	std::shared_ptr<Coursor3d> cursor;
-	std::shared_ptr<IModel> selectedModel; 
 	std::vector<std::shared_ptr<Point>> points;
 	std::shared_ptr<IModel> previewModel;
 

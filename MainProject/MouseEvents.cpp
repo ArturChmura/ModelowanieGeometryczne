@@ -20,45 +20,45 @@ void MouseEvents::HandleMouse()
 	{
 		if (ImGui::IsKeyDown(ImGuiKey_::ImGuiKey_X))
 		{
-			scene->selectedModel->Rotate(x * -objectRotationSpeedPerPixel, 0, 0);
+			scene->composite->Rotate(x * -objectRotationSpeedPerPixel, 0, 0);
 		}
 		if (ImGui::IsKeyDown(ImGuiKey_::ImGuiKey_Y))
 		{
-			scene->selectedModel->Rotate(0, x * -objectRotationSpeedPerPixel, 0);
+			scene->composite->Rotate(0, x * -objectRotationSpeedPerPixel, 0);
 		}
 		if (ImGui::IsKeyDown(ImGuiKey_::ImGuiKey_Z))
 		{
-			scene->selectedModel->Rotate(0, 0, x * -objectRotationSpeedPerPixel);
+			scene->composite->Rotate(0, 0, x * -objectRotationSpeedPerPixel);
 		}
 	}
 	if (ImGui::IsKeyDown(ImGuiKey_::ImGuiKey_S))
 	{
 		if (ImGui::IsKeyDown(ImGuiKey_::ImGuiKey_X))
 		{
-			scene->selectedModel->Scale(1.0f + x * objectScaleSpeedPerPixel, 1, 1);
+			scene->composite->Scale(1.0f + x * objectScaleSpeedPerPixel, 1, 1);
 		}
 		if (ImGui::IsKeyDown(ImGuiKey_::ImGuiKey_Y))
 		{
-			scene->selectedModel->Scale(1, 1.0f + x * objectScaleSpeedPerPixel, 1);
+			scene->composite->Scale(1, 1.0f + x * objectScaleSpeedPerPixel, 1);
 		}
 		if (ImGui::IsKeyDown(ImGuiKey_::ImGuiKey_Z))
 		{
-			scene->selectedModel->Scale(1, 1, 1.0f + x * objectScaleSpeedPerPixel);
+			scene->composite->Scale(1, 1, 1.0f + x * objectScaleSpeedPerPixel);
 		}
 	}
 	if (ImGui::IsKeyDown(ImGuiKey_::ImGuiKey_T))
 	{
 		if (ImGui::IsKeyDown(ImGuiKey_::ImGuiKey_X))
 		{
-			scene->selectedModel->Translate(x * objectTranslateSpeedPerPixel, 0, 0);
+			scene->composite->Translate(x * objectTranslateSpeedPerPixel, 0, 0);
 		}
 		if (ImGui::IsKeyDown(ImGuiKey_::ImGuiKey_Y))
 		{
-			scene->selectedModel->Translate(0, x * objectTranslateSpeedPerPixel, 0);
+			scene->composite->Translate(0, x * objectTranslateSpeedPerPixel, 0);
 		}
 		if (ImGui::IsKeyDown(ImGuiKey_::ImGuiKey_Z))
 		{
-			scene->selectedModel->Translate(0, 0, x * objectTranslateSpeedPerPixel);
+			scene->composite->Translate(0, 0, x * objectTranslateSpeedPerPixel);
 		}
 	}
 	if (ImGui::IsMouseDown(2))

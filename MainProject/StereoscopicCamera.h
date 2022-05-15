@@ -5,7 +5,7 @@
 class StereoscopicCamera : public PerspectiveCamera
 {
 public:
-	StereoscopicCamera(std::shared_ptr<ICameraMovement> cameraMovement, float fieldOfView, float aspectRatio, float nearZ, float farZ, float eyeDistance, float focusLength);
+	StereoscopicCamera(std::shared_ptr<ICameraMovement> cameraMovement, float fieldOfView, float aspectRatio, float nearZ, float farZ, float eyeDistance, float focusLength, std::function<ID3D11DepthStencilView*()> depthBufferGetter);
 
 	void SetEyeDistance(float eyeDistance);
 	float GetEyeDistance();
@@ -18,7 +18,7 @@ public:
 	virtual void UpdatePerspectiveMatrix() override;
 	virtual void RenderScene(std::shared_ptr<Scene> scene) override;
 	virtual void DrawGUI() override;
-
+	std::function<ID3D11DepthStencilView*()> depthBufferGetter;
 private:
 	bool isLeftEye = true;
 	float eyeDistance;

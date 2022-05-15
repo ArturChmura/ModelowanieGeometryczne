@@ -6,13 +6,13 @@
 
 using namespace DirectX::SimpleMath;
 
-StereoscopicCamera::StereoscopicCamera(std::shared_ptr<ICameraMovement> cameraMovement, float fieldOfView, float aspectRatio, float nearZ, float farZ, float eyeDistance, float focusLength)
+StereoscopicCamera::StereoscopicCamera(std::shared_ptr<ICameraMovement> cameraMovement, float fieldOfView, float aspectRatio, float nearZ, float farZ, float eyeDistance, float focusLength, std::function<ID3D11DepthStencilView*()> depthBufferGetter)
 	:PerspectiveCamera(cameraMovement, fieldOfView, aspectRatio, nearZ, farZ, "Stereoscopic Camera")
 {
 	this->eyeDistance = eyeDistance;
 	this->focusLength = focusLength;
 	UpdatePerspectiveMatrix();
-
+	this->depthBufferGetter = depthBufferGetter;
 
 	BlendDescription addBsDesc;
 	addBsDesc.RenderTarget[0].BlendEnable = true;
@@ -98,6 +98,8 @@ void StereoscopicCamera::RenderScene(std::shared_ptr<Scene> scene)
 	SetEye(true);
 	DxDevice::instance->context()->OMSetBlendState(m_bsAdd.get(), this->leftEyeColors, BS_MASK);
 	scene->DrawScene();
+
+	DxDevice::instance->context()->ClearDepthStencilView(depthBufferGetter(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	SetEye(false);
 	DxDevice::instance->context()->OMSetBlendState(m_bsAdd.get(), this->rightEyeColors, BS_MASK);

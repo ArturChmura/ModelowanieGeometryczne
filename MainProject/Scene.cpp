@@ -120,7 +120,6 @@ void Scene::Select(std::shared_ptr<IModel> model)
 	}
 	this->composite = std::make_shared<CompositeModel>();
 	this->composite->AddModel(model);
-	this->selectedModel = composite;
 	model->OnSelect();
 }
 
@@ -136,15 +135,6 @@ void Scene::ChangeSelection(std::shared_ptr<IModel> model)
 	{
 		composite->AddModel(model);
 		model->OnSelect();
-	}
-
-	if (composite->modelsMap.size() == 0)
-	{
-		selectedModel = nullptr;
-	}
-	else
-	{
-		selectedModel = composite;
 	}
 }
 
@@ -216,9 +206,9 @@ void Scene::DrawScene()
 			model->Draw(activeCamera);
 		}
 	}
-	if (selectedModel)
+	if (composite)
 	{
-		selectedModel->Draw(activeCamera);
+		composite->Draw(activeCamera);
 	}
 	if (previewModel)
 	{

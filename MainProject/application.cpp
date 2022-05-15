@@ -32,7 +32,7 @@ Application::Application(SIZE size)
 	XMFLOAT3 targetPosition = { 0,0,0 };
 	auto arcCameraMovement = std::make_shared<ArcCameraModel>(targetPosition, 30.0f);
 	auto perspectiveCamera = std::make_shared<PerspectiveCamera>(arcCameraMovement, XMConvertToRadians(45), static_cast<float>(size.cx) / size.cy, 0.1f, 1000.0f);
-	auto stereoscopicCamera = std::make_shared<StereoscopicCamera>(arcCameraMovement, XMConvertToRadians(45), static_cast<float>(size.cx) / size.cy, 0.1f, 1000.0f, 2.0f, 100.0f);
+	auto stereoscopicCamera = std::make_shared<StereoscopicCamera>(arcCameraMovement, XMConvertToRadians(45), static_cast<float>(size.cx) / size.cy, 0.1f, 1000.0f, 2.0f, 100.0f, [this]() {return this->m_depthBuffer.get(); });
 
 	scene->AddCamera(perspectiveCamera);
 	scene->AddCamera(stereoscopicCamera);
@@ -52,7 +52,7 @@ Application::Application(SIZE size)
 	messageHandler = std::make_shared<MessageHandler>(scene);
 
 	float r = 0, fi = 0, phi = 0;
-	int pointsCount = 6;
+	int pointsCount = 6000;
 	for (int i = 0; i < pointsCount; i++)
 	{
 		float x = r * cosf(fi) * cosf(phi);
@@ -68,7 +68,7 @@ Application::Application(SIZE size)
 		phi += 0.2f;
 	}
 
-	scene->AddBezierCurveInterpolatingFromSelectedPoints();
+	//scene->AddBezierCurveInterpolatingFromSelectedPoints();
 	//scene->AddBezierCurveC2FromSelectedPoints();
 	//scene->AddBezierCurveC0FromSelectedPoints();
 
