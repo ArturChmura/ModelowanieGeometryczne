@@ -11,29 +11,35 @@ void ObjectsListWindow::Render()
 	ImGui::Begin("Objects list");
     if (ImGui::BeginListBox("##ObjectsListBox", ImVec2(-FLT_MIN, 20 * ImGui::GetTextLineHeightWithSpacing())))
     {
-        for (int i = 0; i < scene->models.size(); i++)
+        ImGuiListClipper clipper;
+        clipper.Begin(scene->models.size());
+        while (clipper.Step())
         {
-            auto model = scene->models[i];
-            const bool is_selected = scene->IsSelcted(model->id);
-
-            if (ImGui::Selectable((model->name + "##" + std::to_string(model->id)).c_str(), is_selected))
+            for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
             {
-                auto io = ImGui::GetIO();
-                if (io.KeyCtrl)
-                {
-                    scene->ChangeSelection(model);
-                }
-                else
-                {
-                    scene->Select(model);
-                }
-                
-            }
+                auto model = scene->models[i];
+                const bool is_selected = scene->IsSelcted(model->id);
 
-            // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-            if (is_selected)
-                ImGui::SetItemDefaultFocus();
+                if (ImGui::Selectable((model->name + "##" + std::to_string(model->id)).c_str(), is_selected))
+                {
+                    auto io = ImGui::GetIO();
+                    if (io.KeyCtrl)
+                    {
+                        scene->ChangeSelection(model);
+                    }
+                    else
+                    {
+                        scene->Select(model);
+                    }
+
+                }
+
+                // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+                if (is_selected)
+                    ImGui::SetItemDefaultFocus();
+            }
         }
+       
         ImGui::EndListBox();
     }
     if (scene->composite->modelsMap.size() > 0)
