@@ -18,6 +18,9 @@
     <ClCompile Include="BezierCurveInterpolating.cpp" />
     <ClCompile Include="BezierSurfaceAdderWindow.cpp" />
     <ClCompile Include="BezierSurfaceC0.cpp" />
+    <ClCompile Include="BezierSurfaceC0AdderWindow.cpp" />
+    <ClCompile Include="BezierSurfaceC2.cpp" />
+    <ClCompile Include="BezierSurfaceC2AdderWindow.cpp" />
     <ClCompile Include="Callback.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CompositeModel.cpp" />
@@ -28,6 +31,7 @@
     <ClCompile Include="dxStructures.cpp" />
     <ClCompile Include="exceptions.cpp" />
     <ClCompile Include="gsBezier.cpp" />
+    <ClCompile Include="gsBezierSurfaceC2.cpp" />
     <ClCompile Include="gsSurfaceBezier.cpp" />
     <ClCompile Include="IBezierCurve.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
@@ -59,6 +63,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="ShadersManager.cpp" />
     <ClCompile Include="SingleBezierSurfaceC0.cpp" />
+    <ClCompile Include="SingleBezierSurfaceC2.cpp" />
     <ClCompile Include="StereoscopicCamera.cpp" />
     <ClCompile Include="Torus.cpp" />
     <ClCompile Include="VertexModel.cpp" />
@@ -76,6 +81,9 @@
     <ClInclude Include="BezierCurveInterpolating.h" />
     <ClInclude Include="BezierSurfaceAdderWindow.h" />
     <ClInclude Include="BezierSurfaceC0.h" />
+    <ClInclude Include="BezierSurfaceC0AdderWindow.h" />
+    <ClInclude Include="BezierSurfaceC2.h" />
+    <ClInclude Include="BezierSurfaceC2AdderWindow.h" />
     <ClInclude Include="Callback.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CompositeModel.h" />
@@ -83,6 +91,7 @@
     <ClInclude Include="CursorOptionsWindow.h" />
     <ClInclude Include="DebugWindow.h" />
     <ClInclude Include="gsBezier.h" />
+    <ClInclude Include="gsBezierSurfaceC2.h" />
     <ClInclude Include="gsSurfaceBezier.h" />
     <ClInclude Include="IBezierCurve.h" />
     <ClInclude Include="ICameraMovement.h" />
@@ -122,6 +131,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ShadersManager.h" />
     <ClInclude Include="SingleBezierSurfaceC0.h" />
+    <ClInclude Include="SingleBezierSurfaceC2.h" />
     <ClInclude Include="StereoscopicCamera.h" />
     <ClInclude Include="Torus.h" />
     <ClInclude Include="VertexModel.h" />
@@ -138,6 +148,12 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
       <DisableOptimizations Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DisableOptimizations>
+    </FxCompile>
+    <FxCompile Include="gsBezierSurfaceC2.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="gsSurfaceBezier.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
@@ -172,6 +188,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="bezierStructs.hlsli" />
+    <None Include="DeBoor.hlsli" />
     <None Include="DeCasteljeu.hlsli" />
     <None Include="surfaceBezierStructs.hlsli" />
     <None Include="VSColorOut.hlsli" />

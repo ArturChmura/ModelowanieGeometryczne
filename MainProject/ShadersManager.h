@@ -8,6 +8,7 @@
 #include <memory>
 #include "gsSurfaceBezier.h"
 #include "vsSurfaceBezier.h"
+#include "gsBezierSurfaceC2.h"
 
 class ShadersManager
 {
@@ -15,6 +16,7 @@ public:
 	inline static std::shared_ptr<GSBezier> gsBezier;
 	inline static std::shared_ptr<VSBezier> vsBezier;
 
+	inline static std::shared_ptr<GSBezierSurfaceC2> gsBezierSurfaceC2;
 	inline static std::shared_ptr<GSSurfaceBezier> gsSurfaceBezier;
 	inline static std::shared_ptr<VSSurfaceBezier> vsSurfaceBezier;
 

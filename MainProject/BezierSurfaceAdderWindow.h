@@ -2,7 +2,6 @@
 #include <memory>
 #include "Scene.h"
 #include "IGuiWindow.h"
-#include "BezierSurfaceC0.h"
 
 class BezierSurfaceAdderWindow : public IGuiWindow
 {
@@ -10,7 +9,8 @@ public:
 	BezierSurfaceAdderWindow(std::shared_ptr<Scene> scene, bool* open);
 	~BezierSurfaceAdderWindow();
 	void Render();
-	void SetPreview();
+	virtual void SetPreview() = 0;
+	virtual void AddModel() = 0;
 	std::shared_ptr<Scene> scene; 
 	bool* open;
 
@@ -22,5 +22,4 @@ public:
 
 	bool cylinder = false;
 
-	std::shared_ptr<BezierSurfaceC0> surface;
 };

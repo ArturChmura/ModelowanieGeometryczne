@@ -6,6 +6,7 @@
 #include "PerspectiveCamera.h"
 #include "StereoscopicCamera.h"
 #include "BezierSurfaceC0.h"
+#include "BezierSurfaceC2.h"
 
 using namespace mini;
 using namespace DirectX;
@@ -52,7 +53,7 @@ Application::Application(SIZE size)
 	messageHandler = std::make_shared<MessageHandler>(scene);
 
 	float r = 0, fi = 0, phi = 0;
-	int pointsCount = 10000;
+	int pointsCount = 0000;
 	for (int i = 0; i < pointsCount; i++)
 	{
 		float x = r * cosf(fi) * cosf(phi);
@@ -75,6 +76,16 @@ Application::Application(SIZE size)
 	/*scene->cursor->SetPosition({ 10,10,10 });
 	scene->AddTorus();*/
 
+	/*auto c2 = std::make_shared<BezierSurfaceC2>(5, 5, 10.0f, 10.0f, false, scene->cursor->GetTranslation());
+	scene->AddModel(c2);
+	for (auto points : c2->GetPoints())
+	{
+		for (auto point : points)
+		{
+			scene->AddPoint(point);
+		}
+			
+	}*/
 
 	auto backBuffer = m_backBuffer.get();
 	DxDevice::instance->context()->OMSetRenderTargets(1, &backBuffer, m_depthBuffer.get());

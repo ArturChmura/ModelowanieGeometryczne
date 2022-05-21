@@ -1,5 +1,7 @@
 #include "ObjectAdderWindow.h"
 #include "ImGui/imgui.h"
+#include "BezierSurfaceC0AdderWindow.h"
+#include "BezierSurfaceC2AdderWindow.h"
 
 ObjectAdderWindow::ObjectAdderWindow(std::shared_ptr<Scene> scene)
 {
@@ -37,7 +39,15 @@ void ObjectAdderWindow::Render()
         if (!surfaceAdderOpen)
         {
             surfaceAdderOpen = true;
-            this->adder = std::make_shared<BezierSurfaceAdderWindow>(scene, &surfaceAdderOpen);
+            this->adder = std::make_shared<BezierSurfaceC0AdderWindow>(scene, &surfaceAdderOpen);
+        }
+    }
+    if (ImGui::Button("Add Bezier Surface C2"))
+    {
+        if (!surfaceAdderOpen)
+        {
+            surfaceAdderOpen = true;
+            this->adder = std::make_shared<BezierSurfaceC2AdderWindow>(scene, &surfaceAdderOpen);
         }
     }
     ImGui::End();

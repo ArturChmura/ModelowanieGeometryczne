@@ -118,6 +118,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
 
+
         app->RenderGui();
 
         ImGui::Render();

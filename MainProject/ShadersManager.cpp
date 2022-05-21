@@ -5,6 +5,7 @@ void ShadersManager::LoadShaders()
 	gsBezier = std::make_shared<GSBezier>();
 	vsBezier = std::make_shared<VSBezier>();
 
+	gsBezierSurfaceC2 = std::make_shared<GSBezierSurfaceC2>();
 	gsSurfaceBezier = std::make_shared<GSSurfaceBezier>();
 	vsSurfaceBezier = std::make_shared<VSSurfaceBezier>();
 

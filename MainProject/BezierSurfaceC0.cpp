@@ -16,7 +16,6 @@ BezierSurfaceC0::BezierSurfaceC0(
 
 	int pointsHorizontalCount = horizontalSlicesCount * 3 + 1;
 	int pointsVerticalCount = cylinder ? verticalSlicesCount * 3 : verticalSlicesCount * 3 + 1;
-	int pointsCount = pointsHorizontalCount * pointsVerticalCount;
 
 	points = std::vector<std::vector<std::shared_ptr<Point>>>(pointsVerticalCount);
 	for (int i = 0; i < pointsVerticalCount; i++)
@@ -167,6 +166,14 @@ std::vector<std::vector<std::shared_ptr<Point>>> BezierSurfaceC0::GetPoints()
 	return points;
 }
 
+void BezierSurfaceC0::ChangeColor(DirectX::SimpleMath::Vector3 color)
+{
+	for (auto single : singleSurfaces)
+	{
+		single->ChangeColor(color);
+	}
+}
+
 void BezierSurfaceC0::SetScale(float x, float y, float z)
 {
 }
@@ -212,12 +219,4 @@ DirectX::SimpleMath::Vector3 BezierSurfaceC0::GetRotation()
 
 void BezierSurfaceC0::RotateFromPoint(DirectX::SimpleMath::Vector4 globalPoint, DirectX::XMFLOAT3 ratation)
 {
-}
-
-void BezierSurfaceC0::ChangeColor(DirectX::SimpleMath::Vector3 color)
-{
-	for (auto single: singleSurfaces)
-	{
-		single->ChangeColor(color);
-	}
 }
