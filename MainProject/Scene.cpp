@@ -114,13 +114,21 @@ void Scene::DeleteModel(int modelId)
 
 void Scene::Select(std::shared_ptr<IModel> model)
 {
+	const bool is_selected = IsSelcted(model->id);
+	if (!is_selected)
+	{
+		this->composite->AddModel(model);
+		model->OnSelect();
+	}
+}
+
+void Scene::DeselectAll()
+{
 	for (auto [id, m] : composite->modelsMap)
 	{
 		m->OnDeselect();
 	}
 	this->composite = std::make_shared<CompositeModel>();
-	this->composite->AddModel(model);
-	model->OnSelect();
 }
 
 void Scene::ChangeSelection(std::shared_ptr<IModel> model)
@@ -159,6 +167,30 @@ std::shared_ptr<IModel> Scene::GetModelFromScreenCoords(float x, float y)
 		}
 	}
 	return nullptr;
+}
+
+std::vector<std::shared_ptr<IModel>> Scene::GetModelsFromArea(float left, float right, float top, float bottom)
+{
+	std::vector<std::shared_ptr<IModel>> vector;
+	auto viewMatrix = activeCamera->GetViewMatrix();
+	auto perspectiveMatrix = activeCamera->GetPerspectiveMatrix();
+	auto VP = viewMatrix * perspectiveMatrix;
+	for (auto model : models)
+	{
+		auto p = model->GetTranslation();
+		Vector4 modelPosition = { p.x,p.y,p.z,1 };
+		auto modelPerspectivePosition = Vector4::Transform(modelPosition, VP);
+		modelPerspectivePosition /= modelPerspectivePosition.w;
+		float modelX = (modelPerspectivePosition.x + 1) / 2.0f * DxDevice::windowSize.cx;
+		float modelY = DxDevice::windowSize.cy - (modelPerspectivePosition.y + 1) / 2.0f * DxDevice::windowSize.cy;
+
+
+		if (modelX >= left && modelX <= right && modelY > top && modelY < bottom)
+		{
+			vector.push_back(model);
+		}
+	}
+	return vector;
 }
 
 

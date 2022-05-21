@@ -44,6 +44,7 @@ public:
 
 	virtual std::shared_ptr<IModel> SelectFromScreenCoords(float x, float y, DirectX::SimpleMath::Matrix VP);
 
+
 protected:
 	bool visible = true;
 	DirectX::SimpleMath::Vector3 defaultColor = {1,1,1};

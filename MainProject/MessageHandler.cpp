@@ -5,11 +5,12 @@ using namespace DirectX::SimpleMath;
 
 MessageHandler::MessageHandler(std::shared_ptr<Scene> scene)
 {
-		this->scene = scene;
+	this->scene = scene;
 }
 
 void MessageHandler::HandleMessage(MSG message)
-{	auto io = ImGui::GetIO();
+{
+	auto io = ImGui::GetIO();
 	if (io.WantCaptureMouse)
 	{
 		return;
@@ -18,21 +19,46 @@ void MessageHandler::HandleMessage(MSG message)
 	{
 		WORD x = LOWORD(message.lParam);
 		WORD y = HIWORD(message.lParam);
-		auto model = scene->GetModelFromScreenCoords(x, y);
-		if (model)
+		xWhenDown = x;
+		yWhenDown = y;
+
+	}
+	if (message.message == WM_LBUTTONUP)
+	{
+		WORD x = LOWORD(message.lParam);
+		WORD y = HIWORD(message.lParam);
+		float dx = x - xWhenDown;
+		float dy = y - yWhenDown;
+		std::vector<std::shared_ptr<IModel>> models;
+		if (abs(dx) < 10 && abs(dy) < 10)
 		{
-			if (io.KeyCtrl)
+			auto model = scene->GetModelFromScreenCoords(x, y);
+			if (model)
 			{
-				scene->ChangeSelection(model);
+				models.push_back(model);
 			}
 			else
 			{
-				scene->Select(model);
+				scene->UpdateCursorPositionFromScreenCoords(Vector2(x, y));
+				return;
 			}
 		}
 		else
 		{
-			scene->UpdateCursorPositionFromScreenCoords(Vector2(x, y));
+			float left = min(x, xWhenDown);
+			float right = max(x, xWhenDown);
+			float top = min(y, yWhenDown);
+			float bottom = max(y, yWhenDown);
+			models = scene->GetModelsFromArea(left, right, top, bottom);
+		}
+
+		if (!io.KeyCtrl)
+		{
+			scene->DeselectAll();
+		}
+		for (auto model : models)
+		{
+			scene->ChangeSelection(model);
 		}
 	}
 }

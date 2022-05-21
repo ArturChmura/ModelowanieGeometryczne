@@ -21,6 +21,7 @@ public:
 	void AddBezierCurveInterpolatingFromSelectedPoints();
 	void DeleteModel(int modelId);
 	void Select(std::shared_ptr<IModel> model);
+	void DeselectAll();
 	void ChangeSelection(std::shared_ptr<IModel> model);
 	std::vector<std::shared_ptr<IModel>> models;
 	std::vector<std::shared_ptr<Point>> GetSelectedPoints();
@@ -34,6 +35,7 @@ public:
 	std::shared_ptr<CompositeModel> composite; 
 	bool IsSelcted(int modelId); 
 	std::shared_ptr<IModel> GetModelFromScreenCoords(float x, float y);
+	std::vector<std::shared_ptr<IModel>> GetModelsFromArea(float left, float right, float top, float bottom);
 	SIZE windowSize;
 	void UpdateCursorPositionFromScreenCoords(DirectX::SimpleMath::Vector2 screenCoords);
 	void RemoveSelectedModels();

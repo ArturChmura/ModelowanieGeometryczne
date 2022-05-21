@@ -53,7 +53,7 @@ Application::Application(SIZE size)
 	messageHandler = std::make_shared<MessageHandler>(scene);
 
 	float r = 0, fi = 0, phi = 0;
-	int pointsCount = 0000;
+	int pointsCount = 1000;
 	for (int i = 0; i < pointsCount; i++)
 	{
 		float x = r * cosf(fi) * cosf(phi);

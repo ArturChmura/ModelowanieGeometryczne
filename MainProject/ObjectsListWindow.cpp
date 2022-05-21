@@ -29,6 +29,7 @@ void ObjectsListWindow::Render()
                     }
                     else
                     {
+                        scene->DeselectAll();
                         scene->Select(model);
                     }
 
