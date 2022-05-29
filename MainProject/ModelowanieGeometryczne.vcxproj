@@ -56,6 +56,7 @@
     <ClCompile Include="ShadersManager.cpp" />
     <ClCompile Include="SingleBezierSurfaceC0.cpp" />
     <ClCompile Include="SingleBezierSurfaceC2.cpp" />
+    <ClCompile Include="StartWindow.cpp" />
     <ClCompile Include="StereoscopicCamera.cpp" />
     <ClCompile Include="Torus.cpp" />
     <ClCompile Include="VertexModel.cpp" />
@@ -115,6 +116,7 @@
     <ClInclude Include="ShadersManager.h" />
     <ClInclude Include="SingleBezierSurfaceC0.h" />
     <ClInclude Include="SingleBezierSurfaceC2.h" />
+    <ClInclude Include="StartWindow.h" />
     <ClInclude Include="StereoscopicCamera.h" />
     <ClInclude Include="Torus.h" />
     <ClInclude Include="VertexModel.h" />
@@ -183,6 +185,9 @@
     <ProjectReference Include="..\Dependencies\ImGui\ImGuiWin32DX11\ImGuiWin32DX11.vcxproj">
       <Project>{6cb64019-cca1-4593-83ef-19fae58edf3b}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\Dependencies\nativefiledialog\build\vs2010\nfd.vcxproj">
+      <Project>{5d94880b-c99d-887c-5219-9f7cbe21947c}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -231,7 +236,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\DirectXTK\Inc;$(SolutionDir)Dependencies\ImGui\ImGuiWin32DX11;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\DirectXTK\Inc;$(SolutionDir)Dependencies\ImGui\ImGuiWin32DX11;$(SolutionDir)Dependencies\nativefiledialog\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -252,7 +257,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\DirectXTK\Inc;$(SolutionDir)Dependencies\ImGui\ImGuiWin32DX11;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\DirectXTK\Inc;$(SolutionDir)Dependencies\ImGui\ImGuiWin32DX11;$(SolutionDir)Dependencies\nativefiledialog\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

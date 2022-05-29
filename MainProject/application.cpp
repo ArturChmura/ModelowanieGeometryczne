@@ -7,6 +7,7 @@
 #include "StereoscopicCamera.h"
 #include "BezierSurfaceC0.h"
 #include "BezierSurfaceC2.h"
+#include "StartWindow.h"
 
 using namespace mini;
 using namespace DirectX;
@@ -45,6 +46,7 @@ Application::Application(SIZE size)
 	guiWindows.push_back(std::make_shared<PropertiesWindow>(scene));
 	guiWindows.push_back(std::make_shared<CameraOptionsWindow>(scene));
 	guiWindows.push_back(std::make_shared<CursorOptionsWindow>(cursor, scene, size));
+	guiWindows.push_back(std::make_shared<StartWindow>(scene));
 	//guiWindows.push_back(std::make_shared<DebugWindow>());
 
 

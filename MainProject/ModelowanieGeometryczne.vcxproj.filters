@@ -261,6 +261,9 @@
     <ClCompile Include="BezierSurfaceC2AdderWindow.cpp">
       <Filter>Source Files\Windows\BezierSurfaceAdders</Filter>
     </ClCompile>
+    <ClCompile Include="StartWindow.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dxptr.h">
@@ -433,6 +436,9 @@
     </ClInclude>
     <ClInclude Include="BezierSurfaceC2AdderWindow.h">
       <Filter>Header Files\Windows\BezierSurfacesAdders</Filter>
+    </ClInclude>
+    <ClInclude Include="StartWindow.h">
+      <Filter>Header Files\Windows</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
