@@ -10,10 +10,10 @@ public:
 	SingleBezierSurfaceC0(std::array<std::array<std::shared_ptr<Point>, 4>, 4> points);
 	void SetDrawPolygonChain(bool drawPolygonChain);
 
-private:
 	std::array<std::array<std::shared_ptr<Point>, 4>, 4> points;
 	int horizontalSlices;
 	int verticalSlices;
+private:
 	MeshInfo meshInfo;
 	bool resetDrawing = true;
 	bool drawPolygonChain = false;
@@ -61,4 +61,8 @@ public:
 	virtual void ChangeColor(DirectX::SimpleMath::Vector3 color) override;
 
 	void RenderGUI() override;
+
+	// Inherited via IModel
+	virtual void Accept(SerializationVisitor& visitor) override;
+
 };

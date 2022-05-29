@@ -49,4 +49,9 @@ private:
 
 	virtual void ChangeColor(DirectX::SimpleMath::Vector3 color) override;
 
+
+	// Inherited via IModel
+	virtual void Accept(SerializationVisitor& visitor) override;
+
+
 };

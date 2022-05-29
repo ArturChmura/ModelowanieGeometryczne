@@ -181,3 +181,8 @@ void SingleBezierSurfaceC2::ChangeColor(DirectX::SimpleMath::Vector3 color)
 	meshInfo.color = color;
 
 }
+
+void SingleBezierSurfaceC2::Accept(SerializationVisitor& visitor)
+{
+	visitor.Accept(*this);
+}

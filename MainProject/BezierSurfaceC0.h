@@ -56,10 +56,14 @@ public:
 
 	virtual void ChangeColor(DirectX::SimpleMath::Vector3 color) override;
 
+	std::vector<std::shared_ptr<SingleBezierSurfaceC0>> singleSurfaces;
 private:
 	std::vector<std::vector<std::shared_ptr<Point>>> points;
-	std::vector<std::shared_ptr<SingleBezierSurfaceC0>> singleSurfaces;
 	bool drawPolygonChain = false;
 	int horizontalSlicesCount;
 	int verticalSlicesCount;
+
+	// Inherited via IModel
+	virtual void Accept(SerializationVisitor& visitor) override;
+
 };

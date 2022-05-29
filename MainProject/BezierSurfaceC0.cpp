@@ -174,6 +174,11 @@ void BezierSurfaceC0::ChangeColor(DirectX::SimpleMath::Vector3 color)
 	}
 }
 
+void BezierSurfaceC0::Accept(SerializationVisitor& visitor)
+{
+	visitor.Accept(*this);
+}
+
 void BezierSurfaceC0::SetScale(float x, float y, float z)
 {
 }

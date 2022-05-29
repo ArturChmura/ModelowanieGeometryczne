@@ -188,6 +188,11 @@ void Point::ChangeColor(DirectX::SimpleMath::Vector3 color)
 	this->meshInfo.color = color;
 }
 
+void Point::Accept(SerializationVisitor& visitor)
+{
+	visitor.Accept(*this);
+}
+
 void Point::OnModelChange()
 {
 	for (auto f : onModelChangeCallback) std::get<1>(f)(IModel::downcasted_shared_from_this<Point>());

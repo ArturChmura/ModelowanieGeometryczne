@@ -41,3 +41,8 @@ std::vector<DirectX::SimpleMath::Vector3> BezierCurveC0::GetPolygonChainPoints()
 	return GetBezierPoints();
 }
 
+void BezierCurveC0::Accept(SerializationVisitor& visitor)
+{
+	visitor.Accept(*this);
+}
+

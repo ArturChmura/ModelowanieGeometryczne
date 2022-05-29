@@ -53,6 +53,7 @@
     <ClCompile Include="psColor.cpp" />
     <ClCompile Include="psConstColor.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SerializationVisitor.cpp" />
     <ClCompile Include="ShadersManager.cpp" />
     <ClCompile Include="SingleBezierSurfaceC0.cpp" />
     <ClCompile Include="SingleBezierSurfaceC2.cpp" />
@@ -113,6 +114,7 @@
     <ClInclude Include="CameraOptionsWindow.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SerializationVisitor.h" />
     <ClInclude Include="ShadersManager.h" />
     <ClInclude Include="SingleBezierSurfaceC0.h" />
     <ClInclude Include="SingleBezierSurfaceC2.h" />
@@ -188,6 +190,9 @@
     <ProjectReference Include="..\Dependencies\nativefiledialog\build\vs2010\nfd.vcxproj">
       <Project>{5d94880b-c99d-887c-5219-9f7cbe21947c}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\Dependencies\Serializer\Serializer\Serializer.vcxproj">
+      <Project>{f5ad3677-fd39-41a7-8ef3-5e429d816ce0}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -236,7 +241,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\DirectXTK\Inc;$(SolutionDir)Dependencies\ImGui\ImGuiWin32DX11;$(SolutionDir)Dependencies\nativefiledialog\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\DirectXTK\Inc;$(SolutionDir)Dependencies\ImGui\ImGuiWin32DX11;$(SolutionDir)Dependencies\nativefiledialog\src\include;$(SolutionDir)Dependencies\Serializer\Serializer;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -257,7 +262,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\DirectXTK\Inc;$(SolutionDir)Dependencies\ImGui\ImGuiWin32DX11;$(SolutionDir)Dependencies\nativefiledialog\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\DirectXTK\Inc;$(SolutionDir)Dependencies\ImGui\ImGuiWin32DX11;$(SolutionDir)Dependencies\nativefiledialog\src\include;$(SolutionDir)Dependencies\Serializer\Serializer;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

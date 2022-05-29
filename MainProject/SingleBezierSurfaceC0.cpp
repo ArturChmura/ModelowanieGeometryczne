@@ -181,3 +181,8 @@ void SingleBezierSurfaceC0::RenderGUI()
 		resetDrawing = true;
 	}
 }
+
+void SingleBezierSurfaceC0::Accept(SerializationVisitor& visitor)
+{
+	visitor.Accept(*this);
+}

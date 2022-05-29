@@ -183,3 +183,8 @@ std::vector<DirectX::SimpleMath::Vector3> BezierCurveC2::GetPolygonChainPoints()
 	}
 }
 
+void BezierCurveC2::Accept(SerializationVisitor& visitor)
+{
+	visitor.Accept(*this);
+}
+

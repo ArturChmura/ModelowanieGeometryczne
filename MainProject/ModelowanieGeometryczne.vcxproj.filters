@@ -100,6 +100,12 @@
     <Filter Include="Source Files\Windows\BezierSurfaceAdders">
       <UniqueIdentifier>{4e780af8-1564-4964-a2a3-b0c3a6107d2d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Serialization">
+      <UniqueIdentifier>{fe7be6c3-8eb2-4311-bcb8-452d0772b49b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Serialization">
+      <UniqueIdentifier>{bc1c1fe0-28c4-4eee-b8c8-68b1e6f7039f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxStructures.cpp">
@@ -263,6 +269,9 @@
     </ClCompile>
     <ClCompile Include="StartWindow.cpp">
       <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="SerializationVisitor.cpp">
+      <Filter>Source Files\Serialization</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -439,6 +448,9 @@
     </ClInclude>
     <ClInclude Include="StartWindow.h">
       <Filter>Header Files\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="SerializationVisitor.h">
+      <Filter>Header Files\Serialization</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
