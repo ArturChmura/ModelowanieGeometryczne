@@ -3,69 +3,8 @@
 
 using namespace DirectX::SimpleMath;
 
-BezierSurfaceC2::BezierSurfaceC2(int horizontalSlicesCount, int verticalSlicesCount, float x, float y, bool cylinder, DirectX::SimpleMath::Vector3 center)
-	: IModel("Bezier Surface C2")
-{
-	this->horizontalSlicesCount = horizontalSlicesCount;
-	this->verticalSlicesCount = verticalSlicesCount;
-
-	int pointsHorizontalCount = horizontalSlicesCount + 3;
-	int pointsVerticalCount = cylinder ? verticalSlicesCount : verticalSlicesCount  + 3;
-
-	points = std::vector<std::vector<std::shared_ptr<Point>>>(pointsVerticalCount);
-	for (int i = 0; i < pointsVerticalCount; i++)
-	{
-		points[i] = std::vector<std::shared_ptr<Point>>(pointsHorizontalCount);
-	}
-
-	for (int i = 0; i < pointsVerticalCount; i++)
-	{
-		for (int j = 0; j < pointsHorizontalCount; j++)
-		{
-			Vector3 position;
-			if (cylinder)
-			{
-				float dx = x / (pointsHorizontalCount - 3);
-				float lx = -dx * (pointsHorizontalCount - 1) / 2.0f;
-				float xx = lx + j * dx;
-				float alphaStep = DirectX::XM_2PI / pointsVerticalCount;
-				float yy = sinf(alphaStep * i) * y;
-				float zz = cosf(alphaStep * i) * y;
-				position = Vector3(xx, yy, zz) + center;
-			}
-			else
-			{
-				float dx = x / (pointsHorizontalCount - 3);
-				float dy = y / (pointsVerticalCount - 3);
-				float lx = -dx * (pointsHorizontalCount - 1) / 2.0f;
-				float by = -dy * (pointsVerticalCount - 1) / 2.0f;
-				position = Vector3(lx + j * dx, by + i * dy, 0);
-				position += center;
-			}
-			auto point = std::make_shared<Point>(position);
-			points[i][j] = point;
-		}
-	}
-
-	for (int i = 0; i < verticalSlicesCount; i ++)
-	{
-		for (int j = 0; j < horizontalSlicesCount; j ++)
-		{
-			const int m = pointsVerticalCount;
-			std::array<std::array<std::shared_ptr<Point>, 4>, 4> singleSurfacePoints =
-			{ {
-				{points[(i + 0) % m][j], points[(i + 0) % m][j + 1], points[(i + 0) % m][j + 2], points[(i + 0) % m][j + 3]},
-				{points[(i + 1) % m][j], points[(i + 1) % m][j + 1], points[(i + 1) % m][j + 2], points[(i + 1) % m][j + 3]},
-				{points[(i + 2) % m][j], points[(i + 2) % m][j + 1], points[(i + 2) % m][j + 2], points[(i + 2) % m][j + 3]},
-				{points[(i + 3) % m][j], points[(i + 3) % m][j + 1], points[(i + 3) % m][j + 2], points[(i + 3) % m][j + 3]}
-			} };
-			auto singleSurface = std::make_shared<SingleBezierSurfaceC2>(singleSurfacePoints,10,10);
-			singleSurfaces.push_back(singleSurface);
-		}
-	}
-}
-
-BezierSurfaceC2::BezierSurfaceC2(std::vector<std::shared_ptr<SingleBezierSurfaceC2>> singleSurfaces)
+BezierSurfaceC2::BezierSurfaceC2(std::vector<std::shared_ptr<SingleBezierSurfaceC2>> singleSurfaces, std::string name)
+	: IModel(name)
 {
 	this->singleSurfaces = singleSurfaces;
 }
@@ -79,23 +18,9 @@ void BezierSurfaceC2::Draw(std::shared_ptr<Camera> camera)
 
 	if (drawPolygonChain)
 	{
-		std::vector<Vector3> positions(horizontalSlicesCount + 3);
-		for (int i = 0; i < points.size(); i++)
+		for (auto single : singleSurfaces)
 		{
-			for (int j = 0; j < points[i].size(); j++)
-			{
-				positions[j] = Vector3(points[i][j]->GetTranslation());
-			}
-			PolygonalChain::Draw(camera, positions);
-		}
-		positions = std::vector<Vector3>(verticalSlicesCount + 3);
-		for (int j = 0; j < horizontalSlicesCount + 3; j++)
-		{
-			for (int i = 0; i < verticalSlicesCount +3; i++)
-			{
-				positions[i] = Vector3(points[i % points.size()][j]->GetTranslation());
-			}
-			PolygonalChain::Draw(camera, positions);
+			single->DrawPolygonChain(camera);
 		}
 	}
 }
@@ -149,11 +74,19 @@ void BezierSurfaceC2::RenderGUI()
 	}
 }
 
-std::vector<std::vector<std::shared_ptr<Point>>> BezierSurfaceC2::GetPoints()
+std::vector<std::shared_ptr<IModel>> BezierSurfaceC2::GetContainingModels()
 {
-	return points;
+	auto models = std::vector<std::shared_ptr<IModel>>();
+	for (auto single : singleSurfaces)
+	{
+		auto singleModels = single->GetContainingModels();
+		for (auto model : singleModels)
+		{
+			models.push_back(model);
+		}
+	}
+	return models;
 }
-
 
 
 void BezierSurfaceC2::SetScale(float x, float y, float z)

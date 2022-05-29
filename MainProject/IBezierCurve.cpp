@@ -283,4 +283,15 @@ void IBezierCurve::RotateFromPoint(Vector4 globalPoint, DirectX::XMFLOAT3 ratati
 
 }
 
+std::vector<std::shared_ptr<IModel>> IBezierCurve::GetContainingModels()
+{
+	std::vector<std::shared_ptr<IModel>> models(points.size());
+	for (int i = 0; i < points.size(); i++)
+	{
+		models[i] = points[i];
+	}
+	
+	return models;
+}
+
 

@@ -44,6 +44,7 @@ public:
 	bool GetVisible();
 
 	virtual std::shared_ptr<IModel> SelectFromScreenCoords(float x, float y, DirectX::SimpleMath::Matrix VP);
+	virtual std::vector<std::shared_ptr<IModel>> GetContainingModels();
 
 	virtual void Accept(SerializationVisitor& visitor) = 0;
 

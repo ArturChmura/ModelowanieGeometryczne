@@ -7,6 +7,10 @@ public:
 	BezierSurfaceC0AdderWindow(std::shared_ptr<Scene> scene, bool* open);
 	~BezierSurfaceC0AdderWindow();
 
-	void SetPreview() override;
-	void AddModel() override;
+	
+
+	// Inherited via BezierSurfaceAdderWindow
+	virtual std::tuple<std::shared_ptr<IModel>, std::vector<std::vector<std::shared_ptr<Point>>>> GetModel() override;
+
+
 };

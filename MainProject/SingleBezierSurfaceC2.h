@@ -9,6 +9,7 @@ class SingleBezierSurfaceC2 : public IModel
 public:
 	SingleBezierSurfaceC2(std::array<std::array<std::shared_ptr<Point>, 4>, 4> points, int horizontalSlices, int verticalSlices);
 	void SetDrawPolygonChain(bool drawPolygonChain);
+	virtual std::vector<std::shared_ptr<IModel>> GetContainingModels() override;
 
 	std::array<std::array<std::shared_ptr<Point>, 4>, 4> points;
 	int horizontalSlices;
@@ -21,6 +22,7 @@ private:
 
 public:
 	virtual void Draw(std::shared_ptr<Camera> camera) override;
+	void DrawPolygonChain(std::shared_ptr<Camera> camera);
 
 	void UpdateVertices();
 

@@ -92,7 +92,7 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 	for (auto& s : deserializedScene.surfacesC0)
 	{
 		std::vector<std::shared_ptr<SingleBezierSurfaceC0>> patches;
-
+		std::map<int, std::shared_ptr<Point>> surfacePoints;
 		for (auto& patch : s.patches)
 		{
 			std::vector<std::shared_ptr<Point>> controlPoints;
@@ -106,7 +106,9 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 			{
 				for (int j = 0; j < 4; j++)
 				{
-					points[i][j] = controlPoints[4 * i + j];
+					auto point = controlPoints[4 * i + j];
+					points[i][j] = point;
+					surfacePoints.emplace(std::pair(point->id, point));
 				}
 			}
 
@@ -115,12 +117,19 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 		}
 
 		auto surface = std::make_shared<BezierSurfaceC0>(patches);
+
+		for (auto [_, point]: surfacePoints)
+		{
+			point->onRemovedFromSceneCallback.Add([scene = scene, surface = surface](std::shared_ptr<Point> p) {scene->DeleteModel(surface->id); }, surface->id);
+		}
+
 		scene->AddModel(surface);
 	}
 
 	for (auto& s : deserializedScene.surfacesC2)
 	{
 		std::vector<std::shared_ptr<SingleBezierSurfaceC2>> patches;
+		std::map<int, std::shared_ptr<Point>> surfacePoints;
 
 		for (auto& patch : s.patches)
 		{
@@ -135,7 +144,9 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 			{
 				for (int j = 0; j < 4; j++)
 				{
-					points[i][j] = controlPoints[4 * i + j];
+					auto point = controlPoints[4 * i + j];
+					points[i][j] = point;
+					surfacePoints.emplace(std::pair(point->id, point));
 				}
 			}
 
@@ -144,6 +155,10 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 		}
 
 		auto surface = std::make_shared<BezierSurfaceC2>(patches);
+		for (auto [_, point] : surfacePoints)
+		{
+			point->onRemovedFromSceneCallback.Add([scene = scene, surface = surface](std::shared_ptr<Point> p) {scene->DeleteModel(surface->id); }, surface->id);
+		}
 		scene->AddModel(surface);
 	}
 }

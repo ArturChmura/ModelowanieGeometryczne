@@ -43,3 +43,25 @@ void BezierSurfaceAdderWindow::Render()
 	ImGui::End();
 }
 
+void BezierSurfaceAdderWindow::SetPreview()
+{
+	auto [model, _] = this->GetModel();
+	this->scene->previewModel = model;
+}
+
+void BezierSurfaceAdderWindow::AddModel()
+{
+	*(this->open) = false;
+	auto [model, points] = GetModel();
+	this->scene->AddModel(model);
+	this->scene->previewModel = nullptr;
+	for (auto ps : points)
+	{
+		for (auto point : ps)
+		{
+			this->scene->AddPoint(point);
+			point->onRemovedFromSceneCallback.Add([scene = scene, model = model](std::shared_ptr<Point> p) {scene->DeleteModel(model->id); }, model->id);
+		}
+	}
+}
+

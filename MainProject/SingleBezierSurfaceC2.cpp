@@ -18,6 +18,19 @@ void SingleBezierSurfaceC2::SetDrawPolygonChain(bool drawPolygonChain)
 	this->drawPolygonChain = drawPolygonChain;
 }
 
+std::vector<std::shared_ptr<IModel>> SingleBezierSurfaceC2::GetContainingModels()
+{
+	auto models = std::vector<std::shared_ptr<IModel>>();
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			models.push_back(points[i][j]);
+		}
+	}
+	return models;
+}
+
 void SingleBezierSurfaceC2::Draw(std::shared_ptr<Camera> camera)
 {
 	if (resetDrawing)
@@ -74,6 +87,24 @@ void SingleBezierSurfaceC2::Draw(std::shared_ptr<Camera> camera)
 	ShadersManager::gsBezierSurfaceC2->SetConstantBuffer(gsCB);
 	DxDevice::instance->context()->Draw(horizontalSlices + 1, verticalSlices + 1);
 
+}
+
+void SingleBezierSurfaceC2::DrawPolygonChain(std::shared_ptr<Camera> camera)
+{
+	std::vector<Vector3> positions(4);
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			positions[j] = Vector3(points[i][j]->GetTranslation());
+		}
+		PolygonalChain::Draw(camera, positions);
+		for (int j = 0; j < 4; j++)
+		{
+			positions[j] = Vector3(points[j][i]->GetTranslation());
+		}
+		PolygonalChain::Draw(camera, positions);
+	}
 }
 
 void SingleBezierSurfaceC2::UpdateVertices()

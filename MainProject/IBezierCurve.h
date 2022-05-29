@@ -39,7 +39,7 @@ public:
 	virtual void Rotate(float x, float y, float z)  override;
 	virtual DirectX::SimpleMath::Vector3 GetRotation() override;
 	virtual void RotateFromPoint(DirectX::SimpleMath::Vector4 globalPoint, DirectX::XMFLOAT3 ratation) override;
-
+	virtual std::vector<std::shared_ptr<IModel>> GetContainingModels() override;
 	MeshInfo meshInfo;
 protected:
 	bool resetDrawing = true;

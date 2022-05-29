@@ -70,4 +70,9 @@ std::shared_ptr<IModel> IModel::SelectFromScreenCoords(float x, float y, Matrix 
 	return nullptr;
 }
 
+std::vector < std::shared_ptr<IModel>> IModel::GetContainingModels()
+{
+	return std::vector < std::shared_ptr<IModel>>();
+}
+
 

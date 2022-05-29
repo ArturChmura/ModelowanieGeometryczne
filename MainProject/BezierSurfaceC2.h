@@ -8,26 +8,17 @@
 class BezierSurfaceC2 : public IModel
 {
 public:
-	BezierSurfaceC2(
-		int horizontalSlicesCount,
-		int verticalSlicesCount,
-		float x,
-		float y,
-		bool cylinder,
-		DirectX::SimpleMath::Vector3 center
-	);
+
 	
-	BezierSurfaceC2(std::vector<std::shared_ptr<SingleBezierSurfaceC2>> singleSurfaces);
+	BezierSurfaceC2(std::vector<std::shared_ptr<SingleBezierSurfaceC2>> singleSurfaces, std::string name = "Bezier Surface C2");
 
 
 	virtual void Draw(std::shared_ptr<Camera> camera) override;
 	virtual void RenderGUI() override;
-	std::vector<std::vector<std::shared_ptr<Point>>> GetPoints();
-	
+	virtual std::vector<std::shared_ptr<IModel>> GetContainingModels() override;
 
 	std::vector<std::shared_ptr<SingleBezierSurfaceC2>> singleSurfaces;
 private:
-	std::vector<std::vector<std::shared_ptr<Point>>> points;
 	bool drawPolygonChain = false;
 	int horizontalSlicesCount;
 	int verticalSlicesCount;
