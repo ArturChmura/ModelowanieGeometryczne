@@ -57,8 +57,8 @@ void Torus::UpdateSlicesCount()
 			float alpha = 2 * PI * largeCount / largeSlices;
 			float beta = 2 * PI * smallCount / smallSlices;
 			float x = (R + r * cosf(beta)) * cosf(alpha);
-			float y = (R + r * cosf(beta)) * sinf(alpha);
-			float z = r * sinf(beta);
+			float z = (R + r * cosf(beta)) * sinf(alpha);
+			float y = r * sinf(beta);
 			VSConstColorIn vertex = { Vector3(x,y,z)};
 			vertices.push_back(vertex);
 

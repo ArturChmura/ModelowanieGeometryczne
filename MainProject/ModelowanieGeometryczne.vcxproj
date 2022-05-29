@@ -53,6 +53,7 @@
     <ClCompile Include="psColor.cpp" />
     <ClCompile Include="psConstColor.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneLoader.cpp" />
     <ClCompile Include="SerializationVisitor.cpp" />
     <ClCompile Include="ShadersManager.cpp" />
     <ClCompile Include="SingleBezierSurfaceC0.cpp" />
@@ -114,6 +115,7 @@
     <ClInclude Include="CameraOptionsWindow.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneLoader.h" />
     <ClInclude Include="SerializationVisitor.h" />
     <ClInclude Include="ShadersManager.h" />
     <ClInclude Include="SingleBezierSurfaceC0.h" />

@@ -2,6 +2,7 @@
 #include "imgui.h"
 #include <nfd.h>
 #include <Serializer.h>
+#include "SceneLoader.h"
 
 StartWindow::StartWindow(std::shared_ptr<Scene> scene)
 {
@@ -17,9 +18,6 @@ void StartWindow::Render()
 		nfdchar_t* outPath = NULL;
 		nfdresult_t result = NFD_SaveDialog(NULL, NULL, &outPath);
 		if (result == NFD_OKAY) {
-			puts("Success!");
-			puts(outPath);
-
 			SerializationVisitor serializer;
 
 			MG1::Scene::Get().Clear();
@@ -28,24 +26,59 @@ void StartWindow::Render()
 				serializer.Visit(*model);
 			}
 			
-
 			MG1::SceneSerializer sceneSerializer;
-
 			sceneSerializer.SaveScene(outPath);
-		}
-		else if (result == NFD_CANCEL) {
-			puts("User pressed cancel.");
+
+			ImGui::OpenPopup("Success save popup");
 		}
 		else {
-			printf("Error: %s\n", NFD_GetError());
+			ImGui::OpenPopup("Error popup");
 		}
 		free(outPath);
 	}
 
 	if (ImGui::Button("Load Scene"))
 	{
+		nfdchar_t* outPath = NULL;
+		nfdresult_t result = NFD_OpenDialog(NULL, NULL, &outPath);
+		if (result == NFD_OKAY) {
+			try
+			{
+				SceneLoader::LoadScene(scene, outPath);
+				ImGui::OpenPopup("Success load popup");
+			}
+			catch (const std::exception&)
+			{
+				ImGui::OpenPopup("Wrong input file popup");
+			}
 
+		}
+		else {
+			ImGui::OpenPopup("Error popup");
+		}
+		free(outPath);
+		
 	}
 
+	if (ImGui::BeginPopup("Success load popup"))
+	{
+		ImGui::Text("Successfully loaded scene");
+		ImGui::EndPopup();
+	}
+	if (ImGui::BeginPopup("Error popup"))
+	{
+		ImGui::Text("Something went wrong");
+		ImGui::EndPopup();
+	}
+	if (ImGui::BeginPopup("Wrong input file popup"))
+	{
+		ImGui::Text("Input file is corrupted");
+		ImGui::EndPopup();
+	}
+	if (ImGui::BeginPopup("Success save popup"))
+	{
+		ImGui::Text("Saved to file");
+		ImGui::EndPopup();
+	}
 	ImGui::End();
 }

@@ -16,6 +16,8 @@ public:
 		bool cylinder,
 		DirectX::SimpleMath::Vector3 center
 	);
+	
+	BezierSurfaceC2(std::vector<std::shared_ptr<SingleBezierSurfaceC2>> singleSurfaces);
 
 
 	virtual void Draw(std::shared_ptr<Camera> camera) override;

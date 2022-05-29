@@ -58,11 +58,16 @@ BezierSurfaceC0::BezierSurfaceC0(
 				{points[i + 2][j], points[i + 2][j + 1], points[i + 2][j + 2], points[i + 2][j + 3]},
 				{points[(i + 3) % pointsVerticalCount][j], points[(i + 3) % pointsVerticalCount][j + 1], points[(i + 3) % pointsVerticalCount][j + 2], points[(i + 3) % pointsVerticalCount][j + 3]}
 			} };
-			auto singleSurface = std::make_shared<SingleBezierSurfaceC0>(singleSurfacePoints);
+			auto singleSurface = std::make_shared<SingleBezierSurfaceC0>(singleSurfacePoints, 10, 10);
 			singleSurfaces.push_back(singleSurface);
 		}
 	}
 
+}
+
+BezierSurfaceC0::BezierSurfaceC0(std::vector<std::shared_ptr<SingleBezierSurfaceC0>> singleSurfaces)
+{
+	this->singleSurfaces = singleSurfaces;
 }
 
 void BezierSurfaceC0::Draw(std::shared_ptr<Camera> camera)

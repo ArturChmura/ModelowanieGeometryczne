@@ -7,7 +7,7 @@
 class SingleBezierSurfaceC2 : public IModel
 {
 public:
-	SingleBezierSurfaceC2(std::array<std::array<std::shared_ptr<Point>, 4>, 4> points);
+	SingleBezierSurfaceC2(std::array<std::array<std::shared_ptr<Point>, 4>, 4> points, int horizontalSlices, int verticalSlices);
 	void SetDrawPolygonChain(bool drawPolygonChain);
 
 	std::array<std::array<std::shared_ptr<Point>, 4>, 4> points;

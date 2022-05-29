@@ -17,6 +17,8 @@ public:
 		DirectX::SimpleMath::Vector3 center
 	);
 
+	BezierSurfaceC0(std::vector<std::shared_ptr<SingleBezierSurfaceC0>> singleSurfaces);
+
 
 	virtual void Draw(std::shared_ptr<Camera> camera) override;
 	virtual void RenderGUI() override;

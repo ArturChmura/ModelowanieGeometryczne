@@ -228,6 +228,14 @@ void Scene::RemoveSelectedModels()
 		DeleteModel(id);
 	}
 }
+void Scene::Clear()
+{
+	auto models = this->models;
+	for (auto model : models)
+	{
+		DeleteModel(model->id);
+	}
+}
 
 void Scene::DrawScene()
 {

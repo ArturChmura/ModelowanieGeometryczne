@@ -39,6 +39,7 @@ public:
 	SIZE windowSize;
 	void UpdateCursorPositionFromScreenCoords(DirectX::SimpleMath::Vector2 screenCoords);
 	void RemoveSelectedModels();
+	void Clear();
 
 	void DrawScene();
 public:

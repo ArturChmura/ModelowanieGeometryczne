@@ -3,12 +3,12 @@
 #include "imgui.h"
 
 using namespace DirectX::SimpleMath;
-SingleBezierSurfaceC2::SingleBezierSurfaceC2(std::array<std::array<std::shared_ptr<Point>, 4>, 4> points)
+SingleBezierSurfaceC2::SingleBezierSurfaceC2(std::array<std::array<std::shared_ptr<Point>, 4>, 4> points, int horizontalSlices, int verticalSlices)
 	: IModel("Single Bezier Surface")
 {
 	this->points = points;
-	this->horizontalSlices = 10;
-	this->verticalSlices = 10;
+	this->horizontalSlices = horizontalSlices;
+	this->verticalSlices = verticalSlices;
 
 	meshInfo.topology = D3D_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_POINTLIST;
 }

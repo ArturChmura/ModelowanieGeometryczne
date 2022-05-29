@@ -144,14 +144,14 @@ void SerializationVisitor::Accept(SingleBezierSurfaceC2& patch)
 void SerializationVisitor::Accept(BezierSurfaceC2& surface)
 {
 	auto& scene = MG1::Scene::Get();
-	auto s = MG1::BezierSurfaceC0();
+	auto s = MG1::BezierSurfaceC2();
 
 	s.name = surface.name;
 	s.SetId(surface.id);
 
 	for (auto& patch : surface.singleSurfaces)
 	{
-		auto p = MG1::BezierPatchC0();
+		auto p = MG1::BezierPatchC2();
 		p.name = patch->name;
 		p.SetId(patch->id);
 
@@ -168,7 +168,7 @@ void SerializationVisitor::Accept(BezierSurfaceC2& surface)
 		s.patches.push_back(p);
 	}
 
-	scene.surfacesC0.push_back(s);
+	scene.surfacesC2.push_back(s);
 }
 
 void SerializationVisitor::Accept(CompositeModel& surface)
