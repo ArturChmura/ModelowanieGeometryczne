@@ -1,14 +1,14 @@
 #include "SingleBezierSurfaceC0.h"
 #include <stdexcept>
 #include "ShadersManager.h"
-#include "ImGui/imgui.h"
+#include "imgui.h"
 using namespace DirectX::SimpleMath;
 SingleBezierSurfaceC0::SingleBezierSurfaceC0(std::array<std::array<std::shared_ptr<Point>, 4>, 4> points)
 	: IModel("Single Bezier Surface")
 {
 	this->points = points;
-	this->horizontalSlices = 3;
-	this->verticalSlices = 3;
+	this->horizontalSlices = 10;
+	this->verticalSlices = 10;
 
 	meshInfo.topology = D3D_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_POINTLIST;
 }

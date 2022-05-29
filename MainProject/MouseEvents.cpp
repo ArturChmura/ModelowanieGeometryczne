@@ -1,5 +1,5 @@
 #include "MouseEvents.h"
-#include "ImGui/imgui.h"
+#include "imgui.h"
 
 
 MouseEvents::MouseEvents(std::shared_ptr<ArcCameraModel> camera, std::shared_ptr<Scene> scene)

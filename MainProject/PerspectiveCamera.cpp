@@ -1,6 +1,6 @@
 #include "PerspectiveCamera.h"
 #include "DirectXMath.h"
-#include "ImGui/imgui.h"
+#include "imgui.h"
 #include "dxDevice.h"
 #include "Scene.h"
 using namespace DirectX;

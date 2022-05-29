@@ -1,5 +1,5 @@
 #include "CursorOptionsWindow.h"
-#include "ImGui/imgui.h"
+#include "imgui.h"
 using namespace DirectX::SimpleMath;
 
 

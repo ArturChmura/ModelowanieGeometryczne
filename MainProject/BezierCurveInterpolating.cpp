@@ -1,7 +1,7 @@
 #include "BezierCurveInterpolating.h"
 #include <array>
 #include "Helpers.h"
-#include "ImGui/imgui.h"
+#include "imgui.h"
 
 using namespace DirectX::SimpleMath;
 BezierCurveInterpolating::BezierCurveInterpolating(std::vector<std::shared_ptr<Point>> points)

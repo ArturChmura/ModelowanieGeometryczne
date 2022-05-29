@@ -2,7 +2,7 @@
 #include "dxStructures.h"
 #include "dxDevice.h"
 #include "Scene.h"
-#include "ImGui/imgui.h"
+#include "imgui.h"
 
 using namespace DirectX::SimpleMath;
 

@@ -1,5 +1,5 @@
 #include "BezierSurfaceC0.h"
-#include "ImGui/imgui.h"
+#include "imgui.h"
 
 using namespace DirectX::SimpleMath;
 BezierSurfaceC0::BezierSurfaceC0(

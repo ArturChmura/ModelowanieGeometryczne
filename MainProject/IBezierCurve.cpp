@@ -1,5 +1,5 @@
 #include "IBezierCurve.h"
-#include "ImGui/imgui.h"
+#include "imgui.h"
 #include <algorithm>
 #include "ShadersManager.h"
 using namespace DirectX;

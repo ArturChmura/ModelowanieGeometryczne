@@ -1,5 +1,5 @@
 #include "KeyboardHandler.h"
-#include "ImGui/imgui.h"
+#include "imgui.h"
 
 KeyboardHandler::KeyboardHandler(std::shared_ptr<Scene> scene)
 {

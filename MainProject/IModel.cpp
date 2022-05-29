@@ -1,6 +1,6 @@
 #include "IModel.h"
-#include "ImGui/imgui.h"
-#include "ImGui/imgui_stdlib.h"
+#include "imgui.h"
+#include "imgui_stdlib.h"
 using namespace DirectX::SimpleMath;
 using namespace DirectX;
 IModel::IModel(std::string name)

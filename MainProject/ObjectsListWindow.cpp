@@ -1,5 +1,5 @@
 #include "ObjectsListWindow.h"
-#include "ImGui/imgui.h"
+#include "imgui.h"
 #include "CompositeModel.h"
 ObjectsListWindow::ObjectsListWindow(std::shared_ptr<Scene> scene)
 {

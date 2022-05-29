@@ -1,5 +1,5 @@
 #include "Point.h"
-#include "ImGui/imgui.h"
+#include "imgui.h"
 #include "ShadersManager.h"
 
 using namespace DirectX;

@@ -1,5 +1,5 @@
 #include "CameraOptionsWindow.h"
-#include "ImGui/imgui.h"
+#include "imgui.h"
 
 
 void CameraOptionsWindow::Render()

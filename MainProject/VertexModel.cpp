@@ -1,6 +1,6 @@
 #include "VertexModel.h"
 #include "MVPColorConstantBuffer.h"
-#include "ImGui/imgui.h"
+#include "imgui.h"
 #include <d3d11.h>
 #include "SimpleMath.h"
 #include "MatrixExt.h"

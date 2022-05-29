@@ -1,5 +1,5 @@
 #include "PropertiesWindow.h"
-#include "ImGui/imgui.h"
+#include "imgui.h"
 
 PropertiesWindow::PropertiesWindow(std::shared_ptr<Scene> scene)
 {

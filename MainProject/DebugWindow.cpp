@@ -1,5 +1,5 @@
 #include "DebugWindow.h"
-#include "ImGui/imgui.h"
+#include "imgui.h"
 
 void DebugWindow::Render()
 {

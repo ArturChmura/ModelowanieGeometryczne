@@ -1,9 +1,10 @@
 #include "BezierSurfaceC2.h"
-#include "ImGui/imgui.h"
+#include "imgui.h"
 
 using namespace DirectX::SimpleMath;
 
 BezierSurfaceC2::BezierSurfaceC2(int horizontalSlicesCount, int verticalSlicesCount, float x, float y, bool cylinder, DirectX::SimpleMath::Vector3 center)
+	: IModel("Bezier Surface C2")
 {
 	this->horizontalSlicesCount = horizontalSlicesCount;
 	this->verticalSlicesCount = verticalSlicesCount;

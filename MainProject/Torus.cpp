@@ -1,6 +1,6 @@
 #include "Torus.h"
 #include "Helpers.h"
-#include "ImGui/imgui.h"
+#include "imgui.h"
 #include "vsConstColor.h"
 using namespace DirectX::SimpleMath;
 
