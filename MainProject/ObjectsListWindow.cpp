@@ -28,10 +28,11 @@ void ObjectsListWindow::Render()
                         scene->ChangeSelection(model);
                         if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_::ImGuiMouseButton_Left))
                         {
+                            scene->Select(model);
                             auto innerModels = model->GetContainingModels();
                             for (auto innerModel : innerModels)
                             {
-                                scene->ChangeSelection(innerModel);
+                                scene->Select(innerModel);
                             }
                         }
                     }
