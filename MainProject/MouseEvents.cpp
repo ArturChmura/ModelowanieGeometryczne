@@ -45,6 +45,10 @@ void MouseEvents::HandleMouse()
 		{
 			scene->composite->Scale(1, 1, 1.0f + x * objectScaleSpeedPerPixel);
 		}
+		if (!ImGui::IsKeyDown(ImGuiKey_::ImGuiKey_X) && !ImGui::IsKeyDown(ImGuiKey_::ImGuiKey_Y) && !ImGui::IsKeyDown(ImGuiKey_::ImGuiKey_Z))
+		{
+			scene->composite->Scale(1.0f + x * objectScaleSpeedPerPixel, 1.0f + x * objectScaleSpeedPerPixel, 1.0f + x * objectScaleSpeedPerPixel);
+		}
 	}
 	if (ImGui::IsKeyDown(ImGuiKey_::ImGuiKey_T))
 	{
