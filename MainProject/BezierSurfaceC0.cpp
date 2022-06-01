@@ -5,7 +5,7 @@ using namespace DirectX::SimpleMath;
 
 
 BezierSurfaceC0::BezierSurfaceC0(std::vector<std::shared_ptr<SingleBezierSurfaceC0>> singleSurfaces, std::string name)
-	:IModel(name)
+	:IUnmovableModel(name)
 {
 	this->singleSurfaces = singleSurfaces;
 }
@@ -101,51 +101,4 @@ std::vector<std::shared_ptr<IModel>> BezierSurfaceC0::GetContainingModels()
 		}
 	}
 	return models;
-}
-
-void BezierSurfaceC0::SetScale(float x, float y, float z)
-{
-}
-
-void BezierSurfaceC0::Scale(float x, float y, float z)
-{
-}
-
-DirectX::SimpleMath::Vector3 BezierSurfaceC0::GetScale()
-{
-	return DirectX::SimpleMath::Vector3();
-}
-
-void BezierSurfaceC0::ScaleFromPoint(DirectX::SimpleMath::Vector4 point, DirectX::XMFLOAT3 scale)
-{
-}
-
-void BezierSurfaceC0::SetTranslation(float x, float y, float z)
-{
-}
-
-void BezierSurfaceC0::Translate(float x, float y, float z)
-{
-}
-
-DirectX::SimpleMath::Vector4 BezierSurfaceC0::GetTranslation()
-{
-	return DirectX::SimpleMath::Vector4();
-}
-
-void BezierSurfaceC0::SetRotation(float x, float y, float z)
-{
-}
-
-void BezierSurfaceC0::Rotate(float x, float y, float z)
-{
-}
-
-DirectX::SimpleMath::Vector3 BezierSurfaceC0::GetRotation()
-{
-	return DirectX::SimpleMath::Vector3();
-}
-
-void BezierSurfaceC0::RotateFromPoint(DirectX::SimpleMath::Vector4 globalPoint, DirectX::XMFLOAT3 ratation)
-{
 }

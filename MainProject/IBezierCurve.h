@@ -2,9 +2,10 @@
 #include "IModel.h"
 #include "Point.h"
 #include "PolygonalChain.h"
+#include "IUnmovableModel.h"
 
 
-class IBezierCurve : public IModel
+class IBezierCurve : public IUnmovableModel
 {
 public:
 	IBezierCurve(std::vector<std::shared_ptr<Point>> points, std::string name = "IBezierCurve");
@@ -27,18 +28,7 @@ public:
 	std::vector<int> selectedIndexes;
 	virtual void RenderGUI() override;
 
-	// Inherited via IModel
-	virtual void SetScale(float x, float y, float z) override;
-	virtual void Scale(float x, float y, float z)  override;
-	virtual DirectX::SimpleMath::Vector3 GetScale() override;
-	virtual void ScaleFromPoint(DirectX::SimpleMath::Vector4 point, DirectX::XMFLOAT3 scale) override;
-	virtual void SetTranslation(float x, float y, float z) override;
-	virtual void Translate(float x, float y, float z) override;
-	virtual DirectX::SimpleMath::Vector4 GetTranslation() override;
-	virtual void SetRotation(float pitch, float yaw, float roll) override;
-	virtual void Rotate(float x, float y, float z)  override;
-	virtual DirectX::SimpleMath::Vector3 GetRotation() override;
-	virtual void RotateFromPoint(DirectX::SimpleMath::Vector4 globalPoint, DirectX::XMFLOAT3 ratation) override;
+
 	virtual std::vector<std::shared_ptr<IModel>> GetContainingModels() override;
 	MeshInfo meshInfo;
 protected:

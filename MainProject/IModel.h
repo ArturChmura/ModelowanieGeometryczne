@@ -17,6 +17,7 @@ public:
 	IModel(std::string name = "unnamed");
 
 
+	virtual bool IsMovable();
 	virtual void SetScale(float x, float y, float z) = 0;
 	virtual void Scale(float x, float y, float z) = 0;
 	virtual DirectX::SimpleMath::Vector3 GetScale() = 0;

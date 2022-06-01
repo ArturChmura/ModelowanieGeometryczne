@@ -276,6 +276,9 @@
     <ClCompile Include="SceneLoader.cpp">
       <Filter>Source Files\Serialization</Filter>
     </ClCompile>
+    <ClCompile Include="IUnmovableModel.cpp">
+      <Filter>Source Files\Shapes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dxptr.h">
@@ -457,6 +460,9 @@
     </ClInclude>
     <ClInclude Include="SceneLoader.h">
       <Filter>Header Files\Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="IUnmovableModel.h">
+      <Filter>Header Files\Shapes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

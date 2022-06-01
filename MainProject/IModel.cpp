@@ -8,6 +8,11 @@ IModel::IModel(std::string name)
 {
 }
 
+bool IModel::IsMovable()
+{
+	return true;
+}
+
 void IModel::RenderGUI()
 {
 	ImGui::InputText("Name##IModelName", &name);

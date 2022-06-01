@@ -6,7 +6,7 @@ using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
 IBezierCurve::IBezierCurve(std::vector<std::shared_ptr<Point>> points, std::string name)
-	:IModel(name)
+	:IUnmovableModel(name)
 {
 	for (size_t i = 0; i < points.size(); i++)
 	{
@@ -230,57 +230,6 @@ void IBezierCurve::OnRemovedFromScene()
 	{
 		Point::onAddedToSceneCallback.pop_back();
 	}
-}
-
-
-
-//Unused from IModel;
-void IBezierCurve::SetScale(float x, float y, float z)
-{
-}
-
-void IBezierCurve::Scale(float x, float y, float z)
-{
-}
-
-DirectX::SimpleMath::Vector3 IBezierCurve::GetScale()
-{
-	return DirectX::SimpleMath::Vector3();
-}
-
-void IBezierCurve::ScaleFromPoint(Vector4 point, DirectX::XMFLOAT3 scale)
-{
-}
-
-void IBezierCurve::SetTranslation(float x, float y, float z)
-{
-}
-
-void IBezierCurve::Translate(float x, float y, float z)
-{
-}
-
-Vector4 IBezierCurve::GetTranslation()
-{
-	return DirectX::SimpleMath::Vector4();
-}
-
-void IBezierCurve::SetRotation(float pitch, float yaw, float roll)
-{
-}
-
-void IBezierCurve::Rotate(float x, float y, float z)
-{
-}
-
-DirectX::SimpleMath::Vector3 IBezierCurve::GetRotation()
-{
-	return DirectX::SimpleMath::Vector3();
-}
-
-void IBezierCurve::RotateFromPoint(Vector4 globalPoint, DirectX::XMFLOAT3 ratation)
-{
-
 }
 
 std::vector<std::shared_ptr<IModel>> IBezierCurve::GetContainingModels()

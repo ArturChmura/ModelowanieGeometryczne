@@ -1,5 +1,6 @@
 #include "CompositeModel.h"
 #include "imgui.h"
+#include <limits>
 using namespace DirectX;
 
 using namespace DirectX::SimpleMath;
@@ -26,19 +27,25 @@ void CompositeModel::RemoveModel(std::shared_ptr<IModel> model)
 
 void CompositeModel::UpdateCentroidPosition()
 {
-	if (modelsMap.size() == 0)
-	{
-		centroidPosition = { 0,0,0 };
-		return;
-	}
-	int size = modelsMap.size();
+	int size = 0;
 	float x = 0, y = 0, z = 0;
 	for (const auto& [key, model] : modelsMap)
 	{
-		auto translation = model->GetTranslation();
-		x += translation.x;
-		y += translation.y;
-		z += translation.z;
+		if (model->IsMovable())
+		{
+
+			auto translation = model->GetTranslation();
+			x += translation.x;
+			y += translation.y;
+			z += translation.z;
+			size++;
+		}
+
+	}
+	if (size == 0)
+	{
+		centroidPosition = { FLT_MAX,FLT_MAX,FLT_MAX };
+		return;
 	}
 	this->imguiTranslation = this->centroidPosition = { x / size, y / size, z / size };
 
