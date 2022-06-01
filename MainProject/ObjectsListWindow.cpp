@@ -20,19 +20,36 @@ void ObjectsListWindow::Render()
                 auto model = scene->models[i];
                 const bool is_selected = scene->IsSelcted(model->id);
 
-                if (ImGui::Selectable((model->name + "##" + std::to_string(model->id)).c_str(), is_selected))
+                if (ImGui::Selectable((model->name + "##" + std::to_string(model->id)).c_str(), is_selected, ImGuiSelectableFlags_::ImGuiSelectableFlags_AllowDoubleClick))
                 {
                     auto io = ImGui::GetIO();
                     if (io.KeyCtrl)
                     {
                         scene->ChangeSelection(model);
+                        if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_::ImGuiMouseButton_Left))
+                        {
+                            auto innerModels = model->GetContainingModels();
+                            for (auto innerModel : innerModels)
+                            {
+                                scene->ChangeSelection(innerModel);
+                            }
+                        }
                     }
                     else
                     {
                         scene->DeselectAll();
                         scene->Select(model);
+                        if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_::ImGuiMouseButton_Left))
+                        {
+                            auto innerModels = model->GetContainingModels();
+                            for (auto innerModel : innerModels)
+                            {
+                                scene->Select(innerModel);
+                            }
+                        }
                     }
-
+                    
+                   
                 }
 
                 // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)

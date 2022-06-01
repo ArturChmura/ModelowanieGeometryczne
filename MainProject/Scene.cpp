@@ -120,15 +120,7 @@ void Scene::Select(std::shared_ptr<IModel> model)
 		this->composite->AddModel(model);
 		model->OnSelect();
 	}
-	auto innerModels = model->GetContainingModels();
-	for (auto model : innerModels)
-	{
-		if (!IsSelcted(model->id))
-		{
-			this->composite->AddModel(model);
-			model->OnSelect();
-		}
-	}
+	
 }
 
 void Scene::DeselectAll()
