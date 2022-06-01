@@ -19,10 +19,10 @@ public:
 	virtual std::vector<std::shared_ptr<IModel>> GetContainingModels() override;
 
 	std::vector<std::shared_ptr<SingleBezierSurfaceC2>> singleSurfaces;
-private:
-	bool drawPolygonChain = false;
 	int horizontalSlicesCount;
 	int verticalSlicesCount;
+private:
+	bool drawPolygonChain = false;
 
 	// Inherited via IModel
 	virtual void ChangeColor(DirectX::SimpleMath::Vector3 color) override;

@@ -111,7 +111,7 @@ void SerializationVisitor::Accept(BezierSurfaceC0& surface)
 {
 	auto& scene = MG1::Scene::Get();
 	auto s = MG1::BezierSurfaceC0();
-
+	s.size = { (UINT)surface.horizontalSlicesCount, (UINT)surface.verticalSlicesCount };
 	s.name = surface.name;
 	s.SetId(surface.id);
 
@@ -145,7 +145,7 @@ void SerializationVisitor::Accept(BezierSurfaceC2& surface)
 {
 	auto& scene = MG1::Scene::Get();
 	auto s = MG1::BezierSurfaceC2();
-
+	s.size = { (UINT)surface.horizontalSlicesCount, (UINT)surface.verticalSlicesCount };
 	s.name = surface.name;
 	s.SetId(surface.id);
 

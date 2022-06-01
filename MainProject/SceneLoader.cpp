@@ -10,6 +10,7 @@
 #include "SingleBezierSurfaceC2.h"
 
 using namespace DirectX::SimpleMath;
+
 void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path path)
 {
 	MG1::SceneSerializer sceneSerializer;
@@ -38,7 +39,9 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 		auto torus = std::make_shared<Torus>(t.largeRadius, t.smallRadius, t.samples.x, t.samples. y);
 		torus->SetRotation(t.rotation.x, t.rotation.y, t.rotation.z);
 		torus->SetTranslation(t.position.x, t.position.y, t.position.z);
+		
 		torus->SetScale(t.scale.x, t.scale.y, t.scale.z);
+
 		torus->name = t.name;
 		scene->AddModel(torus);
 	}
@@ -118,6 +121,8 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 
 		auto surface = std::make_shared<BezierSurfaceC0>(patches,s.name);
 
+		surface->horizontalSlicesCount = s.size.x;
+		surface->verticalSlicesCount = s.size.y;
 		for (auto [_, point]: surfacePoints)
 		{
 			point->onRemovedFromSceneCallback.Add([scene = scene, surface = surface](std::shared_ptr<Point> p) {scene->DeleteModel(surface->id); }, surface->id);
@@ -155,6 +160,8 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 		}
 
 		auto surface = std::make_shared<BezierSurfaceC2>(patches,s.name);
+		surface->horizontalSlicesCount = s.size.x;
+		surface->verticalSlicesCount = s.size.y;
 		for (auto [_, point] : surfacePoints)
 		{
 			point->onRemovedFromSceneCallback.Add([scene = scene, surface = surface](std::shared_ptr<Point> p) {scene->DeleteModel(surface->id); }, surface->id);
