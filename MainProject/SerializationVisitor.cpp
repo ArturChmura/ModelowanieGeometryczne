@@ -11,7 +11,7 @@
 #include "SingleBezierSurfaceC2.h"
 #include "BezierSurfaceC2.h"
 #include "CompositeModel.h"
-
+using namespace DirectX;
 void SerializationVisitor::Visit(IModel& model)
 {
 	model.Accept(*this);
@@ -40,9 +40,9 @@ void SerializationVisitor::Accept(Torus& torus)
 	auto position = torus.GetTranslation();
 	auto rotation = torus.GetRotation();
 	auto scale = torus.GetScale();
-
+	
 	t.position = MG1::Float3{ position.x, position.y, position.z };
-	t.rotation = MG1::Float3{ rotation.x, rotation.y, rotation.z };
+	t.rotation = MG1::Float3{ XMConvertToDegrees(rotation.x), XMConvertToDegrees(rotation.y), XMConvertToDegrees(rotation.z) };
 	t.scale = MG1::Float3{ scale.x, scale.y, scale.z };
 
 	t.name = torus.name;

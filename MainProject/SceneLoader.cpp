@@ -9,6 +9,7 @@
 #include "SingleBezierSurfaceC0.h"
 #include "SingleBezierSurfaceC2.h"
 
+using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
 void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path path)
@@ -37,7 +38,7 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 		auto sc = t.scale;
 
 		auto torus = std::make_shared<Torus>(t.largeRadius, t.smallRadius, t.samples.x, t.samples. y);
-		torus->SetRotation(t.rotation.x, t.rotation.y, t.rotation.z);
+		torus->SetRotation(XMConvertToRadians(t.rotation.x), XMConvertToRadians(t.rotation.y), XMConvertToRadians(t.rotation.z));
 		torus->SetTranslation(t.position.x, t.position.y, t.position.z);
 		
 		torus->SetScale(t.scale.x, t.scale.y, t.scale.z);
