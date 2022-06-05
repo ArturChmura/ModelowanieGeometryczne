@@ -12,6 +12,14 @@ ObjectAdderWindow::ObjectAdderWindow(std::shared_ptr<Scene> scene)
 void ObjectAdderWindow::Render()
 {
     ImGui::Begin("Add object");
+    if (scene->GetSelectedPoints().size() >= 2)
+    {
+        if (ImGui::Button("Merge selected points"))
+        {
+            PointsMerger pointsMerger;
+            pointsMerger.MergePoints(scene);
+        }
+    }
     if (ImGui::Button("Add Torus"))
     {
         scene->AddTorus();
@@ -33,11 +41,6 @@ void ObjectAdderWindow::Render()
         if (ImGui::Button("Add Bezier Curve C2 Interpolating"))
         {
             scene->AddBezierCurveInterpolatingFromSelectedPoints();
-        }
-        if (ImGui::Button("Merge selected points"))
-        {
-            PointsMerger pointsMerger;
-            pointsMerger.MergePoints(scene);
         }
     }
     if (ImGui::Button("Add Bezier Surface C0"))

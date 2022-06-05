@@ -85,7 +85,7 @@ void PointsMerger::AcceptBezierCurve(IBezierCurve& curve)
 			curve.points[i] = mergedPoint;
 		}
 	}
-	curve.UpdateVertices();
+	curve.ResetDrawing();
 }
 
 void PointsMerger::Accept(SingleBezierSurfaceC0& patch)
