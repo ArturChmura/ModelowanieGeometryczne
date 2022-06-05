@@ -10,7 +10,7 @@ class BezierSurfaceC0 : public IUnmovableModel
 {
 public:
 
-	BezierSurfaceC0(std::vector<std::shared_ptr<SingleBezierSurfaceC0>> singleSurfaces, std::string name = "Bezier Surface C0");
+	BezierSurfaceC0(std::vector<std::shared_ptr<SingleBezierSurfaceC0>> singleSurfaces, int horizontalCount, int verticalCount, std::string name = "Bezier Surface C0");
 
 
 	virtual void Draw(std::shared_ptr<Camera> camera) override;

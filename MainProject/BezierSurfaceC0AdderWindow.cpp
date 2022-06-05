@@ -71,7 +71,7 @@ std::tuple<std::shared_ptr<IModel>, std::vector<std::vector<std::shared_ptr<Poin
 		}
 	}
 
-	auto surface = std::make_shared<BezierSurfaceC0>(singleSurfaces);
+	auto surface = std::make_shared<BezierSurfaceC0>(singleSurfaces, horizontalSlicesCount,verticalSlicesCount);
 	
 	return std::make_tuple(surface, points);
 }

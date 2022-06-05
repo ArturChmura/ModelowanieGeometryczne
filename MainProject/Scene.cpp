@@ -1,14 +1,16 @@
 #include "Scene.h"
 #include "Torus.h"
 #include "Point.h"
+#include "BezierSurfaceC0.h"
 #include <d3d11.h>
 #include "SimpleMath.h"
 #include "BezierCurveC0.h"
 #include "BezierCurveC2.h"
 #include "BezierCurveInterpolating.h"
 #include "PointsMerger.h"
-#include "ConcreteModelSelectorVisitor.h"
+
 using namespace DirectX::SimpleMath;
+
 Scene::Scene(std::shared_ptr<Coursor3d> cursor, SIZE windowSize)
 {
 	this->cursor = cursor;
@@ -49,32 +51,26 @@ void Scene::AddModel(std::shared_ptr<IModel> model)
 
 void Scene::AddBezierCurveC0FromSelectedPoints()
 {
-	auto selectedPointsSh = GetSelectedPoints();
+	auto selectedPointsSh = GetSelectedType<Point>();
 	auto bezier = std::make_shared<BezierCurveC0>(selectedPointsSh);
 	AddModel(bezier);
 }
 
 void Scene::AddBezierCurveC2FromSelectedPoints()
 {
-	auto selectedPointsSh = GetSelectedPoints();
+	auto selectedPointsSh = GetSelectedType<Point>();
 	auto bezier = std::make_shared<BezierCurveC2>(selectedPointsSh);
 	AddModel(bezier);
 }
 
 void Scene::AddBezierCurveInterpolatingFromSelectedPoints()
 {
-	auto selectedPointsSh = GetSelectedPoints();
+	auto selectedPointsSh = GetSelectedType<Point>();
 	auto bezier = std::make_shared<BezierCurveInterpolating>(selectedPointsSh);
 	AddModel(bezier);
 }
 
-std::vector<std::shared_ptr<Point>> Scene::GetSelectedPoints()
-{
-	auto selectedModels = composite->GetContainingModels();
-	ConcreteModelSelectorVisitor<Point> pointsSelector;
-	auto selectedPoints=  pointsSelector.GetList(selectedModels);
-	return selectedPoints;
-}
+
 
 void Scene::RemoveModel(int modelId)
 {

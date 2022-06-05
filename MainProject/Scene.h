@@ -7,6 +7,8 @@
 #include "CompositeModel.h"
 #include "Point.h"
 #include "Torus.h"
+#include "BezierSurfaceC0.h"
+#include "ConcreteModelSelectorVisitor.h"
 
 class Scene
 {
@@ -23,7 +25,10 @@ public:
 	void DeselectAll();
 	void ChangeSelection(std::shared_ptr<IModel> model);
 	std::vector<std::shared_ptr<IModel>> models;
-	std::vector<std::shared_ptr<Point>> GetSelectedPoints();
+
+	template< typename T>
+	std::vector<std::shared_ptr<T>> GetSelectedType();
+
 	std::shared_ptr<Coursor3d> cursor;
 	std::shared_ptr<IModel> previewModel;
 
@@ -43,3 +48,13 @@ public:
 public:
 private:
 };
+
+template<typename T>
+inline std::vector<std::shared_ptr<T>>  Scene::GetSelectedType()
+{
+	auto selectedModels = composite->GetContainingModels();
+	ConcreteModelSelectorVisitor<T> selector;
+	auto selectedModelTypes = selector.GetList(selectedModels);
+	return selectedModelTypes;
+}
+

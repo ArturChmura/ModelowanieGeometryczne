@@ -8,6 +8,8 @@
 #include "BezierSurfaceC0.h"
 #include "BezierSurfaceC2.h"
 #include "StartWindow.h"
+#include "BezierSurfaceC0AdderWindow.h"
+
 
 using namespace mini;
 using namespace DirectX;
@@ -71,23 +73,16 @@ Application::Application(SIZE size)
 		phi += 0.2f;
 	}
 
-	//scene->AddBezierCurveInterpolatingFromSelectedPoints();
-	//scene->AddBezierCurveC2FromSelectedPoints();
-	//scene->AddBezierCurveC0FromSelectedPoints();
 
-	/*scene->cursor->SetPosition({ 10,10,10 });
-	scene->AddTorus();*/
-
-	/*auto c2 = std::make_shared<BezierSurfaceC2>(5, 5, 10.0f, 10.0f, false, scene->cursor->GetTranslation());
-	scene->AddModel(c2);
-	for (auto points : c2->GetPoints())
-	{
-		for (auto point : points)
-		{
-			scene->AddPoint(point);
-		}
-			
-	}*/
+	bool open;
+	auto c0Adder = std::make_shared< BezierSurfaceC0AdderWindow>(scene, &open);
+	c0Adder->horizontalSlicesCount = c0Adder->verticalSlicesCount = 1;
+	scene->cursor->SetPosition({ 10,10,0 });
+	c0Adder->AddModel();
+	scene->cursor->SetPosition({ -10,10,0 });
+	c0Adder->AddModel();
+	scene->cursor->SetPosition({ 0,-10,0 });
+	c0Adder->AddModel();
 
 	auto backBuffer = m_backBuffer.get();
 	DxDevice::instance->context()->OMSetRenderTargets(1, &backBuffer, m_depthBuffer.get());

@@ -3,6 +3,9 @@
 #include "BezierSurfaceC0AdderWindow.h"
 #include "BezierSurfaceC2AdderWindow.h"
 #include "PointsMerger.h"
+#include "BezierSurfaceC0.h"
+#include "GregoryFinder.h"
+#include "GregoryPatch.h"
 
 ObjectAdderWindow::ObjectAdderWindow(std::shared_ptr<Scene> scene)
 {
@@ -12,7 +15,30 @@ ObjectAdderWindow::ObjectAdderWindow(std::shared_ptr<Scene> scene)
 void ObjectAdderWindow::Render()
 {
     ImGui::Begin("Add object");
-    if (scene->GetSelectedPoints().size() >= 2)
+
+    auto selectedBezierSurfaceC0 = scene->GetSelectedType<BezierSurfaceC0>();
+    if (selectedBezierSurfaceC0.size() >= 3)
+    {
+        if (ImGui::Button("Join selected patches"))
+        {
+            std::vector<std::vector<std::shared_ptr<Point>>> lines;
+            for (auto surface : selectedBezierSurfaceC0)
+            {
+                auto line = surface->GetEdgePoints();
+                lines.push_back(line);
+            }
+            std::vector<std::array<std::shared_ptr<Point>, 4>> outResult;
+            if (GregoryFinder::FindFill(lines, outResult))
+            {
+                auto gregory = std::make_shared< GregoryPatch>(outResult);
+                scene->AddModel(gregory);
+            }
+
+        }
+       
+    }
+
+    if (scene->GetSelectedType<Point>().size() >= 2)
     {
         if (ImGui::Button("Merge selected points"))
         {
@@ -28,7 +54,7 @@ void ObjectAdderWindow::Render()
     {
         scene->AddPoint();
     }
-    if (scene->GetSelectedPoints().size() > 0)
+    if (scene->GetSelectedType<Point>().size() > 0)
     {
         if (ImGui::Button("Add Bezier Curve C0"))
         {

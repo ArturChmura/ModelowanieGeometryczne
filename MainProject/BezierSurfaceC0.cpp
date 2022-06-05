@@ -4,10 +4,12 @@
 using namespace DirectX::SimpleMath;
 
 
-BezierSurfaceC0::BezierSurfaceC0(std::vector<std::shared_ptr<SingleBezierSurfaceC0>> singleSurfaces, std::string name)
+BezierSurfaceC0::BezierSurfaceC0(std::vector<std::shared_ptr<SingleBezierSurfaceC0>> singleSurfaces, int horizontalCount, int verticalCount, std::string name)
 	:IUnmovableModel(name)
 {
 	this->singleSurfaces = singleSurfaces;
+	this->horizontalSlicesCount = horizontalCount;
+	this->verticalSlicesCount = verticalCount;
 }
 
 void BezierSurfaceC0::Draw(std::shared_ptr<Camera> camera)

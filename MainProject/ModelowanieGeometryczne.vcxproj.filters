@@ -115,6 +115,9 @@
     <Filter Include="Source Files\Helpers\Visitors">
       <UniqueIdentifier>{db92aa29-fdcc-46ad-8aa1-00b55dd65e17}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Helpers\GregoryFinder">
+      <UniqueIdentifier>{b75a72eb-777f-4f96-9c67-e3a58c160155}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxStructures.cpp">
@@ -249,9 +252,6 @@
     <ClCompile Include="ObjectAdderWindow.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="Callback.cpp">
-      <Filter>Source Files\Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="Named.cpp">
       <Filter>Source Files\Helpers</Filter>
     </ClCompile>
@@ -293,6 +293,15 @@
     </ClCompile>
     <ClCompile Include="EmptyModelVisitor.cpp">
       <Filter>Source Files\Helpers\Visitors</Filter>
+    </ClCompile>
+    <ClCompile Include="GregoryPatch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GregoryFinder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -490,6 +499,15 @@
     </ClInclude>
     <ClInclude Include="ConcreteModelSelectorVisitor.h">
       <Filter>Header Files\Helpers\Visitors</Filter>
+    </ClInclude>
+    <ClInclude Include="GregoryPatch.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="GregoryFinder.h">
+      <Filter>Header Files\Helpers\GregoryFinder</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Header Files\Helpers\GregoryFinder</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

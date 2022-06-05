@@ -21,7 +21,6 @@
     <ClCompile Include="BezierSurfaceC0AdderWindow.cpp" />
     <ClCompile Include="BezierSurfaceC2.cpp" />
     <ClCompile Include="BezierSurfaceC2AdderWindow.cpp" />
-    <ClCompile Include="Callback.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CompositeModel.cpp" />
     <ClCompile Include="Coursor3d.cpp" />
@@ -31,6 +30,8 @@
     <ClCompile Include="dxStructures.cpp" />
     <ClCompile Include="EmptyModelVisitor.cpp" />
     <ClCompile Include="exceptions.cpp" />
+    <ClCompile Include="GregoryFinder.cpp" />
+    <ClCompile Include="GregoryPatch.cpp" />
     <ClCompile Include="gsBezier.cpp" />
     <ClCompile Include="gsBezierSurfaceC2.cpp" />
     <ClCompile Include="gsSurfaceBezier.cpp" />
@@ -44,6 +45,7 @@
     <ClCompile Include="MessageHandler.cpp" />
     <ClCompile Include="MouseEvents.cpp" />
     <ClCompile Include="Named.cpp" />
+    <ClCompile Include="Node.cpp" />
     <ClCompile Include="ObjectAdderWindow.cpp" />
     <ClCompile Include="ObjectsListWindow.cpp" />
     <ClCompile Include="CameraOptionsWindow.cpp" />
@@ -91,6 +93,8 @@
     <ClInclude Include="CursorOptionsWindow.h" />
     <ClInclude Include="DebugWindow.h" />
     <ClInclude Include="EmptyModelVisitor.h" />
+    <ClInclude Include="GregoryFinder.h" />
+    <ClInclude Include="GregoryPatch.h" />
     <ClInclude Include="gsBezier.h" />
     <ClInclude Include="gsBezierSurfaceC2.h" />
     <ClInclude Include="gsSurfaceBezier.h" />
@@ -103,6 +107,7 @@
     <ClInclude Include="MessageHandler.h" />
     <ClInclude Include="MultipleInheritableEnableSharedFromThis.h" />
     <ClInclude Include="Named.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="ObjectAdderWindow.h" />
     <ClInclude Include="PointsMerger.h" />
     <ClInclude Include="PolygonalChain.h" />

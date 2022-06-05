@@ -46,16 +46,19 @@ inline void Callback<T>::Add(Callback<T> callback)
 template<typename T>
 inline void Callback<T>::Remove(std::string id)
 {
-	auto it = ids.begin();
-	while (it != ids.end())
+	while (true)
 	{
-		it = find(ids.begin(), ids.end(), id);
+		auto it = find(ids.begin(), ids.end(), id);
 
 		if (it != ids.end())
 		{
 			int index = it - ids.begin();
 			ids.erase(ids.begin() + index);
 			functions.erase(functions.begin() + index);
+		}
+		else
+		{
+			break;
 		}
 	}
 
