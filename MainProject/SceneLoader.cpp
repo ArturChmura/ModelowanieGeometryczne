@@ -26,7 +26,7 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 		auto pos = p.position;
 		auto point = std::make_shared<Point>(Vector3{pos.x, pos.y, pos.z});
 		point->name = p.name;
-		scene->AddPoint(point);
+		scene->AddModel(point);
 
 		points.insert(std::make_pair(p.GetId(), point));
 	}

@@ -37,7 +37,7 @@ std::shared_ptr<Point> Scene::AddPoint()
 {
 	auto point = std::make_shared<Point>(cursor->GetTranslation());
 
-	AddPoint(point);
+	AddModel(point);
 	return point;
 }
 
@@ -45,17 +45,6 @@ void Scene::AddModel(std::shared_ptr<IModel> model)
 {
 	models.push_back(model);
 	model->OnAddedToScene();
-}
-
-void Scene::AddPoint(std::shared_ptr<Point> point)
-{
-	point->onRemovedFromSceneCallback.Add([this](std::shared_ptr<Point> point) {
-		auto newEnd = std::remove_if(points.begin(), points.end(), [point](std::shared_ptr<Point> listpoint) {return listpoint->id == point->id; });
-		points.erase(newEnd, points.end());
-		return;
-		}, -1);
-	points.push_back(point);
-	AddModel(point);
 }
 
 void Scene::AddBezierCurveC0FromSelectedPoints()
@@ -101,10 +90,6 @@ void Scene::RemoveModel(int modelId)
 		{ return model->id == modelId; });
 	models.erase(new_end, models.end());
 
-	auto new_end2 = std::remove_if(points.begin(), points.end(),
-		[modelId](const std::shared_ptr<IModel>& model)
-		{ return model->id == modelId; });
-	points.erase(new_end2, points.end());
 
 	composite->RemoveModel(model);
 }

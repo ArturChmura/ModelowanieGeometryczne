@@ -48,7 +48,7 @@ void PointsMerger::MergePoints(std::shared_ptr<Scene> scene)
 		scene->RemoveModel(point->id);
 	}
 
-	scene->AddPoint(mergedPoint);
+	scene->AddModel(mergedPoint);
 }
 
 void PointsMerger::Accept(std::shared_ptr < Point> point)
