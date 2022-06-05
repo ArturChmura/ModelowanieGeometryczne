@@ -27,6 +27,6 @@ private:
 	bool drawPolygonChain = false;
 
 	// Inherited via IModel
-	virtual void Accept(SerializationVisitor& visitor) override;
+	virtual void Accept(AbstractModelVisitor& visitor) override;
 
 };

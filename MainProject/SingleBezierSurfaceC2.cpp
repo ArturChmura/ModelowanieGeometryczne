@@ -213,7 +213,7 @@ void SingleBezierSurfaceC2::ChangeColor(DirectX::SimpleMath::Vector3 color)
 
 }
 
-void SingleBezierSurfaceC2::Accept(SerializationVisitor& visitor)
+void SingleBezierSurfaceC2::Accept(AbstractModelVisitor& visitor)
 {
 	visitor.Accept(*this);
 }

@@ -30,6 +30,6 @@ private:
 	void UpdateSlicesCount();
 
 	// Inherited via VertexModel
-	virtual void Accept(SerializationVisitor& visitor) override;
+	virtual void Accept(AbstractModelVisitor& visitor) override;
 
 };

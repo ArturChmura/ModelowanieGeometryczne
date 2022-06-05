@@ -126,7 +126,7 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 		surface->verticalSlicesCount = s.size.y;
 		for (auto [_, point]: surfacePoints)
 		{
-			point->onRemovedFromSceneCallback.Add([scene = scene, surface = surface](std::shared_ptr<Point> p) {scene->DeleteModel(surface->id); }, surface->id);
+			point->onRemovedFromSceneCallback.Add([scene = scene, surface = surface](std::shared_ptr<Point> p) {scene->RemoveModel(surface->id); }, surface->id);
 		}
 
 		scene->AddModel(surface);
@@ -165,7 +165,7 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 		surface->verticalSlicesCount = s.size.y;
 		for (auto [_, point] : surfacePoints)
 		{
-			point->onRemovedFromSceneCallback.Add([scene = scene, surface = surface](std::shared_ptr<Point> p) {scene->DeleteModel(surface->id); }, surface->id);
+			point->onRemovedFromSceneCallback.Add([scene = scene, surface = surface](std::shared_ptr<Point> p) {scene->RemoveModel(surface->id); }, surface->id);
 		}
 		scene->AddModel(surface);
 	}

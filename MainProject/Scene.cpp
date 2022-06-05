@@ -6,6 +6,7 @@
 #include "BezierCurveC0.h"
 #include "BezierCurveC2.h"
 #include "BezierCurveInterpolating.h"
+#include "PointsMerger.h"
 using namespace DirectX::SimpleMath;
 Scene::Scene(std::shared_ptr<Coursor3d> cursor, SIZE windowSize)
 {
@@ -90,7 +91,7 @@ std::vector<std::shared_ptr<Point>> Scene::GetSelectedPoints()
 	return selectedPoints;
 }
 
-void Scene::DeleteModel(int modelId)
+void Scene::RemoveModel(int modelId)
 {
 	auto modelIter = std::find_if(models.begin(), models.end(), [modelId](std::shared_ptr<IModel> model){ return model->id == modelId; });
 	if (modelIter == models.end())
@@ -226,7 +227,7 @@ void Scene::RemoveSelectedModels()
 	auto map = composite->modelsMap;
 	for (auto [id, model] : map)
 	{
-		DeleteModel(id);
+		RemoveModel(id);
 	}
 }
 void Scene::Clear()
@@ -234,7 +235,7 @@ void Scene::Clear()
 	auto models = this->models;
 	for (auto model : models)
 	{
-		DeleteModel(model->id);
+		RemoveModel(model->id);
 	}
 }
 

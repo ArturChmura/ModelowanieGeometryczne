@@ -213,7 +213,7 @@ void SingleBezierSurfaceC0::RenderGUI()
 	}
 }
 
-void SingleBezierSurfaceC0::Accept(SerializationVisitor& visitor)
+void SingleBezierSurfaceC0::Accept(AbstractModelVisitor& visitor)
 {
 	visitor.Accept(*this);
 }

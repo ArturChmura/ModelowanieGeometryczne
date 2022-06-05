@@ -103,10 +103,9 @@ void BezierCurveC2::UpdateBezierPoints()
 	for (int i = 0; i < bezierPoints.size(); i++)
 	{
 		auto point = bezierPoints[i];
-		point->onModelChangeCallback.push_back(
-			{ id,
+		point->onModelChangeCallback.Add(
 			[this, i](std::shared_ptr<Point> point)
-			{this->OnBezierPointChange(i, point->GetTranslation()); } });
+			{this->OnBezierPointChange(i, point->GetTranslation()); } ,id );
 	}
 }
 
@@ -183,7 +182,7 @@ std::vector<DirectX::SimpleMath::Vector3> BezierCurveC2::GetPolygonChainPoints()
 	}
 }
 
-void BezierCurveC2::Accept(SerializationVisitor& visitor)
+void BezierCurveC2::Accept(AbstractModelVisitor& visitor)
 {
 	visitor.Accept(*this);
 }

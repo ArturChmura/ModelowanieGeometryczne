@@ -26,7 +26,7 @@ public:
 	virtual std::vector<DirectX::SimpleMath::Vector3> GetPolygonChainPoints() override;
 
 	// Inherited via IBezierCurve
-	virtual void Accept(SerializationVisitor& visitor) override;
+	virtual void Accept(AbstractModelVisitor& visitor) override;
 };
 
 

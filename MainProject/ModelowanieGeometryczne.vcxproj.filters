@@ -9,12 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Source Files\Shapes">
-      <UniqueIdentifier>{a34febe4-c0e7-4bb6-a150-cd3d9645d6e7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Shapes">
-      <UniqueIdentifier>{442e2fcb-bf9c-4442-aa06-e65d9446cb8c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Camera">
       <UniqueIdentifier>{9fb8d6c3-be3d-45ad-b156-cd5679b07549}</UniqueIdentifier>
     </Filter>
@@ -64,12 +58,6 @@
     <Filter Include="Header Files\EventsHandlers">
       <UniqueIdentifier>{0c423b19-f6d5-4d2a-ab03-9f374e16121c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Shapes\Curves">
-      <UniqueIdentifier>{ce683d1d-9f8b-4b78-a94f-622dc0b3139c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Shapes\Curves">
-      <UniqueIdentifier>{a7f56883-e599-4dd2-b2fb-d2358197e64a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Shaders\Bezier">
       <UniqueIdentifier>{8c3daec4-389d-4249-89e2-6d1f9f74cd62}</UniqueIdentifier>
     </Filter>
@@ -81,12 +69,6 @@
     </Filter>
     <Filter Include="Header Files\Names">
       <UniqueIdentifier>{e81c56c3-33d2-436c-b96a-a5a33d0d8ad8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Shapes\Surfaces">
-      <UniqueIdentifier>{163c1870-18fd-4590-8292-a7f7f25bd484}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Shapes\Surfaces">
-      <UniqueIdentifier>{05abcba3-1436-43f8-ac02-7a389ef27f6b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Shaders\Bezier\Surface">
       <UniqueIdentifier>{5e3850cd-554c-4a25-9609-e80a5e5d63ec}</UniqueIdentifier>
@@ -106,6 +88,27 @@
     <Filter Include="Source Files\Serialization">
       <UniqueIdentifier>{bc1c1fe0-28c4-4eee-b8c8-68b1e6f7039f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Models">
+      <UniqueIdentifier>{442e2fcb-bf9c-4442-aa06-e65d9446cb8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models\Curves">
+      <UniqueIdentifier>{a7f56883-e599-4dd2-b2fb-d2358197e64a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models\Surfaces">
+      <UniqueIdentifier>{05abcba3-1436-43f8-ac02-7a389ef27f6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models">
+      <UniqueIdentifier>{a34febe4-c0e7-4bb6-a150-cd3d9645d6e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models\Curves">
+      <UniqueIdentifier>{ce683d1d-9f8b-4b78-a94f-622dc0b3139c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models\Surfaces">
+      <UniqueIdentifier>{163c1870-18fd-4590-8292-a7f7f25bd484}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Merger">
+      <UniqueIdentifier>{211d8383-710f-4996-9e22-733427e86268}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxStructures.cpp">
@@ -121,7 +124,7 @@
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Torus.cpp">
-      <Filter>Source Files\Shapes</Filter>
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
@@ -148,7 +151,7 @@
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
     <ClCompile Include="Point.cpp">
-      <Filter>Source Files\Shapes</Filter>
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="ObjectsListWindow.cpp">
       <Filter>Source Files\Windows</Filter>
@@ -166,34 +169,34 @@
       <Filter>Source Files\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="CompositeModel.cpp">
-      <Filter>Source Files\Shapes</Filter>
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="Coursor3d.cpp">
-      <Filter>Source Files\Shapes</Filter>
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="IModel.cpp">
-      <Filter>Source Files\Shapes</Filter>
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="VertexModel.cpp">
-      <Filter>Source Files\Shapes</Filter>
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="BezierCurveC0.cpp">
-      <Filter>Source Files\Shapes\Curves</Filter>
+      <Filter>Source Files\Models\Curves</Filter>
     </ClCompile>
     <ClCompile Include="IBezierCurve.cpp">
-      <Filter>Source Files\Shapes\Curves</Filter>
+      <Filter>Source Files\Models\Curves</Filter>
     </ClCompile>
     <ClCompile Include="BezierCurveC2.cpp">
-      <Filter>Source Files\Shapes\Curves</Filter>
+      <Filter>Source Files\Models\Curves</Filter>
     </ClCompile>
     <ClCompile Include="KeyboardHandler.cpp">
       <Filter>Source Files\EventsHandlers</Filter>
     </ClCompile>
     <ClCompile Include="VirtualPoint.cpp">
-      <Filter>Source Files\Shapes</Filter>
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="BezierCurveInterpolating.cpp">
-      <Filter>Source Files\Shapes\Curves</Filter>
+      <Filter>Source Files\Models\Curves</Filter>
     </ClCompile>
     <ClCompile Include="gsBezier.cpp">
       <Filter>Source Files\Shaders\Bezier</Filter>
@@ -214,7 +217,7 @@
       <Filter>Source Files\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="PolygonalChain.cpp">
-      <Filter>Source Files\Shapes</Filter>
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="ShadersManager.cpp">
       <Filter>Source Files\Shaders</Filter>
@@ -226,10 +229,10 @@
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
     <ClCompile Include="BezierSurfaceC0.cpp">
-      <Filter>Source Files\Shapes\Surfaces</Filter>
+      <Filter>Source Files\Models\Surfaces</Filter>
     </ClCompile>
     <ClCompile Include="SingleBezierSurfaceC0.cpp">
-      <Filter>Source Files\Shapes\Surfaces</Filter>
+      <Filter>Source Files\Models\Surfaces</Filter>
     </ClCompile>
     <ClCompile Include="vsSurfaceBezier.cpp">
       <Filter>Source Files\Shaders\Bezier\Surface</Filter>
@@ -250,10 +253,10 @@
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
     <ClCompile Include="BezierSurfaceC2.cpp">
-      <Filter>Source Files\Shapes\Surfaces</Filter>
+      <Filter>Source Files\Models\Surfaces</Filter>
     </ClCompile>
     <ClCompile Include="SingleBezierSurfaceC2.cpp">
-      <Filter>Source Files\Shapes\Surfaces</Filter>
+      <Filter>Source Files\Models\Surfaces</Filter>
     </ClCompile>
     <ClCompile Include="gsBezierSurfaceC2.cpp">
       <Filter>Source Files\Shaders\Bezier\Surface</Filter>
@@ -277,7 +280,13 @@
       <Filter>Source Files\Serialization</Filter>
     </ClCompile>
     <ClCompile Include="IUnmovableModel.cpp">
-      <Filter>Source Files\Shapes</Filter>
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="AbstractModelVisitor.cpp">
+      <Filter>Source Files\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="PointsMerger.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -297,7 +306,7 @@
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="Torus.h">
-      <Filter>Header Files\Shapes</Filter>
+      <Filter>Header Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="exceptions.h">
       <Filter>Resource Files</Filter>
@@ -321,7 +330,7 @@
       <Filter>Header Files\Windows</Filter>
     </ClInclude>
     <ClInclude Include="Point.h">
-      <Filter>Header Files\Shapes</Filter>
+      <Filter>Header Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="ObjectsListWindow.h">
       <Filter>Header Files\Windows</Filter>
@@ -339,22 +348,22 @@
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="Coursor3d.h">
-      <Filter>Header Files\Shapes</Filter>
+      <Filter>Header Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="IModel.h">
-      <Filter>Header Files\Shapes</Filter>
+      <Filter>Header Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="VertexModel.h">
-      <Filter>Header Files\Shapes</Filter>
+      <Filter>Header Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="IBezierCurve.h">
-      <Filter>Header Files\Shapes\Curves</Filter>
+      <Filter>Header Files\Models\Curves</Filter>
     </ClInclude>
     <ClInclude Include="BezierCurveC0.h">
-      <Filter>Header Files\Shapes\Curves</Filter>
+      <Filter>Header Files\Models\Curves</Filter>
     </ClInclude>
     <ClInclude Include="BezierCurveC2.h">
-      <Filter>Header Files\Shapes\Curves</Filter>
+      <Filter>Header Files\Models\Curves</Filter>
     </ClInclude>
     <ClInclude Include="DebugWindow.h">
       <Filter>Header Files\Windows</Filter>
@@ -366,10 +375,10 @@
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="VirtualPoint.h">
-      <Filter>Header Files\Shapes</Filter>
+      <Filter>Header Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="BezierCurveInterpolating.h">
-      <Filter>Header Files\Shapes\Curves</Filter>
+      <Filter>Header Files\Models\Curves</Filter>
     </ClInclude>
     <ClInclude Include="vsBezier.h">
       <Filter>Header Files\Shaders\Bezier</Filter>
@@ -378,7 +387,7 @@
       <Filter>Header Files\Shaders\Bezier</Filter>
     </ClInclude>
     <ClInclude Include="CompositeModel.h">
-      <Filter>Header Files\Shapes</Filter>
+      <Filter>Header Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="psConstColor.h">
       <Filter>Header Files\Shaders</Filter>
@@ -393,7 +402,7 @@
       <Filter>Header Files\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="PolygonalChain.h">
-      <Filter>Header Files\Shapes</Filter>
+      <Filter>Header Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="ShadersManager.h">
       <Filter>Header Files\Shaders</Filter>
@@ -414,10 +423,10 @@
       <Filter>Header Files\Names</Filter>
     </ClInclude>
     <ClInclude Include="BezierSurfaceC0.h">
-      <Filter>Header Files\Shapes\Surfaces</Filter>
+      <Filter>Header Files\Models\Surfaces</Filter>
     </ClInclude>
     <ClInclude Include="SingleBezierSurfaceC0.h">
-      <Filter>Header Files\Shapes\Surfaces</Filter>
+      <Filter>Header Files\Models\Surfaces</Filter>
     </ClInclude>
     <ClInclude Include="vsSurfaceBezier.h">
       <Filter>Header Files\Shaders\Bezier\Surfaces</Filter>
@@ -435,10 +444,10 @@
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="BezierSurfaceC2.h">
-      <Filter>Header Files\Shapes\Surfaces</Filter>
+      <Filter>Header Files\Models\Surfaces</Filter>
     </ClInclude>
     <ClInclude Include="SingleBezierSurfaceC2.h">
-      <Filter>Header Files\Shapes\Surfaces</Filter>
+      <Filter>Header Files\Models\Surfaces</Filter>
     </ClInclude>
     <ClInclude Include="gsBezierSurfaceC2.h">
       <Filter>Header Files\Shaders\Bezier\Surfaces</Filter>
@@ -462,7 +471,13 @@
       <Filter>Header Files\Serialization</Filter>
     </ClInclude>
     <ClInclude Include="IUnmovableModel.h">
-      <Filter>Header Files\Shapes</Filter>
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractModelVisitor.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="PointsMerger.h">
+      <Filter>Header Files\Merger</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

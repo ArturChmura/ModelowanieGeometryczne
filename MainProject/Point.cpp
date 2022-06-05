@@ -94,14 +94,16 @@ Vector3 Point::GetRotation()
 void Point::OnSelect()
 {
 	IModel::OnSelect();
-	for (auto f : onSelectCallback)
+	auto vec = onSelectCallback.functions;
+	for (auto f : vec)
 		f(IModel::downcasted_shared_from_this<Point>());
 }
 
 void Point::OnAddedToScene()
 {
 	IModel::OnAddedToScene();
-	for (auto f : onAddedToSceneCallback)
+	auto vec = onAddedToSceneCallback.functions;
+	for (auto f : vec)
 		f(IModel::downcasted_shared_from_this<Point>());
 }
 
@@ -188,12 +190,14 @@ void Point::ChangeColor(DirectX::SimpleMath::Vector3 color)
 	this->meshInfo.color = color;
 }
 
-void Point::Accept(SerializationVisitor& visitor)
+void Point::Accept(AbstractModelVisitor& visitor)
 {
 	visitor.Accept(*this);
 }
 
 void Point::OnModelChange()
 {
-	for (auto f : onModelChangeCallback) std::get<1>(f)(IModel::downcasted_shared_from_this<Point>());
+	auto vec = onModelChangeCallback.functions;
+	for (auto f : vec)
+		f(IModel::downcasted_shared_from_this<Point>());
 }

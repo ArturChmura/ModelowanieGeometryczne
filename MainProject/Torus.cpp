@@ -91,7 +91,7 @@ void Torus::UpdateSlicesCount()
 	this->indicesCount = indices.size();
 }
 
-void Torus::Accept(SerializationVisitor& visitor)
+void Torus::Accept(AbstractModelVisitor& visitor)
 {
 	visitor.Accept(*this);
 }

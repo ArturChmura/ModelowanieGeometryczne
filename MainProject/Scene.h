@@ -19,7 +19,7 @@ public:
 	void AddBezierCurveC0FromSelectedPoints();
 	void AddBezierCurveC2FromSelectedPoints(); 
 	void AddBezierCurveInterpolatingFromSelectedPoints();
-	void DeleteModel(int modelId);
+	void RemoveModel(int modelId);
 	void Select(std::shared_ptr<IModel> model);
 	void DeselectAll();
 	void ChangeSelection(std::shared_ptr<IModel> model);

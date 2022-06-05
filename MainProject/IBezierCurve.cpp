@@ -88,7 +88,7 @@ void IBezierCurve::Draw(std::shared_ptr<Camera> camera)
 void IBezierCurve::AddPoint(std::shared_ptr<Point> point)
 {
 	this->points.push_back(point);
-	point->onModelChangeCallback.push_back({ id,[this](std::shared_ptr<Point> point) { this->ResetDrawing(); } });
+	point->onModelChangeCallback.Add([this](std::shared_ptr<Point> point) { this->ResetDrawing(); }, id);
 	point->onRemovedFromSceneCallback.Add([this](std::shared_ptr < Point> point) { RemovePoint(point->id); }, id);
 	ResetDrawing();
 }
@@ -104,10 +104,10 @@ void IBezierCurve::RemovePoint(int pointId)
 	}
 	auto model = (*iter);
 	points.erase(iter, iter + 1);
-	auto newEnd = std::remove_if(model->onModelChangeCallback.begin(), model->onModelChangeCallback.end(), [this](std::tuple<int, std::function<void(std::shared_ptr<Point>)>> t) { return id == std::get<0>(t); });
-	model->onModelChangeCallback.erase(newEnd, model->onModelChangeCallback.end());
 
+	model->onModelChangeCallback.Remove(id);
 	model->onRemovedFromSceneCallback.Remove(id);
+
 	ResetDrawing();
 }
 
@@ -137,7 +137,7 @@ void IBezierCurve::RenderGUI()
 		{
 			auto point = points[i];
 			const bool is_selected = std::find(selectedIndexes.begin(), selectedIndexes.end(), i) != selectedIndexes.end();
-			if (ImGui::Selectable((point->name + "##"+ std::to_string(i)).c_str(), is_selected))
+			if (ImGui::Selectable((point->name + "##" + std::to_string(i)).c_str(), is_selected))
 			{
 				auto io = ImGui::GetIO();
 				if (io.KeyCtrl)
@@ -187,8 +187,8 @@ void IBezierCurve::RenderGUI()
 		if (ImGui::Button("Stop adding vertices"))
 		{
 			isAddingMode = false;
-			Point::onSelectCallback.pop_back();
-			Point::onAddedToSceneCallback.pop_back();
+			Point::onSelectCallback.Remove(id);
+			Point::onAddedToSceneCallback.Remove(id);
 		}
 	}
 	else
@@ -199,8 +199,8 @@ void IBezierCurve::RenderGUI()
 			auto callback = [this](std::shared_ptr<Point> point) {
 				AddPoint(point);
 			};
-			Point::onSelectCallback.push_back(callback);
-			Point::onAddedToSceneCallback.push_back(callback);
+			Point::onSelectCallback.Add(callback, id);
+			Point::onAddedToSceneCallback.Add(callback, id);
 		}
 	}
 	bool draw = drawPolygonChain;
@@ -219,17 +219,10 @@ void IBezierCurve::OnRemovedFromScene()
 	}
 	for (auto id : toDelete)
 	{
-
 		RemovePoint(id);
 	}
-	if (Point::onSelectCallback.size() > 0)
-	{
-		Point::onSelectCallback.pop_back();
-	}
-	if (Point::onAddedToSceneCallback.size() > 0)
-	{
-		Point::onAddedToSceneCallback.pop_back();
-	}
+	Point::onSelectCallback.Remove(id);
+	Point::onAddedToSceneCallback.Remove(id);
 }
 
 std::vector<std::shared_ptr<IModel>> IBezierCurve::GetContainingModels()
@@ -239,7 +232,7 @@ std::vector<std::shared_ptr<IModel>> IBezierCurve::GetContainingModels()
 	{
 		models[i] = points[i];
 	}
-	
+
 	return models;
 }
 

@@ -191,7 +191,7 @@ void CompositeModel::ChangeColor(DirectX::SimpleMath::Vector3 color)
 {
 }
 
-void CompositeModel::Accept(SerializationVisitor& visitor)
+void CompositeModel::Accept(AbstractModelVisitor& visitor)
 {
 	visitor.Accept(*this);
 }

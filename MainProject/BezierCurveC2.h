@@ -37,7 +37,7 @@ private:
 
 
 	// Inherited via IBezierCurve
-	virtual void Accept(SerializationVisitor& visitor) override;
+	virtual void Accept(AbstractModelVisitor& visitor) override;
 
 
 };

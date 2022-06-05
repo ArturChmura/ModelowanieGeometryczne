@@ -163,7 +163,7 @@ std::vector<DirectX::SimpleMath::Vector3> BezierCurveInterpolating::GetPolygonCh
 	return GetBezierPoints();
 }
 
-void BezierCurveInterpolating::Accept(SerializationVisitor& visitor)
+void BezierCurveInterpolating::Accept(AbstractModelVisitor& visitor)
 {
 	visitor.Accept(*this);
 }

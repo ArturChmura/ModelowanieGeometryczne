@@ -1,20 +1,7 @@
 #pragma once
+#include "AbstractModelVisitor.h"
 
-class IModel;
-
-class Point;
-class Torus;
-class BezierCurveC0;
-class BezierCurveC2;
-class BezierCurveInterpolating;
-class SingleBezierSurfaceC0;
-class BezierSurfaceC0;
-class SingleBezierSurfaceC2;
-class BezierPatchC2GPU;
-class BezierSurfaceC2;
-class CompositeModel;
-
-class SerializationVisitor
+class SerializationVisitor : AbstractModelVisitor
 {
 public:
 	void Visit(IModel& model);

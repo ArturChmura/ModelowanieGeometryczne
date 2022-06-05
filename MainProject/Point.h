@@ -28,14 +28,16 @@ public:
 
 	DirectX::SimpleMath::Vector4 translation;
 	MeshInfo meshInfo;
-	inline static std::vector<std::function<void(std::shared_ptr<Point>)>> onSelectCallback;
+	inline static Callback<void(std::shared_ptr<Point>)> onSelectCallback;
 	virtual void OnSelect() override;
-	inline static std::vector<std::function<void(std::shared_ptr<Point>)>> onAddedToSceneCallback;
+
+	inline static Callback<void(std::shared_ptr<Point>)> onAddedToSceneCallback;
 	virtual void OnAddedToScene() override;
+
 	Callback<void(std::shared_ptr<Point>)> onRemovedFromSceneCallback;
 	void OnRemovedFromScene() override;
 
-	std::vector<std::tuple<int, std::function<void(std::shared_ptr<Point>)>>> onModelChangeCallback;
+	Callback<void(std::shared_ptr<Point>)> onModelChangeCallback;
 private:
 	DirectX::SimpleMath::Matrix GetModelMatrix();
 	int verticesCount;
@@ -51,7 +53,7 @@ private:
 
 
 	// Inherited via IModel
-	virtual void Accept(SerializationVisitor& visitor) override;
+	virtual void Accept(AbstractModelVisitor& visitor) override;
 
 
 };

@@ -9,7 +9,7 @@
 #include "SimpleMath.h"
 #include "MultipleInheritableEnableSharedFromThis.h"
 #include "Named.h"
-#include "SerializationVisitor.h"
+#include "AbstractModelVisitor.h"
 
 class IModel: public inheritable_enable_shared_from_this<IModel>, public Named
 {
@@ -47,7 +47,7 @@ public:
 	virtual std::shared_ptr<IModel> SelectFromScreenCoords(float x, float y, DirectX::SimpleMath::Matrix VP);
 	virtual std::vector<std::shared_ptr<IModel>> GetContainingModels();
 
-	virtual void Accept(SerializationVisitor& visitor) = 0;
+	virtual void Accept(AbstractModelVisitor& visitor) = 0;
 
 protected:
 	bool visible = true;

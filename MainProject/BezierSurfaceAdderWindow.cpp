@@ -60,7 +60,7 @@ void BezierSurfaceAdderWindow::AddModel()
 		for (auto point : ps)
 		{
 			this->scene->AddPoint(point);
-			point->onRemovedFromSceneCallback.Add([scene = scene, model = model](std::shared_ptr<Point> p) {scene->DeleteModel(model->id); }, model->id);
+			point->onRemovedFromSceneCallback.Add([scene = scene, model = model](std::shared_ptr<Point> p) {scene->RemoveModel(model->id); }, model->id);
 		}
 	}
 }

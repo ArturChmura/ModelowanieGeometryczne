@@ -3,6 +3,7 @@
 #include <nfd.h>
 #include <Serializer.h>
 #include "SceneLoader.h"
+#include "SerializationVisitor.h"
 
 StartWindow::StartWindow(std::shared_ptr<Scene> scene)
 {

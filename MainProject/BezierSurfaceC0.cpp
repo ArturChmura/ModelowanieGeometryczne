@@ -84,7 +84,7 @@ void BezierSurfaceC0::ChangeColor(DirectX::SimpleMath::Vector3 color)
 	}
 }
 
-void BezierSurfaceC0::Accept(SerializationVisitor& visitor)
+void BezierSurfaceC0::Accept(AbstractModelVisitor& visitor)
 {
 	visitor.Accept(*this);
 }
