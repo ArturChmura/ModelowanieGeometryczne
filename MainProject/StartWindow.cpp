@@ -24,7 +24,7 @@ void StartWindow::Render()
 			MG1::Scene::Get().Clear();
 			for (auto model : scene->models)
 			{
-				serializer.Visit(*model);
+				model->Accept(serializer);
 			}
 			
 			MG1::SceneSerializer sceneSerializer;

@@ -59,6 +59,7 @@ public:
 
 
 
+	virtual std::vector<std::shared_ptr<IModel>> GetContainingModels() override;
 	// Inherited via IModel
 	virtual void Accept(AbstractModelVisitor& visitor) override;
 

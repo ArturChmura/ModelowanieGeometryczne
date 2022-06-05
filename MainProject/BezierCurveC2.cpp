@@ -184,6 +184,6 @@ std::vector<DirectX::SimpleMath::Vector3> BezierCurveC2::GetPolygonChainPoints()
 
 void BezierCurveC2::Accept(AbstractModelVisitor& visitor)
 {
-	visitor.Accept(*this);
+	visitor.Accept(IModel::downcasted_shared_from_this<BezierCurveC2>());
 }
 

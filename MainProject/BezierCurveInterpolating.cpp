@@ -165,6 +165,6 @@ std::vector<DirectX::SimpleMath::Vector3> BezierCurveInterpolating::GetPolygonCh
 
 void BezierCurveInterpolating::Accept(AbstractModelVisitor& visitor)
 {
-	visitor.Accept(*this);
+	visitor.Accept(IModel::downcasted_shared_from_this<BezierCurveInterpolating>());
 }
 

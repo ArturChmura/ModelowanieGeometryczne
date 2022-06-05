@@ -93,7 +93,7 @@ void Torus::UpdateSlicesCount()
 
 void Torus::Accept(AbstractModelVisitor& visitor)
 {
-	visitor.Accept(*this);
+	visitor.Accept(IModel::downcasted_shared_from_this<Torus>());
 }
 
 

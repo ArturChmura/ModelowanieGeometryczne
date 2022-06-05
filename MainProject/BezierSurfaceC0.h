@@ -23,6 +23,7 @@ public:
 	std::vector<std::shared_ptr<SingleBezierSurfaceC0>> singleSurfaces;
 	int horizontalSlicesCount;
 	int verticalSlicesCount;
+	std::vector<std::shared_ptr<Point>> GetEdgePoints();
 private:
 	bool drawPolygonChain = false;
 

@@ -1,19 +1,18 @@
 #pragma once
 #include "AbstractModelVisitor.h"
 
-class SerializationVisitor : AbstractModelVisitor
+class SerializationVisitor : public AbstractModelVisitor
 {
 public:
-	void Visit(IModel& model);
 
-	void Accept(Point& point);
-	void Accept(Torus& torus) ;
-	void Accept(BezierCurveC0& curve) ;
-	void Accept(BezierCurveC2& curve) ;
-	void Accept(BezierCurveInterpolating& curve) ;
-	void Accept(SingleBezierSurfaceC0& patch) ;
-	void Accept(BezierSurfaceC0& surface) ;
-	void Accept(SingleBezierSurfaceC2& patch) ;
-	void Accept(BezierSurfaceC2& surface) ;
-	void Accept(CompositeModel& surface);
+	void Accept(std::shared_ptr<Point> point);
+	void Accept(std::shared_ptr<Torus> torus) ;
+	void Accept(std::shared_ptr<BezierCurveC0> curve) ;
+	void Accept(std::shared_ptr<BezierCurveC2> curve) ;
+	void Accept(std::shared_ptr<BezierCurveInterpolating> curve) ;
+	void Accept(std::shared_ptr<SingleBezierSurfaceC0> patch) ;
+	void Accept(std::shared_ptr<BezierSurfaceC0> surface) ;
+	void Accept(std::shared_ptr<SingleBezierSurfaceC2> patch) ;
+	void Accept(std::shared_ptr<BezierSurfaceC2> surface) ;
+	void Accept(std::shared_ptr<CompositeModel> surface);
 };

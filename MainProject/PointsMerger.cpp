@@ -51,93 +51,93 @@ void PointsMerger::MergePoints(std::shared_ptr<Scene> scene)
 	scene->AddPoint(mergedPoint);
 }
 
-void PointsMerger::Accept(Point& point)
+void PointsMerger::Accept(std::shared_ptr < Point> point)
 {
 }
 
-void PointsMerger::Accept(Torus& torus)
+void PointsMerger::Accept(std::shared_ptr < Torus> torus)
 {
 }
 
 
-void PointsMerger::Accept(BezierCurveC0& curve)
+void PointsMerger::Accept(std::shared_ptr < BezierCurveC0> curve)
 {
 	AcceptBezierCurve(curve);
 }
 
-void PointsMerger::Accept(BezierCurveC2& curve)
+void PointsMerger::Accept(std::shared_ptr < BezierCurveC2> curve)
 {
 	AcceptBezierCurve(curve);
 }
 
-void PointsMerger::Accept(BezierCurveInterpolating& curve)
+void PointsMerger::Accept(std::shared_ptr < BezierCurveInterpolating> curve)
 {
 	AcceptBezierCurve(curve);
 }
 
-void PointsMerger::AcceptBezierCurve(IBezierCurve& curve)
+void PointsMerger::AcceptBezierCurve(std::shared_ptr < IBezierCurve> curve)
 {
-	for (size_t i = 0; i < curve.points.size(); i++)
+	for (size_t i = 0; i < curve->points.size(); i++)
 	{
-		auto point = curve.points[i];
+		auto point = curve->points[i];
 		if (pointsIds.contains(point->id))
 		{
-			curve.points[i] = mergedPoint;
+			curve->points[i] = mergedPoint;
 		}
 	}
-	curve.ResetDrawing();
+	curve->ResetDrawing();
 }
 
-void PointsMerger::Accept(SingleBezierSurfaceC0& patch)
+void PointsMerger::Accept(std::shared_ptr < SingleBezierSurfaceC0> patch)
 {
-	for (size_t i = 0; i < patch.points.size(); i++)
+	for (size_t i = 0; i < patch->points.size(); i++)
 	{
-		for (size_t j = 0; j < patch.points[i].size(); j++)
+		for (size_t j = 0; j < patch->points[i].size(); j++)
 		{
-			auto point = patch.points[i][j];
+			auto point = patch->points[i][j];
 			if (pointsIds.contains(point->id))
 			{
-				patch.points[i][j] = mergedPoint;
+				patch->points[i][j] = mergedPoint;
 			}
 		}
 	
 	}
-	patch.UpdateVertices();
+	patch->UpdateVertices();
 }
 
-void PointsMerger::Accept(BezierSurfaceC0& surface)
+void PointsMerger::Accept(std::shared_ptr < BezierSurfaceC0> surface)
 {
-	for (auto single : surface.singleSurfaces)
+	for (auto single : surface->singleSurfaces)
 	{
 		single->Accept(*this);
 	}
 }
 
-void PointsMerger::Accept(SingleBezierSurfaceC2& patch)
+void PointsMerger::Accept(std::shared_ptr < SingleBezierSurfaceC2> patch)
 {
-	for (size_t i = 0; i < patch.points.size(); i++)
+	for (size_t i = 0; i < patch->points.size(); i++)
 	{
-		for (size_t j = 0; j < patch.points[i].size(); j++)
+		for (size_t j = 0; j < patch->points[i].size(); j++)
 		{
-			auto point = patch.points[i][j];
+			auto point = patch->points[i][j];
 			if (pointsIds.contains(point->id))
 			{
-				patch.points[i][j] = mergedPoint;
+				patch->points[i][j] = mergedPoint;
 			}
 		}
 
 	}
-	patch.UpdateVertices();
+	patch->UpdateVertices();
 }
 
-void PointsMerger::Accept(BezierSurfaceC2& surface)
+void PointsMerger::Accept(std::shared_ptr < BezierSurfaceC2> surface)
 {
-	for (auto single : surface.singleSurfaces)
+	for (auto single : surface->singleSurfaces)
 	{
 		single->Accept(*this);
 	}
 }
 
-void PointsMerger::Accept(CompositeModel& surface)
+void PointsMerger::Accept(std::shared_ptr < CompositeModel> surface)
 {
 }

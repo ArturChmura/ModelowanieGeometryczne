@@ -11,7 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AbstractModelVisitor.cpp" />
     <ClCompile Include="application.cpp" />
     <ClCompile Include="ArcCameraModel.cpp" />
     <ClCompile Include="BezierCurveC0.cpp" />
@@ -30,6 +29,7 @@
     <ClCompile Include="DebugWindow.cpp" />
     <ClCompile Include="dxDevice.cpp" />
     <ClCompile Include="dxStructures.cpp" />
+    <ClCompile Include="EmptyModelVisitor.cpp" />
     <ClCompile Include="exceptions.cpp" />
     <ClCompile Include="gsBezier.cpp" />
     <ClCompile Include="gsBezierSurfaceC2.cpp" />
@@ -86,9 +86,11 @@
     <ClInclude Include="Callback.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CompositeModel.h" />
+    <ClInclude Include="ConcreteModelSelectorVisitor.h" />
     <ClInclude Include="Coursor3d.h" />
     <ClInclude Include="CursorOptionsWindow.h" />
     <ClInclude Include="DebugWindow.h" />
+    <ClInclude Include="EmptyModelVisitor.h" />
     <ClInclude Include="gsBezier.h" />
     <ClInclude Include="gsBezierSurfaceC2.h" />
     <ClInclude Include="gsSurfaceBezier.h" />

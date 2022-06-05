@@ -7,6 +7,7 @@
 #include "BezierCurveC2.h"
 #include "BezierCurveInterpolating.h"
 #include "PointsMerger.h"
+#include "ConcreteModelSelectorVisitor.h"
 using namespace DirectX::SimpleMath;
 Scene::Scene(std::shared_ptr<Coursor3d> cursor, SIZE windowSize)
 {
@@ -80,14 +81,9 @@ void Scene::AddBezierCurveInterpolatingFromSelectedPoints()
 
 std::vector<std::shared_ptr<Point>> Scene::GetSelectedPoints()
 {
-	std::vector<std::shared_ptr<Point>> selectedPoints;
-	for (auto point : points)
-	{
-		if (composite->modelsMap.contains(point->id))
-		{
-			selectedPoints.push_back(point);
-		}
-	}
+	auto selectedModels = composite->GetContainingModels();
+	ConcreteModelSelectorVisitor<Point> pointsSelector;
+	auto selectedPoints=  pointsSelector.GetList(selectedModels);
 	return selectedPoints;
 }
 

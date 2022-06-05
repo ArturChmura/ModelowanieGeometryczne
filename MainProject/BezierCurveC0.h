@@ -16,10 +16,8 @@ public:
 	// Inherited via IBezierCurve
 	virtual std::vector<DirectX::SimpleMath::Vector3> GetBezierPoints() override;
 
+
 private:
-
-
-
 
 	// Inherited via IBezierCurve
 	virtual std::vector<DirectX::SimpleMath::Vector3> GetPolygonChainPoints() override;
@@ -28,6 +26,4 @@ private:
 
 	// Inherited via IBezierCurve
 	virtual void Accept(AbstractModelVisitor& visitor) override;
-
-
 };

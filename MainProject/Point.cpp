@@ -192,7 +192,7 @@ void Point::ChangeColor(DirectX::SimpleMath::Vector3 color)
 
 void Point::Accept(AbstractModelVisitor& visitor)
 {
-	visitor.Accept(*this);
+	visitor.Accept(IModel::downcasted_shared_from_this<Point>());
 }
 
 void Point::OnModelChange()

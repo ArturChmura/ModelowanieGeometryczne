@@ -99,5 +99,5 @@ void BezierSurfaceC2::ChangeColor(DirectX::SimpleMath::Vector3 color)
 
 void BezierSurfaceC2::Accept(AbstractModelVisitor& visitor)
 {
-	visitor.Accept(*this);
+	visitor.Accept(IModel::downcasted_shared_from_this<BezierSurfaceC2>());
 }

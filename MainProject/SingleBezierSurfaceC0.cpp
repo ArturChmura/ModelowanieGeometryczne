@@ -215,5 +215,5 @@ void SingleBezierSurfaceC0::RenderGUI()
 
 void SingleBezierSurfaceC0::Accept(AbstractModelVisitor& visitor)
 {
-	visitor.Accept(*this);
+	visitor.Accept(IModel::downcasted_shared_from_this<SingleBezierSurfaceC0>());
 }

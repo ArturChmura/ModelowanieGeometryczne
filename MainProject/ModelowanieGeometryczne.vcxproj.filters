@@ -109,6 +109,12 @@
     <Filter Include="Header Files\Merger">
       <UniqueIdentifier>{211d8383-710f-4996-9e22-733427e86268}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Helpers\Visitors">
+      <UniqueIdentifier>{07393019-1ae9-4194-8c6f-a1cfb0a67352}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Helpers\Visitors">
+      <UniqueIdentifier>{db92aa29-fdcc-46ad-8aa1-00b55dd65e17}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxStructures.cpp">
@@ -282,11 +288,11 @@
     <ClCompile Include="IUnmovableModel.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
-    <ClCompile Include="AbstractModelVisitor.cpp">
-      <Filter>Source Files\Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="PointsMerger.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EmptyModelVisitor.cpp">
+      <Filter>Source Files\Helpers\Visitors</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -473,11 +479,17 @@
     <ClInclude Include="IUnmovableModel.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
-    <ClInclude Include="AbstractModelVisitor.h">
-      <Filter>Header Files\Helpers</Filter>
-    </ClInclude>
     <ClInclude Include="PointsMerger.h">
       <Filter>Header Files\Merger</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractModelVisitor.h">
+      <Filter>Header Files\Helpers\Visitors</Filter>
+    </ClInclude>
+    <ClInclude Include="EmptyModelVisitor.h">
+      <Filter>Header Files\Helpers\Visitors</Filter>
+    </ClInclude>
+    <ClInclude Include="ConcreteModelSelectorVisitor.h">
+      <Filter>Header Files\Helpers\Visitors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

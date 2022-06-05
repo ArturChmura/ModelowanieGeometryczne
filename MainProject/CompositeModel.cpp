@@ -191,7 +191,19 @@ void CompositeModel::ChangeColor(DirectX::SimpleMath::Vector3 color)
 {
 }
 
+std::vector<std::shared_ptr<IModel>> CompositeModel::GetContainingModels()
+{
+	std::vector<std::shared_ptr<IModel>> modelsVec;
+	for (auto [_,model] : modelsMap)
+	{
+		modelsVec.push_back(model);
+	}
+	return modelsVec;
+
+}
+
+
 void CompositeModel::Accept(AbstractModelVisitor& visitor)
 {
-	visitor.Accept(*this);
+	visitor.Accept(IModel::downcasted_shared_from_this<CompositeModel>());
 }
