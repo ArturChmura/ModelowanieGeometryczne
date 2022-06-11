@@ -4,30 +4,19 @@
 #include "Point.h"
 #include "SingleBezierSurfaceC0.h"
 #include "PolygonalChain.h"
-#include "IUnmovableModel.h"
-#include "PointSurfacePair.h"
+#include "IBezierSurface.h"
 
-class BezierSurfaceC0 : public IUnmovableModel
+class BezierSurfaceC0 : public IBezierSurface
 {
 public:
 
 	BezierSurfaceC0(std::vector<std::shared_ptr<SingleBezierSurfaceC0>> singleSurfaces, int horizontalCount, int verticalCount, std::string name = "Bezier Surface C0");
-
-
-	virtual void Draw(std::shared_ptr<Camera> camera) override;
-	virtual void RenderGUI() override;
-	// Inherited via IModel
-	virtual std::vector<std::shared_ptr<IModel>> GetContainingModels() override;
-	
-	virtual void ChangeColor(DirectX::SimpleMath::Vector3 color) override;
-
 	std::vector<std::shared_ptr<SingleBezierSurfaceC0>> singleSurfaces;
-	int horizontalSlicesCount;
-	int verticalSlicesCount;
-private:
-	bool drawPolygonChain = false;
-
-	// Inherited via IModel
 	virtual void Accept(AbstractModelVisitor& visitor) override;
+
+
+	// Inherited via IBezierSurface
+	virtual std::vector<std::shared_ptr<ISingleBezierSurface>> GetSingleSurfaces() override;
+
 
 };

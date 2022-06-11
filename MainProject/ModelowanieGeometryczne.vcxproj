@@ -36,6 +36,8 @@
     <ClCompile Include="gsBezierSurfaceC2.cpp" />
     <ClCompile Include="gsSurfaceBezier.cpp" />
     <ClCompile Include="IBezierCurve.cpp" />
+    <ClCompile Include="IBezierSurface.cpp" />
+    <ClCompile Include="ISingleBezierSurface.cpp" />
     <ClCompile Include="IUnmovableModel.cpp" />
     <ClCompile Include="KeyboardHandler.cpp" />
     <ClCompile Include="main.cpp" />
@@ -98,8 +100,10 @@
     <ClInclude Include="gsBezierSurfaceC2.h" />
     <ClInclude Include="gsSurfaceBezier.h" />
     <ClInclude Include="IBezierCurve.h" />
+    <ClInclude Include="IBezierSurface.h" />
     <ClInclude Include="ICameraMovement.h" />
     <ClInclude Include="IGuiWindow.h" />
+    <ClInclude Include="ISingleBezierSurface.h" />
     <ClInclude Include="IUnmovableModel.h" />
     <ClInclude Include="KeyboardHandler.h" />
     <ClInclude Include="MatrixExt.h" />

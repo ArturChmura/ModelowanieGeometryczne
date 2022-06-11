@@ -306,6 +306,12 @@
     <ClCompile Include="PointsMerger.cpp">
       <Filter>Source Files\Merger</Filter>
     </ClCompile>
+    <ClCompile Include="ISingleBezierSurface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IBezierSurface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dxptr.h">
@@ -517,6 +523,12 @@
     </ClInclude>
     <ClInclude Include="Node.h">
       <Filter>Header Files\Helpers\GregoryFinder</Filter>
+    </ClInclude>
+    <ClInclude Include="IBezierSurface.h">
+      <Filter>Header Files\Models\Surfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="ISingleBezierSurface.h">
+      <Filter>Header Files\Models\Surfaces</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
