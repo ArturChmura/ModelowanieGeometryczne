@@ -45,7 +45,6 @@
     <ClCompile Include="MessageHandler.cpp" />
     <ClCompile Include="MouseEvents.cpp" />
     <ClCompile Include="Named.cpp" />
-    <ClCompile Include="Node.cpp" />
     <ClCompile Include="ObjectAdderWindow.cpp" />
     <ClCompile Include="ObjectsListWindow.cpp" />
     <ClCompile Include="CameraOptionsWindow.cpp" />
@@ -108,8 +107,10 @@
     <ClInclude Include="MultipleInheritableEnableSharedFromThis.h" />
     <ClInclude Include="Named.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="PatchSide.h" />
     <ClInclude Include="ObjectAdderWindow.h" />
     <ClInclude Include="PointsMerger.h" />
+    <ClInclude Include="PointSurfacePair.h" />
     <ClInclude Include="PolygonalChain.h" />
     <ClInclude Include="PropertiesWindow.h" />
     <ClInclude Include="psColor.h" />

@@ -118,6 +118,12 @@
     <Filter Include="Header Files\Helpers\GregoryFinder">
       <UniqueIdentifier>{b75a72eb-777f-4f96-9c67-e3a58c160155}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Helpers\GregoryFinder">
+      <UniqueIdentifier>{f5c72567-3a7c-4d34-8ab4-5aaaa826f149}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Merger">
+      <UniqueIdentifier>{e27c2900-f229-48b7-9f93-fb03c062c48f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxStructures.cpp">
@@ -288,20 +294,17 @@
     <ClCompile Include="IUnmovableModel.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
-    <ClCompile Include="PointsMerger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="EmptyModelVisitor.cpp">
       <Filter>Source Files\Helpers\Visitors</Filter>
     </ClCompile>
-    <ClCompile Include="GregoryPatch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GregoryFinder.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Helpers\GregoryFinder</Filter>
     </ClCompile>
-    <ClCompile Include="Node.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="GregoryPatch.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="PointsMerger.cpp">
+      <Filter>Source Files\Merger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -504,6 +507,12 @@
       <Filter>Header Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="GregoryFinder.h">
+      <Filter>Header Files\Helpers\GregoryFinder</Filter>
+    </ClInclude>
+    <ClInclude Include="PatchSide.h">
+      <Filter>Header Files\Helpers\GregoryFinder</Filter>
+    </ClInclude>
+    <ClInclude Include="PointSurfacePair.h">
       <Filter>Header Files\Helpers\GregoryFinder</Filter>
     </ClInclude>
     <ClInclude Include="Node.h">

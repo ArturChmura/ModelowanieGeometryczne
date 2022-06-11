@@ -86,45 +86,6 @@ void BezierSurfaceC0::ChangeColor(DirectX::SimpleMath::Vector3 color)
 	}
 }
 
-std::vector<std::shared_ptr<Point>> BezierSurfaceC0::GetEdgePoints()
-{
-	std::vector<std::shared_ptr<Point>> edgePoints;
-
-	auto topLeftPoint = singleSurfaces[0]->points[0][0];
-
-	for (size_t j = 0; j < horizontalSlicesCount; j++) // top row
-	{
-		auto single = singleSurfaces[j];
-		edgePoints.push_back(single->points[0][1]);
-		edgePoints.push_back(single->points[0][2]);
-		edgePoints.push_back(single->points[0][3]);
-	}	
-	for (size_t i = 0; i < verticalSlicesCount; i++) // right edge
-	{
-		auto single = singleSurfaces[i*horizontalSlicesCount + horizontalSlicesCount - 1];
-		edgePoints.push_back(single->points[1][3]);
-		edgePoints.push_back(single->points[2][3]);
-		edgePoints.push_back(single->points[3][3]);
-	}
-	for (size_t j = 0; j < horizontalSlicesCount; j++) // bottom edge
-	{
-		auto single = singleSurfaces[(verticalSlicesCount-1) * horizontalSlicesCount +j];
-		edgePoints.push_back(single->points[3][2]);
-		edgePoints.push_back(single->points[3][1]);
-		edgePoints.push_back(single->points[3][0]);
-	}
-	for (size_t i = 0; i < verticalSlicesCount; i++) // left edge
-	{
-		auto single = singleSurfaces[i * horizontalSlicesCount];
-		edgePoints.push_back(single->points[2][0]);
-		edgePoints.push_back(single->points[1][0]);
-		edgePoints.push_back(single->points[0][0]);
-	}
-
-
-
-	return edgePoints;
-}
 
 void BezierSurfaceC0::Accept(AbstractModelVisitor& visitor)
 {

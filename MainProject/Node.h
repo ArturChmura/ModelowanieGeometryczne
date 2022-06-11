@@ -1,17 +1,27 @@
 #pragma once
+
 #include <vector>
 #include <memory>
 #include "Point.h"
 
+struct Node;
 
-class Node
+struct Edge
 {
-public:
-	std::shared_ptr<Point> point;
-	int id; 
-	Node(std::shared_ptr<Point> point, int id);
-	void AddNeighbor(std::shared_ptr<Node> neighbor);
-	std::vector<std::shared_ptr<Node>> neighbors;
-	int GetDegree();
+	std::shared_ptr<Node> begin;
+	std::shared_ptr<Node> end;
+	int value;
+};
 
+struct Node
+{
+	std::vector<Edge> edgesOut;
+	int pointId;
+	int color;
+	Edge par;
+
+	void AddEdge(Edge edge)
+	{
+		edgesOut.push_back(edge);
+	}
 };

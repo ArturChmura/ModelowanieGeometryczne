@@ -5,6 +5,7 @@
 #include "SingleBezierSurfaceC0.h"
 #include "PolygonalChain.h"
 #include "IUnmovableModel.h"
+#include "PointSurfacePair.h"
 
 class BezierSurfaceC0 : public IUnmovableModel
 {
@@ -23,7 +24,6 @@ public:
 	std::vector<std::shared_ptr<SingleBezierSurfaceC0>> singleSurfaces;
 	int horizontalSlicesCount;
 	int verticalSlicesCount;
-	std::vector<std::shared_ptr<Point>> GetEdgePoints();
 private:
 	bool drawPolygonChain = false;
 

@@ -9,7 +9,7 @@ class Callback
 {
 public:
 	std::vector<std::function<T>> functions;
-	std::vector<std::string> ids;
+	std::vector<std::string> pointIds;
 
 	void Add(std::function<T> function, std::string id);
 	void Add(std::function<T> function, int id);
@@ -25,7 +25,7 @@ template<typename T>
 inline void Callback<T>::Add(std::function<T> function, std::string id)
 {
 	functions.push_back(function);
-	ids.push_back(id);
+	pointIds.push_back(id);
 }
 
 template<typename T>
@@ -37,9 +37,9 @@ inline void Callback<T>::Add(std::function<T> function, int id)
 template<typename T>
 inline void Callback<T>::Add(Callback<T> callback)
 {
-	for (size_t i = 0; i < callback.ids.size(); i++)
+	for (size_t i = 0; i < callback.pointIds.size(); i++)
 	{
-		Add(callback.functions[i], callback.ids[i]);
+		Add(callback.functions[i], callback.pointIds[i]);
 	}
 }
 
@@ -48,12 +48,12 @@ inline void Callback<T>::Remove(std::string id)
 {
 	while (true)
 	{
-		auto it = find(ids.begin(), ids.end(), id);
+		auto it = find(pointIds.begin(), pointIds.end(), id);
 
-		if (it != ids.end())
+		if (it != pointIds.end())
 		{
-			int index = it - ids.begin();
-			ids.erase(ids.begin() + index);
+			int index = it - pointIds.begin();
+			pointIds.erase(pointIds.begin() + index);
 			functions.erase(functions.begin() + index);
 		}
 		else
@@ -73,5 +73,5 @@ template<typename T>
 inline void Callback<T>::Clear()
 {
 	functions.clear();
-	ids.clear();
+	pointIds.clear();
 }

@@ -17,23 +17,11 @@ void ObjectAdderWindow::Render()
     ImGui::Begin("Add object");
 
     auto selectedBezierSurfaceC0 = scene->GetSelectedType<BezierSurfaceC0>();
-    if (selectedBezierSurfaceC0.size() >= 3)
+    if (selectedBezierSurfaceC0.size() >= 1)
     {
         if (ImGui::Button("Join selected patches"))
         {
-            std::vector<std::vector<std::shared_ptr<Point>>> lines;
-            for (auto surface : selectedBezierSurfaceC0)
-            {
-                auto line = surface->GetEdgePoints();
-                lines.push_back(line);
-            }
-            std::vector<std::array<std::shared_ptr<Point>, 4>> outResult;
-            if (GregoryFinder::FindFill(lines, outResult))
-            {
-                auto gregory = std::make_shared< GregoryPatch>(outResult);
-                scene->AddModel(gregory);
-            }
-
+            auto cycles = GregoryFinder::FindFill(selectedBezierSurfaceC0);
         }
        
     }
