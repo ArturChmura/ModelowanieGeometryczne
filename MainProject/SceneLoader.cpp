@@ -120,7 +120,7 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 			patches.push_back(singleSurface);
 		}
 
-		auto surface = std::make_shared<BezierSurfaceC0>(patches, s.size.x, s.size.y,s.name);
+		auto surface = std::make_shared<BezierSurfaceC0>(patches, s.size.x, s.size.y, false, s.name);
 
 		for (auto [_, point]: surfacePoints)
 		{
@@ -158,9 +158,7 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 			patches.push_back(singleSurface);
 		}
 
-		auto surface = std::make_shared<BezierSurfaceC2>(patches, s.size.x, s.size.y,s.name);
-		surface->horizontalSlicesCount = s.size.x;
-		surface->verticalSlicesCount = s.size.y;
+		auto surface = std::make_shared<BezierSurfaceC2>(patches, s.size.x, s.size.y, false, s.name);
 		for (auto [_, point] : surfacePoints)
 		{
 			point->onRemovedFromSceneCallback.Add([scene = scene, surface = surface](std::shared_ptr<Point> p) {scene->RemoveModel(surface->id); }, surface->id);

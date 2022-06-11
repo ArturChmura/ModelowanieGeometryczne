@@ -7,21 +7,28 @@ std::vector<std::vector<std::shared_ptr<Node>>> GregoryFinder::FindFill(std::vec
 	int id = 0;
 	for (auto surface : surfaces)
 	{
-		for (int i = 0; i < surface->verticalSlicesCount; i++)
+		if (!surface->IsWrappedU())
 		{
-			auto leftSide = GetLeftSide(surface->singleSurfaces[i * surface->horizontalSlicesCount + 0]);
-			auto rightSide = GetRightSide(surface->singleSurfaces[i * surface->horizontalSlicesCount + surface->horizontalSlicesCount - 1]);
-			sides.push_back(leftSide);
-			sides.push_back(rightSide);
+			for (int i = 0; i < surface->verticalSlicesCount; i++)
+			{
+				auto leftSide = GetLeftSide(surface->singleSurfaces[i * surface->horizontalSlicesCount + 0]);
+				auto rightSide = GetRightSide(surface->singleSurfaces[i * surface->horizontalSlicesCount + surface->horizontalSlicesCount - 1]);
+				sides.push_back(leftSide);
+				sides.push_back(rightSide);
+			}
 		}
 
-		for (int i = 0; i < surface->horizontalSlicesCount; i++)
+		if (!surface->IsWrappedV())
 		{
-			auto topSide = GetTopSide(surface->singleSurfaces[i]);
-			auto bottomSide = GetBottomSide(surface->singleSurfaces[(surface->verticalSlicesCount-1) * surface->horizontalSlicesCount + i ]);
-			sides.push_back(topSide);
-			sides.push_back(bottomSide);
+			for (int i = 0; i < surface->horizontalSlicesCount; i++)
+			{
+				auto topSide = GetTopSide(surface->singleSurfaces[i]);
+				auto bottomSide = GetBottomSide(surface->singleSurfaces[(surface->verticalSlicesCount - 1) * surface->horizontalSlicesCount + i]);
+				sides.push_back(topSide);
+				sides.push_back(bottomSide);
+			}
 		}
+		
 	}
 
 

@@ -2,11 +2,12 @@
 #include "imgui.h"
 using namespace DirectX::SimpleMath;
 
-IBezierSurface::IBezierSurface(int horizontalCount, int verticalCount, std::string name)
+IBezierSurface::IBezierSurface(int horizontalCount, int verticalCount, bool isWrapped, std::string name)
 	:IUnmovableModel(name)
 {
 	this->horizontalSlicesCount = horizontalCount;
 	this->verticalSlicesCount = verticalCount;
+	this->isWrapped;
 }
 
 void IBezierSurface::Draw(std::shared_ptr<Camera> camera)
@@ -84,6 +85,16 @@ void IBezierSurface::ChangeColor(DirectX::SimpleMath::Vector3 color)
 	{
 		single->ChangeColor(color);
 	}
+}
+
+bool IBezierSurface::IsWrappedU()
+{
+	return false;
+}
+
+bool IBezierSurface::IsWrappedV()
+{
+	return isWrapped;
 }
 
 std::vector<std::shared_ptr<IModel>> IBezierSurface::GetContainingModels()

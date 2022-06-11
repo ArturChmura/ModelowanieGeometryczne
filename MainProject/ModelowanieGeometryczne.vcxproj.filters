@@ -306,11 +306,11 @@
     <ClCompile Include="PointsMerger.cpp">
       <Filter>Source Files\Merger</Filter>
     </ClCompile>
-    <ClCompile Include="ISingleBezierSurface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="IBezierSurface.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Models\Surfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="ISingleBezierSurface.cpp">
+      <Filter>Source Files\Models\Surfaces</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

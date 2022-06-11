@@ -5,7 +5,7 @@
 using namespace DirectX::SimpleMath;
 
 SingleBezierSurfaceC0::SingleBezierSurfaceC0(std::array<std::array<std::shared_ptr<Point>, 4>, 4> points, int horizontalSlices, int verticalSlices)
-	: ISingleBezierSurface(points, horizontalSlices, verticalSlices,"Single Bezier Surface C0")
+	: ISingleBezierSurface(points, horizontalSlices, verticalSlices, "Single Bezier Surface C0")
 {
 	this->points = points;
 	this->horizontalSlices = horizontalSlices;

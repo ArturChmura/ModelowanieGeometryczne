@@ -4,8 +4,8 @@
 
 using namespace DirectX::SimpleMath;
 
-BezierSurfaceC2::BezierSurfaceC2(std::vector<std::shared_ptr<SingleBezierSurfaceC2>> singleSurfaces, int horizontalCount, int verticalCount, std::string name)
-	:IBezierSurface(horizontalCount, verticalCount, name)
+BezierSurfaceC2::BezierSurfaceC2(std::vector<std::shared_ptr<SingleBezierSurfaceC2>> singleSurfaces, int horizontalCount, int verticalCount, bool isWrapped, std::string name)
+	:IBezierSurface(horizontalCount, verticalCount, isWrapped, name)
 {
 
 	this->singleSurfaces = singleSurfaces;
