@@ -11,7 +11,7 @@
 class GregoryFinder
 {
 public:
-	static std::vector<std::vector<std::shared_ptr<Node>>> FindFill(std::vector<std::shared_ptr<BezierSurfaceC0>> surfaces);
+	static std::vector<std::vector<std::shared_ptr<PatchSide>>> FindFill(std::vector<std::shared_ptr<BezierSurfaceC0>> surfaces);
 
 	static void DFSCycle(Edge e);
 

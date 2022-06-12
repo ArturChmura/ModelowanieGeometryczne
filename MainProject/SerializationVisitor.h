@@ -15,4 +15,8 @@ public:
 	void Accept(std::shared_ptr<SingleBezierSurfaceC2> patch) ;
 	void Accept(std::shared_ptr<BezierSurfaceC2> surface) ;
 	void Accept(std::shared_ptr<CompositeModel> surface);
+	virtual void Accept(std::shared_ptr<GregoryPatch> surface) override;
+	virtual void Accept(std::shared_ptr<SingleGregoryPatch> surface) override;
+
+
 };

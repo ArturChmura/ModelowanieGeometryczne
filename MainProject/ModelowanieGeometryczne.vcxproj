@@ -30,6 +30,7 @@
     <ClCompile Include="dxStructures.cpp" />
     <ClCompile Include="EmptyModelVisitor.cpp" />
     <ClCompile Include="exceptions.cpp" />
+    <ClCompile Include="GregoryFactory.cpp" />
     <ClCompile Include="GregoryFinder.cpp" />
     <ClCompile Include="GregoryPatch.cpp" />
     <ClCompile Include="gsBezier.cpp" />
@@ -64,6 +65,7 @@
     <ClCompile Include="ShadersManager.cpp" />
     <ClCompile Include="SingleBezierSurfaceC0.cpp" />
     <ClCompile Include="SingleBezierSurfaceC2.cpp" />
+    <ClCompile Include="SingleGregoryPatch.cpp" />
     <ClCompile Include="StartWindow.cpp" />
     <ClCompile Include="StereoscopicCamera.cpp" />
     <ClCompile Include="Torus.cpp" />
@@ -72,6 +74,7 @@
     <ClCompile Include="vsBezier.cpp" />
     <ClCompile Include="vsColor.cpp" />
     <ClCompile Include="vsConstColor.cpp" />
+    <ClCompile Include="vsGregory.cpp" />
     <ClCompile Include="vsSurfaceBezier.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -94,11 +97,14 @@
     <ClInclude Include="CursorOptionsWindow.h" />
     <ClInclude Include="DebugWindow.h" />
     <ClInclude Include="EmptyModelVisitor.h" />
+    <ClInclude Include="GregoryFactory.h" />
     <ClInclude Include="GregoryFinder.h" />
     <ClInclude Include="GregoryPatch.h" />
     <ClInclude Include="gsBezier.h" />
     <ClInclude Include="gsBezierSurfaceC2.h" />
     <ClInclude Include="gsSurfaceBezier.h" />
+    <ClInclude Include="BernstrinHelper.h" />
+    <ClInclude Include="vsGregory.h" />
     <ClInclude Include="IBezierCurve.h" />
     <ClInclude Include="IBezierSurface.h" />
     <ClInclude Include="ICameraMovement.h" />
@@ -138,6 +144,7 @@
     <ClInclude Include="ShadersManager.h" />
     <ClInclude Include="SingleBezierSurfaceC0.h" />
     <ClInclude Include="SingleBezierSurfaceC2.h" />
+    <ClInclude Include="SingleGregoryPatch.h" />
     <ClInclude Include="StartWindow.h" />
     <ClInclude Include="StereoscopicCamera.h" />
     <ClInclude Include="Torus.h" />
@@ -188,6 +195,11 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
+    <FxCompile Include="vsGregory.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="vsSurfaceBezier.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
@@ -197,6 +209,7 @@
     <None Include="bezierStructs.hlsli" />
     <None Include="DeBoor.hlsli" />
     <None Include="DeCasteljeu.hlsli" />
+    <None Include="gregoryHeader.hlsli" />
     <None Include="surfaceBezierStructs.hlsli" />
     <None Include="VSColorOut.hlsli" />
   </ItemGroup>

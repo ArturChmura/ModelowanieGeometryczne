@@ -172,3 +172,11 @@ void SerializationVisitor::Accept(std::shared_ptr < BezierSurfaceC2> surface)
 void SerializationVisitor::Accept(std::shared_ptr < CompositeModel> surface)
 {
 }
+
+void SerializationVisitor::Accept(std::shared_ptr<GregoryPatch> surface)
+{
+}
+
+void SerializationVisitor::Accept(std::shared_ptr<SingleGregoryPatch> surface)
+{
+}

@@ -9,6 +9,7 @@
 #include "gsSurfaceBezier.h"
 #include "vsSurfaceBezier.h"
 #include "gsBezierSurfaceC2.h"
+#include "vsGregory.h"
 
 class ShadersManager
 {
@@ -25,6 +26,9 @@ public:
 
 	inline static std::shared_ptr<VSColor> vsColor;
 	inline static std::shared_ptr<VSConstColor> vsConstColor;
+
+	inline static std::shared_ptr<VSGregory> vsGregory;
+
 
 	static void LoadShaders();
 };

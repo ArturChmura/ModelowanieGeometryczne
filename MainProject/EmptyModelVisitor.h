@@ -13,6 +13,8 @@ class EmptyModelVisitor : public AbstractModelVisitor
 	virtual void Accept(std::shared_ptr<SingleBezierSurfaceC2> patch) override;
 	virtual void Accept(std::shared_ptr<BezierSurfaceC2> surface) override;
 	virtual void Accept(std::shared_ptr<CompositeModel> surface) override;
+	virtual void Accept(std::shared_ptr<GregoryPatch> surface) override;
+	virtual void Accept(std::shared_ptr<SingleGregoryPatch> surface) override;
 
 
 };

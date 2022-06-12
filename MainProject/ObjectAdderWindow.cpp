@@ -6,6 +6,8 @@
 #include "BezierSurfaceC0.h"
 #include "GregoryFinder.h"
 #include "GregoryPatch.h"
+#include "BezierCurveInterpolating.h"
+#include "GregoryFactory.h"
 
 ObjectAdderWindow::ObjectAdderWindow(std::shared_ptr<Scene> scene)
 {
@@ -22,6 +24,42 @@ void ObjectAdderWindow::Render()
         if (ImGui::Button("Join selected patches"))
         {
             auto cycles = GregoryFinder::FindFill(selectedBezierSurfaceC0);
+            if (cycles.size() > 0)
+            {
+                for (auto cycle : cycles)
+                {
+                    std::vector<std::shared_ptr<Point>> pointsFirst;
+                    std::vector<std::shared_ptr<Point>> pointsSecond;
+                    for (int i = 0; i < cycle.size(); i++)
+                    {
+                        for (int j = 0; j < 4; j++)
+                        {
+                            pointsFirst.push_back(cycle[i]->firstLine[j]);
+                        }
+                        for (int j = 0; j < 4; j++)
+                        {
+                            pointsSecond.push_back(cycle[i]->secondLine[j]);
+                        }
+                    }
+
+
+                    auto curveFirst = std::make_shared<BezierCurveInterpolating>(pointsFirst);
+                    scene->AddModel(curveFirst);
+                    curveFirst->ChangeColor({ 0,1,0 });
+
+                    auto curveSecond = std::make_shared<BezierCurveInterpolating>(pointsSecond);
+                    scene->AddModel(curveSecond);
+                    curveSecond->ChangeColor({ 0,0,1 });
+
+                    auto gregory = GregoryFactory::CreateGregoryPatch(cycle);
+                    for (auto model : gregory)
+                    {
+                        scene->AddModel(model);
+                    }
+                }
+
+               
+            }
         }
        
     }

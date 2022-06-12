@@ -7,7 +7,7 @@ IBezierSurface::IBezierSurface(int horizontalCount, int verticalCount, bool isWr
 {
 	this->horizontalSlicesCount = horizontalCount;
 	this->verticalSlicesCount = verticalCount;
-	this->isWrapped;
+	this->isWrapped = isWrapped;
 }
 
 void IBezierSurface::Draw(std::shared_ptr<Camera> camera)

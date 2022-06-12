@@ -84,6 +84,11 @@ Application::Application(SIZE size)
 	scene->cursor->SetPosition({ 0,-10,0 });
 	c0Adder->AddModel();
 
+	/*c0Adder->cylinder = true;
+	c0Adder->horizontalSlicesCount = c0Adder->verticalSlicesCount = 3;
+	scene->cursor->SetPosition({ 0,0,-10 });
+	c0Adder->AddModel();*/
+
 	auto backBuffer = m_backBuffer.get();
 	DxDevice::instance->context()->OMSetRenderTargets(1, &backBuffer, m_depthBuffer.get());
 }

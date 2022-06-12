@@ -141,3 +141,11 @@ void PointsMerger::Accept(std::shared_ptr < BezierSurfaceC2> surface)
 void PointsMerger::Accept(std::shared_ptr < CompositeModel> surface)
 {
 }
+
+void PointsMerger::Accept(std::shared_ptr<GregoryPatch> surface)
+{
+}
+
+void PointsMerger::Accept(std::shared_ptr<SingleGregoryPatch> surface)
+{
+}

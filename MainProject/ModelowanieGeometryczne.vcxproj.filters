@@ -124,6 +124,39 @@
     <Filter Include="Source Files\Merger">
       <UniqueIdentifier>{e27c2900-f229-48b7-9f93-fb03c062c48f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Factories">
+      <UniqueIdentifier>{2b014d5b-0be7-478b-a92c-033b90cb56ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models\Surfaces\C0Surface">
+      <UniqueIdentifier>{5d0ee333-2bc8-4e54-8948-3772c710d5d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models\Surfaces\C2Surface">
+      <UniqueIdentifier>{57d43ed0-5a5d-4e7c-8691-a598001d37cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models\Surfaces\C0Surface">
+      <UniqueIdentifier>{efea0777-bc7d-4a77-880f-c59a1f62e817}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models\Surfaces\C2Surface">
+      <UniqueIdentifier>{ef0f923c-8294-49e2-a8a2-83ae9fa32244}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models\Surfaces\Gregory">
+      <UniqueIdentifier>{60cac00c-b2e9-49d8-877a-e6cda325d184}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models\Surfaces\Gregory">
+      <UniqueIdentifier>{36c1fa70-d84d-4a0f-8965-5c4874c69edc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Factories">
+      <UniqueIdentifier>{9b4ec29a-089a-4b70-8285-03710fabf52e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Helpers\BernstrinHelper">
+      <UniqueIdentifier>{d8f09a17-6e50-46ae-b22d-26d5b213679a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders\Gregory">
+      <UniqueIdentifier>{c4e84f51-4efa-47f6-9176-9ac1e668ef29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shaders\Gregory">
+      <UniqueIdentifier>{ca5385ea-1044-4da3-a2e7-0c28ac84433b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxStructures.cpp">
@@ -243,12 +276,6 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="BezierSurfaceC0.cpp">
-      <Filter>Source Files\Models\Surfaces</Filter>
-    </ClCompile>
-    <ClCompile Include="SingleBezierSurfaceC0.cpp">
-      <Filter>Source Files\Models\Surfaces</Filter>
-    </ClCompile>
     <ClCompile Include="vsSurfaceBezier.cpp">
       <Filter>Source Files\Shaders\Bezier\Surface</Filter>
     </ClCompile>
@@ -263,12 +290,6 @@
     </ClCompile>
     <ClCompile Include="DebugWindow.cpp">
       <Filter>Source Files\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="BezierSurfaceC2.cpp">
-      <Filter>Source Files\Models\Surfaces</Filter>
-    </ClCompile>
-    <ClCompile Include="SingleBezierSurfaceC2.cpp">
-      <Filter>Source Files\Models\Surfaces</Filter>
     </ClCompile>
     <ClCompile Include="gsBezierSurfaceC2.cpp">
       <Filter>Source Files\Shaders\Bezier\Surface</Filter>
@@ -300,9 +321,6 @@
     <ClCompile Include="GregoryFinder.cpp">
       <Filter>Source Files\Helpers\GregoryFinder</Filter>
     </ClCompile>
-    <ClCompile Include="GregoryPatch.cpp">
-      <Filter>Source Files\Models</Filter>
-    </ClCompile>
     <ClCompile Include="PointsMerger.cpp">
       <Filter>Source Files\Merger</Filter>
     </ClCompile>
@@ -311,6 +329,30 @@
     </ClCompile>
     <ClCompile Include="ISingleBezierSurface.cpp">
       <Filter>Source Files\Models\Surfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="BezierSurfaceC0.cpp">
+      <Filter>Source Files\Models\Surfaces\C0Surface</Filter>
+    </ClCompile>
+    <ClCompile Include="SingleBezierSurfaceC0.cpp">
+      <Filter>Source Files\Models\Surfaces\C0Surface</Filter>
+    </ClCompile>
+    <ClCompile Include="BezierSurfaceC2.cpp">
+      <Filter>Source Files\Models\Surfaces\C2Surface</Filter>
+    </ClCompile>
+    <ClCompile Include="SingleBezierSurfaceC2.cpp">
+      <Filter>Source Files\Models\Surfaces\C2Surface</Filter>
+    </ClCompile>
+    <ClCompile Include="GregoryPatch.cpp">
+      <Filter>Source Files\Models\Surfaces\Gregory</Filter>
+    </ClCompile>
+    <ClCompile Include="GregoryFactory.cpp">
+      <Filter>Source Files\Factories</Filter>
+    </ClCompile>
+    <ClCompile Include="SingleGregoryPatch.cpp">
+      <Filter>Source Files\Models\Surfaces\Gregory</Filter>
+    </ClCompile>
+    <ClCompile Include="vsGregory.cpp">
+      <Filter>Source Files\Shaders\Gregory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -446,12 +488,6 @@
     <ClInclude Include="Named.h">
       <Filter>Header Files\Names</Filter>
     </ClInclude>
-    <ClInclude Include="BezierSurfaceC0.h">
-      <Filter>Header Files\Models\Surfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="SingleBezierSurfaceC0.h">
-      <Filter>Header Files\Models\Surfaces</Filter>
-    </ClInclude>
     <ClInclude Include="vsSurfaceBezier.h">
       <Filter>Header Files\Shaders\Bezier\Surfaces</Filter>
     </ClInclude>
@@ -466,12 +502,6 @@
     </ClInclude>
     <ClInclude Include="Callback.h">
       <Filter>Header Files\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="BezierSurfaceC2.h">
-      <Filter>Header Files\Models\Surfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="SingleBezierSurfaceC2.h">
-      <Filter>Header Files\Models\Surfaces</Filter>
     </ClInclude>
     <ClInclude Include="gsBezierSurfaceC2.h">
       <Filter>Header Files\Shaders\Bezier\Surfaces</Filter>
@@ -509,9 +539,6 @@
     <ClInclude Include="ConcreteModelSelectorVisitor.h">
       <Filter>Header Files\Helpers\Visitors</Filter>
     </ClInclude>
-    <ClInclude Include="GregoryPatch.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
     <ClInclude Include="GregoryFinder.h">
       <Filter>Header Files\Helpers\GregoryFinder</Filter>
     </ClInclude>
@@ -529,6 +556,33 @@
     </ClInclude>
     <ClInclude Include="ISingleBezierSurface.h">
       <Filter>Header Files\Models\Surfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="GregoryFactory.h">
+      <Filter>Header Files\Factories</Filter>
+    </ClInclude>
+    <ClInclude Include="SingleBezierSurfaceC0.h">
+      <Filter>Header Files\Models\Surfaces\C0Surface</Filter>
+    </ClInclude>
+    <ClInclude Include="SingleBezierSurfaceC2.h">
+      <Filter>Header Files\Models\Surfaces\C0Surface</Filter>
+    </ClInclude>
+    <ClInclude Include="BezierSurfaceC0.h">
+      <Filter>Header Files\Models\Surfaces\C2Surface</Filter>
+    </ClInclude>
+    <ClInclude Include="BezierSurfaceC2.h">
+      <Filter>Header Files\Models\Surfaces\C2Surface</Filter>
+    </ClInclude>
+    <ClInclude Include="GregoryPatch.h">
+      <Filter>Header Files\Models\Surfaces\Gregory</Filter>
+    </ClInclude>
+    <ClInclude Include="SingleGregoryPatch.h">
+      <Filter>Header Files\Models\Surfaces\Gregory</Filter>
+    </ClInclude>
+    <ClInclude Include="BernstrinHelper.h">
+      <Filter>Header Files\Helpers\BernstrinHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="vsGregory.h">
+      <Filter>Header Files\Shaders\Gregory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -559,6 +613,9 @@
     <FxCompile Include="gsBezierSurfaceC2.hlsl">
       <Filter>Source Files\Shaders\Bezier\Surface</Filter>
     </FxCompile>
+    <FxCompile Include="vsGregory.hlsl">
+      <Filter>Source Files\Shaders\Gregory</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="bezierStructs.hlsli">
@@ -575,6 +632,9 @@
     </None>
     <None Include="DeBoor.hlsli">
       <Filter>Source Files\Shaders\Bezier</Filter>
+    </None>
+    <None Include="gregoryHeader.hlsli">
+      <Filter>Source Files\Shaders\Gregory</Filter>
     </None>
   </ItemGroup>
 </Project>

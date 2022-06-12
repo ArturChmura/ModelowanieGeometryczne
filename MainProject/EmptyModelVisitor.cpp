@@ -39,3 +39,11 @@ void EmptyModelVisitor::Accept(std::shared_ptr < BezierSurfaceC2> surface)
 void EmptyModelVisitor::Accept(std::shared_ptr < CompositeModel> surface)
 {
 }
+
+void EmptyModelVisitor::Accept(std::shared_ptr<GregoryPatch> surface)
+{
+}
+
+void EmptyModelVisitor::Accept(std::shared_ptr<SingleGregoryPatch> surface)
+{
+}

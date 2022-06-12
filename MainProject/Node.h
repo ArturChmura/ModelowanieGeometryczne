@@ -11,6 +11,7 @@ struct Edge
 	std::shared_ptr<Node> begin;
 	std::shared_ptr<Node> end;
 	int value;
+	int patchSideId;
 };
 
 struct Node
