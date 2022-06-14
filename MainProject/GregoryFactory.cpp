@@ -41,7 +41,11 @@ std::vector<std::shared_ptr<IModel>> GregoryFactory::CreateGregoryPatch(std::vec
 		p1i[i] = (2 * qi[i] + pAvg) / 3.0f;
 	}
 
+
+	auto deleteModel = std::vector<std::shared_ptr<IModel>>();
+	std::vector<std::shared_ptr<SingleGregoryPatch>> singlePatches;
 	for (int i = 0; i < patchesSides.size(); i++)
+		//for (int i = 0; i < 1; i++)
 	{
 		int patch1index = i;
 		int patch2index = (i + 1) % patchesSides.size();
@@ -54,6 +58,7 @@ std::vector<std::shared_ptr<IModel>> GregoryFactory::CreateGregoryPatch(std::vec
 			Vector3(patch1->firstLine[2]->GetTranslation()),
 			Vector3(patch1->firstLine[3]->GetTranslation())
 		};
+
 		Vector3 patch2firstLine[4]
 		{
 			Vector3(patch2->firstLine[0]->GetTranslation()),
@@ -61,54 +66,111 @@ std::vector<std::shared_ptr<IModel>> GregoryFactory::CreateGregoryPatch(std::vec
 			Vector3(patch2->firstLine[2]->GetTranslation()),
 			Vector3(patch2->firstLine[3]->GetTranslation())
 		};
+		Vector3 patch1secondLine[4]
+		{
+			Vector3(patch1->secondLine[0]->GetTranslation()),
+			Vector3(patch1->secondLine[1]->GetTranslation()),
+			Vector3(patch1->secondLine[2]->GetTranslation()),
+			Vector3(patch1->secondLine[3]->GetTranslation())
+		};
 
-		Vector3 p[4]
+		Vector3 patch2secondLine[4]
+		{
+			Vector3(patch2->secondLine[0]->GetTranslation()),
+			Vector3(patch2->secondLine[1]->GetTranslation()),
+			Vector3(patch2->secondLine[2]->GetTranslation()),
+			Vector3(patch2->secondLine[3]->GetTranslation())
+		};
+
+		std::array<Vector3 ,4> p
 		{
 			p3i[patch1index],
 			patch1firstLine[3],
+			pAvg,
 			p3i[patch2index],
-			pAvg
 		};
 
-		Vector3 dU[4]
+		std::array<Vector3, 4> dU
 		{
-			3 * (p3i[patch1index] - t1i[patch1index]),
-			3 * (patch2firstLine[1] - patch2firstLine[0]),
-			BernstrinHelper::dU(patch2firstLine,0.5f),
-			3 * (pAvg - p1i[patch1index])
+			0.5 * 3 * (p3i[patch1index] - t1i[patch1index]),
+			0.5* 3 * (patch2firstLine[1] - patch2firstLine[0]),
+			0.5 * 3 * (pAvg - p1i[patch1index]),
+			0.5* BernstrinHelper::dU(patch2firstLine,0.5f),
 		};
 
-		Vector3 dV[4]
+		std::array<Vector3, 4> dV
 		{
-			BernstrinHelper::dU(patch1firstLine,0.5f),
-			3 * (patch1firstLine[3] - patch1firstLine[2]),
-			3 * (t1i[patch2index] - p3i[patch2index]),
-			3 * (p1i[patch2index] - pAvg)
+			0.5* BernstrinHelper::dU(patch1firstLine,0.5f),
+			0.5* 3 * (patch1firstLine[3] - patch1firstLine[2]),
+			0.5 * 3 * (p1i[patch2index] - pAvg),
+			0.5 * 3 * (t1i[patch2index] - p3i[patch2index]),
 		};
 
 		Vector3 e1[4]{ p3i[patch1index], p2i[patch1index],p1i[patch1index], pAvg };
-		Vector3 dUV[4]
+		std::array<Vector3, 4> dUV
 		{
-			BernstrinHelper::dUV(patch1firstLine, 0.5f),
-			BernstrinHelper::dUV(patch2firstLine, 0.0f),
-			BernstrinHelper::dUV(patch2firstLine, 0.5f),
-			BernstrinHelper::dUV(e1, 1.0f),
+			0.5 * BernstrinHelper::dUV(patch1firstLine,patch1secondLine, 0.5f),
+			0.5 * BernstrinHelper::dUV(patch2firstLine,patch2secondLine, 0.0f),
+			 Vector3(0,0,0),
+			0.5* BernstrinHelper::dUV(patch2firstLine,patch2secondLine, 0.5f),
 		};
 
-
+		
 		Vector3 e2[4]{ pAvg, p1i[patch2index],p2i[patch2index],p3i[patch2index] };
-		Vector3 dVU[4]
+		std::array<Vector3, 4> dVU
 		{
-			BernstrinHelper::dUV(patch1firstLine, 0.5f),
-			BernstrinHelper::dUV(patch1firstLine, 1.0f),
-			BernstrinHelper::dUV(patch2firstLine, 0.5f),
-			BernstrinHelper::dUV(e2, 1.0f),
+			0.5* BernstrinHelper::dUV(patch1firstLine,patch1secondLine, 0.5f),
+			0.5* BernstrinHelper::dUV(patch1firstLine,patch1secondLine, 1.0f),
+			 Vector3(0,0,0),
+			0.5* BernstrinHelper::dUV(patch2firstLine,patch2secondLine, 0.5f),
 		};
 
+		auto singlePatch = std::make_shared<SingleGregoryPatch>(
+			p,
+			dU,
+			dV,
+			dUV,
+			dVU
+			);
 
+		singlePatches.push_back(singlePatch);
+
+		for (int i = 0; i < 4; i++)
+		{
+			auto p1 = std::make_shared<Point>(p[i]);
+			auto p2 = std::make_shared<Point>(p[i] + 1.0f / 3 * dU[i]);
+			std::vector<std::shared_ptr<Point>> vector = { p1,p2 };
+			auto line = std::make_shared<BezierCurveInterpolating>(vector);
+			line->ChangeColor({ 1,1,0 });
+			//deleteModel.push_back(line);
+
+			p1 = std::make_shared<Point>(p[i]);
+			p2 = std::make_shared<Point>(p[i] + 1.0f/3*dV[i]);
+			 vector = { p1,p2 };
+			line = std::make_shared<BezierCurveInterpolating>(vector);
+			line->ChangeColor({ 0,1,0 });
+			deleteModel.push_back(line);
+
+		/*	p1 = std::make_shared<Point>(p[i]);
+			p2 = std::make_shared<Point>(p[i] + 1.0f/9*dUV[i]);
+			 vector = { p1,p2 };
+			line = std::make_shared<BezierCurveInterpolating>(vector);
+			line->ChangeColor({ 1,0,0 });
+			deleteModel.push_back(line);
+
+			p1 = std::make_shared<Point>(p[i]);
+			p2 = std::make_shared<Point>(p[i] + 1.0f / 9 * dVU[i]);
+			 vector = { p1,p2 };
+			line = std::make_shared<BezierCurveInterpolating>(vector);
+			line->ChangeColor({ 0,1,1 });
+			deleteModel.push_back(line);*/
+		}
+		
 	}
 
-	auto deleteModel = std::vector<std::shared_ptr<IModel>>();
+	auto gregory = std::make_shared<GregoryPatch>(singlePatches);
+	gregory->ChangeColor({ 1,0,1 });
+	deleteModel.push_back(gregory);
 	for (int i = 0; i < patchesSides.size(); i++)
 	{
 		auto p3 = std::make_shared<Point>(p3i[i]);
@@ -117,12 +179,15 @@ std::vector<std::shared_ptr<IModel>> GregoryFactory::CreateGregoryPatch(std::vec
 		auto p0 = std::make_shared<Point>(pAvg);
 		std::vector<std::shared_ptr<Point>> vector = { p3, p2, p1, p0 };
 		auto line = std::make_shared<BezierCurveInterpolating>(vector);
-		deleteModel.push_back(line);
 
+		deleteModel.push_back(line);
 		deleteModel.push_back(p3);
 		deleteModel.push_back(p2);
 		deleteModel.push_back(p1);
 		deleteModel.push_back(p0);
+
+
+		
 	}
 
 	return deleteModel;

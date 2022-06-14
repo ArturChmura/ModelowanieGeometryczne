@@ -15,7 +15,7 @@ BezierSurfaceC0AdderWindow::~BezierSurfaceC0AdderWindow()
 	scene->cursor->OnPositionChangeCallback.Remove("BezierSurfaceC0AdderWindow");
 }
 
-std::tuple<std::shared_ptr<IModel>, std::vector<std::vector<std::shared_ptr<Point>>>> BezierSurfaceC0AdderWindow::GetModel()
+std::tuple<std::shared_ptr<IBezierSurface>, std::vector<std::vector<std::shared_ptr<Point>>>> BezierSurfaceC0AdderWindow::GetModel()
 {
 	float x = width;
 	float y = height;

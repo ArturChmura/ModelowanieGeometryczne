@@ -31,20 +31,11 @@ public:
 		return DeCasteljeu(der, t, 3);
 	}
 
-	static DirectX::SimpleMath::Vector3 dUV(DirectX::SimpleMath::Vector3 coef[4], float t)
+
+	static DirectX::SimpleMath::Vector3 dUV(DirectX::SimpleMath::Vector3 firstLine[4], DirectX::SimpleMath::Vector3 secondLine[4], float t)
 	{
-		DirectX::SimpleMath::Vector3 d1[3];
-		for (int i = 0; i < 3; i++)
-		{
-			d1[i] = 3 * (coef[i + 1] - coef[i]);
-		}
-		DirectX::SimpleMath::Vector3 d2[2];
-
-		for (int i = 0; i < 2; i++)
-		{
-			d2[i] = 3 * (d1[i + 1] - d1[i]);
-		}
-
-		return d2[0] + t*(d2[1] - d2[0]);
+		auto p1 = dU(firstLine, t);
+		auto p2 = dU(secondLine, t);
+		return 3 * (p1 - p2);
 	}
 };

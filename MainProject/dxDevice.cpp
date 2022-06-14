@@ -136,3 +136,13 @@ dx_ptr<ID3D11BlendState> DxDevice::CreateBlendState(const BlendDescription& desc
 		THROW_DX(hr);
 	return state;
 }
+
+dx_ptr<ID3D11SamplerState> DxDevice::CreateSamplerState(const SamplerDescription& desc) const
+{
+	ID3D11SamplerState* s = nullptr;
+	auto hr = m_device->CreateSamplerState(&desc, &s);
+	dx_ptr<ID3D11SamplerState> sampler(s);
+	if (FAILED(hr))
+		THROW_DX(hr);
+	return sampler;
+}

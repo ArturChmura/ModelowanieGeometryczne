@@ -9,6 +9,9 @@
 #include "BezierSurfaceC2.h"
 #include "StartWindow.h"
 #include "BezierSurfaceC0AdderWindow.h"
+#include "GregoryFinder.h"
+#include "PointsMerger.h"
+#include "GregoryFactory.h"
 
 
 using namespace mini;
@@ -44,7 +47,7 @@ Application::Application(SIZE size)
 	backgroundColor = { 0.1f,0.1f,0.1f };
 
 	guiWindows.push_back(std::make_shared<ObjectsListWindow>(scene));
-	guiWindows.push_back(std::make_shared<ObjectAdderWindow>(scene));
+	guiWindows.push_back(std::make_shared<ObjectAdderWindow>(scene, &renderGui));
 	guiWindows.push_back(std::make_shared<PropertiesWindow>(scene));
 	guiWindows.push_back(std::make_shared<CameraOptionsWindow>(scene));
 	guiWindows.push_back(std::make_shared<CursorOptionsWindow>(cursor, scene, size));
@@ -77,20 +80,104 @@ Application::Application(SIZE size)
 	bool open;
 	auto c0Adder = std::make_shared< BezierSurfaceC0AdderWindow>(scene, &open);
 	c0Adder->horizontalSlicesCount = c0Adder->verticalSlicesCount = 1;
-	scene->cursor->SetPosition({ 10,10,0 });
-	c0Adder->AddModel();
-	scene->cursor->SetPosition({ -10,10,0 });
-	c0Adder->AddModel();
-	scene->cursor->SetPosition({ 0,-10,0 });
-	c0Adder->AddModel();
 
+	float width = 20;
+	c0Adder->width = c0Adder->height = width;
+	scene->cursor->SetPosition({ width,width/2,0 });
+	auto prawy = std::make_shared<CompositeModel>();
+	auto p = c0Adder->AddModel();
+	for (auto model : p->GetContainingModels())
+	{
+		prawy->AddModel(model);
+	}
+	
+	scene->cursor->SetPosition({ -width,width/2,0 });
+	auto lewy = std::make_shared<CompositeModel>();
+	auto l = c0Adder->AddModel();
+	for (auto model : l->GetContainingModels())
+	{
+		lewy->AddModel(model);
+	}
+	scene->cursor->SetPosition({ 0,-width/2,0 });
+	auto srodek = std::make_shared<CompositeModel>();
+	auto s = c0Adder->AddModel();
+	for (auto model : s->GetContainingModels())
+	{
+		srodek->AddModel(model);
+	}
+
+	srodek->RotateFromPoint({ 0,0,0,1 }, { DirectX::XM_PIDIV4,0,0 });
+	lewy->RotateFromPoint({ 0,0,0,1 }, { 0,DirectX::XM_PIDIV4,0 });
+	auto lSingle = l->GetSingleSurfaces()[0];
+	auto pSingle = p->GetSingleSurfaces()[0];
+	auto sSingle = s->GetSingleSurfaces()[0];
+
+	std::vector<std::shared_ptr<Point>> points
+	{
+		lSingle->points[0][3],
+		sSingle->points[3][0],
+	};
+
+	PointsMerger pointsMerger;
+	pointsMerger.MergePoints(scene, points);
+
+	points = 
+	{
+		pSingle->points[0][0],
+		sSingle->points[3][3],
+	};
+	pointsMerger.MergePoints(scene, points);
+
+	points =
+	{
+		pSingle->points[3][0],
+		lSingle->points[3][3],
+	};
+	pointsMerger.MergePoints(scene, points);
+
+
+	std::vector<std::shared_ptr<BezierSurfaceC0>> surfaces = { 
+		std::dynamic_pointer_cast<BezierSurfaceC0> (l),
+	std::dynamic_pointer_cast<BezierSurfaceC0> (s) ,
+	std::dynamic_pointer_cast<BezierSurfaceC0> (p) };
+	auto cycles = GregoryFinder::FindFill(surfaces);
+	if (cycles.size() > 0)
+	{
+		for (auto cycle : cycles)
+		{
+			
+
+			auto gregory = GregoryFactory::CreateGregoryPatch(cycle);
+			for (auto model : gregory)
+			{
+				scene->AddModel(model);
+			}
+		}
+
+
+	}
 	/*c0Adder->cylinder = true;
 	c0Adder->horizontalSlicesCount = c0Adder->verticalSlicesCount = 3;
-	scene->cursor->SetPosition({ 0,0,-10 });
+	scene->cursor->SetPosition({ 0,0,0 });
 	c0Adder->AddModel();*/
+
+
 
 	auto backBuffer = m_backBuffer.get();
 	DxDevice::instance->context()->OMSetRenderTargets(1, &backBuffer, m_depthBuffer.get());
+
+
+
+	SamplerDescription sd;
+	sd.AddressU = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_BORDER;
+	sd.AddressV = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_BORDER;
+	sd.AddressW = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_BORDER;
+	sd.Filter = D3D11_FILTER::D3D11_FILTER_ANISOTROPIC;
+	sd.MaxAnisotropy = 16;
+	auto m_samplerWrap = DxDevice::instance->CreateSamplerState(sd);
+
+	auto s_ptr = m_samplerWrap.get();
+	DxDevice::instance->context()->PSSetSamplers(0, 1, &s_ptr);
 }
 
 void Application::Render()
@@ -108,6 +195,7 @@ void Application::Render()
 
 void Application::RenderGui()
 {
+	//if(renderGui)
 	for (int i = 0; i < guiWindows.size(); i++)
 	{
 		guiWindows[i]->Render();

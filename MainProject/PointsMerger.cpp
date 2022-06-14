@@ -14,9 +14,8 @@
 
 using namespace DirectX::SimpleMath;
 
-void PointsMerger::MergePoints(std::shared_ptr<Scene> scene)
+void PointsMerger::MergePoints(std::shared_ptr<Scene> scene, std::vector<std::shared_ptr<Point>> points)
 {
-	auto points = scene->GetSelectedType<Point>();
 	Vector3 pos;
 	for (auto point : points)
 	{

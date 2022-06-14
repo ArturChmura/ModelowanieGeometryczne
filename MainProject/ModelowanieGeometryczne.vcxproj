@@ -35,6 +35,7 @@
     <ClCompile Include="GregoryPatch.cpp" />
     <ClCompile Include="gsBezier.cpp" />
     <ClCompile Include="gsBezierSurfaceC2.cpp" />
+    <ClCompile Include="gsGregory.cpp" />
     <ClCompile Include="gsSurfaceBezier.cpp" />
     <ClCompile Include="IBezierCurve.cpp" />
     <ClCompile Include="IBezierSurface.cpp" />
@@ -102,6 +103,7 @@
     <ClInclude Include="GregoryPatch.h" />
     <ClInclude Include="gsBezier.h" />
     <ClInclude Include="gsBezierSurfaceC2.h" />
+    <ClInclude Include="gsGregory.h" />
     <ClInclude Include="gsSurfaceBezier.h" />
     <ClInclude Include="BernstrinHelper.h" />
     <ClInclude Include="vsGregory.h" />
@@ -169,6 +171,10 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="gsGregory.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="gsSurfaceBezier.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
@@ -198,7 +204,7 @@
     <FxCompile Include="vsGregory.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="vsSurfaceBezier.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>

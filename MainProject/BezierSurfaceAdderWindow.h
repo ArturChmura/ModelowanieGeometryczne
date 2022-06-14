@@ -10,8 +10,8 @@ public:
 	~BezierSurfaceAdderWindow();
 	void Render();
 	virtual void SetPreview();
-	virtual void AddModel();
-	virtual std::tuple<std::shared_ptr<IModel>, std::vector<std::vector<std::shared_ptr<Point>>>> GetModel() = 0;
+	virtual std::shared_ptr<IBezierSurface> AddModel();
+	virtual std::tuple<std::shared_ptr<IBezierSurface>, std::vector<std::vector<std::shared_ptr<Point>>>> GetModel() = 0;
 	std::shared_ptr<Scene> scene; 
 	bool* open;
 

@@ -16,4 +16,5 @@ void ShadersManager::LoadShaders()
 	vsConstColor = std::make_shared<VSConstColor>();
 
 	vsGregory = std::make_shared<VSGregory>();
+	gsGregory = std::make_shared<GSGregory>();
 }

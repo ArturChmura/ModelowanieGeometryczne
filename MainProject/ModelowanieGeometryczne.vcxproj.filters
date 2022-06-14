@@ -354,6 +354,9 @@
     <ClCompile Include="vsGregory.cpp">
       <Filter>Source Files\Shaders\Gregory</Filter>
     </ClCompile>
+    <ClCompile Include="gsGregory.cpp">
+      <Filter>Source Files\Shaders\Gregory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dxptr.h">
@@ -584,6 +587,9 @@
     <ClInclude Include="vsGregory.h">
       <Filter>Header Files\Shaders\Gregory</Filter>
     </ClInclude>
+    <ClInclude Include="gsGregory.h">
+      <Filter>Header Files\Shaders\Gregory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="psColor.hlsl">
@@ -614,6 +620,9 @@
       <Filter>Source Files\Shaders\Bezier\Surface</Filter>
     </FxCompile>
     <FxCompile Include="vsGregory.hlsl">
+      <Filter>Source Files\Shaders\Gregory</Filter>
+    </FxCompile>
+    <FxCompile Include="gsGregory.hlsl">
       <Filter>Source Files\Shaders\Gregory</Filter>
     </FxCompile>
   </ItemGroup>

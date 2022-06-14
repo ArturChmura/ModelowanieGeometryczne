@@ -22,6 +22,8 @@ public:
 
 	// Inherited via IModel
 	virtual void Accept(AbstractModelVisitor& visitor) override;
+	// Inherited via IUnmovableModel
+	virtual void ChangeColor(DirectX::SimpleMath::Vector3 color) override;
 private:
 	std::array<DirectX::SimpleMath::Vector3, 4> p;
 	std::array<DirectX::SimpleMath::Vector3, 4> dU;
@@ -33,6 +35,8 @@ private:
 	MeshInfo meshInfo;
 	bool resetDrawing = true;
 	bool drawPolygonChain = false;
-	int horizontalSlices = 10;
-	int verticalSlices = 10;
+	int horizontalSlices = 20;
+	int verticalSlices = 20;
+
+
 };

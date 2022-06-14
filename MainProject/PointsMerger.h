@@ -9,7 +9,7 @@ class IBezierCurve;
 class PointsMerger : AbstractModelVisitor
 {
 public:
-	void MergePoints(std::shared_ptr<Scene> scene);
+	void MergePoints(std::shared_ptr<Scene> scene, std::vector<std::shared_ptr<Point>> points);
 
 	// Inherited via AbstractModelVisitor
 	virtual void Accept(std::shared_ptr<Point> point) override;

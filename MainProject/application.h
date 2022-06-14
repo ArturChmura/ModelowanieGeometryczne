@@ -28,7 +28,7 @@ public:
 	DirectX::XMFLOAT3 backgroundColor;
 
 	std::shared_ptr<Scene> scene;
-
+	bool renderGui = true;
 	std::vector< std::shared_ptr < IGuiWindow>> guiWindows;
 
 	std::shared_ptr<MessageHandler> messageHandler;

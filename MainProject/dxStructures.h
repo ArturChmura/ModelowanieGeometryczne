@@ -45,3 +45,9 @@ struct BlendDescription : D3D11_BLEND_DESC
 {
 	BlendDescription();
 };
+
+
+struct SamplerDescription : D3D11_SAMPLER_DESC
+{
+	SamplerDescription();
+};

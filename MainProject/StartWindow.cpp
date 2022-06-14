@@ -48,8 +48,9 @@ void StartWindow::Render()
 				SceneLoader::LoadScene(scene, outPath);
 				ImGui::OpenPopup("Success load popup");
 			}
-			catch (const std::exception&)
+			catch (const std::exception& e)
 			{
+				auto a = e.what();
 				ImGui::OpenPopup("Wrong input file popup");
 			}
 

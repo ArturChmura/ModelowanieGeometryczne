@@ -9,9 +9,10 @@
 #include "BezierCurveInterpolating.h"
 #include "GregoryFactory.h"
 
-ObjectAdderWindow::ObjectAdderWindow(std::shared_ptr<Scene> scene)
+ObjectAdderWindow::ObjectAdderWindow(std::shared_ptr<Scene> scene, bool* renderGui)
 {
 	this->scene = scene;
+    this->renderGui = renderGui;
 }
 
 void ObjectAdderWindow::Render()
@@ -28,7 +29,7 @@ void ObjectAdderWindow::Render()
             {
                 for (auto cycle : cycles)
                 {
-                    std::vector<std::shared_ptr<Point>> pointsFirst;
+                   /* std::vector<std::shared_ptr<Point>> pointsFirst;
                     std::vector<std::shared_ptr<Point>> pointsSecond;
                     for (int i = 0; i < cycle.size(); i++)
                     {
@@ -49,13 +50,14 @@ void ObjectAdderWindow::Render()
 
                     auto curveSecond = std::make_shared<BezierCurveInterpolating>(pointsSecond);
                     scene->AddModel(curveSecond);
-                    curveSecond->ChangeColor({ 0,0,1 });
+                    curveSecond->ChangeColor({ 0,0,1 });*/
 
                     auto gregory = GregoryFactory::CreateGregoryPatch(cycle);
                     for (auto model : gregory)
                     {
                         scene->AddModel(model);
                     }
+                    (*renderGui) = false;
                 }
 
                
@@ -64,12 +66,13 @@ void ObjectAdderWindow::Render()
        
     }
 
-    if (scene->GetSelectedType<Point>().size() >= 2)
+    auto selectedPoints = scene->GetSelectedType<Point>();
+    if (selectedPoints.size() >= 2)
     {
         if (ImGui::Button("Merge selected points"))
         {
             PointsMerger pointsMerger;
-            pointsMerger.MergePoints(scene);
+            pointsMerger.MergePoints(scene, selectedPoints);
         }
     }
     if (ImGui::Button("Add Torus"))

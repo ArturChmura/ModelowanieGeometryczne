@@ -77,6 +77,7 @@ public:
 
 	mini::dx_ptr<ID3D11BlendState> CreateBlendState(const BlendDescription& desc = {}) const;
 
+	mini::dx_ptr<ID3D11SamplerState> CreateSamplerState(const SamplerDescription& desc) const;
 
 private:
 

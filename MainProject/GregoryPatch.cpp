@@ -1,7 +1,7 @@
 #include "GregoryPatch.h"
 
 GregoryPatch::GregoryPatch(std::vector<std::shared_ptr<SingleGregoryPatch>> singleSurfaces, std::string name)
-	:IBezierSurface(5,5, false, name)
+	:IUnmovableModel(name)
 {
 	this->singleSurfaces = singleSurfaces;
 }
@@ -11,9 +11,20 @@ void GregoryPatch::Accept(AbstractModelVisitor& visitor)
 	visitor.Accept(IModel::downcasted_shared_from_this<GregoryPatch>());
 }
 
-std::vector<std::shared_ptr<ISingleBezierSurface>> GregoryPatch::GetSingleSurfaces()
+void GregoryPatch::Draw(std::shared_ptr<Camera> camera)
 {
-	std::vector<std::shared_ptr<ISingleBezierSurface>> single(this->singleSurfaces.size());
-	std::copy(this->singleSurfaces.begin(), this->singleSurfaces.end(), single.begin());
-	return single;
+	for (int i = 0; i < singleSurfaces.size(); i++)
+	{
+		singleSurfaces[i]->Draw(camera);
+	}
 }
+
+void GregoryPatch::ChangeColor(DirectX::SimpleMath::Vector3 color)
+{
+	for (auto single : singleSurfaces)
+	{
+		single->ChangeColor(color);
+	}
+}
+
+
