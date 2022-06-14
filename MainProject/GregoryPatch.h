@@ -14,7 +14,7 @@ public:
 
 	std::vector<std::shared_ptr<SingleGregoryPatch>> singleSurfaces;
 	virtual void Accept(AbstractModelVisitor& visitor) override;
-
+	std::array<DirectX::SimpleMath::Vector3, 4> GetHalf(std::array<std::shared_ptr<Point>, 4>  points, bool half);
 
 	int horizontalSlicesCount = 20;
 	int verticalSlicesCount = 20;

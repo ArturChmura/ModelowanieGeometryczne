@@ -4,7 +4,7 @@
 class BernstrinHelper
 {
 public:
-	static DirectX::SimpleMath::Vector3 DeCasteljeu(DirectX::SimpleMath::Vector3 coef[4], float t, int size)
+	static DirectX::SimpleMath::Vector3 DeCasteljeu(std::array<DirectX::SimpleMath::Vector3, 4> coef, float t, int size)
 	{
 		for (int i = 0; i < size - 1; i++)
 		{
@@ -19,9 +19,9 @@ public:
 		return value;
 	}
 
-	static DirectX::SimpleMath::Vector3 dU(DirectX::SimpleMath::Vector3 coef[4], float t)
+	static DirectX::SimpleMath::Vector3 dU(std::array<DirectX::SimpleMath::Vector3, 4> coef, float t)
 	{
-		DirectX::SimpleMath::Vector3 der[4]
+		std::array<DirectX::SimpleMath::Vector3, 4> der
 		{
 			3 * (coef[1] - coef[0]),
 			3 * (coef[2] - coef[1]),
@@ -32,7 +32,10 @@ public:
 	}
 
 
-	static DirectX::SimpleMath::Vector3 dUV(DirectX::SimpleMath::Vector3 firstLine[4], DirectX::SimpleMath::Vector3 secondLine[4], float t)
+	static DirectX::SimpleMath::Vector3 dUV(
+		std::array<DirectX::SimpleMath::Vector3, 4> firstLine, 
+		std::array<DirectX::SimpleMath::Vector3, 4> secondLine, 
+		float t)
 	{
 		auto p1 = dU(firstLine, t);
 		auto p2 = dU(secondLine, t);
