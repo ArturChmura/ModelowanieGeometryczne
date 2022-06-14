@@ -11,7 +11,6 @@
 #include "BezierSurfaceC0AdderWindow.h"
 #include "GregoryFinder.h"
 #include "PointsMerger.h"
-#include "GregoryFactory.h"
 
 
 using namespace mini;
@@ -81,7 +80,8 @@ Application::Application(SIZE size)
 	auto c0Adder = std::make_shared< BezierSurfaceC0AdderWindow>(scene, &open);
 	c0Adder->horizontalSlicesCount = c0Adder->verticalSlicesCount = 1;
 
-	float width = 20;
+
+	/*float width = 20;
 	c0Adder->width = c0Adder->height = width;
 	scene->cursor->SetPosition({ width,width/2,0 });
 	auto prawy = std::make_shared<CompositeModel>();
@@ -134,32 +134,14 @@ Application::Application(SIZE size)
 		lSingle->points[3][3],
 	};
 	pointsMerger.MergePoints(scene, points);
+*/
 
-
-	std::vector<std::shared_ptr<BezierSurfaceC0>> surfaces = { 
-		std::dynamic_pointer_cast<BezierSurfaceC0> (l),
-	std::dynamic_pointer_cast<BezierSurfaceC0> (s) ,
-	std::dynamic_pointer_cast<BezierSurfaceC0> (p) };
-	auto cycles = GregoryFinder::FindFill(surfaces);
-	if (cycles.size() > 0)
-	{
-		for (auto cycle : cycles)
-		{
-			
-
-			auto gregory = GregoryFactory::CreateGregoryPatch(cycle);
-			for (auto model : gregory)
-			{
-				scene->AddModel(model);
-			}
-		}
-
-
-	}
-	/*c0Adder->cylinder = true;
-	c0Adder->horizontalSlicesCount = c0Adder->verticalSlicesCount = 3;
+	
+	c0Adder->cylinder = true;
+	c0Adder->horizontalSlicesCount =  1;
+	c0Adder->verticalSlicesCount = 3;
 	scene->cursor->SetPosition({ 0,0,0 });
-	c0Adder->AddModel();*/
+	c0Adder->AddModel();
 
 
 

@@ -17,8 +17,8 @@ struct GSGregoryConstantBuffer
 	std::array<DirectX::SimpleMath::Vector3, 4> dV;
 	std::array<DirectX::SimpleMath::Vector3, 4> dUV;
 	std::array<DirectX::SimpleMath::Vector3, 4> dVU;
-	int slices;
-
+	int horizontalSlices;
+	int verticalSlices;
 };
 
 class GSGregory

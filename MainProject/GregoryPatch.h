@@ -7,19 +7,26 @@
 class GregoryPatch : public IUnmovableModel
 {
 public:
-	GregoryPatch(std::vector<std::shared_ptr<SingleGregoryPatch>> singleSurfaces, std::string name = "Gregory Patch");
+	GregoryPatch(std::vector<std::shared_ptr<PatchSide>> patchesSides, std::string name = "Gregory Patch");
+
+	void UpdateVertices();
+	std::vector<std::shared_ptr<PatchSide>> patchesSides;
 
 	std::vector<std::shared_ptr<SingleGregoryPatch>> singleSurfaces;
 	virtual void Accept(AbstractModelVisitor& visitor) override;
 
 
-	int horizontalSlicesCount;
-	int verticalSlicesCount;
+	int horizontalSlicesCount = 20;
+	int verticalSlicesCount = 20;
 	bool drawPolygonChain = false;
 
+	bool resetDrawing = true;
+	void ResetDrawing();
 
 	virtual void Draw(std::shared_ptr<Camera> camera) override;
 
 	virtual void ChangeColor(DirectX::SimpleMath::Vector3 color) override;
+
+	virtual void RenderGUI() override;
 
 };

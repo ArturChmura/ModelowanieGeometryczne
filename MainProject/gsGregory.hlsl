@@ -9,7 +9,8 @@ cbuffer transformations : register(b0)
     float4 dV4[3];
     float4 dUV4[3];
     float4 dVU4[3];
-    int slices;
+    int horizontalSlices;
+    int verticalSlices;
 }
 
 float4 GetHermitVector(float u)
@@ -38,6 +39,7 @@ void main(
     bool flip = input[0].uv.y > 0.5;
     float4 Huu = GetHermitVector(uu);
     
+    int slices = flip ? verticalSlices : horizontalSlices;
     float step = 1.0f / slices;
     for (float vv = 0.0f; vv <= 1.f + step / 2; vv += step)
     {

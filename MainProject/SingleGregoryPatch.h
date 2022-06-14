@@ -17,6 +17,13 @@ public:
 		std::array<DirectX::SimpleMath::Vector3 ,4> dVU
 	);
 
+	void UpdateSlices(int horizontalSlices, int verticalSlices);
+	void UpdatePoints(
+		std::array<DirectX::SimpleMath::Vector3, 4> p,
+		std::array<DirectX::SimpleMath::Vector3, 4> dU,
+		std::array<DirectX::SimpleMath::Vector3, 4> dV,
+		std::array<DirectX::SimpleMath::Vector3, 4> dUV,
+		std::array<DirectX::SimpleMath::Vector3, 4> dVU);
 public:
 	virtual void Draw(std::shared_ptr<Camera> camera) override;
 
@@ -24,6 +31,7 @@ public:
 	virtual void Accept(AbstractModelVisitor& visitor) override;
 	// Inherited via IUnmovableModel
 	virtual void ChangeColor(DirectX::SimpleMath::Vector3 color) override;
+	void SetDrawPolygonChain(bool drawPolygonChain);
 private:
 	std::array<DirectX::SimpleMath::Vector3, 4> p;
 	std::array<DirectX::SimpleMath::Vector3, 4> dU;
@@ -33,8 +41,7 @@ private:
 
 
 	MeshInfo meshInfo;
-	bool resetDrawing = true;
-	bool drawPolygonChain = false;
+	bool drawPolygonChain = true;
 	int horizontalSlices = 20;
 	int verticalSlices = 20;
 

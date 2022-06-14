@@ -30,7 +30,7 @@
     <ClCompile Include="dxStructures.cpp" />
     <ClCompile Include="EmptyModelVisitor.cpp" />
     <ClCompile Include="exceptions.cpp" />
-    <ClCompile Include="GregoryFactory.cpp" />
+    <ClCompile Include="GregoryAdderWindow.cpp" />
     <ClCompile Include="GregoryFinder.cpp" />
     <ClCompile Include="GregoryPatch.cpp" />
     <ClCompile Include="gsBezier.cpp" />
@@ -98,7 +98,7 @@
     <ClInclude Include="CursorOptionsWindow.h" />
     <ClInclude Include="DebugWindow.h" />
     <ClInclude Include="EmptyModelVisitor.h" />
-    <ClInclude Include="GregoryFactory.h" />
+    <ClInclude Include="GregoryAdderWindow.h" />
     <ClInclude Include="GregoryFinder.h" />
     <ClInclude Include="GregoryPatch.h" />
     <ClInclude Include="gsBezier.h" />

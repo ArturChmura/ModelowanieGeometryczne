@@ -124,9 +124,6 @@
     <Filter Include="Source Files\Merger">
       <UniqueIdentifier>{e27c2900-f229-48b7-9f93-fb03c062c48f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Factories">
-      <UniqueIdentifier>{2b014d5b-0be7-478b-a92c-033b90cb56ab}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Models\Surfaces\C0Surface">
       <UniqueIdentifier>{5d0ee333-2bc8-4e54-8948-3772c710d5d5}</UniqueIdentifier>
     </Filter>
@@ -144,9 +141,6 @@
     </Filter>
     <Filter Include="Source Files\Models\Surfaces\Gregory">
       <UniqueIdentifier>{36c1fa70-d84d-4a0f-8965-5c4874c69edc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Factories">
-      <UniqueIdentifier>{9b4ec29a-089a-4b70-8285-03710fabf52e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Helpers\BernstrinHelper">
       <UniqueIdentifier>{d8f09a17-6e50-46ae-b22d-26d5b213679a}</UniqueIdentifier>
@@ -345,9 +339,6 @@
     <ClCompile Include="GregoryPatch.cpp">
       <Filter>Source Files\Models\Surfaces\Gregory</Filter>
     </ClCompile>
-    <ClCompile Include="GregoryFactory.cpp">
-      <Filter>Source Files\Factories</Filter>
-    </ClCompile>
     <ClCompile Include="SingleGregoryPatch.cpp">
       <Filter>Source Files\Models\Surfaces\Gregory</Filter>
     </ClCompile>
@@ -356,6 +347,9 @@
     </ClCompile>
     <ClCompile Include="gsGregory.cpp">
       <Filter>Source Files\Shaders\Gregory</Filter>
+    </ClCompile>
+    <ClCompile Include="GregoryAdderWindow.cpp">
+      <Filter>Source Files\Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -560,9 +554,6 @@
     <ClInclude Include="ISingleBezierSurface.h">
       <Filter>Header Files\Models\Surfaces</Filter>
     </ClInclude>
-    <ClInclude Include="GregoryFactory.h">
-      <Filter>Header Files\Factories</Filter>
-    </ClInclude>
     <ClInclude Include="SingleBezierSurfaceC0.h">
       <Filter>Header Files\Models\Surfaces\C0Surface</Filter>
     </ClInclude>
@@ -589,6 +580,9 @@
     </ClInclude>
     <ClInclude Include="gsGregory.h">
       <Filter>Header Files\Shaders\Gregory</Filter>
+    </ClInclude>
+    <ClInclude Include="GregoryAdderWindow.h">
+      <Filter>Header Files\Windows</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
