@@ -81,60 +81,60 @@ Application::Application(SIZE size)
 	c0Adder->horizontalSlicesCount = c0Adder->verticalSlicesCount = 1;
 
 
-	/*float width = 20;
-	c0Adder->width = c0Adder->height = width;
-	scene->cursor->SetPosition({ width,width/2,0 });
-	auto prawy = std::make_shared<CompositeModel>();
-	auto p = c0Adder->AddModel();
-	for (auto model : p->GetContainingModels())
-	{
-		prawy->AddModel(model);
-	}
-	
-	scene->cursor->SetPosition({ -width,width/2,0 });
-	auto lewy = std::make_shared<CompositeModel>();
-	auto l = c0Adder->AddModel();
-	for (auto model : l->GetContainingModels())
-	{
-		lewy->AddModel(model);
-	}
-	scene->cursor->SetPosition({ 0,-width/2,0 });
-	auto srodek = std::make_shared<CompositeModel>();
-	auto s = c0Adder->AddModel();
-	for (auto model : s->GetContainingModels())
-	{
-		srodek->AddModel(model);
-	}
+	//float width = 20;
+	//c0Adder->width = c0Adder->height = width;
+	//scene->cursor->SetPosition({ width,width/2,0 });
+	//auto prawy = std::make_shared<CompositeModel>();
+	//auto p = c0Adder->AddModel();
+	//for (auto model : p->GetContainingModels())
+	//{
+	//	prawy->AddModel(model);
+	//}
+	//
+	//scene->cursor->SetPosition({ -width,width/2,0 });
+	//auto lewy = std::make_shared<CompositeModel>();
+	//auto l = c0Adder->AddModel();
+	//for (auto model : l->GetContainingModels())
+	//{
+	//	lewy->AddModel(model);
+	//}
+	//scene->cursor->SetPosition({ 0,-width/2,0 });
+	//auto srodek = std::make_shared<CompositeModel>();
+	//auto s = c0Adder->AddModel();
+	//for (auto model : s->GetContainingModels())
+	//{
+	//	srodek->AddModel(model);
+	//}
 
-	srodek->RotateFromPoint({ 0,0,0,1 }, { DirectX::XM_PIDIV4,0,0 });
-	lewy->RotateFromPoint({ 0,0,0,1 }, { 0,DirectX::XM_PIDIV4,0 });
-	auto lSingle = l->GetSingleSurfaces()[0];
-	auto pSingle = p->GetSingleSurfaces()[0];
-	auto sSingle = s->GetSingleSurfaces()[0];
+	//srodek->RotateFromPoint({ 0,0,0,1 }, { DirectX::XM_PIDIV4,0,0 });
+	//lewy->RotateFromPoint({ 0,0,0,1 }, { 0,DirectX::XM_PIDIV4,0 });
+	//auto lSingle = l->GetSingleSurfaces()[0];
+	//auto pSingle = p->GetSingleSurfaces()[0];
+	//auto sSingle = s->GetSingleSurfaces()[0];
 
-	std::vector<std::shared_ptr<Point>> points
-	{
-		lSingle->points[0][3],
-		sSingle->points[3][0],
-	};
+	//std::vector<std::shared_ptr<Point>> points
+	//{
+	//	lSingle->points[0][3],
+	//	sSingle->points[3][0],
+	//};
 
-	PointsMerger pointsMerger;
-	pointsMerger.MergePoints(scene, points);
+	//PointsMerger pointsMerger;
+	//pointsMerger.MergePoints(scene, points);
 
-	points = 
-	{
-		pSingle->points[0][0],
-		sSingle->points[3][3],
-	};
-	pointsMerger.MergePoints(scene, points);
+	//points = 
+	//{
+	//	pSingle->points[0][0],
+	//	sSingle->points[3][3],
+	//};
+	//pointsMerger.MergePoints(scene, points);
 
-	points =
-	{
-		pSingle->points[3][0],
-		lSingle->points[3][3],
-	};
-	pointsMerger.MergePoints(scene, points);
-*/
+	//points =
+	//{
+	//	pSingle->points[3][0],
+	//	lSingle->points[3][3],
+	//};
+	//pointsMerger.MergePoints(scene, points);
+
 
 	
 	c0Adder->cylinder = true;

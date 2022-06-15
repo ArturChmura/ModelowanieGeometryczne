@@ -199,6 +199,7 @@ void GregoryPatch::Draw(std::shared_ptr<Camera> camera)
 		UpdateVertices();
 	}
 	for (int i = 0; i < singleSurfaces.size(); i++)
+		//for (int i = 0; i < 1; i++)
 	{
 		singleSurfaces[i]->Draw(camera);
 	}
@@ -235,7 +236,7 @@ void GregoryPatch::RenderGUI()
 		{
 			single->UpdateSlices(horizontalSlicesCount, verticalSlicesCount);
 		}
-
+		
 	}
 }
 

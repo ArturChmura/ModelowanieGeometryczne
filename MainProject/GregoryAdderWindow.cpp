@@ -8,7 +8,14 @@ GregoryAdderWindow::GregoryAdderWindow(std::shared_ptr<Scene> scene, bool* open,
 	this->open = open;
 	this->scene = scene;
 	this->cycles = cycles;
-	SetPreview();
+	if (cycles.size() == 1)
+	{
+		AddModel();
+	}
+	else
+	{
+		SetPreview();
+	}
 }
 
 GregoryAdderWindow::~GregoryAdderWindow()
