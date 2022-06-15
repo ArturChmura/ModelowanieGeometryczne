@@ -41,7 +41,7 @@ private:
 
 
 	MeshInfo meshInfo;
-	bool drawPolygonChain = true;
+	bool drawPolygonChain = false;
 	int horizontalSlices = 20;
 	int verticalSlices = 20;
 

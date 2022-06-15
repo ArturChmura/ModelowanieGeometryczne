@@ -11,6 +11,8 @@
 #include "SingleBezierSurfaceC2.h"
 #include "BezierSurfaceC2.h"
 #include "CompositeModel.h"
+#include "GregoryPatch.h"
+#include "SingleGregoryPatch.h"
 
 using namespace DirectX::SimpleMath;
 
@@ -143,6 +145,24 @@ void PointsMerger::Accept(std::shared_ptr < CompositeModel> surface)
 
 void PointsMerger::Accept(std::shared_ptr<GregoryPatch> surface)
 {
+	
+	for (auto patch : surface->patchesSides)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			auto point = patch->firstLine[i];
+			if (pointsIds.contains(point->id))
+			{
+				patch->firstLine[i] = mergedPoint;
+			}
+			point = patch->secondLine[i];
+			if (pointsIds.contains(point->id))
+			{
+				patch->secondLine[i] = mergedPoint;
+			}
+		}
+	}
+	surface->UpdateVertices();
 }
 
 void PointsMerger::Accept(std::shared_ptr<SingleGregoryPatch> surface)

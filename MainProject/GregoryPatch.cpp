@@ -108,7 +108,7 @@ void GregoryPatch::UpdateVertices()
 		std::array<Vector3, 4> dVU
 		{
 			dV[0] + (patch1first[1] - patch1second[1]),
-			dV[1] + (patch1first[2] - patch1second[2]),
+			dV[1] + (patch2first[2] - patch2second[2]),
 			p[2] + (dU[2] - p[2]) + (dV[2] - p[2]),
 			dU[3] + (patch2first[2] - patch2second[2]),
 		};
@@ -117,7 +117,7 @@ void GregoryPatch::UpdateVertices()
 		std::array<Vector3, 4> dUV
 		{
 			dV[0] + (patch1first[1] - patch1second[1]),
-			dU[1] + (patch2first[1] - patch2second[1]),
+			dU[1] + (patch1first[1] - patch1second[1]),
 			p[2] + (dU[2] - p[2]) + (dV[2] - p[2]),
 			dU[3] + (patch2first[2] - patch2second[2]),
 		};
