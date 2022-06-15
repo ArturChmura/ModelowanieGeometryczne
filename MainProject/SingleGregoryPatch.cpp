@@ -94,36 +94,9 @@ void SingleGregoryPatch::Draw(std::shared_ptr<Camera> camera)
 	if (drawPolygonChain)
 	{
 		
-			Vector3 dUd[4]
-			{
-				dU[0],
-				dU[1],
-				-dU[2],
-				-dU[3]
-			};
-			Vector3 dVd[4]
-			{
-				dV[0],
-				-dV[1],
-				dV[2],
-				-dV[3]
-			};
-			Vector3 pdU[4];
-			Vector3 pdV[4];
-			Vector3 pdVdUdVU[4];
-			Vector3 pdUdVdUV[4];
-			for (int i = 0; i < 4; i++)
-			{
-				pdU[i] = p[i] + dUd[i] / 3;
-				pdV[i] = p[i] + dVd[i] / 3;
-
-				pdVdUdVU[i] = p[i] + dUd[i] / 3 + dVd[i] / 3 + dVU[i] / 9;
-				pdUdVdUV[i] = p[i] + dUd[i] / 3 + dVd[i] / 3 + dUV[i] / 9;
-			}
-
 			std::vector<Vector3> points
 			{
-				p[0], pdU[0], pdU[2], p[2], pdV[2], pdV[3], p[3], pdU[3], pdU[1], p[1], pdV[1], pdV[0], p[0]
+				p[0], dU[0], dU[2], p[2], dV[2], dV[3], p[3], dU[3], dU[1], p[1], dV[1], dV[0], p[0]
 			};
 			PolygonalChain::Draw(camera, points);
 
@@ -131,12 +104,12 @@ void SingleGregoryPatch::Draw(std::shared_ptr<Camera> camera)
 			{
 				points = 
 				{
-					pdU[i], pdUdVdUV[i]
+					dU[i], dUV[i]
 				};
 				PolygonalChain::Draw(camera, points);
 				points =
 				{
-					pdV[i], pdVdUdVU[i]
+					dV[i], dVU[i]
 				};
 				PolygonalChain::Draw(camera, points);
 			}

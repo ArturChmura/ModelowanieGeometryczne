@@ -64,7 +64,11 @@ void GregoryPatch::UpdateVertices()
 	{
 		p1i[i] = (2 * qi[i] + pAvg) / 3.0f;
 	}
-
+	std::vector<std::array<Vector3, 4>> ps;
+	std::vector<std::array<Vector3, 4>> Us;
+	std::vector<std::array<Vector3, 4>> Vs;
+	std::vector<std::array<Vector3, 4>> DUs;
+	std::vector<std::array<Vector3, 4>> DVs;
 	singleSurfaces.clear();
 	for (int i = 0; i < patchesSides.size(); i++)
 	{
@@ -87,38 +91,38 @@ void GregoryPatch::UpdateVertices()
 
 		std::array<Vector3, 4> dU
 		{
-			3 * (p3i[patch1index] - t1i[patch1index]),
-			3 * (patch2first[1] - patch2first[0]),
-			3 * (pAvg - p1i[patch1index]),
-			BernstrinHelper::dU(patch2first,1.0f),
+			p2i[patch1index],
+			patch2first[1],
+			p1i[patch1index],
+			patch2first[2],
 		};
 
 		std::array<Vector3, 4> dV
 		{
-			BernstrinHelper::dU(patch1first,0.0f),
-			3 * (patch1first[3] - patch1first[2]),
-			3 * (p1i[patch2index] - pAvg),
-			3 * (t1i[patch2index] - p3i[patch2index]),
+			patch1first[1],
+			patch1first[2],
+			p1i[patch2index],
+			p2i[patch2index],
 		};
 
-		Vector3 e1[4]{ p3i[patch1index], p2i[patch1index],p1i[patch1index], pAvg };
-		std::array<Vector3, 4> dUV
-		{
-			BernstrinHelper::dUV(patch1first,patch1second, 0.0f),
-			BernstrinHelper::dUV(patch2first,patch2second, 0.0f),
-			 Vector3(0,0,0),
-			BernstrinHelper::dUV(patch2first,patch2second, 1.0f),
-		};
-
-
-		Vector3 e2[4]{ pAvg, p1i[patch2index],p2i[patch2index],p3i[patch2index] };
 		std::array<Vector3, 4> dVU
 		{
-			 BernstrinHelper::dUV(patch1first,patch1second, 0.0f),
-			 BernstrinHelper::dUV(patch1first,patch1second, 1.0f),
-			 Vector3(0,0,0),
-			 BernstrinHelper::dUV(patch2first,patch2second, 1.0f),
+			dV[0] + (patch1first[1] - patch1second[1]),
+			dV[1] + (patch1first[2] - patch1second[2]),
+			p[2] + (dU[2] - p[2]) + (dV[2] - p[2]),
+			dU[3] + (patch2first[2] - patch2second[2]),
 		};
+
+
+		std::array<Vector3, 4> dUV
+		{
+			dV[0] + (patch1first[1] - patch1second[1]),
+			dU[1] + (patch2first[1] - patch2second[1]),
+			p[2] + (dU[2] - p[2]) + (dV[2] - p[2]),
+			dU[3] + (patch2first[2] - patch2second[2]),
+		};
+
+
 
 		auto singlePatch = std::make_shared<SingleGregoryPatch>(
 			p,
@@ -129,6 +133,12 @@ void GregoryPatch::UpdateVertices()
 			);
 
 		singleSurfaces.push_back(singlePatch);
+
+		ps.push_back(p );
+		Us.push_back(dU );
+		Vs.push_back(dV);
+		DUs.push_back(dUV );
+		DVs.push_back(dVU);
 	}
 }
 

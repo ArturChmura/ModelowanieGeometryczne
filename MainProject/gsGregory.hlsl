@@ -1,5 +1,5 @@
 #include "gregoryHeader.hlsli"
-
+#include "DeCasteljeu.hlsli"
 cbuffer transformations : register(b0)
 {
     matrix MVP;
@@ -11,16 +11,6 @@ cbuffer transformations : register(b0)
     float4 dVU4[3];
     int horizontalSlices;
     int verticalSlices;
-}
-
-float4 GetHermitVector(float u)
-{
-    return float4(
-        2 * u * u * u - 3 * u * u + 1,
-        -2 * u * u * u + 3 * u * u,
-        u * u * u - 2 * u * u + u,
-        u * u * u - u * u
-        );
 }
 
 static float3 p[4] = (float[4][3]) p4;
@@ -37,18 +27,14 @@ void main(
 {
     float uu = input[0].uv.x;
     bool flip = input[0].uv.y > 0.5;
-    float4 Huu = GetHermitVector(uu);
     
     int slices = flip ? verticalSlices : horizontalSlices;
     float step = 1.0f / slices;
     for (float vv = 0.0f; vv <= 1.f + step / 2; vv += step)
     {
-        float4 Hvv = GetHermitVector(vv);
         float u = flip ? vv : uu;
         float v = flip ? uu : vv;
         
-        float4 Hv = flip ? Huu : Hvv;
-        float4 Hu = flip ? Hvv : Huu;
         float3 result;
         for (int i = 0; i < 3; ++i)
         {
@@ -60,15 +46,27 @@ void main(
     
             matrix P =
             {
-                p[0][i], p[1][i], dV[0][i], dV[1][i],
-                p[2][i], p[3][i], dV[2][i], dV[3][i],
-                dU[0][i], dU[1][i], T[0], T[1],
-                dU[2][i], dU[3][i], T[2], T[3]
+                p[0][i], dV[0][i], dV[1][i], p[1][i],
+                dU[0][i], T[0], T[1], dU[1][i],
+                dU[2][i], T[2], T[3], dU[3][i],
+                p[2][i], dV[2][i], dV[3][i], p[3][i]
             };
-            float4 HuP = mul(Hu, P);
-            result[i] = v == 0.0f ? Hu[1] : p[2][i];
-            float HuPHv = mul(HuP, Hv);
-            result[i] = HuPHv;
+            
+            float coefXYZ[4];
+            for (int j = 0; j < 4; ++j)
+            {
+                float coefX[4] =
+                {
+                    P[j][0],
+                    P[j][1],
+                    P[j][2],
+                    P[j][3],
+                };
+              
+                coefXYZ[j] = DeCasteljeu(coefX, u, 4);
+            }
+            
+            result[i] = DeCasteljeu(coefXYZ, v, 4);
         }
         
         GregoryOut element = (GregoryOut) 0;

@@ -137,11 +137,11 @@ Application::Application(SIZE size)
 
 
 	
-	c0Adder->cylinder = true;
+	/*c0Adder->cylinder = true;
 	c0Adder->horizontalSlicesCount =  1;
 	c0Adder->verticalSlicesCount = 3;
 	scene->cursor->SetPosition({ 0,0,0 });
-	c0Adder->AddModel();
+	c0Adder->AddModel();*/
 
 
 
