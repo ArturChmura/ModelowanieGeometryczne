@@ -1,7 +1,7 @@
 #pragma once
 #include "SimpleMath.h"
 
-class BernstrinHelper
+class BernstainHelper
 {
 public:
 	static DirectX::SimpleMath::Vector3 DeCasteljeu(std::array<DirectX::SimpleMath::Vector3, 4> coef, float t, int size)

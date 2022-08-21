@@ -105,7 +105,8 @@
     <ClInclude Include="gsBezierSurfaceC2.h" />
     <ClInclude Include="gsGregory.h" />
     <ClInclude Include="gsSurfaceBezier.h" />
-    <ClInclude Include="BernstrinHelper.h" />
+    <ClInclude Include="BernsteinHelper.h" />
+    <ClInclude Include="SolveTriDiagonalMatrix.h" />
     <ClInclude Include="vsGregory.h" />
     <ClInclude Include="IBezierCurve.h" />
     <ClInclude Include="IBezierSurface.h" />

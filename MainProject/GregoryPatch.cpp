@@ -1,6 +1,6 @@
 #include "GregoryPatch.h"
 #include "imgui.h"
-#include "BernstrinHelper.h";
+#include "BernsteinHelper.h";
 
 using namespace DirectX::SimpleMath;
 GregoryPatch::GregoryPatch(std::vector<std::shared_ptr<PatchSide>> patchesSides, std::string name)
@@ -45,8 +45,8 @@ void GregoryPatch::UpdateVertices()
 			coef1[j] = Vector3(patchesSides[i]->secondLine[j]->GetTranslation());
 			coef0[j] = Vector3(patchesSides[i]->firstLine[j]->GetTranslation());
 		}
-		t1i[i] = BernstrinHelper::DeCasteljeu(coef1, 0.5f, 4);
-		p3i[i] = BernstrinHelper::DeCasteljeu(coef0, 0.5f, 4);
+		t1i[i] = BernstainHelper::DeCasteljeu(coef1, 0.5f, 4);
+		p3i[i] = BernstainHelper::DeCasteljeu(coef0, 0.5f, 4);
 		p2i[i] = p3i[i] + (p3i[i] - t1i[i]);
 
 		qi[i] = (3 * p2i[i] - p3i[i]) / 2.0f;

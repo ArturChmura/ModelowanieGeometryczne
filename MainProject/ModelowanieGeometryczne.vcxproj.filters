@@ -52,9 +52,6 @@
     <Filter Include="Source Files\Mesh">
       <UniqueIdentifier>{bc543cd8-d5db-4f4d-b1e5-3dc12d6f0c0d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Helpers">
-      <UniqueIdentifier>{410f3a88-879c-462d-96ce-f54da33a6249}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\EventsHandlers">
       <UniqueIdentifier>{0c423b19-f6d5-4d2a-ab03-9f374e16121c}</UniqueIdentifier>
     </Filter>
@@ -66,9 +63,6 @@
     </Filter>
     <Filter Include="Header Files\Camera\CameraMovement">
       <UniqueIdentifier>{b92e5dda-3ef5-4aa9-8032-6bb8ded03a49}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Names">
-      <UniqueIdentifier>{e81c56c3-33d2-436c-b96a-a5a33d0d8ad8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Shaders\Bezier\Surface">
       <UniqueIdentifier>{5e3850cd-554c-4a25-9609-e80a5e5d63ec}</UniqueIdentifier>
@@ -109,18 +103,6 @@
     <Filter Include="Header Files\Merger">
       <UniqueIdentifier>{211d8383-710f-4996-9e22-733427e86268}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Helpers\Visitors">
-      <UniqueIdentifier>{07393019-1ae9-4194-8c6f-a1cfb0a67352}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Helpers\Visitors">
-      <UniqueIdentifier>{db92aa29-fdcc-46ad-8aa1-00b55dd65e17}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Helpers\GregoryFinder">
-      <UniqueIdentifier>{b75a72eb-777f-4f96-9c67-e3a58c160155}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Helpers\GregoryFinder">
-      <UniqueIdentifier>{f5c72567-3a7c-4d34-8ab4-5aaaa826f149}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Merger">
       <UniqueIdentifier>{e27c2900-f229-48b7-9f93-fb03c062c48f}</UniqueIdentifier>
     </Filter>
@@ -142,14 +124,44 @@
     <Filter Include="Source Files\Models\Surfaces\Gregory">
       <UniqueIdentifier>{36c1fa70-d84d-4a0f-8965-5c4874c69edc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Helpers\BernstrinHelper">
-      <UniqueIdentifier>{d8f09a17-6e50-46ae-b22d-26d5b213679a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Shaders\Gregory">
       <UniqueIdentifier>{c4e84f51-4efa-47f6-9176-9ac1e668ef29}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Shaders\Gregory">
       <UniqueIdentifier>{ca5385ea-1044-4da3-a2e7-0c28ac84433b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models\Interfaces">
+      <UniqueIdentifier>{ca388692-f558-4343-8448-af86a27ef279}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models\Interfaces">
+      <UniqueIdentifier>{05d48f5e-a0d4-4192-a83b-1e4ec811dec4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Camera\CameraMovement">
+      <UniqueIdentifier>{4d830ade-f77a-4fe6-822e-916fa29bb265}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Visitors">
+      <UniqueIdentifier>{07393019-1ae9-4194-8c6f-a1cfb0a67352}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Visitors">
+      <UniqueIdentifier>{db92aa29-fdcc-46ad-8aa1-00b55dd65e17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Algorithms">
+      <UniqueIdentifier>{f54ede51-a7d1-4f78-a2aa-cb01c3d90f14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Algorithms\GregoryFinder">
+      <UniqueIdentifier>{b75a72eb-777f-4f96-9c67-e3a58c160155}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Algorithms">
+      <UniqueIdentifier>{2a2285c0-1667-4283-b17e-c7046c27578e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Algorithms\GregoryFinder">
+      <UniqueIdentifier>{f5c72567-3a7c-4d34-8ab4-5aaaa826f149}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Math">
+      <UniqueIdentifier>{fd1fd6e9-0c73-4d5b-ac76-dd9e0e857c09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Math\BernsteinHelper">
+      <UniqueIdentifier>{d8f09a17-6e50-46ae-b22d-26d5b213679a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -161,9 +173,6 @@
     </ClCompile>
     <ClCompile Include="application.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ArcCameraModel.cpp">
-      <Filter>Source Files\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Torus.cpp">
       <Filter>Source Files\Models</Filter>
@@ -204,9 +213,6 @@
     <ClCompile Include="MessageHandler.cpp">
       <Filter>Source Files\EventsHandlers</Filter>
     </ClCompile>
-    <ClCompile Include="MatrixExt.cpp">
-      <Filter>Source Files\Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="MeshInfo.cpp">
       <Filter>Source Files\Mesh</Filter>
     </ClCompile>
@@ -214,12 +220,6 @@
       <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="Coursor3d.cpp">
-      <Filter>Source Files\Models</Filter>
-    </ClCompile>
-    <ClCompile Include="IModel.cpp">
-      <Filter>Source Files\Models</Filter>
-    </ClCompile>
-    <ClCompile Include="VertexModel.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="BezierCurveC0.cpp">
@@ -279,9 +279,6 @@
     <ClCompile Include="ObjectAdderWindow.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="Named.cpp">
-      <Filter>Source Files\Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="DebugWindow.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
@@ -306,14 +303,11 @@
     <ClCompile Include="SceneLoader.cpp">
       <Filter>Source Files\Serialization</Filter>
     </ClCompile>
-    <ClCompile Include="IUnmovableModel.cpp">
-      <Filter>Source Files\Models</Filter>
-    </ClCompile>
     <ClCompile Include="EmptyModelVisitor.cpp">
-      <Filter>Source Files\Helpers\Visitors</Filter>
+      <Filter>Source Files\Visitors</Filter>
     </ClCompile>
     <ClCompile Include="GregoryFinder.cpp">
-      <Filter>Source Files\Helpers\GregoryFinder</Filter>
+      <Filter>Source Files\Algorithms\GregoryFinder</Filter>
     </ClCompile>
     <ClCompile Include="PointsMerger.cpp">
       <Filter>Source Files\Merger</Filter>
@@ -350,6 +344,24 @@
     </ClCompile>
     <ClCompile Include="GregoryAdderWindow.cpp">
       <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Named.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="IModel.cpp">
+      <Filter>Source Files\Models\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="IUnmovableModel.cpp">
+      <Filter>Source Files\Models\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexModel.cpp">
+      <Filter>Source Files\Models\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="ArcCameraModel.cpp">
+      <Filter>Source Files\Camera\CameraMovement</Filter>
+    </ClCompile>
+    <ClCompile Include="MatrixExt.cpp">
+      <Filter>Source Files\Algorithms</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -407,16 +419,7 @@
     <ClInclude Include="MessageHandler.h">
       <Filter>Header Files\EventsHandlers</Filter>
     </ClInclude>
-    <ClInclude Include="MatrixExt.h">
-      <Filter>Header Files\Helpers</Filter>
-    </ClInclude>
     <ClInclude Include="Coursor3d.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="IModel.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexModel.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="IBezierCurve.h">
@@ -436,9 +439,6 @@
     </ClInclude>
     <ClInclude Include="MultipleInheritableEnableSharedFromThis.h">
       <Filter>Header Files\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="VirtualPoint.h">
-      <Filter>Header Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="BezierCurveInterpolating.h">
       <Filter>Header Files\Models\Curves</Filter>
@@ -482,9 +482,6 @@
     <ClInclude Include="ICameraMovement.h">
       <Filter>Header Files\Camera\CameraMovement</Filter>
     </ClInclude>
-    <ClInclude Include="Named.h">
-      <Filter>Header Files\Names</Filter>
-    </ClInclude>
     <ClInclude Include="vsSurfaceBezier.h">
       <Filter>Header Files\Shaders\Bezier\Surfaces</Filter>
     </ClInclude>
@@ -521,32 +518,29 @@
     <ClInclude Include="SceneLoader.h">
       <Filter>Header Files\Serialization</Filter>
     </ClInclude>
-    <ClInclude Include="IUnmovableModel.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
     <ClInclude Include="PointsMerger.h">
       <Filter>Header Files\Merger</Filter>
     </ClInclude>
     <ClInclude Include="AbstractModelVisitor.h">
-      <Filter>Header Files\Helpers\Visitors</Filter>
+      <Filter>Header Files\Visitors</Filter>
     </ClInclude>
     <ClInclude Include="EmptyModelVisitor.h">
-      <Filter>Header Files\Helpers\Visitors</Filter>
+      <Filter>Header Files\Visitors</Filter>
     </ClInclude>
     <ClInclude Include="ConcreteModelSelectorVisitor.h">
-      <Filter>Header Files\Helpers\Visitors</Filter>
+      <Filter>Header Files\Visitors</Filter>
     </ClInclude>
     <ClInclude Include="GregoryFinder.h">
-      <Filter>Header Files\Helpers\GregoryFinder</Filter>
+      <Filter>Header Files\Algorithms\GregoryFinder</Filter>
     </ClInclude>
     <ClInclude Include="PatchSide.h">
-      <Filter>Header Files\Helpers\GregoryFinder</Filter>
+      <Filter>Header Files\Algorithms\GregoryFinder</Filter>
     </ClInclude>
     <ClInclude Include="PointSurfacePair.h">
-      <Filter>Header Files\Helpers\GregoryFinder</Filter>
+      <Filter>Header Files\Algorithms\GregoryFinder</Filter>
     </ClInclude>
     <ClInclude Include="Node.h">
-      <Filter>Header Files\Helpers\GregoryFinder</Filter>
+      <Filter>Header Files\Algorithms\GregoryFinder</Filter>
     </ClInclude>
     <ClInclude Include="IBezierSurface.h">
       <Filter>Header Files\Models\Surfaces</Filter>
@@ -572,8 +566,8 @@
     <ClInclude Include="SingleGregoryPatch.h">
       <Filter>Header Files\Models\Surfaces\Gregory</Filter>
     </ClInclude>
-    <ClInclude Include="BernstrinHelper.h">
-      <Filter>Header Files\Helpers\BernstrinHelper</Filter>
+    <ClInclude Include="BernsteinHelper.h">
+      <Filter>Header Files\Math\BernsteinHelper</Filter>
     </ClInclude>
     <ClInclude Include="vsGregory.h">
       <Filter>Header Files\Shaders\Gregory</Filter>
@@ -583,6 +577,27 @@
     </ClInclude>
     <ClInclude Include="GregoryAdderWindow.h">
       <Filter>Header Files\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Named.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="IUnmovableModel.h">
+      <Filter>Header Files\Models\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="IModel.h">
+      <Filter>Header Files\Models\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexModel.h">
+      <Filter>Header Files\Models\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="VirtualPoint.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="SolveTriDiagonalMatrix.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrixExt.h">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

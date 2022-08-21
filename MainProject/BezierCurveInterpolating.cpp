@@ -2,6 +2,7 @@
 #include <array>
 #include "Helpers.h"
 #include "imgui.h"
+#include "SolveTriDiagonalMatrix.h"
 
 using namespace DirectX::SimpleMath;
 BezierCurveInterpolating::BezierCurveInterpolating(std::vector<std::shared_ptr<Point>> points)
