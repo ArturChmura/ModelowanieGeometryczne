@@ -96,6 +96,41 @@ void Torus::Accept(AbstractModelVisitor& visitor)
 	visitor.Accept(IModel::downcasted_shared_from_this<Torus>());
 }
 
+DirectX::SimpleMath::Vector3 Torus::GetValue(float u, float v)
+{
+	float alpha = 2 * PI * v;
+	float beta = 2 * PI * u;
+	float x = (R + r * cosf(beta)) * cosf(alpha);
+	float z = (R + r * cosf(beta)) * sinf(alpha);
+	float y = r * sinf(beta);
+	return Vector3(x, y, z);
+}
+
+DirectX::SimpleMath::Vector3 Torus::GetUDerivativeValue(float u, float v)
+{
+	float x = -1 * r * cosf(2 * PI * v) * sinf(2 * PI * u) * 2 * PI;
+	float y = 0;
+	float z = -1 * r * sin(2 * PI * v) * sinf(2 * PI * u) * 2 * PI;
+	return Vector3(x, y, z);
+}
+
+DirectX::SimpleMath::Vector3 Torus::GetVDerivativeValue(float u, float v)
+{
+	float x = -1 * R * sinf(2 * PI * v) * 2 * PI + -1 * r * cosf(2 * PI * u) * sinf(2 * PI * v) * 2 * PI;
+	float y =  r * cosf(2 * PI * v) *  2 * PI;
+	float z =  R * cosf(2 * PI * v) * 2 * PI +  r * cosf(2 * PI * u) * cos(2 * PI * v) * 2 * PI;
+}
+
+bool Torus::IsUWrapped()
+{
+	return true;
+}
+
+bool Torus::IsVWrapped()
+{
+	return true;
+}
+
 
 
 void Torus::RenderGUI()
