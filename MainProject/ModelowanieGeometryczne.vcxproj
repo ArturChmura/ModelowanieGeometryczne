@@ -39,6 +39,7 @@
     <ClCompile Include="gsSurfaceBezier.cpp" />
     <ClCompile Include="IBezierCurve.cpp" />
     <ClCompile Include="IBezierSurface.cpp" />
+    <ClCompile Include="IntersectionFinder.cpp" />
     <ClCompile Include="ISingleBezierSurface.cpp" />
     <ClCompile Include="IUnmovableModel.cpp" />
     <ClCompile Include="KeyboardHandler.cpp" />
@@ -106,6 +107,8 @@
     <ClInclude Include="gsGregory.h" />
     <ClInclude Include="gsSurfaceBezier.h" />
     <ClInclude Include="BernsteinHelper.h" />
+    <ClInclude Include="IntersectionFinder.h" />
+    <ClInclude Include="IParameterized.h" />
     <ClInclude Include="SolveTriDiagonalMatrix.h" />
     <ClInclude Include="vsGregory.h" />
     <ClInclude Include="IBezierCurve.h" />
@@ -281,7 +284,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\DirectXTK\Inc;$(SolutionDir)Dependencies\ImGui\ImGuiWin32DX11;$(SolutionDir)Dependencies\nativefiledialog\src\include;$(SolutionDir)Dependencies\Serializer\Serializer;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\DirectXTK\Inc;$(SolutionDir)Dependencies\ImGui\ImGuiWin32DX11;$(SolutionDir)Dependencies\nativefiledialog\src\include;$(SolutionDir)Dependencies\Serializer\Serializer;$(SolutionDir)Dependencies\eigen-3.4.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -302,7 +305,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\DirectXTK\Inc;$(SolutionDir)Dependencies\ImGui\ImGuiWin32DX11;$(SolutionDir)Dependencies\nativefiledialog\src\include;$(SolutionDir)Dependencies\Serializer\Serializer;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\DirectXTK\Inc;$(SolutionDir)Dependencies\ImGui\ImGuiWin32DX11;$(SolutionDir)Dependencies\nativefiledialog\src\include;$(SolutionDir)Dependencies\Serializer\Serializer;$(SolutionDir)Dependencies\eigen-3.4.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

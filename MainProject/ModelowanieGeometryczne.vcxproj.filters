@@ -163,6 +163,12 @@
     <Filter Include="Header Files\Math\BernsteinHelper">
       <UniqueIdentifier>{d8f09a17-6e50-46ae-b22d-26d5b213679a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Algorithms\Intersections">
+      <UniqueIdentifier>{bddfe1c8-ea8f-4443-afd2-42b329c73794}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Algorithms\Intersections">
+      <UniqueIdentifier>{53757764-5634-492c-9023-6bd35096f7a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxStructures.cpp">
@@ -362,6 +368,9 @@
     </ClCompile>
     <ClCompile Include="MatrixExt.cpp">
       <Filter>Source Files\Algorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="IntersectionFinder.cpp">
+      <Filter>Source Files\Algorithms\Intersections</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -598,6 +607,12 @@
     </ClInclude>
     <ClInclude Include="MatrixExt.h">
       <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="IParameterized.h">
+      <Filter>Header Files\Models\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="IntersectionFinder.h">
+      <Filter>Header Files\Algorithms\Intersections</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

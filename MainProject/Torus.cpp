@@ -118,7 +118,8 @@ DirectX::SimpleMath::Vector3 Torus::GetVDerivativeValue(float u, float v)
 {
 	float x = -1 * R * sinf(2 * PI * v) * 2 * PI + -1 * r * cosf(2 * PI * u) * sinf(2 * PI * v) * 2 * PI;
 	float y =  r * cosf(2 * PI * v) *  2 * PI;
-	float z =  R * cosf(2 * PI * v) * 2 * PI +  r * cosf(2 * PI * u) * cos(2 * PI * v) * 2 * PI;
+	float z =  R * cosf(2 * PI * v) * 2 * PI +  r * cosf(2 * PI * u) * cosf(2 * PI * v) * 2 * PI;
+	return Vector3(x, y, z);
 }
 
 bool Torus::IsUWrapped()
