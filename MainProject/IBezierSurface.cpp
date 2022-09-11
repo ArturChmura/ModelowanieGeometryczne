@@ -97,6 +97,59 @@ bool IBezierSurface::IsWrappedV()
 	return isWrapped;
 }
 
+DirectX::SimpleMath::Vector3 IBezierSurface::GetValue(float u, float v)
+{
+	auto singleSurfaceParameter = GetSingleSurfaceParameter(u, v);
+	return singleSurfaceParameter.singleSurface->GetValue(singleSurfaceParameter.u, singleSurfaceParameter.v);
+
+}
+
+DirectX::SimpleMath::Vector3 IBezierSurface::GetUDerivativeValue(float u, float v)
+{
+	auto singleSurfaceParameter = GetSingleSurfaceParameter(u, v);
+	auto singleDeriviative =  singleSurfaceParameter.singleSurface->GetUDerivativeValue(singleSurfaceParameter.u, singleSurfaceParameter.v);
+	return singleDeriviative * horizontalSlicesCount;
+}
+
+DirectX::SimpleMath::Vector3 IBezierSurface::GetVDerivativeValue(float u, float v)
+{
+	auto singleSurfaceParameter = GetSingleSurfaceParameter(u, v);
+	auto singleDeriviative = singleSurfaceParameter.singleSurface->GetVDerivativeValue(singleSurfaceParameter.u, singleSurfaceParameter.v);
+	return singleDeriviative * verticalSlicesCount;
+}
+
+bool IBezierSurface::IsUWrapped()
+{
+	return isWrapped;
+}
+
+bool IBezierSurface::IsVWrapped()
+{
+	return false;
+}
+
+SingleSurfaceParameter IBezierSurface::GetSingleSurfaceParameter(float u, float v)
+{
+
+	int horizontalSlice = ((int)(u * horizontalSlicesCount)) % horizontalSlicesCount;
+	int verticalSlice = ((int)(v * verticalSlicesCount)) % verticalSlicesCount;
+
+	float du = 1.0 / horizontalSlicesCount;
+	float dv = 1.0 / verticalSlicesCount;
+
+	auto singleSurfaces = GetSingleSurfaces();
+	auto surface = singleSurfaces[verticalSlice * horizontalSlicesCount + horizontalSlice];
+
+
+	SingleSurfaceParameter singleSurfaceParameter;
+	singleSurfaceParameter.u = (u - horizontalSlice * du) * horizontalSlicesCount;
+	singleSurfaceParameter.v = (v - verticalSlice * dv) * verticalSlicesCount;
+	singleSurfaceParameter.singleSurface = surface;
+	return singleSurfaceParameter;
+}
+
+
+
 std::vector<std::shared_ptr<IModel>> IBezierSurface::GetContainingModels()
 {
 	auto singleSurfaces = GetSingleSurfaces();

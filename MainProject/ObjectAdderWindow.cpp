@@ -4,6 +4,7 @@
 #include "BezierSurfaceC2AdderWindow.h"
 #include "PointsMerger.h"
 #include "BezierSurfaceC0.h"
+#include "BezierSurfaceC2.h"
 #include "GregoryFinder.h"
 #include "GregoryPatch.h"
 #include "BezierCurveInterpolating.h"
@@ -31,6 +32,24 @@ void ObjectAdderWindow::Render()
             }
         }
        
+    }
+
+    auto selectedToruses = scene->GetSelectedType<Torus>();
+    auto selectedC0Surface = scene->GetSelectedType<BezierSurfaceC0>();
+    auto selectedC2Surface = scene->GetSelectedType<BezierSurfaceC2>();
+
+    std::vector<std::shared_ptr<IParameterized>> parametrized;
+    parametrized.insert(parametrized.end(), selectedToruses.begin(), selectedToruses.end());
+    parametrized.insert(parametrized.end(), selectedC0Surface.begin(), selectedC0Surface.end());
+    parametrized.insert(parametrized.end(), selectedC2Surface.begin(), selectedC2Surface.end());
+    if (parametrized.size() == 2)
+    {
+        if (ImGui::Button("Find intersection"))
+        {
+            intersectionAdderOpen = true;
+            this->intersecionAdder = std::make_shared<IntersecionAdderWindow>(scene, &intersectionAdderOpen, parametrized[0], parametrized[1]);
+        }
+
     }
 
     auto selectedPoints = scene->GetSelectedType<Point>();

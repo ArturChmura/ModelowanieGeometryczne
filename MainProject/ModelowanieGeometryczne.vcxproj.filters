@@ -169,6 +169,15 @@
     <Filter Include="Source Files\Algorithms\Intersections">
       <UniqueIdentifier>{53757764-5634-492c-9023-6bd35096f7a6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Algorithms\Surfaces">
+      <UniqueIdentifier>{3e152efa-c281-473e-a9e2-35cd3472e186}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Algorithms\Surfaces">
+      <UniqueIdentifier>{720d99e7-11df-48bd-a49d-99f53bb91d31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Algorithms\Surfaces\NewFilter1">
+      <UniqueIdentifier>{0038b8d7-6a67-4270-b7bb-0bf58f9ce57c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxStructures.cpp">
@@ -368,6 +377,9 @@
     </ClCompile>
     <ClCompile Include="MatrixExt.cpp">
       <Filter>Source Files\Algorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="IntersecionAdderWindow.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="IntersectionFinder.cpp">
       <Filter>Source Files\Algorithms\Intersections</Filter>
@@ -612,6 +624,15 @@
       <Filter>Header Files\Models\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="IntersectionFinder.h">
+      <Filter>Header Files\Algorithms\Intersections</Filter>
+    </ClInclude>
+    <ClInclude Include="IntersecionAdderWindow.h">
+      <Filter>Header Files\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="SingleSurfaceParameter.h">
+      <Filter>Header Files\Models\Surfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="IntersectionPoint.h">
       <Filter>Header Files\Algorithms\Intersections</Filter>
     </ClInclude>
   </ItemGroup>

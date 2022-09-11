@@ -1,6 +1,7 @@
 #include "SingleBezierSurfaceC2.h"
 #include "ShadersManager.h"
 #include "imgui.h"
+#include "BernsteinHelper.h"
 
 using namespace DirectX::SimpleMath;
 SingleBezierSurfaceC2::SingleBezierSurfaceC2(std::array<std::array<std::shared_ptr<Point>, 4>, 4> points, int horizontalSlices, int verticalSlices)
@@ -75,4 +76,65 @@ void SingleBezierSurfaceC2::Draw(std::shared_ptr<Camera> camera)
 void SingleBezierSurfaceC2::Accept(AbstractModelVisitor& visitor)
 {
 	visitor.Accept(IModel::downcasted_shared_from_this<SingleBezierSurfaceC2>());
+}
+
+DirectX::SimpleMath::Vector3 SingleBezierSurfaceC2::GetValue(float u, float v)
+{
+	std::array<Vector3, 4> vertical;
+	for (int i = 0; i < 4; i++)
+	{
+		std::array<Vector3, 4> horizontal;
+		for (int j = 0; j < 4; j++)
+		{
+			horizontal[j] = Vector3(points[i][j]->GetTranslation());
+		}
+		auto v = BernstainHelper::DeBoor(horizontal, u);
+		vertical[i] = v;
+	}
+	auto result = BernstainHelper::DeBoor(vertical, v);
+	return result;
+}
+
+DirectX::SimpleMath::Vector3 SingleBezierSurfaceC2::GetUDerivativeValue(float u, float v)
+{
+	std::array<Vector3, 4> horizontal;
+	for (int j = 0; j < 4; j++)
+	{
+		std::array<Vector3, 4> vertical;
+		for (int i = 0; i < 4; i++)
+		{
+			vertical[i] = Vector3(points[i][j]->GetTranslation());
+		}
+		auto vector = BernstainHelper::DeBoor(vertical, v);
+		horizontal[j] = vector;
+	}
+	auto result = BernstainHelper::DeBoorDerivative(horizontal, u);
+	return result;
+}
+
+DirectX::SimpleMath::Vector3 SingleBezierSurfaceC2::GetVDerivativeValue(float u, float v)
+{
+	std::array<Vector3, 4> vertical;
+	for (int i = 0; i < 4; i++)
+	{
+		std::array<Vector3, 4> horizontal;
+		for (int j = 0; j < 4; j++)
+		{
+			horizontal[j] = Vector3(points[i][j]->GetTranslation());
+		}
+		auto vector = BernstainHelper::DeBoor(horizontal, u);
+		vertical[i] = vector;
+	}
+	auto result = BernstainHelper::DeBoorDerivative(vertical, v);
+	return result;
+}
+
+bool SingleBezierSurfaceC2::IsUWrapped()
+{
+	return false;
+}
+
+bool SingleBezierSurfaceC2::IsVWrapped()
+{
+	return false;
 }

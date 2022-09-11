@@ -3,8 +3,9 @@
 #include "Point.h"
 #include <array>
 #include "PolygonalChain.h"
+#include "IParameterized.h"
 
-class ISingleBezierSurface : public IUnmovableModel
+class ISingleBezierSurface : public IUnmovableModel, public IParameterized
 {
 
 public:
@@ -20,8 +21,14 @@ public:
 	void RenderGUI() override;
 	void SetDrawPolygonChain(bool drawPolygonChain);
 	virtual std::vector<std::shared_ptr<IModel>> GetContainingModels() override;
+	// Inherited via IParameterized
+	
 protected:
 	MeshInfo meshInfo;
 	bool resetDrawing = true;
 	bool drawPolygonChain = false;
+
+
+
+
 };

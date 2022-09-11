@@ -11,8 +11,8 @@ public:
 	virtual DirectX::SimpleMath::Vector3 GetValue(float u, float v) override
 	{
 		double x = 40 *u;
-		double y = 40*v;
-		double z = 20;
+		double y = 40 * v;
+		double z = 20; 
 		return Vector3(x, y, z);
 	}
 	virtual DirectX::SimpleMath::Vector3 GetUDerivativeValue(float u, float v) override
@@ -62,6 +62,78 @@ public:
 		double x = -3.535 * cos(v) + (-2.5 * cos(u) + 2.5 * sin(u)) * sin(v);
 		double y = 3.535 * cos(v) + (-2.5 * cos(u) + 2.5 * sin(u)) * sin(v);
 		double z = (3.5335 * cos(u) + 3.535 * sin(u)) * sin(v);
+		return Vector3(x, y, z);
+	}
+	virtual bool IsUWrapped() override
+	{
+		return false;
+	}
+	virtual bool IsVWrapped() override
+	{
+		return false;
+	}
+};
+
+
+class ParametrizedMock21 : public IParameterized
+{
+public:
+	// Inherited via IParameterized
+	virtual DirectX::SimpleMath::Vector3 GetValue(float u, float v) override
+	{
+		double x = 2+u*sin(v);
+		double y = 3+u*cos(v);
+		double z = -2+v/3.0;
+		return Vector3(x, y, z);
+	}
+	virtual DirectX::SimpleMath::Vector3 GetUDerivativeValue(float u, float v) override
+	{
+		double x = sin(v);
+		double y = cos(v);
+		double z = 0;
+		return Vector3(x, y, z);
+	}
+	virtual DirectX::SimpleMath::Vector3 GetVDerivativeValue(float u, float v) override
+	{
+		double x = u*cos(v);
+		double y = -u*sin(v);
+		double z = 1.0/3.0;
+		return Vector3(x, y, z);
+	}
+	virtual bool IsUWrapped() override
+	{
+		return false;
+	}
+	virtual bool IsVWrapped() override
+	{
+		return false;
+	}
+};
+
+
+class ParametrizedMock22 : public IParameterized
+{
+public:
+	// Inherited via IParameterized
+	virtual DirectX::SimpleMath::Vector3 GetValue(float u, float v) override
+	{
+		double x = 2*u;
+		double y = v*v;
+		double z = sin(3.0*v);
+		return Vector3(x, y, z);
+	}
+	virtual DirectX::SimpleMath::Vector3 GetUDerivativeValue(float u, float v) override
+	{
+		double x = 2;
+		double y = 0;
+		double z = 0;
+		return Vector3(x, y, z);
+	}
+	virtual DirectX::SimpleMath::Vector3 GetVDerivativeValue(float u, float v) override
+	{
+		double x = 0;
+		double y = 2.0*v;
+		double z = 3.0*cos(3.0*v);
 		return Vector3(x, y, z);
 	}
 	virtual bool IsUWrapped() override

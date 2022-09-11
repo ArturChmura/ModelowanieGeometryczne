@@ -39,6 +39,7 @@
     <ClCompile Include="gsSurfaceBezier.cpp" />
     <ClCompile Include="IBezierCurve.cpp" />
     <ClCompile Include="IBezierSurface.cpp" />
+    <ClCompile Include="IntersecionAdderWindow.cpp" />
     <ClCompile Include="IntersectionFinder.cpp" />
     <ClCompile Include="ISingleBezierSurface.cpp" />
     <ClCompile Include="IUnmovableModel.cpp" />
@@ -107,8 +108,11 @@
     <ClInclude Include="gsGregory.h" />
     <ClInclude Include="gsSurfaceBezier.h" />
     <ClInclude Include="BernsteinHelper.h" />
+    <ClInclude Include="IntersecionAdderWindow.h" />
     <ClInclude Include="IntersectionFinder.h" />
+    <ClInclude Include="IntersectionPoint.h" />
     <ClInclude Include="IParameterized.h" />
+    <ClInclude Include="SingleSurfaceParameter.h" />
     <ClInclude Include="SolveTriDiagonalMatrix.h" />
     <ClInclude Include="vsGregory.h" />
     <ClInclude Include="IBezierCurve.h" />
@@ -178,6 +182,8 @@
     <FxCompile Include="gsGregory.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="gsSurfaceBezier.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
@@ -292,7 +298,8 @@
       <AdditionalDependencies>d3d11.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Onecore.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(OutDir)*.cso" "$(ProjectDir)"</Command>
+      <Command>copy $(OutDir)*.cso" "$(ProjectDir);
+lib /NOLOGO /OUT:"$(TargetPath).lib" "$(ProjectDir)x64\$(Configuration)\*.obj"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -314,6 +321,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3d11.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Onecore.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>
+lib /NOLOGO /OUT:"$(TargetPath).lib" "$(ProjectDir)$(Configuration)\*.obj"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

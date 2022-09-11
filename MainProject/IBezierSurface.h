@@ -4,9 +4,10 @@
 #include "PolygonalChain.h"
 #include "IUnmovableModel.h"
 #include "ISingleBezierSurface.h"
+#include "IParameterized.h"
+#include "SingleSurfaceParameter.h"
 
-
-class IBezierSurface : public IUnmovableModel
+class IBezierSurface : public IUnmovableModel, public IParameterized
 {
 public:
 	IBezierSurface(int horizontalCount, int verticalCount, bool isWrapped, std::string name = "IBezierSurface");
@@ -19,7 +20,16 @@ public:
 	int verticalSlicesCount;
 	bool IsWrappedU();
 	bool IsWrappedV();
+	// Inherited via IParameterized
+	virtual DirectX::SimpleMath::Vector3 GetValue(float u, float v) override;
+	virtual DirectX::SimpleMath::Vector3 GetUDerivativeValue(float u, float v) override;
+	virtual DirectX::SimpleMath::Vector3 GetVDerivativeValue(float u, float v) override;
+	virtual bool IsUWrapped() override;
+	virtual bool IsVWrapped() override;
 private:
 	bool drawPolygonChain = false;
 	bool isWrapped;
+
+
+	SingleSurfaceParameter GetSingleSurfaceParameter(float u, float v);
 };

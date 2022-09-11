@@ -1,6 +1,7 @@
 #include "SingleBezierSurfaceC0.h"
 #include <stdexcept>
 #include "ShadersManager.h"
+#include "BernsteinHelper.h"
 
 using namespace DirectX::SimpleMath;
 
@@ -75,4 +76,65 @@ void SingleBezierSurfaceC0::Draw(std::shared_ptr<Camera> camera)
 void SingleBezierSurfaceC0::Accept(AbstractModelVisitor& visitor)
 {
 	visitor.Accept(IModel::downcasted_shared_from_this<SingleBezierSurfaceC0>());
+}
+
+DirectX::SimpleMath::Vector3 SingleBezierSurfaceC0::GetValue(float u, float v)
+{
+	std::array<Vector3, 4> vertical;
+	for (int i = 0; i < 4; i++)
+	{
+		std::array<Vector3, 4> horizontal;
+		for (int j = 0; j < 4; j++)
+		{
+			horizontal[j] = Vector3(points[i][j]->GetTranslation());
+		}
+		auto v = BernstainHelper::DeCasteljeu(horizontal, u, 4);
+		vertical[i] = v;
+	}
+	auto result = BernstainHelper::DeCasteljeu(vertical, v, 4);
+	return result;
+}
+
+DirectX::SimpleMath::Vector3 SingleBezierSurfaceC0::GetUDerivativeValue(float u, float v)
+{
+	std::array<Vector3, 4> horizontal;
+	for (int j = 0; j < 4; j++)
+	{
+		std::array<Vector3, 4> vertical;
+		for (int i = 0; i < 4; i++)
+		{
+			vertical[i] = Vector3(points[i][j]->GetTranslation());
+		}
+		auto vector = BernstainHelper::DeCasteljeu(vertical, v, 4);
+		horizontal[j] = vector;
+	}
+	auto result = BernstainHelper::dU(horizontal, u);
+	return result;
+}
+
+DirectX::SimpleMath::Vector3 SingleBezierSurfaceC0::GetVDerivativeValue(float u, float v)
+{
+	std::array<Vector3, 4> vertical;
+	for (int i = 0; i < 4; i++)
+	{
+		std::array<Vector3, 4> horizontal;
+		for (int j = 0; j < 4; j++)
+		{
+			horizontal[j] = Vector3(points[i][j]->GetTranslation());
+		}
+		auto vector = BernstainHelper::DeCasteljeu(horizontal, u, 4);
+		vertical[i] = vector;
+	}
+	auto result = BernstainHelper::dU(vertical, v);
+	return result;
+}
+
+bool SingleBezierSurfaceC0::IsUWrapped()
+{
+	return false;
+}
+
+bool SingleBezierSurfaceC0::IsVWrapped()
+{
+	return false;
 }

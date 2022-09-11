@@ -17,4 +17,21 @@ public:
 	virtual void Accept(AbstractModelVisitor& visitor) override;
 
 
+
+	// Inherited via ISingleBezierSurface
+	virtual DirectX::SimpleMath::Vector3 GetValue(float u, float v) override;
+
+
+	virtual DirectX::SimpleMath::Vector3 GetUDerivativeValue(float u, float v) override;
+
+
+	virtual DirectX::SimpleMath::Vector3 GetVDerivativeValue(float u, float v) override;
+
+
+	virtual bool IsUWrapped() override;
+
+
+	virtual bool IsVWrapped() override;
+
+
 };
