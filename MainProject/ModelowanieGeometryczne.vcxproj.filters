@@ -378,11 +378,14 @@
     <ClCompile Include="MatrixExt.cpp">
       <Filter>Source Files\Algorithms</Filter>
     </ClCompile>
-    <ClCompile Include="IntersecionAdderWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="IntersectionFinder.cpp">
       <Filter>Source Files\Algorithms\Intersections</Filter>
+    </ClCompile>
+    <ClCompile Include="IntersectionCurve.cpp">
+      <Filter>Source Files\Models\Curves</Filter>
+    </ClCompile>
+    <ClCompile Include="IntersecionAdderWindow.cpp">
+      <Filter>Source Files\Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -634,6 +637,9 @@
     </ClInclude>
     <ClInclude Include="IntersectionPoint.h">
       <Filter>Header Files\Algorithms\Intersections</Filter>
+    </ClInclude>
+    <ClInclude Include="IntersectionCurve.h">
+      <Filter>Header Files\Models\Curves</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

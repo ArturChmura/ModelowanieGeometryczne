@@ -40,6 +40,7 @@
     <ClCompile Include="IBezierCurve.cpp" />
     <ClCompile Include="IBezierSurface.cpp" />
     <ClCompile Include="IntersecionAdderWindow.cpp" />
+    <ClCompile Include="IntersectionCurve.cpp" />
     <ClCompile Include="IntersectionFinder.cpp" />
     <ClCompile Include="ISingleBezierSurface.cpp" />
     <ClCompile Include="IUnmovableModel.cpp" />
@@ -109,6 +110,7 @@
     <ClInclude Include="gsSurfaceBezier.h" />
     <ClInclude Include="BernsteinHelper.h" />
     <ClInclude Include="IntersecionAdderWindow.h" />
+    <ClInclude Include="IntersectionCurve.h" />
     <ClInclude Include="IntersectionFinder.h" />
     <ClInclude Include="IntersectionPoint.h" />
     <ClInclude Include="IParameterized.h" />

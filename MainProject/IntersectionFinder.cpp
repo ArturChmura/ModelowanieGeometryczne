@@ -6,6 +6,7 @@
 #include <sstream>
 #include <string> 
 #include "BezierCurveInterpolating.h"
+#include "IntersectionCurve.h"
 
 using Eigen::MatrixXd;
 using Eigen::MatrixXf;
@@ -13,7 +14,15 @@ using Eigen::Matrix3d;
 
 using namespace DirectX::SimpleMath;
 
-std::shared_ptr<IModel> IntersectionFinder::FindIntersection(std::shared_ptr<IParameterized> surface1, std::shared_ptr<IParameterized> surface2)
+IntersectionFinder::IntersectionFinder(double newtonStartDistance, double newtownMinNorm, bool useCursor, DirectX::SimpleMath::Vector3 cursorPosition)
+{
+	this->newtonStartDistance = newtonStartDistance;
+	this->newtownMinNorm = newtownMinNorm;
+	this->useCursor = useCursor;
+	this->cursorPosition = cursorPosition;
+}
+
+std::shared_ptr<std::vector<IntersectionPoint>> IntersectionFinder::FindIntersection(std::shared_ptr<IParameterized> surface1, std::shared_ptr<IParameterized> surface2)
 {
 	float minU1 = surface1->IsUWrapped() ? -1 : 0;
 	float minU2 = surface2->IsUWrapped() ? -1 : 0;
@@ -25,8 +34,25 @@ std::shared_ptr<IModel> IntersectionFinder::FindIntersection(std::shared_ptr<IPa
 	float maxV1 = surface1->IsVWrapped() ? 2 : 1;
 	float maxV2 = surface2->IsVWrapped() ? 2 : 1;
 
-	auto P0 = FindNearestPoint(surface1, surface2, minU1, maxU1, minV1, maxV1, minU2, maxU2, minV2, maxV2);
+	Pair<double> uv, st;
+	if (useCursor)
+	{
+		uv = FindStartingPointFromPosition(surface1, cursorPosition);
+		st = FindStartingPointFromPosition(surface2, cursorPosition);
+		OutputDebugString(L"Znaleziono punkt");
+	}
+	else
+	{
+		uv = { 0.5,0.5 };
+		st = { 0.5,0.5 };
+	}
 
+
+	auto P0 = FindNearestPoint(surface1, surface2, uv.a, uv.b, st.a, st.b, minU1, maxU1, minV1, maxV1, minU2, maxU2, minV2, maxV2);
+	if (!P0.found)
+	{
+		return nullptr;
+	}
 	auto dU1 = surface1->GetUDerivativeValue(P0.u, P0.v);
 	auto dV1 = surface1->GetVDerivativeValue(P0.u, P0.v);
 
@@ -39,8 +65,8 @@ std::shared_ptr<IModel> IntersectionFinder::FindIntersection(std::shared_ptr<IPa
 	auto tangent = np.Cross(nq);
 	tangent.Normalize();
 	bool loopFound = false;
-	std::vector<Vector3> direction1Positions;
-	std::vector<Vector3> direction2Positions;
+	std::vector<IntersectionPoint> direction1Positions;
+	std::vector<IntersectionPoint> direction2Positions;
 
 
 	FindNextPointsInDirection(surface1, surface2, P0, tangent, false, loopFound, direction1Positions);
@@ -51,29 +77,24 @@ std::shared_ptr<IModel> IntersectionFinder::FindIntersection(std::shared_ptr<IPa
 	}
 
 
-	std::vector<Vector3> positions;
+	std::shared_ptr<std::vector<IntersectionPoint>> positions = std::make_shared< std::vector<IntersectionPoint>>();
 	for (int i = direction2Positions.size() - 1; i >= 0; i--)
 	{
-		positions.push_back(direction2Positions[i]);
+		positions->push_back(direction2Positions[i]);
 	}
-	positions.push_back(P0.position);
+	positions->push_back(P0);
 	for (int i = 0; i < direction1Positions.size(); i++)
 	{
-		positions.push_back(direction1Positions[i]);
+		positions->push_back(direction1Positions[i]);
 	}
 
-	std::vector<std::shared_ptr<Point>> points;
-	for (auto position : positions)
-	{
-		auto point = std::make_shared<Point>(position);
-		points.push_back(point);
-	}
-	auto curve = std::make_shared< BezierCurveInterpolating>(points);
 
-	return curve;
+
+
+	return positions;
 }
 
-void IntersectionFinder::FindNextPointsInDirection(std::shared_ptr<IParameterized> surface1, std::shared_ptr<IParameterized> surface2, IntersectionPoint P0, Vector3 tangent, bool flip, bool& loopFound, std::vector<DirectX::SimpleMath::Vector3>& direction1Positions)
+void IntersectionFinder::FindNextPointsInDirection(std::shared_ptr<IParameterized> surface1, std::shared_ptr<IParameterized> surface2, IntersectionPoint P0, Vector3 tangent, bool flip, bool& loopFound, std::vector<IntersectionPoint>& direction1Positions)
 {
 	auto nearest = P0;
 	if (flip)
@@ -88,14 +109,19 @@ void IntersectionFinder::FindNextPointsInDirection(std::shared_ptr<IParameterize
 		{
 			auto newDot = (nearest.position - P0.position).Dot(tangent);
 			auto prevDot = (prev.position - P0.position).Dot(tangent);
-			
+
+			if (newDot > 0 && prevDot < 0)
+			{
+				int e = 0;
+			}
+
 			if (newDot > 0 && newDot < newtonStartDistance && prevDot < 0 && prevDot > -newtonStartDistance)
 			{
 				loopFound = true;
 				break;
 			}
 
-			direction1Positions.push_back(nearest.position);
+			direction1Positions.push_back(nearest);
 
 
 		}
@@ -105,6 +131,10 @@ void IntersectionFinder::FindNextPointsInDirection(std::shared_ptr<IParameterize
 IntersectionPoint IntersectionFinder::FindNearestPoint(
 	std::shared_ptr<IParameterized> surface1,
 	std::shared_ptr<IParameterized> surface2,
+	double uStart,
+	double vStart,
+	double sStart,
+	double tStart,
 	float u1,
 	float u2,
 	float v1,
@@ -115,13 +145,19 @@ IntersectionPoint IntersectionFinder::FindNearestPoint(
 	float t2
 )
 {
-	double u = (u1 + u2) / 2, v = (v1 + v2) / 2, s = (s1 + s2) / 2, t = (t1 + t2) / 2;
-	double L1 = 0, L2 = 0, L3 = 0, L4 = 0;
+	double u = uStart;
+	double v = vStart;
+	double s = sStart;
+	double t = tStart;
+	double L1 = std::asin((u - (u1 + u1)/2)*2/(u1-u2));
+	double L2 = std::asin((v - (v1 + v1)/2)*2/(v1-v2));
+	double L3 = std::asin((s - (s1 + s1)/2)*2/(s1-s2));
+	double L4 = std::asin((t - (t1 + t1)/2)*2/(t1-t2));
 
 
 	float norm = 9999;
 	int i = 0;
-	while (norm > 0.0001)
+	while (norm > newtownMinNorm)
 	{
 		auto value1 = surface1->GetValue(u, v);
 		auto value2 = surface2->GetValue(s, t);
@@ -210,17 +246,24 @@ IntersectionPoint IntersectionFinder::FindNearestPoint(
 		L3 += dq(6, 0);
 		L4 += dq(7, 0);
 
-		u = GetInRange(u, u1, u2);
-		v = GetInRange(v, v1, v2);
-		s = GetInRange(s, s1, s2);
-		t = GetInRange(t, t1, t2);
+		GetInRange(u, u1, u2);
+		GetInRange(v, v1, v2);
+		GetInRange(s, s1, s2);
+		GetInRange(t, t1, t2);
 
 		norm = H.norm();
 
 		i++;
+		if (i > maxTriesFirstPoints)
+		{
 
+			IntersectionPoint intersectionPoint;
+			intersectionPoint.found = false;
+			return intersectionPoint;
+		}
 	}
 	IntersectionPoint intersectionPoint;
+	intersectionPoint.found = true;
 	intersectionPoint.position = (surface1->GetValue(u, v) + surface2->GetValue(s, t)) / 2;
 	intersectionPoint.u = u;
 	intersectionPoint.v = v;
@@ -279,7 +322,7 @@ IntersectionPoint IntersectionFinder::FindNextPoint(bool flip, std::shared_ptr<I
 			OutputDebugString(L"F: \n");
 			PrintMatrix(F);
 
-			if (F.norm() < newtownMinNorm)
+			if (F.norm() < newtownMinNorm / i)
 			{
 				IntersectionPoint intersectionPoint;
 				intersectionPoint.position = (surface1->GetValue(u, v) + surface2->GetValue(s, t)) / 2;
@@ -322,14 +365,52 @@ IntersectionPoint IntersectionFinder::FindNextPoint(bool flip, std::shared_ptr<I
 
 			u = xk1(0), v = xk1(1), s = xk1(2), t = xk1(3);
 
-			if (
-				u < 0.0 || u > 1.0 ||
-				v < 0.0 || v > 1.0 ||
-				s < 0.0 || s > 1.0 ||
-				t < 0.0 || t > 1.0
-				)
+			if (u < 0.0 || u > 1.0)
 			{
-				break;
+				if (surface1->IsUWrapped())
+				{
+					GetInRange(u, 0, 1);
+				}
+				else
+				{
+					break;
+				}
+			}
+
+			if (v < 0.0 || v > 1.0)
+			{
+				if (surface1->IsVWrapped())
+				{
+					GetInRange(v, 0, 1);
+				}
+				else
+				{
+					break;
+				}
+			}
+
+			if (s < 0.0 || s > 1.0)
+			{
+				if (surface2->IsUWrapped())
+				{
+					GetInRange(s, 0, 1);
+				}
+				else
+				{
+					break;
+				}
+			}
+
+			if (t < 0.0 || t > 1.0)
+			{
+				if (surface2->IsVWrapped())
+				{
+					GetInRange(t, 0, 1);
+				}
+				else
+				{
+					break;
+				}
 			}
 
 
@@ -341,6 +422,82 @@ IntersectionPoint IntersectionFinder::FindNextPoint(bool flip, std::shared_ptr<I
 	IntersectionPoint intersectionPoint;
 	intersectionPoint.found = false;
 	return intersectionPoint;
+}
+
+
+
+Pair<double> IntersectionFinder::FindStartingPointFromPosition(std::shared_ptr<IParameterized> surface, DirectX::SimpleMath::Vector3 position)
+{
+	double bestU = 0.0, bestV = 0.0;
+	double bestDistance = DBL_MAX;
+
+	double splitSize = 1.0 / surfaceSplitsOnCursorStart;
+	for (double uFirstLevel = 0.0; uFirstLevel <= 1.0; uFirstLevel += splitSize)
+	{
+		for (double vFirstLevel = 0.0; vFirstLevel <= 1.0; vFirstLevel += splitSize)
+		{
+			double bestSplitDist = Vector3::DistanceSquared(position, surface->GetValue(uFirstLevel, vFirstLevel));
+			double stepSize = splitSize / 4;
+			double stepU = uFirstLevel;
+			double stepV = vFirstLevel;
+			while (stepSize > splitSize / 16)
+			{
+				double areaDistanceBest = DBL_MAX;
+				double areaUBest;
+				double areaVBest;
+
+				for (int i = -1; i <= 1; i+=2)
+				{
+					for (int j = -1; j <= 1; j+=2)
+					{
+						double u = stepU + stepSize * i;
+						double v = stepV + stepSize * j;
+						UpdateBest(u, v, areaUBest, areaVBest, areaDistanceBest, surface, position);
+					}
+				}
+
+				if (areaDistanceBest < bestSplitDist)
+				{
+					stepU = areaUBest;
+					stepV = areaVBest;
+					bestSplitDist = areaDistanceBest;
+				}
+				stepSize /= 2;
+
+			}
+
+			UpdateBest(stepU, stepV, bestU, bestV, bestDistance, surface, position);
+		}
+	}
+
+	return { bestU, bestV };
+}
+
+void IntersectionFinder::UpdateBest(double u, double v, double& bestU, double& bestV, double& bestDistance, std::shared_ptr<IParameterized> surface, Vector3 position)
+{
+	GetInRange(u, 0.0, 1.0);
+	GetInRange(v, 0.0, 1.0);
+	auto surfacePosition = surface->GetValue(u, v);
+	auto distance = Vector3::DistanceSquared(position, surfacePosition);
+	if (distance < bestDistance)
+	{
+		bestU = u;
+		bestV = v;
+		bestDistance = distance;
+	}
+}
+
+void IntersectionFinder::GetInRange(double& value, double min, double max)
+{
+	double d = max - min;
+	while (value > max)
+	{
+		value -= d;
+	}
+	while (value < min)
+	{
+		value += d;
+	}
 }
 
 
@@ -378,18 +535,4 @@ void IntersectionFinder::PrintVector(
 
 	OutputDebugString(L" \n");
 
-}
-
-float IntersectionFinder::GetInRange(float value, float min, float max)
-{
-	float d = max - min;
-	while (value > max)
-	{
-		value -= d;
-	}
-	while (value < min)
-	{
-		value += d;
-	}
-	return value;
 }

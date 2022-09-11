@@ -143,7 +143,8 @@ void CompositeModel::RenderGUI()
 	}
 	if (modelsMap.size() == 1)
 	{
-		for (auto [_,model]:modelsMap)
+		auto mapCopy = modelsMap;
+		for (auto [_,model]: mapCopy)
 		{
 			model->RenderGUI();
 		}

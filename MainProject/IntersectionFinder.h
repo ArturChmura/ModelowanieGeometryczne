@@ -4,20 +4,26 @@
 #include "SimpleMath.h"
 #include "IntersectionPoint.h"
 #include "IModel.h"
+#include "Helpers.h"
 
 class IntersectionFinder
 {
 public:
-	std::shared_ptr<IModel> FindIntersection(
+	IntersectionFinder(double newtonStartDistance, double newtownMinNorm, bool useCursor, DirectX::SimpleMath::Vector3 cursorPosition);
+	std::shared_ptr<std::vector<IntersectionPoint>> FindIntersection(
 		std::shared_ptr<IParameterized> surface1,
 		std::shared_ptr <IParameterized> surface2
 	);
 
-	void FindNextPointsInDirection(std::shared_ptr<IParameterized> surface1, std::shared_ptr<IParameterized> surface2, IntersectionPoint P0, DirectX::SimpleMath::Vector3 tangent,bool flip, bool& loopFound, std::vector<DirectX::SimpleMath::Vector3>& direction1Positions);
+	void FindNextPointsInDirection(std::shared_ptr<IParameterized> surface1, std::shared_ptr<IParameterized> surface2, IntersectionPoint P0, DirectX::SimpleMath::Vector3 tangent,bool flip, bool& loopFound, std::vector<IntersectionPoint>& direction1Positions);
 
 	IntersectionPoint FindNearestPoint(
 		std::shared_ptr<IParameterized> surface1, 
 		std::shared_ptr <IParameterized> surface2,
+		double uStart = 0.5,
+		double vStart = 0.5,
+		double sStart = 0.5,
+		double tStart = 0.5,
 		float u1 = 0,
 		float u2 = 1,
 		float v1 = 0,
@@ -27,6 +33,8 @@ public:
 		float t1 = 0,
 		float t2 = 1
 	);
+
+	Pair<double> FindStartingPointFromPosition(std::shared_ptr<IParameterized> surface, DirectX::SimpleMath::Vector3 position);
 
 	IntersectionPoint FindNextPoint(
 		bool flip,
@@ -47,9 +55,13 @@ public:
 
 	void PrintVector(DirectX::SimpleMath::Vector3 v);
 
-	double newtonStartDistance = 0.1;
 private:
-	float GetInRange(float value, float min, float max);
-
-	double newtownMinNorm = 0.01;
+	void UpdateBest(double u, double v, double& bestU, double& bestV, double& bestDistance, std::shared_ptr<IParameterized> surface, DirectX::SimpleMath::Vector3 position);
+	void GetInRange(double& value, double min, double max);
+	bool useCursor;
+	DirectX::SimpleMath::Vector3 cursorPosition;
+	double newtonStartDistance;
+	double newtownMinNorm;
+	int maxTriesFirstPoints = 100;
+	int surfaceSplitsOnCursorStart = 20;
 };

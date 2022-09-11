@@ -19,4 +19,9 @@ public:
 	std::shared_ptr<Scene> scene;
 	bool* open;
 
+	float pointsDistance = 0.1;
+	float precision = 0.01;
+
+	bool textNotFound = false;
+	bool useCursor = false;
 };

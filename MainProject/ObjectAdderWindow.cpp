@@ -123,4 +123,16 @@ void ObjectAdderWindow::Render()
             gregoryAdder = nullptr;
         }
     }
+
+    if (intersecionAdder)
+    {
+        if (intersectionAdderOpen)
+        {
+            intersecionAdder->Render();
+        }
+        else
+        {
+            intersecionAdder = nullptr;
+        }
+    }
 }
