@@ -39,7 +39,7 @@ std::shared_ptr<std::vector<IntersectionPoint>> IntersectionFinder::FindIntersec
 	{
 		uv = FindStartingPointFromPosition(surface1, cursorPosition);
 		st = FindStartingPointFromPosition(surface2, cursorPosition);
-		OutputDebugString(L"Znaleziono punkt");
+		//OutputDebugString(L"Znaleziono punkt");
 	}
 	else
 	{
@@ -168,7 +168,7 @@ IntersectionPoint IntersectionFinder::FindNearestPoint(
 		auto dT = surface2->GetVDerivativeValue(s, t);
 
 		std::wstringstream wss;
-		wss << "\n i = " << i
+		/*wss << "\n i = " << i
 			<< "\n norm = " << norm
 			<< "\n (u,v,s,t) =  " << u << "  " << v << "  " << s << "  " << t << "  "
 			<< "\n v1.x, v1.y, v1.z =  " << value1.x << "  " << value1.y << "  " << value1.z
@@ -180,7 +180,7 @@ IntersectionPoint IntersectionFinder::FindNearestPoint(
 			<< "\n v2du.x, v2du.y, v2du.z =  " << dS.x << "  " << dS.y << "  " << dS.z
 			<< "\n v2dv.x, v2dv.y, v2dv.z =  " << dT.x << "  " << dT.y << "  " << dT.z
 			<< "\n\n";
-		OutputDebugString(wss.str().c_str());
+		OutputDebugString(wss.str().c_str());*/
 
 		MatrixXd H(7, 1);
 		H.setZero();
@@ -192,8 +192,8 @@ IntersectionPoint IntersectionFinder::FindNearestPoint(
 		H(4, 0) = v - ((v1 + v2) / 2 + sin(L2) * (v2 - v1) / 2);
 		H(5, 0) = s - ((s1 + s2) / 2 + sin(L3) * (s2 - s1) / 2);
 		H(6, 0) = t - ((t1 + t2) / 2 + sin(L4) * (t2 - t1) / 2);
-		OutputDebugString(L"H: \n");
-		PrintMatrix(H);
+	/*	OutputDebugString(L"H: \n");
+		PrintMatrix(H);*/
 
 		MatrixXd Hq(7, 8);
 		Hq.setZero();
@@ -222,19 +222,19 @@ IntersectionPoint IntersectionFinder::FindNearestPoint(
 		Hq(5, 6) = -(s2 - s1) / 2.0 * cos(L3);
 		Hq(6, 7) = -(t2 - t1) / 2.0 * cos(L4);
 
-		OutputDebugString(L"Hq: \n");
-		PrintMatrix(Hq);
+	/*	OutputDebugString(L"Hq: \n");
+		PrintMatrix(Hq);*/
 		MatrixXd HH = Hq * Hq.transpose();
-		OutputDebugString(L"HH: \n");
-		PrintMatrix(HH);
+	/*	OutputDebugString(L"HH: \n");
+		PrintMatrix(HH);*/
 
 		MatrixXd y = HH.completeOrthogonalDecomposition().solve(-H);
-		OutputDebugString(L"y: \n");
-		PrintMatrix(y);
+	/*	OutputDebugString(L"y: \n");
+		PrintMatrix(y);*/
 
 		MatrixXd dq = Hq.transpose() * y;
-		OutputDebugString(L"dq: \n");
-		PrintMatrix(dq);
+	/*	OutputDebugString(L"dq: \n");
+		PrintMatrix(dq);*/
 
 
 		u += dq(0, 0);
@@ -290,8 +290,8 @@ IntersectionPoint IntersectionFinder::FindNextPoint(bool flip, std::shared_ptr<I
 	{
 		tangent = -tangent;
 	}
-	OutputDebugString(L"tangent: \n");
-	PrintVector(tangent);
+	//OutputDebugString(L"tangent: \n");
+	//PrintVector(tangent);
 
 
 	for (int i = 1; i <= 8; i *= 2)
@@ -299,7 +299,7 @@ IntersectionPoint IntersectionFinder::FindNextPoint(bool flip, std::shared_ptr<I
 		Eigen::VectorXd xk(4);
 		Eigen::VectorXd xk1(4);
 		xk1 << P0.u, P0.v, P0.s, P0.t;
-		PrintMatrix(xk1);
+		//PrintMatrix(xk1);
 		double u = P0.u, v = P0.v, s = P0.s, t = P0.t;
 		float distance = newtonStartDistance / i;
 		for (int j = 0; j < 20; j++)
@@ -319,8 +319,8 @@ IntersectionPoint IntersectionFinder::FindNextPoint(bool flip, std::shared_ptr<I
 			F(2, 0) = pos1.z - pos2.z;
 			F(3, 0) = (pos1 - P0.position).Dot(tangent) - distance;
 
-			OutputDebugString(L"F: \n");
-			PrintMatrix(F);
+			//OutputDebugString(L"F: \n");
+			//PrintMatrix(F);
 
 			if (F.norm() < newtownMinNorm / i)
 			{
@@ -356,8 +356,8 @@ IntersectionPoint IntersectionFinder::FindNextPoint(bool flip, std::shared_ptr<I
 			dF(3, 2) = 0;
 			dF(3, 3) = 0;
 
-			OutputDebugString(L"dF: \n");
-			PrintMatrix(dF);
+			//OutputDebugString(L"dF: \n");
+			//PrintMatrix(dF);
 
 			MatrixXd right = dF * xk - F;
 
@@ -414,8 +414,8 @@ IntersectionPoint IntersectionFinder::FindNextPoint(bool flip, std::shared_ptr<I
 			}
 
 
-			OutputDebugString(L"xk1: \n");
-			PrintMatrix(xk1);
+			//OutputDebugString(L"xk1: \n");
+			//PrintMatrix(xk1);
 		}
 	}
 
