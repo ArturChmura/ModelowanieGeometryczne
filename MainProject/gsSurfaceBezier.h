@@ -14,6 +14,12 @@ struct GSSurfaceBezierConstantBuffer
 	float Y[16];
 	float Z[16];
 	int slices;
+	int flipped;
+	int rowIndex;
+	int columnIndex;
+	int rowCount;
+	int columnCount;
+	int filter;
 };
 
 class GSSurfaceBezier
@@ -24,4 +30,6 @@ public:
 	mini::dx_ptr<ID3D11GeometryShader> m_geometryShader;
 	mini::dx_ptr<ID3D11Buffer> constantBufferGS;
 	void SetConstantBuffer(GSSurfaceBezierConstantBuffer buffer);
+	void SetFilterTexture(ID3D11ShaderResourceView* texture);
+	mini::dx_ptr<ID3D11SamplerState> m_samplerWrap;
 };

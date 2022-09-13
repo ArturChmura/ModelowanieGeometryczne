@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="application.cpp" />
     <ClCompile Include="ArcCameraModel.cpp" />
+    <ClCompile Include="ArrayFilter.cpp" />
     <ClCompile Include="BezierCurveC0.cpp" />
     <ClCompile Include="BezierCurveC2.cpp" />
     <ClCompile Include="BezierCurveInterpolating.cpp" />
@@ -42,6 +43,7 @@
     <ClCompile Include="IntersecionAdderWindow.cpp" />
     <ClCompile Include="IntersectionCurve.cpp" />
     <ClCompile Include="IntersectionFinder.cpp" />
+    <ClCompile Include="IParameterized.cpp" />
     <ClCompile Include="ISingleBezierSurface.cpp" />
     <ClCompile Include="IUnmovableModel.cpp" />
     <ClCompile Include="KeyboardHandler.cpp" />
@@ -85,6 +87,7 @@
     <ClInclude Include="AbstractModelVisitor.h" />
     <ClInclude Include="application.h" />
     <ClInclude Include="ArcCameraModel.h" />
+    <ClInclude Include="ArrayFilter.h" />
     <ClInclude Include="BezierCurveC0.h" />
     <ClInclude Include="BezierCurveC2.h" />
     <ClInclude Include="BezierCurveInterpolating.h" />
@@ -101,6 +104,7 @@
     <ClInclude Include="CursorOptionsWindow.h" />
     <ClInclude Include="DebugWindow.h" />
     <ClInclude Include="EmptyModelVisitor.h" />
+    <ClInclude Include="IFilter.h" />
     <ClInclude Include="GregoryAdderWindow.h" />
     <ClInclude Include="GregoryFinder.h" />
     <ClInclude Include="GregoryPatch.h" />
@@ -227,6 +231,7 @@
     <None Include="bezierStructs.hlsli" />
     <None Include="DeBoor.hlsli" />
     <None Include="DeCasteljeu.hlsli" />
+    <None Include="GetUV.hlsli" />
     <None Include="gregoryHeader.hlsli" />
     <None Include="surfaceBezierStructs.hlsli" />
     <None Include="VSColorOut.hlsli" />
@@ -300,7 +305,7 @@
       <AdditionalDependencies>d3d11.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Onecore.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(OutDir)*.cso" "$(ProjectDir);
+      <Command>copy "$(OutDir)*.cso" "$(ProjectDir)";
 lib /NOLOGO /OUT:"$(TargetPath).lib" "$(ProjectDir)x64\$(Configuration)\*.obj"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

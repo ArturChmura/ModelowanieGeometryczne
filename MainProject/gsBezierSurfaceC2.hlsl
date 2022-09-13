@@ -1,6 +1,9 @@
 #include "surfaceBezierStructs.hlsli"
 #include "DeBoor.hlsli"
+#include "GetUV.hlsli"
 
+sampler samp : register(s0);
+Texture2D filterTexture : register(t0);
 cbuffer transformations : register(b0)
 {
     matrix MVP;
@@ -8,6 +11,12 @@ cbuffer transformations : register(b0)
     float4 y4[4];
     float4 z4[4];
     int slices;
+    int flipped;
+    int rowIndex;
+    int columnIndex;
+    int rowCount;
+    int columnCount;
+    int filter;
 }
 
 static float x[16] = (float[16]) x4;
@@ -26,6 +35,7 @@ void main(
  
     for (int j = 0; j < 4; ++j)
     {
+
         float coefX[4] =
         {
             x[j * 4 + 0],
@@ -56,6 +66,16 @@ void main(
     
     for (float t = 0.0f; t <= 1.0f + step / 2; t += step)
     {
+        if (filter)
+        {
+            float2 uv = GetUV(input[0].uv.x, t, flipped, rowIndex, columnIndex, rowCount, columnCount);
+            float3 norm = filterTexture.SampleLevel(samp, uv, 0);
+      
+            if (norm.x < 0.5)
+            {
+                continue;
+            }
+        }
         float xx = DeBoor(coefXYZ[0], t);
         float yy = DeBoor(coefXYZ[1], t);
         float zz = DeBoor(coefXYZ[2], t);

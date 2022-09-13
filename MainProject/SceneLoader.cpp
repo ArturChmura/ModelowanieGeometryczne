@@ -97,6 +97,7 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 	{
 		std::vector<std::shared_ptr<SingleBezierSurfaceC0>> patches;
 		std::map<int, std::shared_ptr<Point>> surfacePoints;
+		int patchIndex = 0;
 		for (auto& patch : s.patches)
 		{
 			std::vector<std::shared_ptr<Point>> controlPoints;
@@ -116,8 +117,9 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 				}
 			}
 
-			auto singleSurface = std::make_shared<SingleBezierSurfaceC0>(points, patch.samples.x, patch.samples.y);
+			auto singleSurface = std::make_shared<SingleBezierSurfaceC0>(points, patch.samples.x, patch.samples.y, patchIndex % s.size.x, patchIndex / s.size.x, s.size.x, s.size.y);
 			patches.push_back(singleSurface);
+			patchIndex++;
 		}
 
 		auto surface = std::make_shared<BezierSurfaceC0>(patches, s.size.x, s.size.y, false, s.name);
@@ -134,7 +136,7 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 	{
 		std::vector<std::shared_ptr<SingleBezierSurfaceC2>> patches;
 		std::map<int, std::shared_ptr<Point>> surfacePoints;
-
+		int patchIndex = 0;
 		for (auto& patch : s.patches)
 		{
 			std::vector<std::shared_ptr<Point>> controlPoints;
@@ -154,8 +156,9 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 				}
 			}
 
-			auto singleSurface = std::make_shared<SingleBezierSurfaceC2>(points, patch.samples.x, patch.samples.y);
+			auto singleSurface = std::make_shared<SingleBezierSurfaceC2>(points, patch.samples.x, patch.samples.y, patchIndex % s.size.x, patchIndex / s.size.x, s.size.x, s.size.y);
 			patches.push_back(singleSurface);
+			patchIndex++;
 		}
 
 		auto surface = std::make_shared<BezierSurfaceC2>(patches, s.size.x, s.size.y, false, s.name);

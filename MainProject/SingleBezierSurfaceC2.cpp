@@ -4,8 +4,10 @@
 #include "BernsteinHelper.h"
 
 using namespace DirectX::SimpleMath;
-SingleBezierSurfaceC2::SingleBezierSurfaceC2(std::array<std::array<std::shared_ptr<Point>, 4>, 4> points, int horizontalSlices, int verticalSlices)
-	: ISingleBezierSurface(points, horizontalSlices, verticalSlices, "Single Bezier Surface C2")
+SingleBezierSurfaceC2::SingleBezierSurfaceC2(std::array<std::array<std::shared_ptr<Point>, 4>, 4> points, int horizontalSlices, int verticalSlices,
+	int rowIndex, int columnIndex,
+	int rowCount, int columnCount)
+	: ISingleBezierSurface(points, horizontalSlices, verticalSlices, rowIndex, columnIndex, rowCount, columnCount, "Single Bezier Surface C2")
 {
 	this->points = points;
 	this->horizontalSlices = horizontalSlices;
@@ -35,14 +37,24 @@ void SingleBezierSurfaceC2::Draw(std::shared_ptr<Camera> camera)
 	auto mvp = v * p;
 
 	GSBezierSurfaceC2ConstantBuffer gsCB;
+	ZeroMemory(&gsCB, sizeof(gsCB));
 	gsCB.mvp = mvp;
 	gsCB.slices = horizontalSlices;
-
+	gsCB.rowIndex = rowIndex;
+	gsCB.columnIndex = columnIndex;
+	gsCB.rowCount = rowCount;
+	gsCB.columnCount = columnCount;
+	gsCB.flipped = 0.0f;
+	if (filterTextureView)
+	{
+		ShadersManager::gsBezierSurfaceC2->SetFilterTexture(filterTextureView);
+		gsCB.filter = true;
+	}
 	std::vector<Vector3> translations = std::vector<Vector3>(16);
 
 	for (int i = 0; i < 16; i++)
 	{
-		translations[i] = Vector3(points[i % 4][i / 4]->GetTranslation());
+		translations[i] = Vector3(points[i / 4][i % 4]->GetTranslation());
 	}
 	for (int i = 0; i < 16; i++)
 	{
@@ -56,7 +68,7 @@ void SingleBezierSurfaceC2::Draw(std::shared_ptr<Camera> camera)
 
 	for (int i = 0; i < 16; i++)
 	{
-		translations[i] = Vector3(points[i / 4][i % 4]->GetTranslation());
+		translations[i] = Vector3(points[i % 4][i / 4]->GetTranslation());
 	}
 	for (int i = 0; i < 16; i++)
 	{
@@ -66,6 +78,7 @@ void SingleBezierSurfaceC2::Draw(std::shared_ptr<Camera> camera)
 	}
 
 	gsCB.slices = verticalSlices;
+	gsCB.flipped = 1.0f;
 
 	ShadersManager::gsBezierSurfaceC2->SetConstantBuffer(gsCB);
 	DxDevice::instance->context()->Draw(horizontalSlices + 1, verticalSlices + 1);

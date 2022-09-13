@@ -66,7 +66,7 @@ std::tuple<std::shared_ptr<IBezierSurface>, std::vector<std::vector<std::shared_
 				{points[i + 2][j], points[i + 2][j + 1], points[i + 2][j + 2], points[i + 2][j + 3]},
 				{points[(i + 3) % pointsVerticalCount][j], points[(i + 3) % pointsVerticalCount][j + 1], points[(i + 3) % pointsVerticalCount][j + 2], points[(i + 3) % pointsVerticalCount][j + 3]}
 			} };
-			auto singleSurface = std::make_shared<SingleBezierSurfaceC0>(singleSurfacePoints, 10, 10);
+			auto singleSurface = std::make_shared<SingleBezierSurfaceC0>(singleSurfacePoints, 10, 10, i/3, j/3, verticalSlicesCount, horizontalSlicesCount);
 			singleSurfaces.push_back(singleSurface);
 		}
 	}

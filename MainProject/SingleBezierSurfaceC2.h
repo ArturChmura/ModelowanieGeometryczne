@@ -7,7 +7,9 @@
 class SingleBezierSurfaceC2 : public ISingleBezierSurface
 {
 public:
-	SingleBezierSurfaceC2(std::array<std::array<std::shared_ptr<Point>, 4>, 4> points, int horizontalSlices, int verticalSlices);
+	SingleBezierSurfaceC2(std::array<std::array<std::shared_ptr<Point>, 4>, 4> points, int horizontalSlices, int verticalSlices,
+		int rowIndex, int columnIndex,
+		int rowCount, int columnCount);
 
 
 public:

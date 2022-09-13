@@ -1,5 +1,6 @@
 #include "IBezierSurface.h"
 #include "imgui.h"
+#include "ShadersManager.h"
 using namespace DirectX::SimpleMath;
 
 IBezierSurface::IBezierSurface(int horizontalCount, int verticalCount, bool isWrapped, std::string name)
@@ -8,6 +9,34 @@ IBezierSurface::IBezierSurface(int horizontalCount, int verticalCount, bool isWr
 	this->horizontalSlicesCount = horizontalCount;
 	this->verticalSlicesCount = verticalCount;
 	this->isWrapped = isWrapped;
+
+	D3D11_TEXTURE2D_DESC textureDescription;
+	ZeroMemory(&textureDescription, sizeof(textureDescription));
+	textureDescription.Width = textureSize;
+	textureDescription.Height = textureSize;
+	textureDescription.SampleDesc.Count = 1;
+	textureDescription.MipLevels = 1;
+	textureDescription.ArraySize = 1;
+	textureDescription.Format = DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
+	textureDescription.Usage = D3D11_USAGE::D3D11_USAGE_DYNAMIC;
+	textureDescription.CPUAccessFlags = D3D11_CPU_ACCESS_FLAG::D3D11_CPU_ACCESS_WRITE;
+	textureDescription.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+
+
+	filterTexture = DxDevice::instance->CreateTexture(textureDescription);
+
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+	ZeroMemory(&srvDesc, sizeof(srvDesc));
+	srvDesc.Format = DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
+	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.Texture2D.MipLevels = 1;
+	srvDesc.Texture2D.MostDetailedMip = 0;
+
+	ID3D11ShaderResourceView* viewPtr;
+	DxDevice::instance->operator->()->CreateShaderResourceView(filterTexture.get(), &srvDesc, &viewPtr);
+	filterTextureView = mini::dx_ptr<ID3D11ShaderResourceView>(viewPtr);
+
 }
 
 void IBezierSurface::Draw(std::shared_ptr<Camera> camera)
@@ -31,7 +60,6 @@ void IBezierSurface::RenderGUI()
 {
 	IModel::RenderGUI();
 	auto singleSurfaces = GetSingleSurfaces();
-	static int selectedIndex = -1;
 	if (ImGui::BeginListBox("##ObjectsListBox", ImVec2(-FLT_MIN, 20 * ImGui::GetTextLineHeightWithSpacing())))
 	{
 		for (int i = 0; i < singleSurfaces.size(); i++)
@@ -146,6 +174,42 @@ SingleSurfaceParameter IBezierSurface::GetSingleSurfaceParameter(float u, float 
 	singleSurfaceParameter.v = (v - verticalSlice * dv) * verticalSlicesCount;
 	singleSurfaceParameter.singleSurface = surface;
 	return singleSurfaceParameter;
+}
+
+void IBezierSurface::OnFilterUpdate()
+{
+	D3D11_MAPPED_SUBRESOURCE texmap;
+	ZeroMemory(&texmap, sizeof(D3D11_MAPPED_SUBRESOURCE));
+	DxDevice::instance->context()->Map(filterTexture.get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &texmap);
+	BYTE* bytes = (BYTE*)texmap.pData;
+	auto textureSizeBytes = textureSize * textureSize * 4 * sizeof(BYTE);
+	BYTE* pTexels = (BYTE*)malloc(textureSizeBytes);
+
+	for (int i = 0; i < textureSize; i++) {
+		int rowStart = i * textureSize;
+		for (int j = 0; j < textureSize; j++)
+		{
+			float u = i / (float)textureSize;
+			float v = j / (float)textureSize;
+			bool visible = IsVisible(u, v);
+			BYTE color = visible ? (BYTE)255 : (BYTE)0;
+			pTexels[4 * (rowStart + j)] = color;
+			pTexels[4 * (rowStart + j) + 1] = color;
+			pTexels[4 * (rowStart + j) + 2] = color;
+			pTexels[4 * (rowStart + j) + 3] = (BYTE)255;
+
+		}
+	}
+	memcpy(bytes, (void*)pTexels, textureSizeBytes);
+
+	DxDevice::instance->context()->Unmap(filterTexture.get(), 0);
+	free((void*)pTexels);
+
+	auto singleSurfaces = GetSingleSurfaces();
+	for (auto singlesurface : singleSurfaces)
+	{
+		singlesurface->SetFilterTexture(filterTextureView.get());
+	}
 }
 
 

@@ -48,4 +48,5 @@ namespace mini
 	 *************************************************************************/
 	template<class T>
 	using dx_ptr = std::unique_ptr<T, DxDeleter<T>>;
+
 }

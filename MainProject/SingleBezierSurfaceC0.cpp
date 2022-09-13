@@ -5,8 +5,11 @@
 
 using namespace DirectX::SimpleMath;
 
-SingleBezierSurfaceC0::SingleBezierSurfaceC0(std::array<std::array<std::shared_ptr<Point>, 4>, 4> points, int horizontalSlices, int verticalSlices)
-	: ISingleBezierSurface(points, horizontalSlices, verticalSlices, "Single Bezier Surface C0")
+SingleBezierSurfaceC0::SingleBezierSurfaceC0(std::array<std::array<std::shared_ptr<Point>, 4>, 4> points, int horizontalSlices, int verticalSlices,
+	int rowIndex, int columnIndex,
+	int rowCount, int columnCount
+)
+	: ISingleBezierSurface(points, horizontalSlices, verticalSlices, rowIndex, columnIndex, rowCount, columnCount , "Single Bezier Surface C0")
 {
 	this->points = points;
 	this->horizontalSlices = horizontalSlices;
@@ -37,10 +40,35 @@ void SingleBezierSurfaceC0::Draw(std::shared_ptr<Camera> camera)
 	auto mvp = v * p;
 
 	GSSurfaceBezierConstantBuffer gsCB;
+	ZeroMemory(&gsCB, sizeof(gsCB));
 	gsCB.mvp = mvp;
 	gsCB.slices = horizontalSlices;
+	gsCB.flipped = 0.0f;
 
 	std::vector<Vector3> translations = std::vector<Vector3>(16);
+
+	for (int i = 0; i < 16; i++)
+	{
+		translations[i] = Vector3(points[i / 4][i % 4]->GetTranslation());
+	}
+	for (int i = 0; i < 16; i++)
+	{
+		gsCB.X[i] = translations[i].x;
+		gsCB.Y[i] = translations[i].y;
+		gsCB.Z[i] = translations[i].z;
+	}
+	gsCB.rowIndex = rowIndex;
+	gsCB.columnIndex = columnIndex;
+	gsCB.rowCount = rowCount;
+	gsCB.columnCount = columnCount;
+
+	if (filterTextureView)
+	{
+		ShadersManager::gsSurfaceBezier->SetFilterTexture(filterTextureView);
+		gsCB.filter = true;
+	}
+	ShadersManager::gsSurfaceBezier->SetConstantBuffer(gsCB);
+	DxDevice::instance->context()->Draw(verticalSlices + 1, 0);
 
 	for (int i = 0; i < 16; i++)
 	{
@@ -53,21 +81,8 @@ void SingleBezierSurfaceC0::Draw(std::shared_ptr<Camera> camera)
 		gsCB.Z[i] = translations[i].z;
 	}
 
-	ShadersManager::gsSurfaceBezier->SetConstantBuffer(gsCB);
-	DxDevice::instance->context()->Draw(verticalSlices + 1, 0);
-
-	for (int i = 0; i < 16; i++)
-	{
-		translations[i] = Vector3(points[i / 4][i % 4]->GetTranslation());
-	}
-	for (int i = 0; i < 16; i++)
-	{
-		gsCB.X[i] = translations[i].x;
-		gsCB.Y[i] = translations[i].y;
-		gsCB.Z[i] = translations[i].z;
-	}
-
 	gsCB.slices = verticalSlices;
+	gsCB.flipped = 1.0f;
 
 	ShadersManager::gsSurfaceBezier->SetConstantBuffer(gsCB);
 	DxDevice::instance->context()->Draw(horizontalSlices + 1, verticalSlices + 1);

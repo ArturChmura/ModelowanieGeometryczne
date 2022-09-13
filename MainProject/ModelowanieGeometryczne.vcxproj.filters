@@ -387,6 +387,12 @@
     <ClCompile Include="IntersecionAdderWindow.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="IParameterized.cpp">
+      <Filter>Source Files\Models\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="ArrayFilter.cpp">
+      <Filter>Source Files\Algorithms\Intersections</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dxptr.h">
@@ -641,6 +647,12 @@
     <ClInclude Include="IntersectionCurve.h">
       <Filter>Header Files\Models\Curves</Filter>
     </ClInclude>
+    <ClInclude Include="IFilter.h">
+      <Filter>Header Files\Models\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrayFilter.h">
+      <Filter>Header Files\Algorithms\Intersections</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="psColor.hlsl">
@@ -695,6 +707,9 @@
     </None>
     <None Include="gregoryHeader.hlsli">
       <Filter>Source Files\Shaders\Gregory</Filter>
+    </None>
+    <None Include="GetUV.hlsli">
+      <Filter>Source Files\Shaders\Bezier\Surface</Filter>
     </None>
   </ItemGroup>
 </Project>

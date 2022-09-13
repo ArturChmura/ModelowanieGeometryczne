@@ -96,6 +96,11 @@ void Torus::Accept(AbstractModelVisitor& visitor)
 	visitor.Accept(IModel::downcasted_shared_from_this<Torus>());
 }
 
+void Torus::OnFilterUpdate()
+{
+}
+
+
 DirectX::SimpleMath::Vector3 Torus::GetValue(float u, float v)
 {
 	float alpha = 2 * PI * v;

@@ -43,5 +43,8 @@ private:
 
 
 
+	// Inherited via IParameterized
+	virtual void OnFilterUpdate() override;
+
 
 };

@@ -40,7 +40,7 @@ void IntersecionAdderWindow::Render()
 				auto point = std::make_shared<Point>(intersectionPoint.position);
 				points.push_back(point);
 			}
-			auto interpolatingCurve = std::make_shared<IntersectionCurve>(points, scene);
+			auto interpolatingCurve = std::make_shared<IntersectionCurve>(points, scene, surface1,  surface2);
 			scene->AddModel(interpolatingCurve);
 			*(this->open) = false;
 		}

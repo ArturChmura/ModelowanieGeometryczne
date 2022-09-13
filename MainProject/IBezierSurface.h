@@ -32,4 +32,13 @@ private:
 
 
 	SingleSurfaceParameter GetSingleSurfaceParameter(float u, float v);
+
+	// Inherited via IParameterized
+	virtual void OnFilterUpdate() override;
+
+	int textureSize = 1024;
+	mini::dx_ptr<ID3D11Texture2D> filterTexture;
+	mini::dx_ptr<ID3D11ShaderResourceView> filterTextureView;
+
+	int selectedIndex = -1;
 };

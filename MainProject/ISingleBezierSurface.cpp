@@ -3,12 +3,18 @@
 #include "imgui.h"
 using namespace DirectX::SimpleMath;
 
-ISingleBezierSurface::ISingleBezierSurface(std::array<std::array<std::shared_ptr<Point>, 4>, 4> points, int horizontalSlices, int verticalSlices, std::string name)
+ISingleBezierSurface::ISingleBezierSurface(std::array<std::array<std::shared_ptr<Point>, 4>, 4> points, int horizontalSlices, int verticalSlices, int rowIndex, int columnIndex,
+	int rowCount, int columnCount, std::string name)
 	: IUnmovableModel("Single Bezier Surface")
 {
 	this->points = points;
 	this->horizontalSlices = horizontalSlices;
 	this->verticalSlices = verticalSlices;
+
+	this->rowIndex = rowIndex;
+	this->columnIndex = columnIndex;
+	this->rowCount = rowCount;
+	this->columnCount = columnCount;
 
 	meshInfo.topology = D3D_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_POINTLIST;
 }
@@ -30,6 +36,19 @@ std::vector<std::shared_ptr<IModel>> ISingleBezierSurface::GetContainingModels()
 	}
 	return models;
 }
+
+
+
+void ISingleBezierSurface::SetFilterTexture(ID3D11ShaderResourceView* filterTextureView)
+{
+	this->filterTextureView = filterTextureView;
+}
+
+
+void ISingleBezierSurface::OnFilterUpdate()
+{
+}
+
 
 
 void ISingleBezierSurface::DrawPolygonChain(std::shared_ptr<Camera> camera)

@@ -1,5 +1,9 @@
 #include "surfaceBezierStructs.hlsli"
 #include "DeCasteljeu.hlsli"
+#include "GetUV.hlsli"
+
+sampler samp : register(s0);
+Texture2D filterTexture : register(t0);
 
 cbuffer transformations : register(b0)
 {
@@ -8,6 +12,12 @@ cbuffer transformations : register(b0)
     float4 y4[4];
     float4 z4[4];
     int slices;
+    int flipped;
+    int rowIndex;
+    int columnIndex;
+    int rowCount;
+    int columnCount;
+    int filter;
 }
 
 static float x[16] = (float[16]) x4;
@@ -54,8 +64,19 @@ void main(
     
         
     
-    for (float t = 0.0f; t <= 1.0f + step/2; t += step)
+    for (float t = 0.0f; t <= 1.0f + step / 2; t += step)
     {
+        if(filter)
+        {
+            float2 uv = GetUV(input[0].uv.x, t, flipped, rowIndex, columnIndex, rowCount, columnCount);
+            float3 norm = filterTexture.SampleLevel(samp, uv, 0);
+      
+            if (norm.x < 0.5)
+            {
+                continue;
+            }
+        }
+        
         float xx = DeCasteljeu(coefXYZ[0], t, 4);
         float yy = DeCasteljeu(coefXYZ[1], t, 4);
         float zz = DeCasteljeu(coefXYZ[2], t, 4);
@@ -63,7 +84,8 @@ void main(
         GSSurfaceBezierOutput element = (GSSurfaceBezierOutput) 0;
         element.pos = mul(MVP, float4(xx, yy, zz, 1.0f));
         output.Append(element);
+        
+      
     }
-    
     output.RestartStrip();
 }

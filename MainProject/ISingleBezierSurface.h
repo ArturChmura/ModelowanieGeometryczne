@@ -9,7 +9,8 @@ class ISingleBezierSurface : public IUnmovableModel, public IParameterized
 {
 
 public:
-	ISingleBezierSurface(std::array<std::array<std::shared_ptr<Point>, 4>, 4> points, int horizontalSlices, int verticalSlices, std::string name = "ISingleBezierSurface");
+	ISingleBezierSurface(std::array<std::array<std::shared_ptr<Point>, 4>, 4> points, int horizontalSlices, int verticalSlices, int rowIndex, int columnIndex, 
+		int rowCount, int columnCount, std::string name = "ISingleBezierSurface");
 	std::array<std::array<std::shared_ptr<Point>, 4>, 4> points;
 	int horizontalSlices;
 	int verticalSlices;
@@ -22,13 +23,22 @@ public:
 	void SetDrawPolygonChain(bool drawPolygonChain);
 	virtual std::vector<std::shared_ptr<IModel>> GetContainingModels() override;
 	// Inherited via IParameterized
-	
+
+	void SetFilterTexture(ID3D11ShaderResourceView* filterTextureView);
 protected:
 	MeshInfo meshInfo;
 	bool resetDrawing = true;
 	bool drawPolygonChain = false;
 
+	int rowIndex;
+	int columnIndex;
+	int rowCount;
+	int columnCount;
 
+
+	ID3D11ShaderResourceView* filterTextureView = nullptr;
+	
+	virtual void OnFilterUpdate() override;
 
 
 };
