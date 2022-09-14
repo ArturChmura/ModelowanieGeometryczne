@@ -54,8 +54,16 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 		std::transform(b.controlPoints.begin(), b.controlPoints.end(), std::back_inserter(controlPoints),
 			[&points](MG1::PointRef ref) { return points[ref.GetId()]; }
 		);
-
-		auto bezier = std::make_shared<BezierCurveC0>(controlPoints);
+		
+		std::vector<std::shared_ptr<Point>> controlPointsCorrectOrder; // bo ustaliliœmy kolejnoœæ punktów w serlializacji wzd³u¿ U 
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				controlPointsCorrectOrder.push_back(controlPoints[i + 4 * j]);
+			}
+		}
+		auto bezier = std::make_shared<BezierCurveC0>(controlPointsCorrectOrder);
 
 		bezier->name = b.name;
 
@@ -70,7 +78,15 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 			[&points](MG1::PointRef ref) { return points[ref.GetId()]; }
 		);
 
-		auto bezier = std::make_shared<BezierCurveC2>(controlPoints);
+		std::vector<std::shared_ptr<Point>> controlPointsCorrectOrder; // bo ustaliliœmy kolejnoœæ punktów w serlializacji wzd³u¿ U 
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				controlPointsCorrectOrder.push_back(controlPoints[i + 4 * j]);
+			}
+		}
+		auto bezier = std::make_shared<BezierCurveC2>(controlPointsCorrectOrder);
 
 		bezier->name = b.name;
 

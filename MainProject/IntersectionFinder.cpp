@@ -149,10 +149,10 @@ IntersectionPoint IntersectionFinder::FindNearestPoint(
 	double v = vStart;
 	double s = sStart;
 	double t = tStart;
-	double L1 = std::asin((u - (u1 + u1)/2)*2/(u1-u2));
-	double L2 = std::asin((v - (v1 + v1)/2)*2/(v1-v2));
-	double L3 = std::asin((s - (s1 + s1)/2)*2/(s1-s2));
-	double L4 = std::asin((t - (t1 + t1)/2)*2/(t1-t2));
+	double L1 = std::asin((u - (u1 + u2)/2)*2/(u1-u2));
+	double L2 = std::asin((v - (v1 + v2)/2)*2/(v1-v2));
+	double L3 = std::asin((s - (s1 + s2)/2)*2/(s1-s2));
+	double L4 = std::asin((t - (t1 + t2)/2)*2/(t1-t2));
 
 
 	float norm = 9999;

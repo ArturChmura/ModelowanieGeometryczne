@@ -121,11 +121,12 @@ void SerializationVisitor::Accept(std::shared_ptr < BezierSurfaceC0> surface)
 
 		p.samples = MG1::Uint2{ static_cast<uint32_t>(patch->verticalSlices), static_cast<uint32_t>(patch->horizontalSlices) };
 
-		for (auto& pa : patch->points)
+		for (int i = 0; i < 4; i++)
 		{
-			for (auto& cp : pa)
+			for (int j = 0; j < 4; j++)
 			{
-				p.controlPoints.push_back(MG1::PointRef(cp->id));
+				auto point = patch->points[j][i]; // na odwrót, bo ustaliliœmy kolejnoœæ punktów wzd³u¿ U 
+				p.controlPoints.push_back(MG1::PointRef(point->id));
 			}
 		}
 
@@ -155,11 +156,12 @@ void SerializationVisitor::Accept(std::shared_ptr < BezierSurfaceC2> surface)
 
 		p.samples = MG1::Uint2{ static_cast<uint32_t>(patch->verticalSlices), static_cast<uint32_t>(patch->horizontalSlices) };
 
-		for (auto& pa : patch->points)
+		for (int i = 0; i < 4; i++)
 		{
-			for (auto& cp : pa)
+			for (int j = 0; j < 4; j++)
 			{
-				p.controlPoints.push_back(MG1::PointRef(cp->id));
+				auto point = patch->points[j][i]; // na odwrót, bo ustaliliœmy kolejnoœæ punktów wzd³u¿ U 
+				p.controlPoints.push_back(MG1::PointRef(point->id));
 			}
 		}
 
