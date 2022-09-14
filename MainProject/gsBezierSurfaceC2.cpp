@@ -8,9 +8,9 @@ GSBezierSurfaceC2::GSBezierSurfaceC2()
 	constantBufferGS = DxDevice::instance->CreateConstantBuffer<GSBezierSurfaceC2ConstantBuffer>();
 
 	SamplerDescription sd;
-	sd.AddressU = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
-	sd.AddressV = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
-	sd.AddressW = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
+	sd.AddressU = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_CLAMP;
+	sd.AddressV = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_CLAMP;
+	sd.AddressW = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_CLAMP;
 	sd.Filter = D3D11_FILTER::D3D11_FILTER_ANISOTROPIC;
 	sd.MaxAnisotropy = 16;
 	m_samplerWrap = DxDevice::instance->CreateSamplerState(sd);

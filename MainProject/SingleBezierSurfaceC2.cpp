@@ -39,7 +39,7 @@ void SingleBezierSurfaceC2::Draw(std::shared_ptr<Camera> camera)
 	GSBezierSurfaceC2ConstantBuffer gsCB;
 	ZeroMemory(&gsCB, sizeof(gsCB));
 	gsCB.mvp = mvp;
-	gsCB.slices = horizontalSlices;
+	gsCB.slices = verticalSlices;
 	gsCB.rowIndex = rowIndex;
 	gsCB.columnIndex = columnIndex;
 	gsCB.rowCount = rowCount;
@@ -64,7 +64,7 @@ void SingleBezierSurfaceC2::Draw(std::shared_ptr<Camera> camera)
 	}
 
 	ShadersManager::gsBezierSurfaceC2->SetConstantBuffer(gsCB);
-	DxDevice::instance->context()->Draw(verticalSlices + 1, 0);
+	DxDevice::instance->context()->Draw(horizontalSlices + 1, 0);
 
 	for (int i = 0; i < 16; i++)
 	{
@@ -77,11 +77,11 @@ void SingleBezierSurfaceC2::Draw(std::shared_ptr<Camera> camera)
 		gsCB.Z[i] = translations[i].z;
 	}
 
-	gsCB.slices = verticalSlices;
+	gsCB.slices = horizontalSlices;
 	gsCB.flipped = 1.0f;
 
 	ShadersManager::gsBezierSurfaceC2->SetConstantBuffer(gsCB);
-	DxDevice::instance->context()->Draw(horizontalSlices + 1, verticalSlices + 1);
+	DxDevice::instance->context()->Draw(verticalSlices + 1, horizontalSlices + 1);
 
 }
 

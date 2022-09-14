@@ -38,24 +38,24 @@ void main(
 
         float coefX[4] =
         {
-            x[j * 4 + 0],
-            x[j * 4 + 1],
-            x[j * 4 + 2],
-            x[j * 4 + 3],
+            x[j  + 0* 4],
+            x[j  + 1* 4],
+            x[j  + 2* 4],
+            x[j + 3 * 4],
         };
         float coefY[4] =
         {
-            y[j * 4 + 0],
-            y[j * 4 + 1],
-            y[j * 4 + 2],
-            y[j * 4 + 3],
+            y[j + 0* 4],
+            y[j + 1* 4],
+            y[j + 2* 4],
+            y[j + 3 * 4],
         };
         float coefZ[4] =
         {
-            z[j * 4 + 0],
-            z[j * 4 + 1],
-            z[j * 4 + 2],
-            z[j * 4 + 3],
+            z[j  + 0* 4],
+            z[j  + 1* 4],
+            z[j  + 2* 4],
+            z[j  + 3 * 4],
         };
         coefXYZ[0][j] = DeBoor(coefX, input[0].uv.x);
         coefXYZ[1][j] = DeBoor(coefY, input[0].uv.x);

@@ -581,12 +581,6 @@
     <ClInclude Include="SingleBezierSurfaceC0.h">
       <Filter>Header Files\Models\Surfaces\C0Surface</Filter>
     </ClInclude>
-    <ClInclude Include="SingleBezierSurfaceC2.h">
-      <Filter>Header Files\Models\Surfaces\C0Surface</Filter>
-    </ClInclude>
-    <ClInclude Include="BezierSurfaceC0.h">
-      <Filter>Header Files\Models\Surfaces\C2Surface</Filter>
-    </ClInclude>
     <ClInclude Include="BezierSurfaceC2.h">
       <Filter>Header Files\Models\Surfaces\C2Surface</Filter>
     </ClInclude>
@@ -652,6 +646,12 @@
     </ClInclude>
     <ClInclude Include="ArrayFilter.h">
       <Filter>Header Files\Algorithms\Intersections</Filter>
+    </ClInclude>
+    <ClInclude Include="BezierSurfaceC0.h">
+      <Filter>Header Files\Models\Surfaces\C0Surface</Filter>
+    </ClInclude>
+    <ClInclude Include="SingleBezierSurfaceC2.h">
+      <Filter>Header Files\Models\Surfaces\C2Surface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

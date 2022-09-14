@@ -42,7 +42,7 @@ void SingleBezierSurfaceC0::Draw(std::shared_ptr<Camera> camera)
 	GSSurfaceBezierConstantBuffer gsCB;
 	ZeroMemory(&gsCB, sizeof(gsCB));
 	gsCB.mvp = mvp;
-	gsCB.slices = horizontalSlices;
+	gsCB.slices = verticalSlices;
 	gsCB.flipped = 0.0f;
 
 	std::vector<Vector3> translations = std::vector<Vector3>(16);
@@ -68,7 +68,7 @@ void SingleBezierSurfaceC0::Draw(std::shared_ptr<Camera> camera)
 		gsCB.filter = true;
 	}
 	ShadersManager::gsSurfaceBezier->SetConstantBuffer(gsCB);
-	DxDevice::instance->context()->Draw(verticalSlices + 1, 0);
+	DxDevice::instance->context()->Draw(horizontalSlices + 1, 0);
 
 	for (int i = 0; i < 16; i++)
 	{
@@ -81,11 +81,11 @@ void SingleBezierSurfaceC0::Draw(std::shared_ptr<Camera> camera)
 		gsCB.Z[i] = translations[i].z;
 	}
 
-	gsCB.slices = verticalSlices;
+	gsCB.slices = horizontalSlices;
 	gsCB.flipped = 1.0f;
 
 	ShadersManager::gsSurfaceBezier->SetConstantBuffer(gsCB);
-	DxDevice::instance->context()->Draw(horizontalSlices + 1, verticalSlices + 1);
+	DxDevice::instance->context()->Draw(verticalSlices + 1, horizontalSlices + 1);
 
 }
 void SingleBezierSurfaceC0::Accept(AbstractModelVisitor& visitor)
