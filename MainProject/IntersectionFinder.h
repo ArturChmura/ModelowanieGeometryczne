@@ -4,7 +4,7 @@
 #include "SimpleMath.h"
 #include "IntersectionPoint.h"
 #include "IModel.h"
-#include "Helpers.h"
+#include "Pair.h"
 
 class IntersectionFinder
 {
@@ -57,7 +57,6 @@ public:
 
 private:
 	void UpdateBest(double u, double v, double& bestU, double& bestV, double& bestDistance, std::shared_ptr<IParameterized> surface, DirectX::SimpleMath::Vector3 position);
-	void GetInRange(double& value, double min, double max);
 	bool useCursor;
 	DirectX::SimpleMath::Vector3 cursorPosition;
 	double newtonStartDistance;

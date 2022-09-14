@@ -11,11 +11,32 @@ inline int modulo2(int a, int b)
 
 #define PI 3.14159265358979323846 
 
-template <typename T>
-struct Pair
+
+inline double GetInRange(double value, double min, double max)
 {
-	T a;
-	T b;
-};
+	double d = max - min;
+	while (value > max)
+	{
+		value -= d;
+	}
+	while (value < min)
+	{
+		value += d;
+	}
+	return value;
+}
 
 
+inline int GetInRangeInt(int value, int min, int max)
+{
+	int d = max - min + 1;
+	while (value > max)
+	{
+		value -= d;
+	}
+	while (value < min)
+	{
+		value += d;
+	}
+	return value;
+}

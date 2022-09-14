@@ -11,9 +11,9 @@
 class IParameterized
 {
 public:
-	virtual DirectX::SimpleMath::Vector3 GetValue(float u, float v) = 0;
-	virtual DirectX::SimpleMath::Vector3 GetUDerivativeValue(float u, float v) = 0;
-	virtual DirectX::SimpleMath::Vector3 GetVDerivativeValue(float u, float v) = 0;
+	virtual DirectX::SimpleMath::Vector3 GetValue(double u, double v) = 0;
+	virtual DirectX::SimpleMath::Vector3 GetUDerivativeValue(double u, double v) = 0;
+	virtual DirectX::SimpleMath::Vector3 GetVDerivativeValue(double u, double v) = 0;
 	virtual bool IsUWrapped() = 0;
 	virtual bool IsVWrapped() = 0;
 

@@ -7,6 +7,7 @@
 #include <string> 
 #include "BezierCurveInterpolating.h"
 #include "IntersectionCurve.h"
+#include "Helpers.h"
 
 using Eigen::MatrixXd;
 using Eigen::MatrixXf;
@@ -118,6 +119,7 @@ void IntersectionFinder::FindNextPointsInDirection(std::shared_ptr<IParameterize
 			if (newDot > 0 && newDot < newtonStartDistance && prevDot < 0 && prevDot > -newtonStartDistance)
 			{
 				loopFound = true;
+				direction1Positions.push_back(nearest);
 				break;
 			}
 
@@ -149,10 +151,10 @@ IntersectionPoint IntersectionFinder::FindNearestPoint(
 	double v = vStart;
 	double s = sStart;
 	double t = tStart;
-	double L1 = std::asin((u - (u1 + u2)/2)*2/(u1-u2));
-	double L2 = std::asin((v - (v1 + v2)/2)*2/(v1-v2));
-	double L3 = std::asin((s - (s1 + s2)/2)*2/(s1-s2));
-	double L4 = std::asin((t - (t1 + t2)/2)*2/(t1-t2));
+	double L1 = std::asin((u - (u1 + u2) / 2) * 2 / (u1 - u2));
+	double L2 = std::asin((v - (v1 + v2) / 2) * 2 / (v1 - v2));
+	double L3 = std::asin((s - (s1 + s2) / 2) * 2 / (s1 - s2));
+	double L4 = std::asin((t - (t1 + t2) / 2) * 2 / (t1 - t2));
 
 
 	float norm = 9999;
@@ -192,8 +194,8 @@ IntersectionPoint IntersectionFinder::FindNearestPoint(
 		H(4, 0) = v - ((v1 + v2) / 2 + sin(L2) * (v2 - v1) / 2);
 		H(5, 0) = s - ((s1 + s2) / 2 + sin(L3) * (s2 - s1) / 2);
 		H(6, 0) = t - ((t1 + t2) / 2 + sin(L4) * (t2 - t1) / 2);
-	/*	OutputDebugString(L"H: \n");
-		PrintMatrix(H);*/
+		/*	OutputDebugString(L"H: \n");
+			PrintMatrix(H);*/
 
 		MatrixXd Hq(7, 8);
 		Hq.setZero();
@@ -222,19 +224,19 @@ IntersectionPoint IntersectionFinder::FindNearestPoint(
 		Hq(5, 6) = -(s2 - s1) / 2.0 * cos(L3);
 		Hq(6, 7) = -(t2 - t1) / 2.0 * cos(L4);
 
-	/*	OutputDebugString(L"Hq: \n");
-		PrintMatrix(Hq);*/
+		/*	OutputDebugString(L"Hq: \n");
+			PrintMatrix(Hq);*/
 		MatrixXd HH = Hq * Hq.transpose();
-	/*	OutputDebugString(L"HH: \n");
-		PrintMatrix(HH);*/
+		/*	OutputDebugString(L"HH: \n");
+			PrintMatrix(HH);*/
 
 		MatrixXd y = HH.completeOrthogonalDecomposition().solve(-H);
-	/*	OutputDebugString(L"y: \n");
-		PrintMatrix(y);*/
+		/*	OutputDebugString(L"y: \n");
+			PrintMatrix(y);*/
 
 		MatrixXd dq = Hq.transpose() * y;
-	/*	OutputDebugString(L"dq: \n");
-		PrintMatrix(dq);*/
+		/*	OutputDebugString(L"dq: \n");
+			PrintMatrix(dq);*/
 
 
 		u += dq(0, 0);
@@ -246,10 +248,10 @@ IntersectionPoint IntersectionFinder::FindNearestPoint(
 		L3 += dq(6, 0);
 		L4 += dq(7, 0);
 
-		GetInRange(u, u1, u2);
-		GetInRange(v, v1, v2);
-		GetInRange(s, s1, s2);
-		GetInRange(t, t1, t2);
+		u = GetInRange(u, u1, u2);
+		v = GetInRange(v, v1, v2);
+		s = GetInRange(s, s1, s2);
+		t = GetInRange(t, t1, t2);
 
 		norm = H.norm();
 
@@ -369,7 +371,7 @@ IntersectionPoint IntersectionFinder::FindNextPoint(bool flip, std::shared_ptr<I
 			{
 				if (surface1->IsUWrapped())
 				{
-					GetInRange(u, 0, 1);
+					//GetInRange(u, 0, 1);
 				}
 				else
 				{
@@ -381,7 +383,7 @@ IntersectionPoint IntersectionFinder::FindNextPoint(bool flip, std::shared_ptr<I
 			{
 				if (surface1->IsVWrapped())
 				{
-					GetInRange(v, 0, 1);
+					//GetInRange(v, 0, 1);
 				}
 				else
 				{
@@ -393,7 +395,7 @@ IntersectionPoint IntersectionFinder::FindNextPoint(bool flip, std::shared_ptr<I
 			{
 				if (surface2->IsUWrapped())
 				{
-					GetInRange(s, 0, 1);
+					//GetInRange(s, 0, 1);
 				}
 				else
 				{
@@ -405,7 +407,7 @@ IntersectionPoint IntersectionFinder::FindNextPoint(bool flip, std::shared_ptr<I
 			{
 				if (surface2->IsVWrapped())
 				{
-					GetInRange(t, 0, 1);
+					//GetInRange(t, 0, 1);
 				}
 				else
 				{
@@ -446,9 +448,9 @@ Pair<double> IntersectionFinder::FindStartingPointFromPosition(std::shared_ptr<I
 				double areaUBest;
 				double areaVBest;
 
-				for (int i = -1; i <= 1; i+=2)
+				for (int i = -1; i <= 1; i += 2)
 				{
-					for (int j = -1; j <= 1; j+=2)
+					for (int j = -1; j <= 1; j += 2)
 					{
 						double u = stepU + stepSize * i;
 						double v = stepV + stepSize * j;
@@ -475,8 +477,8 @@ Pair<double> IntersectionFinder::FindStartingPointFromPosition(std::shared_ptr<I
 
 void IntersectionFinder::UpdateBest(double u, double v, double& bestU, double& bestV, double& bestDistance, std::shared_ptr<IParameterized> surface, Vector3 position)
 {
-	GetInRange(u, 0.0, 1.0);
-	GetInRange(v, 0.0, 1.0);
+	u = GetInRange(u, 0.0, 1.0);
+	v = GetInRange(v, 0.0, 1.0);
 	auto surfacePosition = surface->GetValue(u, v);
 	auto distance = Vector3::DistanceSquared(position, surfacePosition);
 	if (distance < bestDistance)
@@ -487,18 +489,6 @@ void IntersectionFinder::UpdateBest(double u, double v, double& bestU, double& b
 	}
 }
 
-void IntersectionFinder::GetInRange(double& value, double min, double max)
-{
-	double d = max - min;
-	while (value > max)
-	{
-		value -= d;
-	}
-	while (value < min)
-	{
-		value += d;
-	}
-}
 
 
 

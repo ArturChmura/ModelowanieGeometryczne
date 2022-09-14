@@ -175,9 +175,6 @@
     <Filter Include="Header Files\Algorithms\Surfaces">
       <UniqueIdentifier>{720d99e7-11df-48bd-a49d-99f53bb91d31}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Algorithms\Surfaces\NewFilter1">
-      <UniqueIdentifier>{0038b8d7-6a67-4270-b7bb-0bf58f9ce57c}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxStructures.cpp">
@@ -635,9 +632,6 @@
     <ClInclude Include="SingleSurfaceParameter.h">
       <Filter>Header Files\Models\Surfaces</Filter>
     </ClInclude>
-    <ClInclude Include="IntersectionPoint.h">
-      <Filter>Header Files\Algorithms\Intersections</Filter>
-    </ClInclude>
     <ClInclude Include="IntersectionCurve.h">
       <Filter>Header Files\Models\Curves</Filter>
     </ClInclude>
@@ -652,6 +646,12 @@
     </ClInclude>
     <ClInclude Include="SingleBezierSurfaceC2.h">
       <Filter>Header Files\Models\Surfaces\C2Surface</Filter>
+    </ClInclude>
+    <ClInclude Include="Pair.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="IntersectionPoint.h">
+      <Filter>Header Files\Algorithms\Surfaces</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

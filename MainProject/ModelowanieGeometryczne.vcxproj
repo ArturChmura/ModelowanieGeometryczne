@@ -118,6 +118,7 @@
     <ClInclude Include="IntersectionFinder.h" />
     <ClInclude Include="IntersectionPoint.h" />
     <ClInclude Include="IParameterized.h" />
+    <ClInclude Include="Pair.h" />
     <ClInclude Include="SingleSurfaceParameter.h" />
     <ClInclude Include="SolveTriDiagonalMatrix.h" />
     <ClInclude Include="vsGregory.h" />

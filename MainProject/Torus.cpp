@@ -2,6 +2,8 @@
 #include "Helpers.h"
 #include "imgui.h"
 #include "vsConstColor.h"
+#include "Pair.h"
+
 using namespace DirectX::SimpleMath;
 
 Torus::Torus(float R, float r, unsigned int largeSlices, unsigned int smallSlices)
@@ -101,33 +103,33 @@ void Torus::OnFilterUpdate()
 }
 
 
-DirectX::SimpleMath::Vector3 Torus::GetValue(float u, float v)
+DirectX::SimpleMath::Vector3 Torus::GetValue(double u, double v)
 {
-	float alpha = 2 * PI * v;
-	float beta = 2 * PI * u;
-	float x = (R + r * cosf(2 * PI * u)) * cosf(2 * PI * v);
-	float y = r * sinf(2 * PI * u);
-	float z = (R + r * cosf(2 * PI * u)) * sinf(2 * PI * v);
+	double alpha = 2 * PI * v;
+	double beta = 2 * PI * u;
+	double x = (R + r * cosf(2 * PI * u)) * cosf(2 * PI * v);
+	double y = r * sinf(2 * PI * u);
+	double z = (R + r * cosf(2 * PI * u)) * sinf(2 * PI * v);
 	auto localPosition = Vector4(x, y, z, 1);
 	auto globalPosition = Vector4::Transform(localPosition, modelMatrix);
 	return Vector3(globalPosition);
 }
 
-DirectX::SimpleMath::Vector3 Torus::GetUDerivativeValue(float u, float v)
+DirectX::SimpleMath::Vector3 Torus::GetUDerivativeValue(double u, double v)
 {
-	float x = -1 * r * cosf(2 * PI * v) * sinf(2 * PI * u) * 2 * PI;
-	float y = 2 * PI * r * cosf(2 * PI * u);
-	float z = -2 *PI *r *sinf(2 *PI *u)* sin(2 *PI *v);
+	double x = -1 * r * cosf(2 * PI * v) * sinf(2 * PI * u) * 2 * PI;
+	double y = 2 * PI * r * cosf(2 * PI * u);
+	double z = -2 *PI *r *sinf(2 *PI *u)* sin(2 *PI *v);
 	auto localVector = Vector4(x, y, z, 0);
 	auto globalPosition = Vector4::Transform(localVector, modelMatrix);
 	return Vector3(globalPosition);
 }
 
-DirectX::SimpleMath::Vector3 Torus::GetVDerivativeValue(float u, float v)
+DirectX::SimpleMath::Vector3 Torus::GetVDerivativeValue(double u, double v)
 {
-	float x = -1 * R * sinf(2 * PI * v) * 2 * PI + -1 * r * cosf(2 * PI * u) * sinf(2 * PI * v) * 2 * PI;
-	float y =  0;
-	float z = 2* PI*(R + r* cosf(2 *PI *u)) *cosf(2 *PI* v);
+	double x = -1 * R * sinf(2 * PI * v) * 2 * PI + -1 * r * cosf(2 * PI * u) * sinf(2 * PI * v) * 2 * PI;
+	double y =  0;
+	double z = 2* PI*(R + r* cosf(2 *PI *u)) *cosf(2 *PI* v);
 	auto localVector = Vector4(x, y, z, 0);
 	auto globalPosition = Vector4::Transform(localVector, modelMatrix);
 	return Vector3(globalPosition);

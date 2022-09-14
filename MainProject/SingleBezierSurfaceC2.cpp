@@ -91,7 +91,7 @@ void SingleBezierSurfaceC2::Accept(AbstractModelVisitor& visitor)
 	visitor.Accept(IModel::downcasted_shared_from_this<SingleBezierSurfaceC2>());
 }
 
-DirectX::SimpleMath::Vector3 SingleBezierSurfaceC2::GetValue(float u, float v)
+DirectX::SimpleMath::Vector3 SingleBezierSurfaceC2::GetValue(double u, double v)
 {
 	std::array<Vector3, 4> vertical;
 	for (int i = 0; i < 4; i++)
@@ -108,7 +108,7 @@ DirectX::SimpleMath::Vector3 SingleBezierSurfaceC2::GetValue(float u, float v)
 	return result;
 }
 
-DirectX::SimpleMath::Vector3 SingleBezierSurfaceC2::GetUDerivativeValue(float u, float v)
+DirectX::SimpleMath::Vector3 SingleBezierSurfaceC2::GetUDerivativeValue(double u, double v)
 {
 	std::array<Vector3, 4> horizontal;
 	for (int j = 0; j < 4; j++)
@@ -125,7 +125,7 @@ DirectX::SimpleMath::Vector3 SingleBezierSurfaceC2::GetUDerivativeValue(float u,
 	return result;
 }
 
-DirectX::SimpleMath::Vector3 SingleBezierSurfaceC2::GetVDerivativeValue(float u, float v)
+DirectX::SimpleMath::Vector3 SingleBezierSurfaceC2::GetVDerivativeValue(double u, double v)
 {
 	std::array<Vector3, 4> vertical;
 	for (int i = 0; i < 4; i++)

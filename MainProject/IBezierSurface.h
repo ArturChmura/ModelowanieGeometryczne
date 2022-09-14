@@ -21,9 +21,9 @@ public:
 	bool IsWrappedU();
 	bool IsWrappedV();
 	// Inherited via IParameterized
-	virtual DirectX::SimpleMath::Vector3 GetValue(float u, float v) override;
-	virtual DirectX::SimpleMath::Vector3 GetUDerivativeValue(float u, float v) override;
-	virtual DirectX::SimpleMath::Vector3 GetVDerivativeValue(float u, float v) override;
+	virtual DirectX::SimpleMath::Vector3 GetValue(double u, double v) override;
+	virtual DirectX::SimpleMath::Vector3 GetUDerivativeValue(double u, double v) override;
+	virtual DirectX::SimpleMath::Vector3 GetVDerivativeValue(double u, double v) override;
 	virtual bool IsUWrapped() override;
 	virtual bool IsVWrapped() override;
 private:
@@ -31,7 +31,7 @@ private:
 	bool isWrapped;
 
 
-	SingleSurfaceParameter GetSingleSurfaceParameter(float u, float v);
+	SingleSurfaceParameter GetSingleSurfaceParameter(double u, double v);
 
 	// Inherited via IParameterized
 	virtual void OnFilterUpdate() override;

@@ -8,6 +8,6 @@ public:
 		static int id = 0;
 		FilterId = id++;
 	}
-	virtual bool IsFiltered(float u, float v) = 0;
+	virtual bool IsFiltered(double u, double v) = 0;
 	int FilterId;
 };

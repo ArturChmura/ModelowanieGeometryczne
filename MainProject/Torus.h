@@ -21,9 +21,9 @@ public:
 
 	virtual void RenderGUI() override;
 
-	virtual DirectX::SimpleMath::Vector3 GetValue(float u, float v) override;
-	virtual DirectX::SimpleMath::Vector3 GetUDerivativeValue(float u, float v) override;
-	virtual DirectX::SimpleMath::Vector3 GetVDerivativeValue(float u, float v) override;
+	virtual DirectX::SimpleMath::Vector3 GetValue(double u, double v) override;
+	virtual DirectX::SimpleMath::Vector3 GetUDerivativeValue(double u, double v) override;
+	virtual DirectX::SimpleMath::Vector3 GetVDerivativeValue(double u, double v) override;
 	virtual bool IsUWrapped() override;
 	virtual bool IsVWrapped() override;
 

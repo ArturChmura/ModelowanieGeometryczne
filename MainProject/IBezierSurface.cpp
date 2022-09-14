@@ -1,6 +1,8 @@
 #include "IBezierSurface.h"
 #include "imgui.h"
 #include "ShadersManager.h"
+#include "Helpers.h"
+#include <algorithm>
 using namespace DirectX::SimpleMath;
 
 IBezierSurface::IBezierSurface(int horizontalCount, int verticalCount, bool isWrapped, std::string name)
@@ -125,21 +127,21 @@ bool IBezierSurface::IsWrappedV()
 	return isWrapped;
 }
 
-DirectX::SimpleMath::Vector3 IBezierSurface::GetValue(float u, float v)
+DirectX::SimpleMath::Vector3 IBezierSurface::GetValue(double u, double v)
 {
 	auto singleSurfaceParameter = GetSingleSurfaceParameter(u, v);
 	return singleSurfaceParameter.singleSurface->GetValue(singleSurfaceParameter.u, singleSurfaceParameter.v);
 
 }
 
-DirectX::SimpleMath::Vector3 IBezierSurface::GetUDerivativeValue(float u, float v)
+DirectX::SimpleMath::Vector3 IBezierSurface::GetUDerivativeValue(double u, double v)
 {
 	auto singleSurfaceParameter = GetSingleSurfaceParameter(u, v);
 	auto singleDeriviative =  singleSurfaceParameter.singleSurface->GetUDerivativeValue(singleSurfaceParameter.u, singleSurfaceParameter.v);
 	return singleDeriviative * horizontalSlicesCount;
 }
 
-DirectX::SimpleMath::Vector3 IBezierSurface::GetVDerivativeValue(float u, float v)
+DirectX::SimpleMath::Vector3 IBezierSurface::GetVDerivativeValue(double u, double v)
 {
 	auto singleSurfaceParameter = GetSingleSurfaceParameter(u, v);
 	auto singleDeriviative = singleSurfaceParameter.singleSurface->GetVDerivativeValue(singleSurfaceParameter.u, singleSurfaceParameter.v);
@@ -156,11 +158,14 @@ bool IBezierSurface::IsVWrapped()
 	return false;
 }
 
-SingleSurfaceParameter IBezierSurface::GetSingleSurfaceParameter(float u, float v)
+SingleSurfaceParameter IBezierSurface::GetSingleSurfaceParameter(double u, double v)
 {
-
-	int horizontalSlice = ((int)(u * horizontalSlicesCount)) % horizontalSlicesCount;
-	int verticalSlice = ((int)(v * verticalSlicesCount)) % verticalSlicesCount;
+	u = GetInRange(u, 0.0, 1.0);
+	v = GetInRange(v, 0.0, 1.0);
+	int horizontalSlice = (int)std::floor(u * horizontalSlicesCount);
+	int verticalSlice = (int)std::floor(v * verticalSlicesCount);
+	horizontalSlice = std::clamp(horizontalSlice, 0, horizontalSlicesCount - 1);
+	verticalSlice = std::clamp(verticalSlice, 0, verticalSlicesCount - 1);
 
 	float du = 1.0 / horizontalSlicesCount;
 	float dv = 1.0 / verticalSlicesCount;

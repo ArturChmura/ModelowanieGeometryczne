@@ -3,6 +3,7 @@
 #include "IntersectionFinder.h"
 #include "BezierCurveInterpolating.h"
 #include "IntersectionCurve.h"
+#include "Pair.h"
 
 IntersecionAdderWindow::IntersecionAdderWindow(std::shared_ptr<Scene> scene, bool* open, std::shared_ptr<IParameterized> surface1, std::shared_ptr<IParameterized> surface2)
 {
@@ -35,12 +36,18 @@ void IntersecionAdderWindow::Render()
 		if (intersectionPoints)
 		{
 			std::vector<std::shared_ptr<Point>> points;
+			std::vector<Pair<double>> USs[2];
 			for (auto intersectionPoint : *intersectionPoints)
 			{
 				auto point = std::make_shared<Point>(intersectionPoint.position);
 				points.push_back(point);
+
+				USs[0].push_back({ intersectionPoint.u, intersectionPoint.v });
+				USs[1].push_back({ intersectionPoint.s, intersectionPoint.t });
 			}
-			auto interpolatingCurve = std::make_shared<IntersectionCurve>(points, scene, surface1,  surface2);
+
+			std::shared_ptr<IParameterized> surfaces[2] = { surface1, surface2 };
+			auto interpolatingCurve = std::make_shared<IntersectionCurve>(points, scene, surfaces, USs);
 			scene->AddModel(interpolatingCurve);
 			*(this->open) = false;
 		}

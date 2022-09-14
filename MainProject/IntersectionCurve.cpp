@@ -3,16 +3,20 @@
 #include "ArrayFilter.h"
 #include "IFilter.h"
 
-IntersectionCurve::IntersectionCurve(std::vector<std::shared_ptr<Point>> points, std::shared_ptr<Scene> scene, std::shared_ptr<IParameterized> surface1, std::shared_ptr<IParameterized> surface2)
+IntersectionCurve::IntersectionCurve(
+	std::vector<std::shared_ptr<Point>> points, 
+	std::shared_ptr<Scene> scene, 
+	std::shared_ptr<IParameterized> surfaces[2],
+	std::vector<Pair<double>> UVs[2]
+)
 	:BezierCurveInterpolating(points)
 {
 	this->name = "Intersection Curve";
 	this->scene = scene;
-	this->surfaces[0] = surface1;
-	this->surfaces[1] = surface2;
 
 	for (int i = 0; i < 2; i++)
 	{
+		this->surfaces[i] = surfaces[i];
 		D3D11_TEXTURE2D_DESC textureDescription;
 		ZeroMemory(&textureDescription, sizeof(textureDescription));
 		textureDescription.Width = TEXTURE_SIZE;
@@ -39,7 +43,7 @@ IntersectionCurve::IntersectionCurve(std::vector<std::shared_ptr<Point>> points,
 		DxDevice::instance->operator->()->CreateShaderResourceView(filterTextures[i].get(), &srvDesc, &viewPtr1);
 		filterTextureViews[i] = mini::dx_ptr<ID3D11ShaderResourceView>(viewPtr1);
 
-		filters[i] = std::make_shared<ArrayFilter>(i);
+		filters[i] = std::make_shared<ArrayFilter>(UVs[i]);
 
 		UpdateFilter(i);
 	}
@@ -49,7 +53,7 @@ IntersectionCurve::IntersectionCurve(std::vector<std::shared_ptr<Point>> points,
 
 void IntersectionCurve::RenderGUI()
 {
-ImVec2 uv_min = ImVec2(0.0f, 0.0f);                 // Top-left
+	ImVec2 uv_min = ImVec2(0.0f, 0.0f);                 // Top-left
 	ImVec2 uv_max = ImVec2(1.0f, 1.0f);                 // Lower-right
 	ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);   // No tint
 	ImVec4 border_col = ImVec4(1.0f, 1.0f, 1.0f, 0.5f); // 50% opaque white
@@ -57,6 +61,23 @@ ImVec2 uv_min = ImVec2(0.0f, 0.0f);                 // Top-left
 	for (int i = 0; i < 2; i++)
 	{
 		ImGui::Image((ImTextureID)(intptr_t)(filterTextureViews[i].get()), {300,300}, uv_min, uv_max, tint_col, border_col);
+		if (ImGui::Button(("Swap##swap" + std::to_string(i)).c_str()))
+		{
+			filters[i]->Swap();
+			UpdateFilter(i);
+		}
+		if (ImGui::Checkbox(("Filter surface##filterSurface" + std::to_string(i)).c_str(), &(filterSurface[i]) ))
+		{
+			if (filterSurface[i])
+			{
+				surfaces[i]->AddFilter(filters[i]);
+			}
+			else
+			{
+				surfaces[i]->RemoveFilter(filters[i]->FilterId);
+			}
+		}
+
 	}
 
 
