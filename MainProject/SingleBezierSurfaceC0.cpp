@@ -103,14 +103,31 @@ DirectX::SimpleMath::Vector3 SingleBezierSurfaceC0::GetValue(double u, double v)
 		{
 			horizontal[j] = Vector3(points[i][j]->GetTranslation());
 		}
-		auto v = BernstainHelper::DeCasteljeu(horizontal, u, 4);
-		vertical[i] = v;
+		auto value = BernstainHelper::DeCasteljeu(horizontal, v, 4);
+		vertical[i] = value;
 	}
-	auto result = BernstainHelper::DeCasteljeu(vertical, v, 4);
+	auto result = BernstainHelper::DeCasteljeu(vertical, u, 4);
 	return result;
 }
 
 DirectX::SimpleMath::Vector3 SingleBezierSurfaceC0::GetUDerivativeValue(double u, double v)
+{
+	 std::array<Vector3, 4> vertical;
+	for (int i = 0; i < 4; i++)
+	{
+		std::array<Vector3, 4> horizontal;
+		for (int j = 0; j < 4; j++)
+		{
+			horizontal[j] = Vector3(points[i][j]->GetTranslation());
+		}
+		auto vector = BernstainHelper::DeCasteljeu(horizontal, v, 4);
+		vertical[i] = vector;
+	}
+	auto result = BernstainHelper::dU(vertical, u);
+	return result;
+}
+
+DirectX::SimpleMath::Vector3 SingleBezierSurfaceC0::GetVDerivativeValue(double u, double v)
 {
 	std::array<Vector3, 4> horizontal;
 	for (int j = 0; j < 4; j++)
@@ -120,27 +137,10 @@ DirectX::SimpleMath::Vector3 SingleBezierSurfaceC0::GetUDerivativeValue(double u
 		{
 			vertical[i] = Vector3(points[i][j]->GetTranslation());
 		}
-		auto vector = BernstainHelper::DeCasteljeu(vertical, v, 4);
+		auto vector = BernstainHelper::DeCasteljeu(vertical, u, 4);
 		horizontal[j] = vector;
 	}
-	auto result = BernstainHelper::dU(horizontal, u);
-	return result;
-}
-
-DirectX::SimpleMath::Vector3 SingleBezierSurfaceC0::GetVDerivativeValue(double u, double v)
-{
-	std::array<Vector3, 4> vertical;
-	for (int i = 0; i < 4; i++)
-	{
-		std::array<Vector3, 4> horizontal;
-		for (int j = 0; j < 4; j++)
-		{
-			horizontal[j] = Vector3(points[i][j]->GetTranslation());
-		}
-		auto vector = BernstainHelper::DeCasteljeu(horizontal, u, 4);
-		vertical[i] = vector;
-	}
-	auto result = BernstainHelper::dU(vertical, v);
+	auto result = BernstainHelper::dU(horizontal, v);
 	return result;
 }
 

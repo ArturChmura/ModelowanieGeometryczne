@@ -52,23 +52,34 @@ void Torus::UpdateSlicesCount()
 	std::vector<int> indices = std::vector<int>();
 	indices.reserve(indicesCount);
 
+	int** indexArray = new int* [smallSlices];
+	for (int i = 0; i < smallSlices; i++)
+	{
+		indexArray[i] = new int[largeSlices];
+		std::fill_n(indexArray[i], largeSlices, -1);
+	}
+	int index = 0;
 	for (int smallCount = 0; smallCount < smallSlices; smallCount++)
 	{
 		for (int largeCount = 0; largeCount < largeSlices; largeCount++)
 		{
-			float alpha = 2 * PI * largeCount / largeSlices;
-			float beta = 2 * PI * smallCount / smallSlices;
+			float v = largeCount / (float)largeSlices;
+			float u = smallCount / (float)smallSlices;
+
+			if (!IsVisible(u, v))
+			{
+				continue;
+			}
+			float alpha = 2 * PI * v;
+			float beta = 2 * PI * u;
 			float x = (R + r * cosf(beta)) * cosf(alpha);
 			float z = (R + r * cosf(beta)) * sinf(alpha);
 			float y = r * sinf(beta);
 			VSConstColorIn vertex = { Vector3(x,y,z)};
 			vertices.push_back(vertex);
+			indexArray[smallCount][largeCount] = index++;
 
-			Pair<int> topLeft = { largeCount, smallCount };
-			Pair<int> topRight = { modulo2(largeCount + 1, largeSlices), smallCount };
-			Pair<int> bottomLeft = { largeCount, modulo2(smallCount - 1, smallSlices) };
-			Pair<int> bottomRight = { modulo2(largeCount + 1, largeSlices), modulo2(smallCount - 1, smallSlices) };
-
+			
 			// Triangulacja
 			/*indices.push_back(topLeft.a + topLeft.b * largeSlices);
 			indices.push_back(topRight.a + topRight.b * largeSlices);
@@ -78,14 +89,34 @@ void Torus::UpdateSlicesCount()
 			indices.push_back(bottomRight.a + bottomRight.b * largeSlices);
 			indices.push_back(bottomLeft.a + bottomLeft.b * largeSlices);*/
 
-			// Siatka
-			indices.push_back(topLeft.a + topLeft.b * largeSlices);
-			indices.push_back(topRight.a + topRight.b * largeSlices);
-			indices.push_back(topLeft.a + topLeft.b * largeSlices);
-			indices.push_back(bottomLeft.a + bottomLeft.b * largeSlices);
+
+		}
+	}	
+	for (int smallCount = 0; smallCount < smallSlices; smallCount++)
+	{
+		for (int largeCount = 0; largeCount < largeSlices; largeCount++)
+		{
+			Pair<int> topLeft = { largeCount, smallCount };
+			Pair<int> topRight = { modulo2(largeCount + 1, largeSlices), smallCount };
+			Pair<int> bottomLeft = { largeCount, modulo2(smallCount - 1, smallSlices) };
+			Pair<int> bottomRight = { modulo2(largeCount + 1, largeSlices), modulo2(smallCount - 1, smallSlices) };
+			
+			if (indexArray[topLeft.b][topLeft.a] != -1 && indexArray[topRight.b][topRight.a] != -1)
+			{
+				indices.push_back(indexArray[topLeft.b][topLeft.a]);
+				indices.push_back(indexArray[topRight.b][topRight.a]);
+			}
+			if (indexArray[topLeft.b][topLeft.a] != -1 && indexArray[bottomLeft.b][bottomLeft.a] != -1)
+			{
+				indices.push_back(indexArray[topLeft.b][topLeft.a]);
+				indices.push_back(indexArray[bottomLeft.b][bottomLeft.a]);
+			}
 
 		}
 	}
+	// Siatka
+
+	free(indexArray);
 	this->meshInfo.vertexBuffer = DxDevice::instance->CreateVertexBuffer(vertices);
 	this->verticesCount = vertices.size();
 
@@ -100,6 +131,7 @@ void Torus::Accept(AbstractModelVisitor& visitor)
 
 void Torus::OnFilterUpdate()
 {
+	UpdateSlicesCount();
 }
 
 

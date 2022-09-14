@@ -162,21 +162,21 @@ SingleSurfaceParameter IBezierSurface::GetSingleSurfaceParameter(double u, doubl
 {
 	u = GetInRange(u, 0.0, 1.0);
 	v = GetInRange(v, 0.0, 1.0);
-	int horizontalSlice = (int)std::floor(u * horizontalSlicesCount);
-	int verticalSlice = (int)std::floor(v * verticalSlicesCount);
+	int horizontalSlice = (int)std::floor(v * horizontalSlicesCount);
+	int verticalSlice = (int)std::floor(u * verticalSlicesCount);
 	horizontalSlice = std::clamp(horizontalSlice, 0, horizontalSlicesCount - 1);
 	verticalSlice = std::clamp(verticalSlice, 0, verticalSlicesCount - 1);
 
-	float du = 1.0 / horizontalSlicesCount;
-	float dv = 1.0 / verticalSlicesCount;
+	float du = 1.0 / verticalSlicesCount;
+	float dv = 1.0 / horizontalSlicesCount;
 
 	auto singleSurfaces = GetSingleSurfaces();
 	auto surface = singleSurfaces[verticalSlice * horizontalSlicesCount + horizontalSlice];
 
 
 	SingleSurfaceParameter singleSurfaceParameter;
-	singleSurfaceParameter.u = (u - horizontalSlice * du) * horizontalSlicesCount;
-	singleSurfaceParameter.v = (v - verticalSlice * dv) * verticalSlicesCount;
+	singleSurfaceParameter.u = (u - verticalSlice * du) * verticalSlicesCount;
+	singleSurfaceParameter.v = (v - horizontalSlice * dv) * horizontalSlicesCount;
 	singleSurfaceParameter.singleSurface = surface;
 	return singleSurfaceParameter;
 }

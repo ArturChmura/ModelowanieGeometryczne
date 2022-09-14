@@ -109,7 +109,7 @@ void SerializationVisitor::Accept(std::shared_ptr < BezierSurfaceC0> surface)
 {
 	auto& scene = MG1::Scene::Get();
 	auto s = MG1::BezierSurfaceC0();
-	s.size = { (UINT)surface->horizontalSlicesCount, (UINT)surface->verticalSlicesCount };
+	s.size = { (UINT)surface->verticalSlicesCount, (UINT)surface->horizontalSlicesCount };
 	s.name = surface->name;
 	s.SetId(surface->id);
 

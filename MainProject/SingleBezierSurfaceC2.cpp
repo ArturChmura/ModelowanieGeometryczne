@@ -101,31 +101,14 @@ DirectX::SimpleMath::Vector3 SingleBezierSurfaceC2::GetValue(double u, double v)
 		{
 			horizontal[j] = Vector3(points[i][j]->GetTranslation());
 		}
-		auto v = BernstainHelper::DeBoor(horizontal, u);
-		vertical[i] = v;
+		auto value = BernstainHelper::DeBoor(horizontal, v);
+		vertical[i] = value;
 	}
-	auto result = BernstainHelper::DeBoor(vertical, v);
+	auto result = BernstainHelper::DeBoor(vertical, u);
 	return result;
 }
 
 DirectX::SimpleMath::Vector3 SingleBezierSurfaceC2::GetUDerivativeValue(double u, double v)
-{
-	std::array<Vector3, 4> horizontal;
-	for (int j = 0; j < 4; j++)
-	{
-		std::array<Vector3, 4> vertical;
-		for (int i = 0; i < 4; i++)
-		{
-			vertical[i] = Vector3(points[i][j]->GetTranslation());
-		}
-		auto vector = BernstainHelper::DeBoor(vertical, v);
-		horizontal[j] = vector;
-	}
-	auto result = BernstainHelper::DeBoorDerivative(horizontal, u);
-	return result;
-}
-
-DirectX::SimpleMath::Vector3 SingleBezierSurfaceC2::GetVDerivativeValue(double u, double v)
 {
 	std::array<Vector3, 4> vertical;
 	for (int i = 0; i < 4; i++)
@@ -135,10 +118,27 @@ DirectX::SimpleMath::Vector3 SingleBezierSurfaceC2::GetVDerivativeValue(double u
 		{
 			horizontal[j] = Vector3(points[i][j]->GetTranslation());
 		}
-		auto vector = BernstainHelper::DeBoor(horizontal, u);
+		auto vector = BernstainHelper::DeBoor(horizontal, v);
 		vertical[i] = vector;
 	}
-	auto result = BernstainHelper::DeBoorDerivative(vertical, v);
+	auto result = BernstainHelper::DeBoorDerivative(vertical, u);
+	return result;
+}
+
+DirectX::SimpleMath::Vector3 SingleBezierSurfaceC2::GetVDerivativeValue(double u, double v)
+{
+	std::array<Vector3, 4> horizontal;
+	for (int j = 0; j < 4; j++)
+	{
+		std::array<Vector3, 4> vertical;
+		for (int i = 0; i < 4; i++)
+		{
+			vertical[i] = Vector3(points[i][j]->GetTranslation());
+		}
+		auto vector = BernstainHelper::DeBoor(vertical, u);
+		horizontal[j] = vector;
+	}
+	auto result = BernstainHelper::DeBoorDerivative(horizontal, v);
 	return result;
 }
 

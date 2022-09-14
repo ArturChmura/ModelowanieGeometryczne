@@ -55,15 +55,8 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 			[&points](MG1::PointRef ref) { return points[ref.GetId()]; }
 		);
 		
-		std::vector<std::shared_ptr<Point>> controlPointsCorrectOrder; // bo ustaliliœmy kolejnoœæ punktów w serlializacji wzd³u¿ U 
-		for (int i = 0; i < 4; i++)
-		{
-			for (int j = 0; j < 4; j++)
-			{
-				controlPointsCorrectOrder.push_back(controlPoints[i + 4 * j]);
-			}
-		}
-		auto bezier = std::make_shared<BezierCurveC0>(controlPointsCorrectOrder);
+	
+		auto bezier = std::make_shared<BezierCurveC0>(controlPoints);
 
 		bezier->name = b.name;
 
@@ -78,15 +71,8 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 			[&points](MG1::PointRef ref) { return points[ref.GetId()]; }
 		);
 
-		std::vector<std::shared_ptr<Point>> controlPointsCorrectOrder; // bo ustaliliœmy kolejnoœæ punktów w serlializacji wzd³u¿ U 
-		for (int i = 0; i < 4; i++)
-		{
-			for (int j = 0; j < 4; j++)
-			{
-				controlPointsCorrectOrder.push_back(controlPoints[i + 4 * j]);
-			}
-		}
-		auto bezier = std::make_shared<BezierCurveC2>(controlPointsCorrectOrder);
+	
+		auto bezier = std::make_shared<BezierCurveC2>(controlPoints);
 
 		bezier->name = b.name;
 
@@ -127,7 +113,7 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 			{
 				for (int j = 0; j < 4; j++)
 				{
-					auto point = controlPoints[4 * i + j];
+					auto point = controlPoints[i + 4 * j];  // bo ustaliliœmy kolejnoœæ punktów w serlializacji wzd³u¿ U 
 					points[i][j] = point;
 					surfacePoints.emplace(std::pair(point->id, point));
 				}
@@ -138,7 +124,7 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 			patchIndex++;
 		}
 
-		auto surface = std::make_shared<BezierSurfaceC0>(patches, s.size.x, s.size.y, false, s.name);
+		auto surface = std::make_shared<BezierSurfaceC0>(patches, s.size.y, s.size.x, false, s.name);
 
 		for (auto [_, point]: surfacePoints)
 		{
@@ -166,7 +152,7 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 			{
 				for (int j = 0; j < 4; j++)
 				{
-					auto point = controlPoints[4 * i + j];
+					auto point = controlPoints[i + 4 * j];  // bo ustaliliœmy kolejnoœæ punktów w serlializacji wzd³u¿ U 
 					points[i][j] = point;
 					surfacePoints.emplace(std::pair(point->id, point));
 				}
