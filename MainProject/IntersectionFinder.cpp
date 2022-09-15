@@ -127,7 +127,7 @@ void IntersectionFinder::FindNextPointsInDirection(std::shared_ptr<IParameterize
 
 
 		}
-	} while (nearest.found);
+	} while (nearest.found && !nearest.last);
 }
 
 IntersectionPoint IntersectionFinder::FindNearestPoint(
@@ -275,7 +275,7 @@ IntersectionPoint IntersectionFinder::FindNearestPoint(
 	return intersectionPoint;
 }
 
-IntersectionPoint IntersectionFinder::FindNextPoint(bool flip, std::shared_ptr<IParameterized> surface1, std::shared_ptr<IParameterized> surface2, IntersectionPoint P0, float u1, float u2, float v1, float v2, float s1, float s2, float t1, float t2)
+IntersectionPoint IntersectionFinder::FindNextPoint(bool flip, std::shared_ptr<IParameterized> surface1, std::shared_ptr<IParameterized> surface2, IntersectionPoint P0, double u1, double u2, double v1, double v2, double s1, double s2, double t1, double t2)
 {
 	auto dU1 = surface1->GetUDerivativeValue(P0.u, P0.v);
 	auto dV1 = surface1->GetVDerivativeValue(P0.u, P0.v);
@@ -294,15 +294,18 @@ IntersectionPoint IntersectionFinder::FindNextPoint(bool flip, std::shared_ptr<I
 	}
 	//OutputDebugString(L"tangent: \n");
 	//PrintVector(tangent);
-
-
+	bool outOfRange = false;
+	double u, v, s, t;
 	for (int i = 1; i <= 8; i *= 2)
 	{
 		Eigen::VectorXd xk(4);
 		Eigen::VectorXd xk1(4);
 		xk1 << P0.u, P0.v, P0.s, P0.t;
 		//PrintMatrix(xk1);
-		double u = P0.u, v = P0.v, s = P0.s, t = P0.t;
+		u = P0.u;
+		v = P0.v;
+		s = P0.s;
+		t = P0.t;
 		float distance = newtonStartDistance / i;
 		for (int j = 0; j < 20; j++)
 		{
@@ -333,6 +336,7 @@ IntersectionPoint IntersectionFinder::FindNextPoint(bool flip, std::shared_ptr<I
 				intersectionPoint.s = s;
 				intersectionPoint.t = t;
 				intersectionPoint.found = true;
+				intersectionPoint.last = false;
 				return intersectionPoint;
 			}
 
@@ -375,6 +379,7 @@ IntersectionPoint IntersectionFinder::FindNextPoint(bool flip, std::shared_ptr<I
 				}
 				else
 				{
+					outOfRange = true;
 					break;
 				}
 			}
@@ -387,6 +392,7 @@ IntersectionPoint IntersectionFinder::FindNextPoint(bool flip, std::shared_ptr<I
 				}
 				else
 				{
+					outOfRange = true;
 					break;
 				}
 			}
@@ -399,6 +405,7 @@ IntersectionPoint IntersectionFinder::FindNextPoint(bool flip, std::shared_ptr<I
 				}
 				else
 				{
+					outOfRange = true;
 					break;
 				}
 			}
@@ -411,6 +418,7 @@ IntersectionPoint IntersectionFinder::FindNextPoint(bool flip, std::shared_ptr<I
 				}
 				else
 				{
+					outOfRange = true;
 					break;
 				}
 			}
@@ -420,7 +428,23 @@ IntersectionPoint IntersectionFinder::FindNextPoint(bool flip, std::shared_ptr<I
 			//PrintMatrix(xk1);
 		}
 	}
+	if (outOfRange)
+	{
+		u = std::clamp(u, u1, u2);
+		v = std::clamp(v, v1, v2);
+		s = std::clamp(s, s1, s2);
+		t = std::clamp(t, t1, t2);
 
+		IntersectionPoint intersectionPoint;
+		intersectionPoint.position = (surface1->GetValue(u, v) + surface2->GetValue(s, t)) / 2;
+		intersectionPoint.u = u;
+		intersectionPoint.v = v;
+		intersectionPoint.s = s;
+		intersectionPoint.t = t;
+		intersectionPoint.found = true;
+		intersectionPoint.last = true;
+		return intersectionPoint;
+	}
 	IntersectionPoint intersectionPoint;
 	intersectionPoint.found = false;
 	return intersectionPoint;

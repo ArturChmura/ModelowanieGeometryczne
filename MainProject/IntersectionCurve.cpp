@@ -43,7 +43,7 @@ IntersectionCurve::IntersectionCurve(
 		DxDevice::instance->operator->()->CreateShaderResourceView(filterTextures[i].get(), &srvDesc, &viewPtr1);
 		filterTextureViews[i] = mini::dx_ptr<ID3D11ShaderResourceView>(viewPtr1);
 
-		filters[i] = std::make_shared<ArrayFilter>(UVs[i]);
+		filters[i] = std::make_shared<ArrayFilter>(UVs[i], surfaces[i]->IsUWrapped(), surfaces[i]->IsVWrapped());
 
 		UpdateFilter(i);
 	}
@@ -60,7 +60,7 @@ void IntersectionCurve::RenderGUI()
 
 	for (int i = 0; i < 2; i++)
 	{
-		ImGui::Image((ImTextureID)(intptr_t)(filterTextureViews[i].get()), {300,300}, uv_min, uv_max, tint_col, border_col);
+		ImGui::Image((ImTextureID)(intptr_t)(filterTextureViews[i].get()), {512,512}, uv_min, uv_max, tint_col, border_col);
 		if (ImGui::Button(("Swap##swap" + std::to_string(i)).c_str()))
 		{
 			filters[i]->Swap();
@@ -111,11 +111,14 @@ void IntersectionCurve::UpdateFilter(int index)
 			float u = i / (float)TEXTURE_SIZE;
 			float v = j / (float)TEXTURE_SIZE;
 
-			auto filtered = filters[index]->IsFiltered(u, v);
-			BYTE color = filtered ? (BYTE)0 : (BYTE)255;
-			pTexels[4 * (rowStart + j)] = color;
-			pTexels[4 * (rowStart + j) + 1] = color;
-			pTexels[4 * (rowStart + j) + 2] = color;
+			BYTE color = filters[index]->IsFiltered(u, v);
+			if (color != 0 && color != 255)
+			{
+				int e = 1;
+			}
+			pTexels[4 * (rowStart + j)] = color > 0 ? 255 : 0;
+			pTexels[4 * (rowStart + j) + 1] = color > 200 ? 255 : 0;
+			pTexels[4 * (rowStart + j) + 2] = color > 200 ? 255 : 0;
 			pTexels[4 * (rowStart + j) + 3] = (BYTE)255;
 
 		}

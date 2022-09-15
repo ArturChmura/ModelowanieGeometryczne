@@ -4,13 +4,15 @@
 #include <stack>
 #include "Helpers.h"
 
-ArrayFilter::ArrayFilter(std::vector<Pair<double>> points)
+ArrayFilter::ArrayFilter(std::vector<Pair<double>> points, bool uWrapped, bool vWrapped)
 {
-	filterArray = new bool* [ARRAY_SIZE];
+	this->uWrapped = uWrapped;
+	this->vWrapped = vWrapped;
+	filterArray = new unsigned char* [ARRAY_SIZE];
 	for (int i = 0; i < ARRAY_SIZE; i++)
 	{
-		filterArray[i] = new bool[ARRAY_SIZE];
-		std::fill_n(filterArray[i], ARRAY_SIZE, false);
+		filterArray[i] = new unsigned char[ARRAY_SIZE];
+		std::fill_n(filterArray[i], ARRAY_SIZE, (unsigned char)0);
 		
 	}
 	for (int i = 1; i < points.size(); i++)
@@ -19,7 +21,7 @@ ArrayFilter::ArrayFilter(std::vector<Pair<double>> points)
 	}
 	int startX = 0;
 	int startY = 0;
-	while (filterArray[startX][startY] == true)
+	while (filterArray[startX][startY] > 0)
 	{
 		startX++;
 		if (startX >= ARRAY_SIZE)
@@ -37,7 +39,7 @@ ArrayFilter::ArrayFilter(std::vector<Pair<double>> points)
 void ArrayFilter::DrawLineBetweenPoints(Pair<double> uv1, Pair<double> uv2)
 {
 	bool swapXY = false;
-	auto setXY = [&](int x, int y, bool value) {
+	auto setXY = [&](int x, int y, unsigned char value) {
 		if (swapXY)
 		{
 			std::swap(x, y);
@@ -69,11 +71,11 @@ void ArrayFilter::DrawLineBetweenPoints(Pair<double> uv1, Pair<double> uv2)
 	for (int x = p1.a; x <= p2.a; x++)
 	{
 		int y = (p2.b - p1.b) / (double)(p2.a - p1.a) * (x - p1.a) + p1.b;
-		setXY(x, y, true);
+		setXY(x, y, (unsigned char)127);
 	}
 }
 
-bool ArrayFilter::IsFiltered(double u, double v)
+unsigned char ArrayFilter::IsFiltered(double u, double v)
 {
 	int i = u * ARRAY_SIZE;
 	int j = v * ARRAY_SIZE;
@@ -88,11 +90,11 @@ void ArrayFilter::FloodFill(int x, int y)
 	{
 		auto n = stack.top();
 		stack.pop();
-		int x = GetInRangeInt(n.a, 0, ARRAY_SIZE - 1);
-		int y = GetInRangeInt(n.b, 0, ARRAY_SIZE - 1);
-		if (!filterArray[x][y])
+		int x = uWrapped ? GetInRangeInt(n.a, 0, ARRAY_SIZE - 1) : std::clamp(n.a, 0, ARRAY_SIZE - 1);
+		int y = vWrapped ? GetInRangeInt(n.b, 0, ARRAY_SIZE - 1) : std::clamp(n.b, 0, ARRAY_SIZE - 1);
+		if (filterArray[x][y]==(unsigned char)0)
 		{
-			filterArray[x][y] = true;
+			filterArray[x][y] = (unsigned char)255;
 			stack.push({ x - 1, y  });
 			stack.push({ x , y - 1 });
 			stack.push({ x + 1, y  });
@@ -108,7 +110,14 @@ void ArrayFilter::Swap()
 	{
 		for (int j = 0; j < ARRAY_SIZE; j++)
 		{
-			filterArray[i][j] = !filterArray[i][j];
+			if (filterArray[i][j] == (unsigned char)0)
+			{
+				filterArray[i][j] = (unsigned char)255;
+			}
+			else if (filterArray[i][j] == (unsigned char)255)
+			{
+				filterArray[i][j] = (unsigned char)0;
+			}
 		}
 	}
 }

@@ -8,14 +8,17 @@
 class ArrayFilter : public IFilter
 {
 public:
-	ArrayFilter(std::vector<Pair<double>> points);
+	ArrayFilter(std::vector<Pair<double>> points, bool uWrapped, bool vWrapped);
 	void DrawLineBetweenPoints(Pair<double> uv1, Pair<double> uv2);
 	// Inherited via IFilter
-	virtual bool IsFiltered(double u, double v) override;
+	virtual unsigned char IsFiltered(double u, double v) override;
 
-	bool** filterArray;
+	unsigned char** filterArray;
 
 	void FloodFill(int x, int y);
 
 	void Swap();
+
+	bool uWrapped;
+	bool vWrapped;
 };

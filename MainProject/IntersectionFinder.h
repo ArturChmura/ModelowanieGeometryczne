@@ -41,14 +41,14 @@ public:
 		std::shared_ptr<IParameterized> surface1,
 		std::shared_ptr <IParameterized> surface2,
 		IntersectionPoint P0,
-		float u1 = 0,
-		float u2 = 1,
-		float v1 = 0,
-		float v2 = 1,
-		float s1 = 0,
-		float s2 = 1,
-		float t1 = 0,
-		float t2 = 1
+		double u1 = 0,
+		double u2 = 1,
+		double v1 = 0,
+		double v2 = 1,
+		double s1 = 0,
+		double s2 = 1,
+		double t1 = 0,
+		double t2 = 1
 	);
 
 	void PrintMatrix(Eigen::MatrixXd m);

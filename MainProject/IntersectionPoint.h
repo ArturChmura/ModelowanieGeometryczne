@@ -10,4 +10,5 @@ public:
 	double s;
 	double t;
 	bool found;
+	bool last;
 };

@@ -17,7 +17,7 @@ bool IParameterized::IsVisible(float u, float v)
 	bool visible = true;
 	for (auto [_, filter] : filters)
 	{
-		visible = visible && !filter->IsFiltered(u, v);
+		visible = visible && (int)filter->IsFiltered(u, v) > 0;
 	}
 	return visible;
 }
