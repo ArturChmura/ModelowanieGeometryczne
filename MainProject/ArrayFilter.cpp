@@ -47,8 +47,8 @@ void ArrayFilter::DrawLineBetweenPoints(Pair<double> uv1, Pair<double> uv2)
 		filterArray[x][y] = value;
 	};
 	Pair<int> p1;
-	p1.a = (int)(uv1.a * ARRAY_SIZE);
-	p1.b = (int)(uv1.b * ARRAY_SIZE);
+	p1.a = (int)std::floor(uv1.a * ARRAY_SIZE); 
+	p1.b = (int)std::floor(uv1.b * ARRAY_SIZE);
 
 	Pair<int> p2;
 	p2.a = (int)std::floor(uv2.a * ARRAY_SIZE);

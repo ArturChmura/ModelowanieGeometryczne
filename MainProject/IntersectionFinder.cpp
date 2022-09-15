@@ -323,7 +323,7 @@ IntersectionPoint IntersectionFinder::FindNextPoint(bool flip, std::shared_ptr<I
 
 			//OutputDebugString(L"F: \n");
 			//PrintMatrix(F);
-
+			auto norm = F.norm();
 			if (F.norm() < newtownMinNorm / i)
 			{
 				IntersectionPoint intersectionPoint;

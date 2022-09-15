@@ -112,26 +112,31 @@ void SerializationVisitor::Accept(std::shared_ptr < BezierSurfaceC0> surface)
 	s.size = { (UINT)surface->verticalSlicesCount, (UINT)surface->horizontalSlicesCount };
 	s.name = surface->name;
 	s.SetId(surface->id);
-
-	for (auto& patch : surface->singleSurfaces)
+	for (int j = 0; j < surface->horizontalSlicesCount; j++)
 	{
-		auto p = MG1::BezierPatchC0();
-		p.name = patch->name;
-		p.SetId(patch->id);
-
-		p.samples = MG1::Uint2{ static_cast<uint32_t>(patch->verticalSlices), static_cast<uint32_t>(patch->horizontalSlices) };
-
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < surface->verticalSlicesCount; i++)
 		{
-			for (int j = 0; j < 4; j++)
-			{
-				auto point = patch->points[j][i]; // na odwrót, bo ustaliliœmy kolejnoœæ punktów wzd³u¿ U 
-				p.controlPoints.push_back(MG1::PointRef(point->id));
-			}
-		}
+			int index = i * surface->horizontalSlicesCount + j;
+			auto& patch = surface->singleSurfaces[index];
+			auto p = MG1::BezierPatchC0();
+			p.name = patch->name;
+			p.SetId(patch->id);
 
-		s.patches.push_back(p);
+			p.samples = MG1::Uint2{ static_cast<uint32_t>(patch->verticalSlices), static_cast<uint32_t>(patch->horizontalSlices) };
+
+			for (int i = 0; i < 4; i++)
+			{
+				for (int j = 0; j < 4; j++)
+				{
+					auto point = patch->points[j][i]; // na odwrót, bo ustaliliœmy kolejnoœæ punktów wzd³u¿ U 
+					p.controlPoints.push_back(MG1::PointRef(point->id));
+				}
+			}
+
+			s.patches.push_back(p);
+		}
 	}
+	
 
 	scene.surfacesC0.push_back(s);
 }
@@ -144,28 +149,32 @@ void SerializationVisitor::Accept(std::shared_ptr < BezierSurfaceC2> surface)
 {
 	auto& scene = MG1::Scene::Get();
 	auto s = MG1::BezierSurfaceC2();
-	s.size = { (UINT)surface->horizontalSlicesCount, (UINT)surface->verticalSlicesCount };
+	s.size = { (UINT)surface->verticalSlicesCount, (UINT)surface->horizontalSlicesCount };
 	s.name = surface->name;
 	s.SetId(surface->id);
-
-	for (auto& patch : surface->singleSurfaces)
+	for (int j = 0; j < surface->horizontalSlicesCount; j++)
 	{
-		auto p = MG1::BezierPatchC2();
-		p.name = patch->name;
-		p.SetId(patch->id);
-
-		p.samples = MG1::Uint2{ static_cast<uint32_t>(patch->verticalSlices), static_cast<uint32_t>(patch->horizontalSlices) };
-
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < surface->verticalSlicesCount; i++)
 		{
-			for (int j = 0; j < 4; j++)
-			{
-				auto point = patch->points[j][i]; // na odwrót, bo ustaliliœmy kolejnoœæ punktów wzd³u¿ U 
-				p.controlPoints.push_back(MG1::PointRef(point->id));
-			}
-		}
+			int index = i * surface->horizontalSlicesCount + j;
+			auto& patch = surface->singleSurfaces[index];
+			auto p = MG1::BezierPatchC2();
+			p.name = patch->name;
+			p.SetId(patch->id);
 
-		s.patches.push_back(p);
+			p.samples = MG1::Uint2{ static_cast<uint32_t>(patch->verticalSlices), static_cast<uint32_t>(patch->horizontalSlices) };
+
+			for (int i = 0; i < 4; i++)
+			{
+				for (int j = 0; j < 4; j++)
+				{
+					auto point = patch->points[j][i]; // na odwrót, bo ustaliliœmy kolejnoœæ punktów wzd³u¿ U 
+					p.controlPoints.push_back(MG1::PointRef(point->id));
+				}
+			}
+
+			s.patches.push_back(p);
+		}
 	}
 
 	scene.surfacesC2.push_back(s);

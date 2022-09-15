@@ -138,14 +138,14 @@ DirectX::SimpleMath::Vector3 IBezierSurface::GetUDerivativeValue(double u, doubl
 {
 	auto singleSurfaceParameter = GetSingleSurfaceParameter(u, v);
 	auto singleDeriviative =  singleSurfaceParameter.singleSurface->GetUDerivativeValue(singleSurfaceParameter.u, singleSurfaceParameter.v);
-	return singleDeriviative * horizontalSlicesCount;
+	return singleDeriviative * verticalSlicesCount;
 }
 
 DirectX::SimpleMath::Vector3 IBezierSurface::GetVDerivativeValue(double u, double v)
 {
 	auto singleSurfaceParameter = GetSingleSurfaceParameter(u, v);
 	auto singleDeriviative = singleSurfaceParameter.singleSurface->GetVDerivativeValue(singleSurfaceParameter.u, singleSurfaceParameter.v);
-	return singleDeriviative * verticalSlicesCount;
+	return singleDeriviative * horizontalSlicesCount;
 }
 
 bool IBezierSurface::IsUWrapped()

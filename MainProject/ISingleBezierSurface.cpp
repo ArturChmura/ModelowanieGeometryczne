@@ -5,7 +5,7 @@ using namespace DirectX::SimpleMath;
 
 ISingleBezierSurface::ISingleBezierSurface(std::array<std::array<std::shared_ptr<Point>, 4>, 4> points, int horizontalSlices, int verticalSlices, int rowIndex, int columnIndex,
 	int rowCount, int columnCount, std::string name)
-	: IUnmovableModel("Single Bezier Surface")
+	: IUnmovableModel(name)
 {
 	this->points = points;
 	this->horizontalSlices = horizontalSlices;

@@ -69,7 +69,8 @@ void main(
         if(filter)
         {
             float2 uv = GetUV(input[0].uv.x, t, flipped, rowIndex, columnIndex, rowCount, columnCount);
-            float3 norm = filterTexture.SampleLevel(samp, uv, 0);
+            float2 flipped = float2(uv.y, uv.x); // zamiana, bo tekstura ma x poziomo
+            float3 norm = filterTexture.SampleLevel(samp, flipped, 0);
       
             if (norm.x < 0.5)
             {

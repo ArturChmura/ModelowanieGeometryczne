@@ -24,7 +24,7 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 	for (auto& p : deserializedScene.points)
 	{
 		auto pos = p.position;
-		auto point = std::make_shared<Point>(Vector3{pos.x, pos.y, pos.z});
+		auto point = std::make_shared<Point>(Vector3{ pos.x, pos.y, pos.z });
 		point->name = p.name;
 		scene->AddModel(point);
 
@@ -37,10 +37,10 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 		auto rot = t.rotation;
 		auto sc = t.scale;
 
-		auto torus = std::make_shared<Torus>(t.largeRadius, t.smallRadius, t.samples.x, t.samples. y);
+		auto torus = std::make_shared<Torus>(t.largeRadius, t.smallRadius, t.samples.x, t.samples.y);
 		torus->SetRotation(XMConvertToRadians(t.rotation.x), XMConvertToRadians(t.rotation.y), XMConvertToRadians(t.rotation.z));
 		torus->SetTranslation(t.position.x, t.position.y, t.position.z);
-		
+
 		torus->SetScale(t.scale.x, t.scale.y, t.scale.z);
 
 		torus->name = t.name;
@@ -54,8 +54,8 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 		std::transform(b.controlPoints.begin(), b.controlPoints.end(), std::back_inserter(controlPoints),
 			[&points](MG1::PointRef ref) { return points[ref.GetId()]; }
 		);
-		
-	
+
+
 		auto bezier = std::make_shared<BezierCurveC0>(controlPoints);
 
 		bezier->name = b.name;
@@ -71,7 +71,7 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 			[&points](MG1::PointRef ref) { return points[ref.GetId()]; }
 		);
 
-	
+
 		auto bezier = std::make_shared<BezierCurveC2>(controlPoints);
 
 		bezier->name = b.name;
@@ -100,33 +100,39 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 		std::vector<std::shared_ptr<SingleBezierSurfaceC0>> patches;
 		std::map<int, std::shared_ptr<Point>> surfacePoints;
 		int patchIndex = 0;
-		for (auto& patch : s.patches)
+		for (int i = 0; i < s.size.x; i++)
 		{
-			std::vector<std::shared_ptr<Point>> controlPoints;
-
-			std::transform(patch.controlPoints.begin(), patch.controlPoints.end(), std::back_inserter(controlPoints),
-				[&points](MG1::PointRef ref) { return points[ref.GetId()]; }
-			);
-
-			std::array<std::array<std::shared_ptr<Point>, 4>, 4> points;
-			for (int i = 0; i < 4; i++)
+			for (int j = 0; j < s.size.y; j++)
 			{
-				for (int j = 0; j < 4; j++)
-				{
-					auto point = controlPoints[i + 4 * j];  // bo ustaliliœmy kolejnoœæ punktów w serlializacji wzd³u¿ U 
-					points[i][j] = point;
-					surfacePoints.emplace(std::pair(point->id, point));
-				}
-			}
+				int index = i + j * s.size.x;
+				auto& patch = s.patches[index];
+				std::vector<std::shared_ptr<Point>> controlPoints;
 
-			auto singleSurface = std::make_shared<SingleBezierSurfaceC0>(points, patch.samples.x, patch.samples.y, patchIndex % s.size.x, patchIndex / s.size.x, s.size.x, s.size.y);
-			patches.push_back(singleSurface);
-			patchIndex++;
+				std::transform(patch.controlPoints.begin(), patch.controlPoints.end(), std::back_inserter(controlPoints),
+					[&points](MG1::PointRef ref) { return points[ref.GetId()]; }
+				);
+
+				std::array<std::array<std::shared_ptr<Point>, 4>, 4> points;
+				for (int i = 0; i < 4; i++)
+				{
+					for (int j = 0; j < 4; j++)
+					{
+						auto point = controlPoints[i + 4 * j];  // bo ustaliliœmy kolejnoœæ punktów w serlializacji wzd³u¿ U 
+						points[i][j] = point;
+						surfacePoints.emplace(std::pair(point->id, point));
+					}
+				}
+
+				auto singleSurface = std::make_shared<SingleBezierSurfaceC0>(points, patch.samples.x, patch.samples.y, i, j, s.size.x, s.size.y);
+				singleSurface->name = patch.name;
+				patches.push_back(singleSurface);
+				patchIndex++;
+			}
 		}
 
 		auto surface = std::make_shared<BezierSurfaceC0>(patches, s.size.y, s.size.x, false, s.name);
 
-		for (auto [_, point]: surfacePoints)
+		for (auto [_, point] : surfacePoints)
 		{
 			point->onRemovedFromSceneCallback.Add([scene = scene, surface = surface](std::shared_ptr<Point> p) {scene->RemoveModel(surface->id); }, surface->id);
 		}
@@ -139,31 +145,38 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 		std::vector<std::shared_ptr<SingleBezierSurfaceC2>> patches;
 		std::map<int, std::shared_ptr<Point>> surfacePoints;
 		int patchIndex = 0;
-		for (auto& patch : s.patches)
+		for (int i = 0; i < s.size.x; i++)
 		{
-			std::vector<std::shared_ptr<Point>> controlPoints;
-
-			std::transform(patch.controlPoints.begin(), patch.controlPoints.end(), std::back_inserter(controlPoints),
-				[&points](MG1::PointRef ref) { return points[ref.GetId()]; }
-			);
-
-			std::array<std::array<std::shared_ptr<Point>, 4>, 4> points;
-			for (int i = 0; i < 4; i++)
+			for (int j = 0; j < s.size.y; j++)
 			{
-				for (int j = 0; j < 4; j++)
+				int index = i + j * s.size.x;
+				auto& patch = s.patches[index];
+				std::vector<std::shared_ptr<Point>> controlPoints;
+
+				std::transform(patch.controlPoints.begin(), patch.controlPoints.end(), std::back_inserter(controlPoints),
+					[&points](MG1::PointRef ref) { return points[ref.GetId()]; }
+				);
+
+				std::array<std::array<std::shared_ptr<Point>, 4>, 4> points;
+				for (int i = 0; i < 4; i++)
 				{
-					auto point = controlPoints[i + 4 * j];  // bo ustaliliœmy kolejnoœæ punktów w serlializacji wzd³u¿ U 
-					points[i][j] = point;
-					surfacePoints.emplace(std::pair(point->id, point));
+					for (int j = 0; j < 4; j++)
+					{
+						auto point = controlPoints[i + 4 * j];  // bo ustaliliœmy kolejnoœæ punktów w serlializacji wzd³u¿ U 
+						points[i][j] = point;
+						surfacePoints.emplace(std::pair(point->id, point));
+					}
 				}
+
+				auto singleSurface = std::make_shared<SingleBezierSurfaceC2>(points, patch.samples.x, patch.samples.y, i,j, s.size.x, s.size.y);
+				singleSurface->name = patch.name;
+				patches.push_back(singleSurface);
+				patchIndex++;
 			}
-
-			auto singleSurface = std::make_shared<SingleBezierSurfaceC2>(points, patch.samples.x, patch.samples.y, patchIndex % s.size.x, patchIndex / s.size.x, s.size.x, s.size.y);
-			patches.push_back(singleSurface);
-			patchIndex++;
 		}
+	
 
-		auto surface = std::make_shared<BezierSurfaceC2>(patches, s.size.x, s.size.y, false, s.name);
+		auto surface = std::make_shared<BezierSurfaceC2>(patches, s.size.y, s.size.x, false, s.name);
 		for (auto [_, point] : surfacePoints)
 		{
 			point->onRemovedFromSceneCallback.Add([scene = scene, surface = surface](std::shared_ptr<Point> p) {scene->RemoveModel(surface->id); }, surface->id);
