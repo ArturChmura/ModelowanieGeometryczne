@@ -11,4 +11,5 @@ public:
 	double t;
 	bool found;
 	bool last;
+
 };

@@ -136,16 +136,52 @@ DirectX::SimpleMath::Vector3 IBezierSurface::GetValue(double u, double v)
 
 DirectX::SimpleMath::Vector3 IBezierSurface::GetUDerivativeValue(double u, double v)
 {
-	auto singleSurfaceParameter = GetSingleSurfaceParameter(u, v);
-	auto singleDeriviative =  singleSurfaceParameter.singleSurface->GetUDerivativeValue(singleSurfaceParameter.u, singleSurfaceParameter.v);
-	return singleDeriviative * verticalSlicesCount;
+	u = GetInRange(u, 0.0, 1.0);
+	v = GetInRange(v, 0.0, 1.0);
+
+	double h = 0.001;
+	double uh = u + h;
+	double mul = 1.0;
+	if (uh > 1.0f)
+	{
+		uh = u - h;
+		mul = -1.0;
+	}
+	auto singleSurfaceParameterU = GetSingleSurfaceParameter(u, v);
+	auto singleSurfaceParameterUH = GetSingleSurfaceParameter(uh, v);
+
+	auto valueU = singleSurfaceParameterU.singleSurface->GetValue(singleSurfaceParameterU.u, singleSurfaceParameterU.v);
+	auto valueUH = singleSurfaceParameterUH.singleSurface->GetValue(singleSurfaceParameterUH.u, singleSurfaceParameterUH.v);
+
+
+	auto value = (valueUH - valueU) / h * mul;
+
+	return value;
 }
 
 DirectX::SimpleMath::Vector3 IBezierSurface::GetVDerivativeValue(double u, double v)
 {
-	auto singleSurfaceParameter = GetSingleSurfaceParameter(u, v);
-	auto singleDeriviative = singleSurfaceParameter.singleSurface->GetVDerivativeValue(singleSurfaceParameter.u, singleSurfaceParameter.v);
-	return singleDeriviative * horizontalSlicesCount;
+	u = GetInRange(u, 0.0, 1.0);
+	v = GetInRange(v, 0.0, 1.0);
+
+	double h = 0.001;
+	double vh = v + h;
+	double mul = 1.0;
+	if (vh > 1.0f)
+	{
+		vh = v - h;
+		mul = -1.0;
+	}
+	auto singleSurfaceParameterV = GetSingleSurfaceParameter(u, v);
+	auto singleSurfaceParameterVH = GetSingleSurfaceParameter(u, vh);
+
+	auto valueV = singleSurfaceParameterV.singleSurface->GetValue(singleSurfaceParameterV.u, singleSurfaceParameterV.v);
+	auto valueVH = singleSurfaceParameterVH.singleSurface->GetValue(singleSurfaceParameterVH.u, singleSurfaceParameterVH.v);
+
+
+	auto value = (valueVH - valueV) / h * mul;
+
+	return value;
 }
 
 bool IBezierSurface::IsUWrapped()

@@ -38,6 +38,7 @@
     <ClCompile Include="gsBezierSurfaceC2.cpp" />
     <ClCompile Include="gsGregory.cpp" />
     <ClCompile Include="gsSurfaceBezier.cpp" />
+    <ClCompile Include="HalfSurface.cpp" />
     <ClCompile Include="IBezierCurve.cpp" />
     <ClCompile Include="IBezierSurface.cpp" />
     <ClCompile Include="IntersecionAdderWindow.cpp" />
@@ -104,6 +105,7 @@
     <ClInclude Include="CursorOptionsWindow.h" />
     <ClInclude Include="DebugWindow.h" />
     <ClInclude Include="EmptyModelVisitor.h" />
+    <ClInclude Include="HalfSurface.h" />
     <ClInclude Include="IFilter.h" />
     <ClInclude Include="GregoryAdderWindow.h" />
     <ClInclude Include="GregoryFinder.h" />

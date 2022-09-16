@@ -19,6 +19,10 @@ public:
 	std::shared_ptr<std::vector<IntersectionPoint>> FindSelfIntersection(
 		std::shared_ptr<IParameterized> surface
 	);
+	double minDistanceSelfDivision = 0.2;
+	IntersectionPoint FindStartPointSelf(
+		std::shared_ptr<IParameterized> surface
+	);
 
 	std::shared_ptr<std::vector<IntersectionPoint>> FindAllPoints(std::shared_ptr<IParameterized> surface1, std::shared_ptr<IParameterized> surface2, IntersectionPoint P0);
 

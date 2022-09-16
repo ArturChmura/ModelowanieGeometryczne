@@ -8,6 +8,7 @@
 #include "BezierCurveInterpolating.h"
 #include "IntersectionCurve.h"
 #include "Helpers.h"
+#include "HalfSurface.h"
 
 using Eigen::MatrixXd;
 using Eigen::MatrixXf;
@@ -30,25 +31,165 @@ std::shared_ptr<std::vector<IntersectionPoint>> IntersectionFinder::FindSelfInte
 	float maxU1 = surface->IsUWrapped() ? 2 : 1;
 	float maxV1 = surface->IsVWrapped() ? 2 : 1;
 
-	double u = 0;
-	double v = 0;
-	double s = 1;
-	double t = 1;
+	auto closePoint = FindStartPointSelf(surface);
 
-	auto P0 = FindNearestPoint(surface, surface, u, v, s, t, minU1, maxU1, minV1, maxV1, minU1, maxU1, minV1, maxV1);
-	if (!P0.found || (std::abs(P0.u - P0.s) < 0.01 && std::abs(P0.s - P0.t) < 0.01))
+	/*auto firstHalf = std::make_shared<HalfSurface>(surface, true, 0);
+	auto secondHalf = std::make_shared<HalfSurface>(surface, true, 1);*/
+
+	auto P0 = FindNearestPoint(surface, surface, closePoint.u, closePoint.v, closePoint.s, closePoint.t, minU1, maxU1, minV1, maxV1, minU1, maxU1, minV1, maxV1);
+	//auto [uSurface, vSurface] = firstHalf->GetSurfaceUV(P0.u, P0.v);
+	//auto [sSurface, tSurface] = secondHalf->GetSurfaceUV(P0.s, P0.t);
+	//P0.u = uSurface;
+	//P0.v = vSurface;
+	//P0.s = sSurface;
+	//P0.t = tSurface;
+	auto toClose = [=](double u, double v, bool wrapped)
 	{
-		t = 0;
-		P0 = FindNearestPoint(surface, surface, u, v, s, t, minU1, maxU1, minV1, maxV1, minU1, maxU1, minV1, maxV1);
-		if (!P0.found || (std::abs(P0.u - P0.s) < 0.01 && std::abs(P0.s - P0.t) < 0.01))
+		if (u > v)
 		{
-			return nullptr;
+			std::swap(u, v);
 		}
+		auto d = v - u;
+
+		if (wrapped)
+		{
+			auto dN = u - (v - 1);
+			if (dN < d)
+			{
+				d = dN;
+			}
+		}
+		if (d < minDistanceSelfDivision)
+		{
+			return true;
+		}
+		return false;
+	};
+
+	if (!P0.found || (toClose(P0.u, P0.s, surface->IsUWrapped()) && toClose(P0.v, P0.t, surface->IsVWrapped())))
+	{
+		//auto firstHalf = std::make_shared<HalfSurface>(surface, false, 0);
+		//auto secondHalf = std::make_shared<HalfSurface>(surface, false, 1);
+
+		//auto P0 = FindNearestPoint(firstHalf, secondHalf, u, v, s, t, minU1, maxU1, minV1, maxV1, minU1, maxU1, minV1, maxV1);
+		//auto [uSurface, vSurface] = firstHalf->GetSurfaceUV(P0.u, P0.v);
+		//auto [sSurface, tSurface] = secondHalf->GetSurfaceUV(P0.s, P0.t);
+		//P0.u = uSurface;
+		//P0.v = vSurface;
+		//P0.s = sSurface;
+		//P0.t = tSurface;
+		//if (!P0.found || (toClose(uSurface, sSurface) && toClose(vSurface, tSurface)))
+		//{
+		return nullptr;
+		//}
 	}
 
 
 
 	return FindAllPoints(surface, surface, P0);
+}
+
+IntersectionPoint IntersectionFinder::FindStartPointSelf(std::shared_ptr<IParameterized> surface)
+{
+
+	double uBest = 0.0, vBest = 0.0, sBest = 0.0, tBest = 0.0, distanceBest = 99999.9;
+
+	auto toClose = [=](double u, double v, bool wrapped)
+	{
+		if (u > v)
+		{
+			std::swap(u, v);
+		}
+		auto d = v - u;
+
+		if (wrapped)
+		{
+			auto dN = u - (v - 1);
+			if (dN < d)
+			{
+				d = dN;
+			}
+		}
+		if (d < minDistanceSelfDivision)
+		{
+			return true;
+		}
+		return false;
+	};
+
+	int patchDivisionsCount = 10;
+	int divisionsIterationCount = 4;
+
+
+	for (int iter = 0; iter < divisionsIterationCount; iter++)
+	{
+		double currentPatchWidth = 1.0 / std::pow(patchDivisionsCount, iter);
+		double smallPatchWidth = currentPatchWidth / patchDivisionsCount;
+
+		double currentUBest = 0.0;
+		double currentVBest = 0.0;
+		double currentSBest = 0.0;
+		double currentTBest = 0.0;
+		double currentDistBest = 99999.0;
+
+		for (int i = 0; i < patchDivisionsCount; i++)
+		{
+			for (int j = 0; j < patchDivisionsCount; j++)
+			{
+				for (int k = 0; k < patchDivisionsCount; k++)
+				{
+					for (int l = 0; l < patchDivisionsCount; l++)
+					{
+						double u = uBest + smallPatchWidth * (i + 0.5);
+						double v = vBest + smallPatchWidth * (j + 0.5);
+						double s = sBest + smallPatchWidth * (k + 0.5);
+						double t = tBest + smallPatchWidth * (l + 0.5);
+
+						u = GetInRange(u, 0.0, 1.0);
+						v = GetInRange(v, 0.0, 1.0);
+						s = GetInRange(s, 0.0, 1.0);
+						t = GetInRange(t, 0.0, 1.0);
+
+						if (toClose(u , s, surface->IsUWrapped())  && toClose(v, t, surface->IsVWrapped()))
+						{
+							continue;
+						}
+
+						auto uvPos = surface->GetValue(u, v);
+						auto stPos = surface->GetValue(s, t);
+
+						auto distance = Vector3::Distance(uvPos, stPos);
+						if (distance < currentDistBest)
+						{
+							currentDistBest = distance;
+							currentUBest = u;
+							currentVBest = v;
+							currentSBest = s;
+							currentTBest = t;
+						}
+					}
+				}
+			}
+		}
+		if (currentDistBest < distanceBest)
+		{
+			distanceBest = currentDistBest;
+			uBest = currentUBest;
+			vBest = currentVBest;
+			sBest = currentSBest;
+			tBest = currentTBest;
+		}
+
+
+	}
+
+	IntersectionPoint intersectionPoint;
+	intersectionPoint.u = uBest;
+	intersectionPoint.v = vBest;
+	intersectionPoint.s = sBest;
+	intersectionPoint.t = tBest;
+
+	return intersectionPoint;
 }
 
 std::shared_ptr<std::vector<IntersectionPoint>> IntersectionFinder::FindIntersection(std::shared_ptr<IParameterized> surface1, std::shared_ptr<IParameterized> surface2)

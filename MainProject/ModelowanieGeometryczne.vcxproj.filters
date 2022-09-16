@@ -390,6 +390,9 @@
     <ClCompile Include="ArrayFilter.cpp">
       <Filter>Source Files\Algorithms\Intersections</Filter>
     </ClCompile>
+    <ClCompile Include="HalfSurface.cpp">
+      <Filter>Source Files\Algorithms\Intersections</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dxptr.h">
@@ -652,6 +655,9 @@
     </ClInclude>
     <ClInclude Include="IntersectionPoint.h">
       <Filter>Header Files\Algorithms\Surfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="HalfSurface.h">
+      <Filter>Header Files\Algorithms\Intersections</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
