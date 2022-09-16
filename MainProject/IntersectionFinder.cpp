@@ -120,8 +120,42 @@ IntersectionPoint IntersectionFinder::FindStartPointSelf(std::shared_ptr<IParame
 	int patchDivisionsCount = 10;
 	int divisionsIterationCount = 4;
 
+	if (useCursor)
+	{
+		auto uv = FindStartingPointFromPosition(surface, cursorPosition);
+		uBest = uv.a;
+		vBest = uv.b;
+		for (int k = 0; k < patchDivisionsCount; k++)
+		{
+			for (int l = 0; l < patchDivisionsCount; l++)
+			{
+				double s = sBest + 1.0/ patchDivisionsCount * (k + 0.5);
+				double t = tBest + 1.0 / patchDivisionsCount * (l + 0.5);
 
-	for (int iter = 0; iter < divisionsIterationCount; iter++)
+				s = GetInRange(s, 0.0, 1.0);
+				t = GetInRange(t, 0.0, 1.0);
+
+				if (toClose(uBest, s, surface->IsUWrapped()) && toClose(vBest, t, surface->IsVWrapped()))
+				{
+					continue;
+				}
+
+				auto uvPos = surface->GetValue(uBest, vBest);
+				auto stPos = surface->GetValue(s, t);
+
+				auto distance = Vector3::Distance(uvPos, stPos);
+				if (distance < distanceBest)
+				{
+					distanceBest = distance;
+					sBest = s;
+					tBest = t;
+				}
+			}
+		}
+
+	}
+
+	for (int iter = useCursor ? 1: 0; iter < divisionsIterationCount; iter++)
 	{
 		double currentPatchWidth = 1.0 / std::pow(patchDivisionsCount, iter);
 		double smallPatchWidth = currentPatchWidth / patchDivisionsCount;
@@ -191,6 +225,8 @@ IntersectionPoint IntersectionFinder::FindStartPointSelf(std::shared_ptr<IParame
 
 	return intersectionPoint;
 }
+
+
 
 std::shared_ptr<std::vector<IntersectionPoint>> IntersectionFinder::FindIntersection(std::shared_ptr<IParameterized> surface1, std::shared_ptr<IParameterized> surface2)
 {

@@ -33,10 +33,9 @@ void IntersecionAdderWindow::Render()
 
 	ImGui::DragFloat("Points distance", &pointsDistance, 0.01, 0.0001);
 	ImGui::DragFloat("Precision", &precision, 0.001, 0.00001);
-	if (!singleSurface)
-	{
-		ImGui::Checkbox("Use cursor", &useCursor);
-	}
+
+	ImGui::Checkbox("Use cursor", &useCursor);
+
 
 
 	if (ImGui::Button("Add intersection"))
@@ -57,7 +56,7 @@ void IntersecionAdderWindow::Render()
 				USs[1].push_back({ intersectionPoint.s, intersectionPoint.t });
 			}
 
-			std::shared_ptr<IParameterized> surfaces[2] = { surface1, singleSurface ? surface1: surface2 };
+			std::shared_ptr<IParameterized> surfaces[2] = { surface1, singleSurface ? surface1 : surface2 };
 			auto interpolatingCurve = std::make_shared<IntersectionCurve>(points, scene, surfaces, USs);
 			scene->AddModel(interpolatingCurve);
 			*(this->open) = false;
