@@ -3,6 +3,7 @@
 #include <cmath>
 #include <stack>
 #include "Helpers.h"
+#include <tuple>
 
 ArrayFilter::ArrayFilter(std::vector<Pair<double>> points, bool uWrapped, bool vWrapped)
 {
@@ -84,14 +85,18 @@ unsigned char ArrayFilter::IsFiltered(double u, double v)
 
 void ArrayFilter::FloodFill(int x, int y)
 {
-	std::stack<Pair<int>> stack;
+	auto range = [=](int& x, int& y)
+	{
+		x = uWrapped ? GetInRangeInt(x, 0, ARRAY_SIZE - 1) : std::clamp(x, 0, ARRAY_SIZE - 1);
+		y = vWrapped ? GetInRangeInt(y, 0, ARRAY_SIZE - 1) : std::clamp(y, 0, ARRAY_SIZE - 1);
+	};
+	std::stack<std::tuple<int,int>> stack;
 	stack.push({ x,y });
 	while (!stack.empty())
 	{
-		auto n = stack.top();
+		auto [x,y] = stack.top();
 		stack.pop();
-		int x = uWrapped ? GetInRangeInt(n.a, 0, ARRAY_SIZE - 1) : std::clamp(n.a, 0, ARRAY_SIZE - 1);
-		int y = vWrapped ? GetInRangeInt(n.b, 0, ARRAY_SIZE - 1) : std::clamp(n.b, 0, ARRAY_SIZE - 1);
+		range(x, y);
 		if (filterArray[x][y]==(unsigned char)0)
 		{
 			filterArray[x][y] = (unsigned char)255;
@@ -119,5 +124,67 @@ void ArrayFilter::Swap()
 				filterArray[i][j] = (unsigned char)0;
 			}
 		}
+	}
+}
+
+void ArrayFilter::FloodFill2(int x, int y)
+{
+	auto inside = [&](int x, int y)
+	{
+		x = uWrapped ? GetInRangeInt(x, 0, ARRAY_SIZE - 1) : std::clamp(x, 0, ARRAY_SIZE - 1);
+		y = vWrapped ? GetInRangeInt(y, 0, ARRAY_SIZE - 1) : std::clamp(y, 0, ARRAY_SIZE - 1);
+		return filterArray[x][y] == (unsigned char)0;
+	};
+	auto set = [&](int x, int y)
+	{
+		x = uWrapped ? GetInRangeInt(x, 0, ARRAY_SIZE - 1) : std::clamp(x, 0, ARRAY_SIZE - 1);
+		y = vWrapped ? GetInRangeInt(y, 0, ARRAY_SIZE - 1) : std::clamp(y, 0, ARRAY_SIZE - 1);
+		filterArray[x][y] = (unsigned char)255;
+	};
+
+	std::stack<std::tuple<int,int,int,int>> stack;
+	stack.push(std::make_tuple(x, x, y, 1));
+	stack.push(std::make_tuple(x, x, y-1, -1));
+
+	while (!stack.empty())
+	{
+
+		auto [x1, x2, y, dy] = stack.top();
+		stack.pop();
+		int x = x1;
+		if (inside(x, y))
+		{
+			while (inside(x - 1, y))
+			{
+				set(x - 1, y);
+				x--;
+			}
+		}
+		if (x < x1)
+		{
+			stack.push(std::make_tuple(x, x1 - 1, y - dy, -dy));
+		}
+		while (x1 <= x2)
+		{
+			while (inside(x1, y))
+			{
+				set(x1, y);
+				x1++;
+				stack.push(std::make_tuple(x, x1 - 1, y + dy, dy));
+				if (x1 - 1 > x2)
+				{
+					stack.push(std::make_tuple(x2 + 1, x1 - 1, y - dy, -dy));
+				}
+			}
+			x1++;
+			while (x1 < x2 && !inside(x1, y))
+			{
+				x1 ++;
+			}
+			x = x1;
+		}
+
+		
+
 	}
 }

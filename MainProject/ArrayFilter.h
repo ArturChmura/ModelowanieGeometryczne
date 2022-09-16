@@ -4,7 +4,7 @@
 #include <vector>
 #include "Pair.h"
 
-#define ARRAY_SIZE 1024
+#define ARRAY_SIZE 512
 class ArrayFilter : public IFilter
 {
 public:
@@ -18,6 +18,8 @@ public:
 	void FloodFill(int x, int y);
 
 	void Swap();
+
+	void FloodFill2(int x, int y);
 
 	bool uWrapped;
 	bool vWrapped;

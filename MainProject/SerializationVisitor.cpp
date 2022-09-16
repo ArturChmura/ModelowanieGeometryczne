@@ -87,6 +87,10 @@ void SerializationVisitor::Accept(std::shared_ptr < BezierCurveC2> curve)
 
 void SerializationVisitor::Accept(std::shared_ptr < BezierCurveInterpolating> curve)
 {
+	if (!curve->Serializable())
+	{
+		return;
+	}
 	auto& scene = MG1::Scene::Get();
 	auto c = MG1::InterpolatedC2();
 
@@ -111,6 +115,8 @@ void SerializationVisitor::Accept(std::shared_ptr < BezierSurfaceC0> surface)
 	auto s = MG1::BezierSurfaceC0();
 	s.size = { (UINT)surface->verticalSlicesCount, (UINT)surface->horizontalSlicesCount };
 	s.name = surface->name;
+	s.uWrapped = surface->IsUWrapped();
+	s.vWrapped = false;
 	s.SetId(surface->id);
 	for (int j = 0; j < surface->horizontalSlicesCount; j++)
 	{
@@ -151,6 +157,8 @@ void SerializationVisitor::Accept(std::shared_ptr < BezierSurfaceC2> surface)
 	auto s = MG1::BezierSurfaceC2();
 	s.size = { (UINT)surface->verticalSlicesCount, (UINT)surface->horizontalSlicesCount };
 	s.name = surface->name;
+	s.uWrapped = surface->IsUWrapped();
+	s.vWrapped = false;
 	s.SetId(surface->id);
 	for (int j = 0; j < surface->horizontalSlicesCount; j++)
 	{

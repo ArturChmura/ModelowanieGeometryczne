@@ -63,7 +63,6 @@ void main(
     }
     
         
-    
     for (float t = 0.0f; t <= 1.0f + step / 2; t += step)
     {
         if(filter)
@@ -74,6 +73,7 @@ void main(
       
             if (norm.x < 0.5)
             {
+                output.RestartStrip();
                 continue;
             }
         }

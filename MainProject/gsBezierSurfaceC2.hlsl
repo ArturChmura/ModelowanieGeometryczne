@@ -75,6 +75,7 @@ void main(
       
             if (norm.x < 0.5)
             {
+                output.RestartStrip();
                 continue;
             }
         }

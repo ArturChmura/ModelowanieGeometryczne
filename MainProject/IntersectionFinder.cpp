@@ -23,6 +23,34 @@ IntersectionFinder::IntersectionFinder(double newtonStartDistance, double newtow
 	this->cursorPosition = cursorPosition;
 }
 
+std::shared_ptr<std::vector<IntersectionPoint>> IntersectionFinder::FindSelfIntersection(std::shared_ptr<IParameterized> surface)
+{
+	float minU1 = surface->IsUWrapped() ? -1 : 0;
+	float minV1 = surface->IsVWrapped() ? -1 : 0;
+	float maxU1 = surface->IsUWrapped() ? 2 : 1;
+	float maxV1 = surface->IsVWrapped() ? 2 : 1;
+
+	double u = 0;
+	double v = 0;
+	double s = 1;
+	double t = 1;
+
+	auto P0 = FindNearestPoint(surface, surface, u, v, s, t, minU1, maxU1, minV1, maxV1, minU1, maxU1, minV1, maxV1);
+	if (!P0.found || (std::abs(P0.u - P0.s) < 0.01 && std::abs(P0.s - P0.t) < 0.01))
+	{
+		t = 0;
+		P0 = FindNearestPoint(surface, surface, u, v, s, t, minU1, maxU1, minV1, maxV1, minU1, maxU1, minV1, maxV1);
+		if (!P0.found || (std::abs(P0.u - P0.s) < 0.01 && std::abs(P0.s - P0.t) < 0.01))
+		{
+			return nullptr;
+		}
+	}
+
+
+
+	return FindAllPoints(surface, surface, P0);
+}
+
 std::shared_ptr<std::vector<IntersectionPoint>> IntersectionFinder::FindIntersection(std::shared_ptr<IParameterized> surface1, std::shared_ptr<IParameterized> surface2)
 {
 	float minU1 = surface1->IsUWrapped() ? -1 : 0;
@@ -54,6 +82,12 @@ std::shared_ptr<std::vector<IntersectionPoint>> IntersectionFinder::FindIntersec
 	{
 		return nullptr;
 	}
+
+	return FindAllPoints(surface1, surface2, P0);
+}
+
+std::shared_ptr<std::vector<IntersectionPoint>> IntersectionFinder::FindAllPoints(std::shared_ptr<IParameterized> surface1, std::shared_ptr<IParameterized> surface2, IntersectionPoint P0)
+{
 	auto dU1 = surface1->GetUDerivativeValue(P0.u, P0.v);
 	auto dV1 = surface1->GetVDerivativeValue(P0.u, P0.v);
 

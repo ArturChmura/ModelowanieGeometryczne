@@ -42,12 +42,19 @@ void ObjectAdderWindow::Render()
     parametrized.insert(parametrized.end(), selectedToruses.begin(), selectedToruses.end());
     parametrized.insert(parametrized.end(), selectedC0Surface.begin(), selectedC0Surface.end());
     parametrized.insert(parametrized.end(), selectedC2Surface.begin(), selectedC2Surface.end());
-    if (parametrized.size() == 2)
+    if (parametrized.size() == 2 || parametrized.size() == 1)
     {
         if (ImGui::Button("Find intersection"))
         {
             intersectionAdderOpen = true;
-            this->intersecionAdder = std::make_shared<IntersecionAdderWindow>(scene, &intersectionAdderOpen, parametrized[0], parametrized[1]);
+            if (parametrized.size() == 2)
+            {
+                this->intersecionAdder = std::make_shared<IntersecionAdderWindow>(scene, &intersectionAdderOpen, parametrized[0], parametrized[1]);
+            }
+            else
+            {
+                this->intersecionAdder = std::make_shared<IntersecionAdderWindow>(scene, &intersectionAdderOpen, parametrized[0]);
+            }
         }
 
     }

@@ -11,8 +11,15 @@ IntersecionAdderWindow::IntersecionAdderWindow(std::shared_ptr<Scene> scene, boo
 	this->scene = scene;
 	this->surface1 = surface1;
 	this->surface2 = surface2;
+	this->singleSurface = false;
+}
 
-
+IntersecionAdderWindow::IntersecionAdderWindow(std::shared_ptr<Scene> scene, bool* open, std::shared_ptr<IParameterized> surface)
+{
+	this->open = open;
+	this->scene = scene;
+	this->surface1 = surface;
+	this->singleSurface = true;
 }
 
 IntersecionAdderWindow::~IntersecionAdderWindow()
@@ -26,13 +33,17 @@ void IntersecionAdderWindow::Render()
 
 	ImGui::DragFloat("Points distance", &pointsDistance, 0.01, 0.0001);
 	ImGui::DragFloat("Precision", &precision, 0.001, 0.00001);
-	ImGui::Checkbox("Use cursor", &useCursor);
+	if (!singleSurface)
+	{
+		ImGui::Checkbox("Use cursor", &useCursor);
+	}
 
 
 	if (ImGui::Button("Add intersection"))
 	{
 		IntersectionFinder intersectionFinder(pointsDistance, precision, useCursor, scene->cursor->GetTranslation());
-		auto intersectionPoints = intersectionFinder.FindIntersection(surface1, surface2);
+
+		auto intersectionPoints = singleSurface ? intersectionFinder.FindSelfIntersection(surface1) : intersectionFinder.FindIntersection(surface1, surface2);
 		if (intersectionPoints)
 		{
 			std::vector<std::shared_ptr<Point>> points;

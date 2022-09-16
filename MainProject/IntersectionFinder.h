@@ -10,10 +10,17 @@ class IntersectionFinder
 {
 public:
 	IntersectionFinder(double newtonStartDistance, double newtownMinNorm, bool useCursor, DirectX::SimpleMath::Vector3 cursorPosition);
+
 	std::shared_ptr<std::vector<IntersectionPoint>> FindIntersection(
 		std::shared_ptr<IParameterized> surface1,
 		std::shared_ptr <IParameterized> surface2
+	);	
+	
+	std::shared_ptr<std::vector<IntersectionPoint>> FindSelfIntersection(
+		std::shared_ptr<IParameterized> surface
 	);
+
+	std::shared_ptr<std::vector<IntersectionPoint>> FindAllPoints(std::shared_ptr<IParameterized> surface1, std::shared_ptr<IParameterized> surface2, IntersectionPoint P0);
 
 	void FindNextPointsInDirection(std::shared_ptr<IParameterized> surface1, std::shared_ptr<IParameterized> surface2, IntersectionPoint P0, DirectX::SimpleMath::Vector3 tangent,bool flip, bool& loopFound, std::vector<IntersectionPoint>& direction1Positions);
 

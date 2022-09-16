@@ -25,4 +25,6 @@ public:
 	mini::dx_ptr<ID3D11Texture2D> filterTextures[2];
 
 	void UpdateFilter(int index);
+
+	virtual bool Serializable() override;
 };

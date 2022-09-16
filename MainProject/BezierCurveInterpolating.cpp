@@ -169,3 +169,8 @@ void BezierCurveInterpolating::Accept(AbstractModelVisitor& visitor)
 	visitor.Accept(IModel::downcasted_shared_from_this<BezierCurveInterpolating>());
 }
 
+bool BezierCurveInterpolating::Serializable()
+{
+	return true;
+}
+

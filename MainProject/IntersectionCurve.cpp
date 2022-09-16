@@ -130,3 +130,8 @@ void IntersectionCurve::UpdateFilter(int index)
 
 	surfaces[index]->AddFilter(filters[index]);
 }
+
+bool IntersectionCurve::Serializable()
+{
+	return false;
+}

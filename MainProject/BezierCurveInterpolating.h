@@ -27,6 +27,7 @@ public:
 
 	// Inherited via IBezierCurve
 	virtual void Accept(AbstractModelVisitor& visitor) override;
+	virtual bool Serializable();
 };
 
 
