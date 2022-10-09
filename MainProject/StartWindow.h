@@ -1,13 +1,16 @@
 #pragma once
-#include "Scene.h"
+#include "IScene.h"
 #include <memory>
 #include "IGuiWindow.h"
 
 class StartWindow : public IGuiWindow
 {
 public:
-	StartWindow(std::shared_ptr<Scene> scene);
+	StartWindow(
+		std::vector<std::shared_ptr<IScene>> scenes, 
+		std::function<void(std::shared_ptr<IScene>)> changeSceneLambda);
 	void Render();
-	std::shared_ptr<Scene> scene;
+	std::vector<std::shared_ptr<IScene>> scenes;
+	std::function<void(std::shared_ptr<IScene>)> changeSceneLambda;
 private:
 };

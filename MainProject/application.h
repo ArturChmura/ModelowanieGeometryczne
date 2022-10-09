@@ -11,6 +11,7 @@
 #include "DebugWindow.h"
 #include "KeyboardHandler.h"
 #include "ObjectAdderWindow.h"
+#include "SimulationScene.h"
 
 
 using namespace mini;
@@ -28,11 +29,15 @@ public:
 	DirectX::XMFLOAT3 backgroundColor;
 
 	std::shared_ptr<Scene> scene;
+	std::shared_ptr<SimulationScene> simulationScene;
+	std::shared_ptr<IScene> activeScene;
+
 	bool renderGui = true;
-	std::vector< std::shared_ptr < IGuiWindow>> guiWindows;
+	std::shared_ptr<IGuiWindow> startWindow;
 
 	std::shared_ptr<MessageHandler> messageHandler;
 	std::shared_ptr<MouseEvents> mouseEvents;
 	std::shared_ptr<KeyboardHandler> keyboardHandler;
 
+	std::map<int, std::vector<std::shared_ptr<IGuiWindow>>> sceneWindowsMap;
 };

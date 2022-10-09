@@ -16,7 +16,7 @@ public:
 	virtual DirectX::SimpleMath::Matrix GetViewMatrix() override;
 	virtual DirectX::SimpleMath::Matrix GetPerspectiveMatrix() override;
 	virtual void UpdatePerspectiveMatrix() override;
-	virtual void RenderScene(std::shared_ptr<Scene> scene) override;
+	virtual void RenderScene(std::shared_ptr<IScene> scene) override;
 	virtual void DrawGUI() override;
 	std::function<ID3D11DepthStencilView*()> depthBufferGetter;
 private:

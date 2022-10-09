@@ -175,6 +175,12 @@
     <Filter Include="Header Files\Algorithms\Surfaces">
       <UniqueIdentifier>{720d99e7-11df-48bd-a49d-99f53bb91d31}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Simulation">
+      <UniqueIdentifier>{3f7ba4c5-4e6f-4bf2-a292-0d04cb6d6d71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Simulation\Paths">
+      <UniqueIdentifier>{9080d217-f235-4f0d-8576-275415f95721}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxStructures.cpp">
@@ -357,9 +363,6 @@
     <ClCompile Include="GregoryAdderWindow.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="Named.cpp">
-      <Filter>Source Files\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="IModel.cpp">
       <Filter>Source Files\Models\Interfaces</Filter>
     </ClCompile>
@@ -392,6 +395,24 @@
     </ClCompile>
     <ClCompile Include="HalfSurface.cpp">
       <Filter>Source Files\Algorithms\Intersections</Filter>
+    </ClCompile>
+    <ClCompile Include="SimulationScene.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="IScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolPaths.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelSceneStartWindow.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Named.cpp">
+      <Filter>Source Files\Models\Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="SimulationSceneStartWindow.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -602,9 +623,6 @@
     <ClInclude Include="GregoryAdderWindow.h">
       <Filter>Header Files\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="Named.h">
-      <Filter>Header Files\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="IUnmovableModel.h">
       <Filter>Header Files\Models\Interfaces</Filter>
     </ClInclude>
@@ -658,6 +676,24 @@
     </ClInclude>
     <ClInclude Include="HalfSurface.h">
       <Filter>Header Files\Algorithms\Intersections</Filter>
+    </ClInclude>
+    <ClInclude Include="SimulationScene.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="IScene.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ToolPaths.h">
+      <Filter>Header Files\Simulation\Paths</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelSceneStartWindow.h">
+      <Filter>Header Files\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Named.h">
+      <Filter>Header Files\Models\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="SimulationSceneStartWindow.h">
+      <Filter>Header Files\Windows</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

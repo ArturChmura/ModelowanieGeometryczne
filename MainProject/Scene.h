@@ -9,8 +9,9 @@
 #include "Torus.h"
 #include "BezierSurfaceC0.h"
 #include "ConcreteModelSelectorVisitor.h"
+#include "IScene.h"
 
-class Scene
+class Scene : public IScene
 {
 public:
 	Scene(std::shared_ptr<Coursor3d> cursor, SIZE windowSize);
@@ -32,9 +33,6 @@ public:
 	std::shared_ptr<Coursor3d> cursor;
 	std::shared_ptr<IModel> previewModel;
 
-	void AddCamera(std::shared_ptr<Camera> camera);
-	std::vector<std::shared_ptr<Camera>> cameras;
-	std::shared_ptr<Camera> activeCamera;
 	std::shared_ptr<CompositeModel> composite; 
 	bool IsSelcted(int modelId); 
 	std::shared_ptr<IModel> GetModelFromScreenCoords(float x, float y);
@@ -43,8 +41,7 @@ public:
 	void UpdateCursorPositionFromScreenCoords(DirectX::SimpleMath::Vector2 screenCoords);
 	void RemoveSelectedModels();
 	void Clear();
-
-	void DrawScene();
+	void DrawScene() override;
 public:
 private:
 };

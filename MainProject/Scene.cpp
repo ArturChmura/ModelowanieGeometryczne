@@ -12,19 +12,13 @@
 using namespace DirectX::SimpleMath;
 
 Scene::Scene(std::shared_ptr<Coursor3d> cursor, SIZE windowSize)
+	: IScene("Model Scene")
 {
 	this->cursor = cursor;
 	this->composite = std::make_shared<CompositeModel>();
 	this->windowSize = windowSize;
 }
-void Scene::AddCamera(std::shared_ptr<Camera> camera)
-{
-	cameras.push_back(camera);
-	if (cameras.size() == 1)
-	{
-		activeCamera = camera;
-	}
-}
+
 
 
 std::shared_ptr<Torus> Scene::AddTorus()

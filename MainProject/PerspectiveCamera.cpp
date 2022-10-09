@@ -78,7 +78,7 @@ void PerspectiveCamera::DrawGUI()
 	cameraMovement->DrawGUI();
 }
 
-void PerspectiveCamera::RenderScene(std::shared_ptr<Scene> scene)
+void PerspectiveCamera::RenderScene(std::shared_ptr<IScene> scene)
 {
 	int BS_MASK = 0xffffffff;
 	DxDevice::instance->context()->OMSetBlendState(nullptr, nullptr, BS_MASK);

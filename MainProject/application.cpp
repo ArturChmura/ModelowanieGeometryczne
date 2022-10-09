@@ -11,6 +11,8 @@
 #include "BezierSurfaceC0AdderWindow.h"
 #include "GregoryFinder.h"
 #include "PointsMerger.h"
+#include "ModelSceneStartWindow.h"
+#include "SimulationSceneStartWindow.h"
 
 
 using namespace mini;
@@ -34,6 +36,8 @@ Application::Application(SIZE size)
 	auto cursor = std::make_shared<Coursor3d>();
 
 	scene = std::make_shared<Scene>(cursor, size);
+	simulationScene = std::make_shared<SimulationScene>();
+	activeScene = scene;
 
 	XMFLOAT3 targetPosition = { 0,0,0 };
 	auto arcCameraMovement = std::make_shared<ArcCameraModel>(targetPosition, 30.0f);
@@ -43,14 +47,31 @@ Application::Application(SIZE size)
 	scene->AddCamera(perspectiveCamera);
 	scene->AddCamera(stereoscopicCamera);
 
+	simulationScene->AddCamera(perspectiveCamera);
+
 	backgroundColor = { 0.1f,0.1f,0.1f };
 
-	guiWindows.push_back(std::make_shared<ObjectsListWindow>(scene));
-	guiWindows.push_back(std::make_shared<ObjectAdderWindow>(scene, &renderGui));
-	guiWindows.push_back(std::make_shared<PropertiesWindow>(scene));
-	guiWindows.push_back(std::make_shared<CameraOptionsWindow>(scene));
-	guiWindows.push_back(std::make_shared<CursorOptionsWindow>(cursor, scene, size));
-	guiWindows.push_back(std::make_shared<StartWindow>(scene));
+	auto scenes = std::vector<std::shared_ptr<IScene>>{ scene, simulationScene };
+	startWindow = std::make_shared<StartWindow>(scenes,
+		[&](std::shared_ptr<IScene> scene) {this->activeScene = scene; });
+
+	std::vector< std::shared_ptr < IGuiWindow>> modelSceneGuiWindows;
+	modelSceneGuiWindows.push_back(std::make_shared<ObjectsListWindow>(scene));
+	modelSceneGuiWindows.push_back(std::make_shared<ObjectAdderWindow>(scene, &renderGui));
+	modelSceneGuiWindows.push_back(std::make_shared<PropertiesWindow>(scene));
+	modelSceneGuiWindows.push_back(std::make_shared<CameraOptionsWindow>(scene));
+	modelSceneGuiWindows.push_back(std::make_shared<CursorOptionsWindow>(cursor, scene, size));
+	modelSceneGuiWindows.push_back(std::make_shared<ModelSceneStartWindow>(scene));
+
+	sceneWindowsMap.insert(std::make_pair(scene->id, modelSceneGuiWindows));
+
+
+	std::vector< std::shared_ptr < IGuiWindow>> simulationSceneGuiWindows;
+	simulationSceneGuiWindows.push_back(std::make_shared<SimulationSceneStartWindow>(simulationScene));
+	sceneWindowsMap.insert(std::make_pair(simulationScene->id, simulationSceneGuiWindows));
+
+
+
 	//guiWindows.push_back(std::make_shared<DebugWindow>());
 
 
@@ -58,97 +79,10 @@ Application::Application(SIZE size)
 	keyboardHandler = std::make_shared<KeyboardHandler>(scene);
 	messageHandler = std::make_shared<MessageHandler>(scene);
 
-	float r = 0, fi = 0, phi = 0;
-	int pointsCount = 000;
-	for (int i = 0; i < pointsCount; i++)
-	{
-		float x = r * cosf(fi) * cosf(phi);
-		float y = r * sinf(fi) * cosf(phi);
-		float z = r * sinf(phi);
-		//z = 0;
-		scene->cursor->SetPosition({ x,y,z });
-		auto point = scene->AddPoint();
-		scene->ChangeSelection(point);
-
-		r += 100.0f / pointsCount;
-		fi += 0.13f;
-		phi += 0.2f;
-	}
-
-
-	bool open;
-	auto c0Adder = std::make_shared< BezierSurfaceC0AdderWindow>(scene, &open);
-	c0Adder->horizontalSlicesCount = c0Adder->verticalSlicesCount = 1;
-
-
-	//float width = 20;
-	//c0Adder->width = c0Adder->height = width;
-	//scene->cursor->SetPosition({ width,width/2,0 });
-	//auto prawy = std::make_shared<CompositeModel>();
-	//auto p = c0Adder->AddModel();
-	//for (auto model : p->GetContainingModels())
-	//{
-	//	prawy->AddModel(model);
-	//}
-	//
-	//scene->cursor->SetPosition({ -width,width/2,0 });
-	//auto lewy = std::make_shared<CompositeModel>();
-	//auto l = c0Adder->AddModel();
-	//for (auto model : l->GetContainingModels())
-	//{
-	//	lewy->AddModel(model);
-	//}
-	//scene->cursor->SetPosition({ 0,-width/2,0 });
-	//auto srodek = std::make_shared<CompositeModel>();
-	//auto s = c0Adder->AddModel();
-	//for (auto model : s->GetContainingModels())
-	//{
-	//	srodek->AddModel(model);
-	//}
-
-	//srodek->RotateFromPoint({ 0,0,0,1 }, { DirectX::XM_PIDIV4,0,0 });
-	//lewy->RotateFromPoint({ 0,0,0,1 }, { 0,DirectX::XM_PIDIV4,0 });
-	//auto lSingle = l->GetSingleSurfaces()[0];
-	//auto pSingle = p->GetSingleSurfaces()[0];
-	//auto sSingle = s->GetSingleSurfaces()[0];
-
-	//std::vector<std::shared_ptr<Point>> points
-	//{
-	//	lSingle->points[0][3],
-	//	sSingle->points[3][0],
-	//};
-
-	//PointsMerger pointsMerger;
-	//pointsMerger.MergePoints(scene, points);
-
-	//points = 
-	//{
-	//	pSingle->points[0][0],
-	//	sSingle->points[3][3],
-	//};
-	//pointsMerger.MergePoints(scene, points);
-
-	//points =
-	//{
-	//	pSingle->points[3][0],
-	//	lSingle->points[3][3],
-	//};
-	//pointsMerger.MergePoints(scene, points);
-
-
-	
-	/*c0Adder->cylinder = true;
-	c0Adder->horizontalSlicesCount =  1;
-	c0Adder->verticalSlicesCount = 3;
-	scene->cursor->SetPosition({ 0,0,0 });
-	c0Adder->AddModel();*/
-
 
 
 	auto backBuffer = m_backBuffer.get();
 	DxDevice::instance->context()->OMSetRenderTargets(1, &backBuffer, m_depthBuffer.get());
-
-
 
 	SamplerDescription sd;
 	sd.AddressU = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_BORDER;
@@ -172,15 +106,16 @@ void Application::Render()
 	DxDevice::instance->context()->ClearRenderTargetView(m_backBuffer.get(), clearColor);
 	DxDevice::instance->context()->ClearDepthStencilView(m_depthBuffer.get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-	scene->activeCamera->RenderScene(scene);
+	scene->activeCamera->RenderScene(activeScene);
 }
 
 void Application::RenderGui()
 {
 	//if(renderGui)
-	for (int i = 0; i < guiWindows.size(); i++)
+	startWindow->Render();
+	for (auto window : sceneWindowsMap[activeScene->id])
 	{
-		guiWindows[i]->Render();
+		window->Render();
 	}
 }
 
@@ -195,3 +130,5 @@ void Application::HandleMessage(MSG message)
 {
 	messageHandler->HandleMessage(message);
 }
+
+

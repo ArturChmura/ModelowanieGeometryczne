@@ -45,6 +45,7 @@
     <ClCompile Include="IntersectionCurve.cpp" />
     <ClCompile Include="IntersectionFinder.cpp" />
     <ClCompile Include="IParameterized.cpp" />
+    <ClCompile Include="IScene.cpp" />
     <ClCompile Include="ISingleBezierSurface.cpp" />
     <ClCompile Include="IUnmovableModel.cpp" />
     <ClCompile Include="KeyboardHandler.cpp" />
@@ -53,6 +54,7 @@
     <ClCompile Include="MatrixExt.cpp" />
     <ClCompile Include="MeshInfo.cpp" />
     <ClCompile Include="MessageHandler.cpp" />
+    <ClCompile Include="ModelSceneStartWindow.cpp" />
     <ClCompile Include="MouseEvents.cpp" />
     <ClCompile Include="Named.cpp" />
     <ClCompile Include="ObjectAdderWindow.cpp" />
@@ -70,11 +72,14 @@
     <ClCompile Include="SceneLoader.cpp" />
     <ClCompile Include="SerializationVisitor.cpp" />
     <ClCompile Include="ShadersManager.cpp" />
+    <ClCompile Include="SimulationScene.cpp" />
+    <ClCompile Include="SimulationSceneStartWindow.cpp" />
     <ClCompile Include="SingleBezierSurfaceC0.cpp" />
     <ClCompile Include="SingleBezierSurfaceC2.cpp" />
     <ClCompile Include="SingleGregoryPatch.cpp" />
     <ClCompile Include="StartWindow.cpp" />
     <ClCompile Include="StereoscopicCamera.cpp" />
+    <ClCompile Include="ToolPaths.cpp" />
     <ClCompile Include="Torus.cpp" />
     <ClCompile Include="VertexModel.cpp" />
     <ClCompile Include="VirtualPoint.cpp" />
@@ -120,9 +125,14 @@
     <ClInclude Include="IntersectionFinder.h" />
     <ClInclude Include="IntersectionPoint.h" />
     <ClInclude Include="IParameterized.h" />
+    <ClInclude Include="IScene.h" />
+    <ClInclude Include="ModelSceneStartWindow.h" />
     <ClInclude Include="Pair.h" />
+    <ClInclude Include="SimulationScene.h" />
+    <ClInclude Include="SimulationSceneStartWindow.h" />
     <ClInclude Include="SingleSurfaceParameter.h" />
     <ClInclude Include="SolveTriDiagonalMatrix.h" />
+    <ClInclude Include="ToolPaths.h" />
     <ClInclude Include="vsGregory.h" />
     <ClInclude Include="IBezierCurve.h" />
     <ClInclude Include="IBezierSurface.h" />

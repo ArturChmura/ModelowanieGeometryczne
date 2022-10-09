@@ -35,6 +35,6 @@ protected:
 	virtual void DrawGUI() override;
 
 	// Inherited via Camera
-	virtual void RenderScene(std::shared_ptr<Scene> scene) override;
+	virtual void RenderScene(std::shared_ptr<IScene> scene) override;
 
 };

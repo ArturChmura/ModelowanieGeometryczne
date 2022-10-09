@@ -91,7 +91,7 @@ void StereoscopicCamera::UpdatePerspectiveMatrix()
 	}
 }
 
-void StereoscopicCamera::RenderScene(std::shared_ptr<Scene> scene)
+void StereoscopicCamera::RenderScene(std::shared_ptr<IScene> scene)
 {
 	int BS_MASK = 0xffffffff;
 
