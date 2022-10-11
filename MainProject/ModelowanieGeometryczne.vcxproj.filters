@@ -181,6 +181,9 @@
     <Filter Include="Header Files\Simulation\Paths">
       <UniqueIdentifier>{9080d217-f235-4f0d-8576-275415f95721}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Simulation">
+      <UniqueIdentifier>{97e45766-4621-4b03-b6e3-db3666414a90}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxStructures.cpp">
@@ -402,17 +405,20 @@
     <ClCompile Include="IScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ToolPaths.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ModelSceneStartWindow.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
     <ClCompile Include="Named.cpp">
       <Filter>Source Files\Models\Interfaces</Filter>
     </ClCompile>
+    <ClCompile Include="ToolPaths.cpp">
+      <Filter>Source Files\Simulation</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolPathsReader.cpp">
+      <Filter>Source Files\Simulation</Filter>
+    </ClCompile>
     <ClCompile Include="SimulationSceneStartWindow.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -694,6 +700,12 @@
     </ClInclude>
     <ClInclude Include="SimulationSceneStartWindow.h">
       <Filter>Header Files\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="ToolPathsReader.h">
+      <Filter>Header Files\Simulation\Paths</Filter>
+    </ClInclude>
+    <ClInclude Include="StringExtensions.h">
+      <Filter>Header Files\Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -4,5 +4,8 @@
 class ToolPaths
 {
 public:
-	void Draw(std::shared_ptr<Camera> camera) ;
+	ToolPaths(std::vector<std::tuple<double, double, double>> points);
+	void Draw(std::shared_ptr<Camera> camera);
+
+	std::vector<std::tuple<double, double, double>> points;
 };

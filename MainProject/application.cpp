@@ -37,7 +37,7 @@ Application::Application(SIZE size)
 
 	scene = std::make_shared<Scene>(cursor, size);
 	simulationScene = std::make_shared<SimulationScene>();
-	activeScene = scene;
+	activeScene = simulationScene;
 
 	XMFLOAT3 targetPosition = { 0,0,0 };
 	auto arcCameraMovement = std::make_shared<ArcCameraModel>(targetPosition, 30.0f);
