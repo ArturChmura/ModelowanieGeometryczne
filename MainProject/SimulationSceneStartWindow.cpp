@@ -34,6 +34,32 @@ void SimulationSceneStartWindow::Render()
 
 	}
 
-	
+	if (ImGui::DragInt("Grid width count", &gridWidthCount, 1, 2, INT_MAX))
+	{
+
+	}
+	if (ImGui::DragInt("Grid length count", &gridLengthCount, 1,  2, INT_MAX))
+	{
+
+	}
+	if (ImGui::DragFloat("Width", &widthSize, 1, 1, FLT_MAX))
+	{
+
+	}
+	if (ImGui::DragFloat("Length", &lengthSize, 1, 1, FLT_MAX))
+	{
+
+	}
+	if (ImGui::DragFloat("Height", &heightSize, 1, 1, FLT_MAX))
+	{
+
+	}
+
+	if (ImGui::Button("New block"))
+	{
+		auto blockModel = std::make_shared<BlockModel>(widthSize,lengthSize,heightSize,gridWidthCount, gridLengthCount);
+		scene->AddBlockModel(blockModel);
+	}
+
 	ImGui::End();
 }

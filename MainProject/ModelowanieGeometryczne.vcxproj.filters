@@ -184,6 +184,33 @@
     <Filter Include="Source Files\Simulation">
       <UniqueIdentifier>{97e45766-4621-4b03-b6e3-db3666414a90}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Simulation\Block">
+      <UniqueIdentifier>{1a590a34-c141-4b48-8389-5b8a28596e0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders\Block">
+      <UniqueIdentifier>{c645591a-8fa2-4732-9834-dc95692eaa02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shaders\Block">
+      <UniqueIdentifier>{6f3e6171-2729-457b-9e58-54c7b0155f67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Simulation\Paths">
+      <UniqueIdentifier>{149fae15-f179-4aaf-ae68-7f29f20a55d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Simulation\Block">
+      <UniqueIdentifier>{d4030ce4-03a3-487f-a084-d4d2c1b65ba9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Simulation\Algorithms">
+      <UniqueIdentifier>{418c1066-eeff-43cd-8276-07e22132f1fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Simulation\Algorithms">
+      <UniqueIdentifier>{b762c71d-ee80-4294-850a-821cbae6734a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Simulation\Cutters">
+      <UniqueIdentifier>{c1bd19fe-844c-4954-a1e1-3131058bb2d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Simulation\Cutters">
+      <UniqueIdentifier>{44865b19-1e3c-4298-b6d4-27bd36c566a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxStructures.cpp">
@@ -411,14 +438,35 @@
     <ClCompile Include="Named.cpp">
       <Filter>Source Files\Models\Interfaces</Filter>
     </ClCompile>
-    <ClCompile Include="ToolPaths.cpp">
-      <Filter>Source Files\Simulation</Filter>
-    </ClCompile>
-    <ClCompile Include="ToolPathsReader.cpp">
-      <Filter>Source Files\Simulation</Filter>
-    </ClCompile>
     <ClCompile Include="SimulationSceneStartWindow.cpp">
       <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="vsNormal.cpp">
+      <Filter>Source Files\Shaders\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="psNormal.cpp">
+      <Filter>Source Files\Shaders\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolPaths.cpp">
+      <Filter>Source Files\Simulation\Paths</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolPathsReader.cpp">
+      <Filter>Source Files\Simulation\Paths</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockModel.cpp">
+      <Filter>Source Files\Simulation\Block</Filter>
+    </ClCompile>
+    <ClCompile Include="BresenhamsAlgorithm.cpp">
+      <Filter>Source Files\Simulation\Algorithms</Filter>
+    </ClCompile>
+    <ClCompile Include="ICutter.cpp">
+      <Filter>Source Files\Simulation\Cutters</Filter>
+    </ClCompile>
+    <ClCompile Include="FlatCutter.cpp">
+      <Filter>Source Files\Simulation\Cutters</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereCutter.cpp">
+      <Filter>Source Files\Simulation\Cutters</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -707,6 +755,27 @@
     <ClInclude Include="StringExtensions.h">
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="BlockModel.h">
+      <Filter>Header Files\Simulation\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="vsNormal.h">
+      <Filter>Header Files\Shaders\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="psNormal.h">
+      <Filter>Header Files\Shaders\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="BresenhamsAlgorithm.h">
+      <Filter>Header Files\Simulation\Algorithms</Filter>
+    </ClInclude>
+    <ClInclude Include="ICutter.h">
+      <Filter>Header Files\Simulation\Cutters</Filter>
+    </ClInclude>
+    <ClInclude Include="FlatCutter.h">
+      <Filter>Header Files\Simulation\Cutters</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereCutter.h">
+      <Filter>Header Files\Simulation\Cutters</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="psColor.hlsl">
@@ -742,6 +811,12 @@
     <FxCompile Include="gsGregory.hlsl">
       <Filter>Source Files\Shaders\Gregory</Filter>
     </FxCompile>
+    <FxCompile Include="vsNormal.hlsl">
+      <Filter>Source Files\Shaders\Block</Filter>
+    </FxCompile>
+    <FxCompile Include="psNormal.hlsl">
+      <Filter>Source Files\Shaders\Block</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="bezierStructs.hlsli">
@@ -764,6 +839,9 @@
     </None>
     <None Include="GetUV.hlsli">
       <Filter>Source Files\Shaders\Bezier\Surface</Filter>
+    </None>
+    <None Include="normalHeader.hlsli">
+      <Filter>Source Files\Shaders\Block</Filter>
     </None>
   </ItemGroup>
 </Project>

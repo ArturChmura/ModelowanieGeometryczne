@@ -11,6 +11,8 @@
 #include "gsBezierSurfaceC2.h"
 #include "vsGregory.h"
 #include "gsGregory.h"
+#include "vsNormal.h"
+#include "psNormal.h"
 
 class ShadersManager
 {
@@ -30,6 +32,9 @@ public:
 
 	inline static std::shared_ptr<VSGregory> vsGregory;
 	inline static std::shared_ptr<GSGregory> gsGregory;
+
+	inline static std::shared_ptr<VSNormal> vsNormal;
+	inline static std::shared_ptr<PSNormal> psNormal;
 
 
 	static void LoadShaders();

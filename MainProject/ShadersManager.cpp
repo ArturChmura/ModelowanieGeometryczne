@@ -17,4 +17,7 @@ void ShadersManager::LoadShaders()
 
 	vsGregory = std::make_shared<VSGregory>();
 	gsGregory = std::make_shared<GSGregory>();
+
+	vsNormal = std::make_shared<VSNormal>();
+	psNormal = std::make_shared<PSNormal>();
 }

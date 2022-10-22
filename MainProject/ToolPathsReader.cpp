@@ -86,7 +86,7 @@ std::shared_ptr<ToolPaths> ToolPathsReader::ReadFromFile(std::string filePath)
 					Z = std::stod(zString);
 				}
 
-				auto position = std::make_tuple(X, Y, Z);
+				auto position = std::make_tuple(X, Z, Y); // zmiana, bo inny uk³ad wsp
 				positions.push_back(position);
 			}
 			else

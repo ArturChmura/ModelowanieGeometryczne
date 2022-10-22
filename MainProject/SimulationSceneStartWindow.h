@@ -11,4 +11,10 @@ public:
 	void Render();
 	std::shared_ptr<SimulationScene> scene;
 private:
+
+	int gridWidthCount = 1000;
+	int gridLengthCount = 1000;
+	float widthSize = 200;
+	float lengthSize = 200;
+	float heightSize = 20;
 };
