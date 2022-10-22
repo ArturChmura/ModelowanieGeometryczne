@@ -50,6 +50,17 @@ dx_ptr<ID3D11Texture2D> DxDevice::CreateTexture(const D3D11_TEXTURE2D_DESC& desc
 	return result;
 }
 
+dx_ptr<ID3D11ShaderResourceView> DxDevice::CreateShaderResourceView(const dx_ptr<ID3D11Texture2D>& texture, D3D11_SHADER_RESOURCE_VIEW_DESC * description) const
+{
+	ID3D11ShaderResourceView* srv;
+	auto hr = m_device->CreateShaderResourceView(texture.get(), description, &srv);
+	dx_ptr<ID3D11ShaderResourceView> resourceView(srv);
+	if (FAILED(hr))
+		THROW_DX(hr);
+	
+	return resourceView;
+}
+
 dx_ptr<ID3D11DepthStencilView> DxDevice::CreateDepthStencilView(const dx_ptr<ID3D11Texture2D>& texture) const
 {
 	ID3D11DepthStencilView* temp;

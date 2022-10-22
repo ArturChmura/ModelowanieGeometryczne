@@ -12,6 +12,7 @@ class BlockModel
 {
 public:
 	BlockModel(float widthSize, float lengthSize, float heightSize, int gridWidthCount, int gridLengthCount);
+	void InitializeMesh();
 	void DrawLine(DirectX::SimpleMath::Vector3 start, DirectX::SimpleMath::Vector3 end);
 	void Draw(std::shared_ptr<Camera> camera);
 	void SetCutter(std::shared_ptr<ICutter> cutter);
@@ -19,6 +20,8 @@ public:
 
 private:
 	float* heightMap;
+	mini::dx_ptr<ID3D11Texture2D> heightMapTexture;
+	mini::dx_ptr<ID3D11ShaderResourceView> heightMapTextureSRV;
 
 	float widthSize; 
 	float lengthSize; 
