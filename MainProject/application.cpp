@@ -1,6 +1,6 @@
 #include "application.h"
 #include "MVPColorConstantBuffer.h"
-#include "Coursor3d.h"
+#include "Cursor3d.h"
 #include "Point.h"
 #include "ShadersManager.h"
 #include "PerspectiveCamera.h"
@@ -33,7 +33,7 @@ Application::Application(SIZE size)
 
 	ShadersManager::LoadShaders();
 
-	auto cursor = std::make_shared<Coursor3d>();
+	auto cursor = std::make_shared<Cursor3d>();
 
 	scene = std::make_shared<Scene>(cursor, size);
 	simulationScene = std::make_shared<SimulationScene>();

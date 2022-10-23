@@ -42,4 +42,7 @@ private:
 
 	void ResetMesh();
 	std::vector<VSNormalIn> vertices;
+
+
+	mini::dx_ptr<ID3D11ShaderResourceView> colorTexture;
 };

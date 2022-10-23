@@ -4,10 +4,10 @@
 #include "SimpleMath.h"
 #include "Callback.h"
 
-class Coursor3d
+class Cursor3d
 {
 public:
-	Coursor3d();
+	Cursor3d();
 	mini::dx_ptr<ID3D11Buffer> vertexBuffer;
 	void Draw(std::shared_ptr<Camera> camera);
 	DirectX::SimpleMath::Vector3 GetTranslation();

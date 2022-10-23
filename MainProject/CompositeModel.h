@@ -1,7 +1,7 @@
 #pragma once
 #include "IModel.h"
 #include <map>
-#include "Coursor3d.h"
+#include "Cursor3d.h"
 class CompositeModel : public IModel
 {
 public:
@@ -16,7 +16,7 @@ public:
 	DirectX::SimpleMath::Vector3 scale;
 	DirectX::SimpleMath::Vector3 rotation;
 	DirectX::SimpleMath::Vector4 centroidPosition;
-	std::shared_ptr<Coursor3d> centroidCoursor;
+	std::shared_ptr<Cursor3d> centroidCursor;
 
 	DirectX::XMFLOAT3 imguiScale;
 	DirectX::SimpleMath::Vector4 imguiTranslation;

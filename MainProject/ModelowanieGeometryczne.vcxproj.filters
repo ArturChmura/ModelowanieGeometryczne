@@ -211,6 +211,9 @@
     <Filter Include="Source Files\Simulation\Cutters">
       <UniqueIdentifier>{44865b19-1e3c-4298-b6d4-27bd36c566a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Simulation\Milling">
+      <UniqueIdentifier>{c42f0f64-4b72-493f-ade2-3e410b5704db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxStructures.cpp">
@@ -267,7 +270,7 @@
     <ClCompile Include="CompositeModel.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
-    <ClCompile Include="Coursor3d.cpp">
+    <ClCompile Include="Cursor3d.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
     <ClCompile Include="BezierCurveC0.cpp">
@@ -468,6 +471,9 @@
     <ClCompile Include="SphereCutter.cpp">
       <Filter>Source Files\Simulation\Cutters</Filter>
     </ClCompile>
+    <ClCompile Include="MillingSimulator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dxptr.h">
@@ -524,7 +530,7 @@
     <ClInclude Include="MessageHandler.h">
       <Filter>Header Files\EventsHandlers</Filter>
     </ClInclude>
-    <ClInclude Include="Coursor3d.h">
+    <ClInclude Include="Cursor3d.h">
       <Filter>Header Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="IBezierCurve.h">
@@ -775,6 +781,9 @@
     </ClInclude>
     <ClInclude Include="SphereCutter.h">
       <Filter>Header Files\Simulation\Cutters</Filter>
+    </ClInclude>
+    <ClInclude Include="MillingSimulator.h">
+      <Filter>Header Files\Simulation\Milling</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

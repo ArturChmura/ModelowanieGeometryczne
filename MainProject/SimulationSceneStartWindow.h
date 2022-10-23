@@ -16,5 +16,9 @@ private:
 	int gridLengthCount = 1000;
 	float widthSize = 200;
 	float lengthSize = 200;
-	float heightSize = 20;
+	float heightSize = 40;
+	float cutterRadius = 40;
+	float cutterSpeed = 30;
+	std::string errorMessage;
+	int selectedCutterIndex = 0;
 };

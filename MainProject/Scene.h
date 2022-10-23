@@ -3,7 +3,7 @@
 #include "Camera.h"
 #include <memory>
 #include "IModel.h"
-#include "Coursor3d.h"
+#include "Cursor3d.h"
 #include "CompositeModel.h"
 #include "Point.h"
 #include "Torus.h"
@@ -14,7 +14,7 @@
 class Scene : public IScene
 {
 public:
-	Scene(std::shared_ptr<Coursor3d> cursor, SIZE windowSize);
+	Scene(std::shared_ptr<Cursor3d> cursor, SIZE windowSize);
 	std::shared_ptr<Torus> AddTorus();
 	std::shared_ptr<Point> AddPoint();
 	void AddModel(std::shared_ptr<IModel> model);
@@ -30,7 +30,7 @@ public:
 	template< typename T>
 	std::vector<std::shared_ptr<T>> GetSelectedType();
 
-	std::shared_ptr<Coursor3d> cursor;
+	std::shared_ptr<Cursor3d> cursor;
 	std::shared_ptr<IModel> previewModel;
 
 	std::shared_ptr<CompositeModel> composite; 

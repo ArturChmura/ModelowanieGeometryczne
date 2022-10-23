@@ -4,6 +4,7 @@
 #include <algorithm>
 #include "BresenhamsAlgorithm.h"
 #include "SphereCutter.h"
+#include "FlatCutter.h"
 
 using namespace DirectX::SimpleMath;
 BlockModel::BlockModel(float widthSize, float lengthSize, float heightSize, int gridWidthCount, int gridLengthCount)
@@ -25,15 +26,6 @@ BlockModel::BlockModel(float widthSize, float lengthSize, float heightSize, int 
 	}
 
 	resetDrawing = true;
-
-	auto p1 = Vector3(10, -55, 25);
-	auto p2 = Vector3(-10, 55, 35);
-	float radius = 20;
-	
-	auto cutter = std::make_shared<SphereCutter>(radius);
-
-	this->SetCutter(cutter);
-	this->DrawLine(p1, p2);
 
 	meshInfo.topology = D3D_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
@@ -68,7 +60,7 @@ BlockModel::BlockModel(float widthSize, float lengthSize, float heightSize, int 
 
 	heightMapTextureSRV = DxDevice::instance->CreateShaderResourceView(heightMapTexture, &srvDesc);
 
-	
+	colorTexture = DxDevice::instance->CreateShaderResourceView(L"Textures/steeltex.jpg");
 
 	
 }
@@ -78,7 +70,7 @@ void BlockModel::InitializeMesh()
 
 	int verticesCount = gridWidthCount * gridLengthCount;
 	int indicesCount = ((gridWidthCount - 1) * (gridLengthCount - 1)) * 6;
-	//std::vector<VSNormalIn> vertices = std::vector<VSNormalIn>();
+
 	vertices.reserve(verticesCount);
 	std::vector<int> indices = std::vector<int>();
 	indices.reserve(indicesCount);
@@ -242,15 +234,15 @@ void BlockModel::DrawLine(DirectX::SimpleMath::Vector3 start, DirectX::SimpleMat
 	Vector3 direction = end - start;
 	direction.Normalize();
 
-	auto startCoords = GetCoordinatesFromPosition(Vector2(start));
-	auto endCoords = GetCoordinatesFromPosition(Vector2(end));
+	auto startCoords = GetCoordinatesFromPosition(Vector2(start.x, start.z));
+	auto endCoords = GetCoordinatesFromPosition(Vector2(end.x, end.z));
 
 	int xLength = endCoords.first - startCoords.first;
 	int yLength = endCoords.second - startCoords.second;
 
 	auto lengthCoords = std::sqrtf(xLength * xLength + yLength * yLength);
 
-	float heightDiff = end.z - start.z;
+	float heightDiff = end.y - start.y;
 
 	auto drawCircle = [&](int x, int y)
 	{
@@ -276,11 +268,11 @@ void BlockModel::DrawLine(DirectX::SimpleMath::Vector3 start, DirectX::SimpleMat
 			int xIndex = x + dx;
 			int yIndex = y + dy;
 			int index = yIndex * gridWidthCount + xIndex;
-			if (index >= gridWidthCount * gridLengthCount)
+			if (xIndex >= gridWidthCount || yIndex >= gridLengthCount || xIndex< 0 || yIndex<0)
 			{
 				continue;
 			}
-			float height = start.z + heightOffset + dh;
+			float height = start.y + heightOffset + dh;
 
 
 			if (heightMap[index] > height)
@@ -313,18 +305,26 @@ void BlockModel::Draw(std::shared_ptr<Camera> camera)
 
 	ShadersManager::vsNormal->SetVertexBuffer(meshInfo.vertexBuffer.get());
 	ShadersManager::vsNormal->SetTexture(heightMapTextureSRV.get());
+	ShadersManager::psNormal->SetTexture(heightMapTextureSRV.get(), colorTexture.get());
 
-	VSNormalConstantBuffer constantBuffer;
-	constantBuffer.modelMatrix = Matrix::Identity;
-	constantBuffer.viewMatrix = camera->GetViewMatrix();
-	constantBuffer.inversedViewMatrix = constantBuffer.viewMatrix.Invert();
-	constantBuffer.perspectiveMatrix = camera->GetPerspectiveMatrix();
-	constantBuffer.gridWidthCount = gridWidthCount;
-	constantBuffer.gridLengthCount = gridLengthCount;
-	constantBuffer.lengthSize = lengthSize;
-	constantBuffer.widthSize = widthSize;
+	VSNormalConstantBuffer constantBufferVS;
+	constantBufferVS.modelMatrix = Matrix::Identity;
+	constantBufferVS.viewMatrix = camera->GetViewMatrix();
+	constantBufferVS.inversedViewMatrix = constantBufferVS.viewMatrix.Invert();
+	constantBufferVS.perspectiveMatrix = camera->GetPerspectiveMatrix();
+	constantBufferVS.gridWidthCount = gridWidthCount;
+	constantBufferVS.gridLengthCount = gridLengthCount;
+	constantBufferVS.lengthSize = lengthSize;
+	constantBufferVS.widthSize = widthSize;
+	ShadersManager::vsNormal->SetConstantBuffer(constantBufferVS);
 
-	ShadersManager::vsNormal->SetConstantBuffer(constantBuffer);
+	PSNormalConstantBuffer constantBufferPS;
+	constantBufferPS.gridWidthCount = gridWidthCount;
+	constantBufferPS.gridLengthCount = gridLengthCount;
+	constantBufferPS.lengthSize = lengthSize;
+	constantBufferPS.widthSize = widthSize;
+	ShadersManager::psNormal->SetConstantBuffer(constantBufferPS);
+
 
 	DxDevice::instance->context()->DrawIndexed(indicesCount, 0, 0);
 }
@@ -395,16 +395,16 @@ void BlockModel::ResetMesh()
 
 std::pair<int, int> BlockModel::GetCoordinatesFromPosition(DirectX::SimpleMath::Vector2 position)
 {
-	int x = (position.x + widthSize / 2) * (gridWidthCount / widthSize);
-	int y = (position.y + lengthSize / 2) * (gridLengthCount / lengthSize);
+	int x = (position.x + widthSize / 2) * ((gridWidthCount-1) / widthSize) + 0.5;
+	int y = (position.y + lengthSize / 2) * ((gridLengthCount-1) / lengthSize) + 0.5;
 
 	return std::make_pair(x, y);
 }
 
 DirectX::SimpleMath::Vector2 BlockModel::GetPositionFromCoordinates(std::pair<int, int> coordinates)
 {
-	float x = (coordinates.first * widthSize / gridWidthCount) - widthSize / 2;
-	float y = (coordinates.second * lengthSize / gridLengthCount) - lengthSize / 2;
+	float x = (coordinates.first * widthSize / (gridWidthCount - 1)) - widthSize / 2;
+	float y = (coordinates.second * lengthSize / (gridLengthCount - 1)) - lengthSize / 2;
 
 	return Vector2(x, y);
 }

@@ -2,6 +2,8 @@
 #include "exceptions.h"
 #include "dxStructures.h"
 #include <fstream>
+#include <DDSTextureLoader.h>
+#include <WICTextureLoader.h>
 
 using namespace mini;
 using namespace std;
@@ -48,6 +50,23 @@ dx_ptr<ID3D11Texture2D> DxDevice::CreateTexture(const D3D11_TEXTURE2D_DESC& desc
 	if (FAILED(hr))
 		THROW_WINAPI;
 	return result;
+}
+
+
+dx_ptr<ID3D11ShaderResourceView> DxDevice::CreateShaderResourceView(const std::wstring& texPath) const
+{
+	ID3D11ShaderResourceView* rv = nullptr;;
+	HRESULT hr = 0;
+	const wstring ext{ L".dds" };
+	if (texPath.size() > ext.size() && texPath.compare(texPath.size() - ext.size(), ext.size(), ext) == 0)
+		hr = DirectX::CreateDDSTextureFromFile(m_device, m_context, texPath.c_str(), nullptr, &rv);
+	else
+		hr = DirectX::CreateWICTextureFromFile(m_device, m_context, texPath.c_str(), nullptr, &rv);
+	dx_ptr<ID3D11ShaderResourceView> resourceView(rv);
+	if (FAILED(hr))
+		//Make sure CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED); is called before first use of this function!
+		THROW_DX(hr);
+	return resourceView;
 }
 
 dx_ptr<ID3D11ShaderResourceView> DxDevice::CreateShaderResourceView(const dx_ptr<ID3D11Texture2D>& texture, D3D11_SHADER_RESOURCE_VIEW_DESC * description) const

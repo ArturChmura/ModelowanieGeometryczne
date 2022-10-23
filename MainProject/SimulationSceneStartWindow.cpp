@@ -2,15 +2,34 @@
 #include "imgui.h"
 #include <nfd.h>
 #include "ToolPathsReader.h"
+#include "FlatCutter.h"
+#include "SphereCutter.h"
+#include <regex>
 
 SimulationSceneStartWindow::SimulationSceneStartWindow(std::shared_ptr<SimulationScene> scene)
 {
 	this->scene = scene;
+
+	if (selectedCutterIndex == 0)
+	{
+		auto cutter = std::make_shared<FlatCutter>(cutterRadius);
+		this->scene->AddCutter(cutter);
+	}
+	else if (selectedCutterIndex == 1)
+	{
+		auto cutter = std::make_shared<SphereCutter>(cutterRadius);
+		this->scene->AddCutter(cutter);
+	}
 }
 
 void SimulationSceneStartWindow::Render()
 {
 	ImGui::Begin("Simulation Scene");
+
+	if (!errorMessage.empty())
+	{
+		ImGui::Text(errorMessage.c_str());
+	}
 
 	if (ImGui::Button("Load Paths"))
 	{
@@ -22,10 +41,41 @@ void SimulationSceneStartWindow::Render()
 				auto toolPaths = ToolPathsReader::ReadFromFile(outPath);
 				scene->AddToolPaths(toolPaths);
 				ImGui::OpenPopup("Success paths");
+				errorMessage = "";
+
+				std::string fileName = outPath;
+				auto dotIndex = fileName.find_last_of('.');
+				if (dotIndex >= 0)
+				{
+					auto prefix = fileName.substr(dotIndex + 1);
+					std::smatch sm;
+					std::regex x_expr("[kf]\\d{2,}");
+					if (std::regex_match(prefix, sm, x_expr))
+					{
+						char type = prefix[0];
+						std::string radiusString = prefix.substr(1);
+						auto radius = std::stoi(radiusString);
+						this->cutterRadius = radius;
+						if (type == 'f')
+						{
+							auto cutter = std::make_shared<FlatCutter>(radius);
+							this->scene->AddCutter(cutter);
+							selectedCutterIndex = 0;
+						}
+						else if (type == 'k')
+						{
+							auto cutter = std::make_shared<SphereCutter>(radius);
+							this->scene->AddCutter(cutter);
+							selectedCutterIndex = 1;
+						}
+
+					}
+				}
 			}
 			catch (const std::exception& e)
 			{
 				auto a = e.what();
+				errorMessage = a;
 				ImGui::OpenPopup(a);
 			}
 
@@ -59,6 +109,50 @@ void SimulationSceneStartWindow::Render()
 	{
 		auto blockModel = std::make_shared<BlockModel>(widthSize,lengthSize,heightSize,gridWidthCount, gridLengthCount);
 		scene->AddBlockModel(blockModel);
+	}
+
+
+	const char* items[] = { "Flat cutter", "Sphere cutter"};
+	if (ImGui::Combo("Cutter type", &selectedCutterIndex, items, IM_ARRAYSIZE(items)))
+	{
+		if (selectedCutterIndex == 0)
+		{
+			auto cutter = std::make_shared<FlatCutter>(cutterRadius);
+			this->scene->AddCutter(cutter);
+		}
+		else if(selectedCutterIndex == 1)
+		{
+			auto cutter = std::make_shared<SphereCutter>(cutterRadius);
+			this->scene->AddCutter(cutter);
+		}
+
+	}
+
+	if (ImGui::DragFloat("Cutter radius", &cutterRadius, 1, 0.01, FLT_MAX))
+	{
+		if (scene->cutter)
+		{
+			scene->cutter->SetRadius(cutterRadius);
+		}
+	}
+
+	if (ImGui::Button("Start"))
+	{
+		if (scene->toolPaths && scene->blockModel && scene->cutter)
+		{
+
+			auto millingSimulator = std::make_shared<MillingSimulator>(scene->toolPaths, scene->blockModel, scene->cutter, cutterSpeed);
+			scene->AddSimulator(millingSimulator);
+			millingSimulator->StartMilling();
+		}
+	}
+
+	if (ImGui::DragFloat("Cutter speed", &cutterSpeed, 1, 1, FLT_MAX))
+	{
+		if (scene->millingSimulator)
+		{
+			scene->millingSimulator->SetSpeed(cutterSpeed);
+		}
 	}
 
 	ImGui::End();

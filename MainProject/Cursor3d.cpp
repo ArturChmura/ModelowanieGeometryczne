@@ -1,10 +1,10 @@
-#include "Coursor3d.h"
+#include "Cursor3d.h"
 #include "MVPConstantBuffer.h"
 #include "ShadersManager.h"
 
 using namespace DirectX::SimpleMath;
 
-Coursor3d::Coursor3d()
+Cursor3d::Cursor3d()
 {
 	this->translation = { 0,0,0 };
 
@@ -23,7 +23,7 @@ Coursor3d::Coursor3d()
 	vertexBuffer = DxDevice::instance->CreateVertexBuffer(vertices);
 }
 
-void Coursor3d::Draw(std::shared_ptr<Camera> camera)
+void Cursor3d::Draw(std::shared_ptr<Camera> camera)
 {
 
 
@@ -51,12 +51,12 @@ void Coursor3d::Draw(std::shared_ptr<Camera> camera)
 	DxDevice::instance->context()->Draw(count, 0);
 }
 
-Vector3 Coursor3d::GetTranslation()
+Vector3 Cursor3d::GetTranslation()
 {
 	return Vector3(translation);
 }
 
-void Coursor3d::SetPosition(DirectX::SimpleMath::Vector3 position)
+void Cursor3d::SetPosition(DirectX::SimpleMath::Vector3 position)
 {
 	translation = Vector4(position.x, position.y, position.z, 1.0f);
 	

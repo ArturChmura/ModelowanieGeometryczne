@@ -7,7 +7,7 @@ using namespace DirectX::SimpleMath;
 
 CompositeModel::CompositeModel()
 {
-	this->centroidCoursor = std::make_shared<Coursor3d>();
+	this->centroidCursor = std::make_shared<Cursor3d>();
 	this->imguiTranslation = this->centroidPosition = { 0,0,0,1 };
 	this->rotation = { 0,0,0 };
 	this->imguiScale = this->scale = { 1,1,1 };
@@ -131,8 +131,8 @@ void CompositeModel::RotateFromPoint(Vector4 globalPoint, DirectX::XMFLOAT3 rata
 
 void CompositeModel::Draw(std::shared_ptr<Camera> camera)
 {
-	this->centroidCoursor->SetPosition(Vector3(centroidPosition));
-	this->centroidCoursor->Draw(camera);
+	this->centroidCursor->SetPosition(Vector3(centroidPosition));
+	this->centroidCursor->Draw(camera);
 }
 
 void CompositeModel::RenderGUI()

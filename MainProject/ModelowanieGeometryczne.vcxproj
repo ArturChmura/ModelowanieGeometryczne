@@ -26,7 +26,7 @@
     <ClCompile Include="BresenhamsAlgorithm.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CompositeModel.cpp" />
-    <ClCompile Include="Coursor3d.cpp" />
+    <ClCompile Include="Cursor3d.cpp" />
     <ClCompile Include="CursorOptionsWindow.cpp" />
     <ClCompile Include="DebugWindow.cpp" />
     <ClCompile Include="dxDevice.cpp" />
@@ -58,6 +58,7 @@
     <ClCompile Include="MatrixExt.cpp" />
     <ClCompile Include="MeshInfo.cpp" />
     <ClCompile Include="MessageHandler.cpp" />
+    <ClCompile Include="MillingSimulator.cpp" />
     <ClCompile Include="ModelSceneStartWindow.cpp" />
     <ClCompile Include="MouseEvents.cpp" />
     <ClCompile Include="Named.cpp" />
@@ -116,7 +117,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CompositeModel.h" />
     <ClInclude Include="ConcreteModelSelectorVisitor.h" />
-    <ClInclude Include="Coursor3d.h" />
+    <ClInclude Include="Cursor3d.h" />
     <ClInclude Include="CursorOptionsWindow.h" />
     <ClInclude Include="DebugWindow.h" />
     <ClInclude Include="EmptyModelVisitor.h" />
@@ -138,6 +139,7 @@
     <ClInclude Include="IntersectionPoint.h" />
     <ClInclude Include="IParameterized.h" />
     <ClInclude Include="IScene.h" />
+    <ClInclude Include="MillingSimulator.h" />
     <ClInclude Include="ModelSceneStartWindow.h" />
     <ClInclude Include="Pair.h" />
     <ClInclude Include="psNormal.h" />

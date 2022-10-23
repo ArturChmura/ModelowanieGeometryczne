@@ -3,7 +3,7 @@
 using namespace DirectX::SimpleMath;
 
 
-CursorOptionsWindow::CursorOptionsWindow(std::shared_ptr<Coursor3d> cursor3d, std::shared_ptr<Scene> scene, SIZE windowSize)
+CursorOptionsWindow::CursorOptionsWindow(std::shared_ptr<Cursor3d> cursor3d, std::shared_ptr<Scene> scene, SIZE windowSize)
 {
 	this->cursor3d = cursor3d;
 	this->scene = scene;

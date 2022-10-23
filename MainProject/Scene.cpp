@@ -11,7 +11,7 @@
 
 using namespace DirectX::SimpleMath;
 
-Scene::Scene(std::shared_ptr<Coursor3d> cursor, SIZE windowSize)
+Scene::Scene(std::shared_ptr<Cursor3d> cursor, SIZE windowSize)
 	: IScene("Model Scene")
 {
 	this->cursor = cursor;

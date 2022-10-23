@@ -33,8 +33,9 @@ VSOutput main(VSNormalIn i)
     float3 normal = i.normal;
     if (i.pos.y > 0)
     {
-        int x = (i.pos.x + widthSize / 2) * (gridWidthCount / widthSize);
-        int y = (i.pos.z + lengthSize / 2) * (gridLengthCount / lengthSize);
+        int x = (i.pos.x + widthSize / 2) * ((gridWidthCount - 1) / widthSize) + 0.5;
+        int y = (i.pos.z + lengthSize / 2) * ((gridLengthCount - 1) / lengthSize) + 0.5;
+        
     
         int2 pos_xy = { x,y };
     
@@ -43,18 +44,7 @@ VSOutput main(VSNormalIn i)
         position.y = height;
         
         
-        int2 pos_x1y = { x+1, y };
-        float upHeight = heightMap[pos_x1y];
-        int2 pos_xy1 = { x, y + 1 };
-        float rightHeight = heightMap[pos_xy1];
-        float dz = height - upHeight;
-        float dx = height - rightHeight;
-        dz /= 1.0 / (gridLengthCount - 1);
-        dx /= 1.0 / (gridWidthCount - 1);
-        float3 n = float3(dx, 1, dz);
-        n = normalize(n);
-        
-        normal = n;
+      
         
     }
   
