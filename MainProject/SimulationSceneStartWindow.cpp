@@ -26,6 +26,9 @@ void SimulationSceneStartWindow::Render()
 {
 	ImGui::Begin("Simulation Scene");
 
+	if (isMilling)
+		ImGui::BeginDisabled();
+
 	if (!errorMessage.empty())
 	{
 		ImGui::Text(errorMessage.c_str());
@@ -136,22 +139,38 @@ void SimulationSceneStartWindow::Render()
 		}
 	}
 
-	if (ImGui::Button("Start"))
-	{
-		if (scene->toolPaths && scene->blockModel && scene->cutter)
-		{
+	if (isMilling)
+		ImGui::EndDisabled();
 
-			auto millingSimulator = std::make_shared<MillingSimulator>(scene->toolPaths, scene->blockModel, scene->cutter, cutterSpeed);
-			scene->AddSimulator(millingSimulator);
-			millingSimulator->StartMilling();
+	if (ImGui::Button(isMilling ? "End" : "Start"))
+	{
+		if (isMilling)
+		{
+			this->millingSimulator = nullptr;
+			isMilling = false;
+		}
+		else
+		{
+			if (scene->toolPaths && scene->blockModel && scene->cutter)
+			{
+				auto millingSimulator = std::make_shared<MillingSimulator>(scene->toolPaths, scene->blockModel, scene->cutter, cutterSpeed);
+				this->millingSimulator = millingSimulator;
+				millingSimulator->StartMilling();
+				isMilling = true;
+			}
 		}
 	}
 
-	if (ImGui::DragFloat("Cutter speed", &cutterSpeed, 1, 1, FLT_MAX))
+	if (isMilling && this->millingSimulator)
 	{
-		if (scene->millingSimulator)
+		millingSimulator->Mill();
+	}
+
+	if (ImGui::DragFloat("Cutter speed", &cutterSpeed, 1, 0, FLT_MAX))
+	{
+		if (millingSimulator)
 		{
-			scene->millingSimulator->SetSpeed(cutterSpeed);
+			millingSimulator->SetSpeed(cutterSpeed);
 		}
 	}
 

@@ -21,4 +21,7 @@ private:
 	float cutterSpeed = 30;
 	std::string errorMessage;
 	int selectedCutterIndex = 0;
+	bool isMilling = false;
+
+	std::shared_ptr< MillingSimulator> millingSimulator;
 };

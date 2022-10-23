@@ -18,7 +18,6 @@ void MillingSimulator::StartMilling()
 	auto [x, y, z] = toolPaths->points[pathIndex];
 	lastPosition = Vector3(x, y, z);
 
-	millModel = std::make_shared<Torus>(10, 2, 100, 100);
 	blockModel->SetCutter(cutter);
 }
 
@@ -65,16 +64,12 @@ bool MillingSimulator::Mill()
 
 	lastPosition = toPoint;
 
+	this->cutter->SetPosition(lastPosition);
+
 	return false;
 }
 
 void MillingSimulator::SetSpeed(float speed)
 {
 	this->speed = speed;
-}
-
-void MillingSimulator::Draw(std::shared_ptr<Camera> camera)
-{
-	millModel->SetTranslation(lastPosition.x, lastPosition.y, lastPosition.z);
-	millModel->Draw(camera);
 }

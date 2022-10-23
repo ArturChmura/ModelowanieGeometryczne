@@ -214,6 +214,9 @@
     <Filter Include="Header Files\Simulation\Milling">
       <UniqueIdentifier>{c42f0f64-4b72-493f-ade2-3e410b5704db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Simulation\Milling">
+      <UniqueIdentifier>{574a3e61-c26a-4dc1-b50f-6d3752887dd7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxStructures.cpp">
@@ -472,7 +475,10 @@
       <Filter>Source Files\Simulation\Cutters</Filter>
     </ClCompile>
     <ClCompile Include="MillingSimulator.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Simulation\Milling</Filter>
+    </ClCompile>
+    <ClCompile Include="CutterModel.cpp">
+      <Filter>Source Files\Simulation\Cutters</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -784,6 +790,9 @@
     </ClInclude>
     <ClInclude Include="MillingSimulator.h">
       <Filter>Header Files\Simulation\Milling</Filter>
+    </ClInclude>
+    <ClInclude Include="CutterModel.h">
+      <Filter>Header Files\Simulation\Cutters</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

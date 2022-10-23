@@ -13,16 +13,13 @@ public:
 	
 	void AddToolPaths(std::shared_ptr<ToolPaths> toolPaths);
 	void AddBlockModel(std::shared_ptr<BlockModel> blockModel);
-	void AddSimulator(std::shared_ptr<MillingSimulator> millingSimulator);
 	void AddCutter(std::shared_ptr<ICutter> cutter);
 	void DrawScene() override;
 
 	std::shared_ptr<ToolPaths> toolPaths;
 	std::shared_ptr<BlockModel> blockModel;
-	std::shared_ptr<MillingSimulator> millingSimulator;
 	std::shared_ptr<ICutter> cutter;
 
 	std::shared_ptr<Cursor3d> cursor;
-
 };
 

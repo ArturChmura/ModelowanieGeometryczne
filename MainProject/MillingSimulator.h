@@ -4,7 +4,6 @@
 #include "BlockModel.h"
 #include <chrono>
 #include "SimpleMath.h"
-#include "IModel.h"
 
 
 class MillingSimulator
@@ -15,7 +14,6 @@ public:
 	void StartMilling();
 	bool Mill();
 	void SetSpeed(float speed);
-	void Draw(std::shared_ptr<Camera> camera);
 
 private:
 
@@ -26,6 +24,5 @@ private:
 
 	int pathIndex;
 	DirectX::SimpleMath::Vector3 lastPosition;
-	std::shared_ptr<IModel> millModel;
 	std::shared_ptr<ICutter> cutter;
 };

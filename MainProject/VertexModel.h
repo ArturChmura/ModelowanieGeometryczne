@@ -18,7 +18,7 @@ public:
 	virtual void Scale(float x, float y, float z)  override;
 	DirectX::SimpleMath::Vector3 GetScale()  override;
 
-	 void SetTranslation(float x, float y, float z)  override;
+	 virtual void SetTranslation(float x, float y, float z)  override;
 	 void Translate(float x, float y, float z)  override;
 	 DirectX::SimpleMath::Vector4 GetTranslation()  override;
 
