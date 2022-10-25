@@ -111,10 +111,6 @@ void SimulationSceneStartWindow::Render()
 	{
 
 	}
-	if (ImGui::DragFloat("Height", &heightSize, 1, 1, FLT_MAX))
-	{
-
-	}
 	if (ImGui::DragFloat("Minimum base height", &minimumBaseHeight, 1, 0.01, FLT_MAX))
 	{
 		if (scene->blockModel)
