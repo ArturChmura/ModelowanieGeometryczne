@@ -11,6 +11,11 @@ MillingSimulator::MillingSimulator(std::shared_ptr<ToolPaths> toolPaths, std::sh
 	this->cutter = cutter;
 }
 
+MillingSimulator::~MillingSimulator()
+{
+	Stop();
+}
+
 void MillingSimulator::StartMilling()
 {
 	pathIndex = 0;

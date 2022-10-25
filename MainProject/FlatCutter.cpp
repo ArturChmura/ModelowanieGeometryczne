@@ -1,5 +1,7 @@
 #include "FlatCutter.h"
 
+using namespace DirectX::SimpleMath;
+
 FlatCutter::FlatCutter(float radius, float cuttingPartHeight)
     :ICutter(radius, cuttingPartHeight)
 {
@@ -21,4 +23,18 @@ bool FlatCutter::IsError(DirectX::SimpleMath::Vector3 start, DirectX::SimpleMath
         outErrorMessage += "Milling with the base of a flat cutter.\n";
     }
     return isError;
+}
+
+DirectX::SimpleMath::Vector3 FlatCutter::GetCuttingPointInDirection(DirectX::SimpleMath::Vector2 radiusPoint, DirectX::SimpleMath::Vector3 direction)
+{
+    auto d2 = radiusPoint.LengthSquared();
+    auto r2 = radius * radius;
+    
+    if (d2 > r2)
+    {
+        d2 = r2; 
+    }
+    auto distance = sqrtf(r2 - d2);
+    auto x = Vector3(radiusPoint.x, 0, radiusPoint.y) + distance * Vector3(direction.x, 0, direction.z);
+    return x;
 }

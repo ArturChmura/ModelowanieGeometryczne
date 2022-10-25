@@ -25,7 +25,7 @@ void KeyboardHandler::HandleKeyboard()
 	}
 	if (ImGui::IsKeyPressed(ImGuiKey_::ImGuiKey_UpArrow))
 	{
-		camera->Move(0, 1, 0);
+		camera->Move(0, 0, 1);
 	}
 	if (ImGui::IsKeyPressed(ImGuiKey_::ImGuiKey_LeftArrow))
 	{
@@ -33,7 +33,7 @@ void KeyboardHandler::HandleKeyboard()
 	}
 	if (ImGui::IsKeyPressed(ImGuiKey_::ImGuiKey_DownArrow))
 	{
-		camera->Move(0, -1, 0);
+		camera->Move(0, 0, -1);
 	}
 	
 }

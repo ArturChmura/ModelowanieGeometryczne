@@ -10,6 +10,7 @@ class MillingSimulator: public ISimulation
 {
 public:
 	MillingSimulator(std::shared_ptr<ToolPaths> toolPaths, std::shared_ptr<BlockModel> blockModel, std::shared_ptr<ICutter> cutter, float speed);
+	~MillingSimulator();
 
 	virtual void Update(float dt) override;
 

@@ -44,7 +44,8 @@ private:
 	int gridLengthCount;
 
 	MeshInfo meshInfo;
-	std::vector<std::tuple<int,int,float>> cutterOffsets;
+	std::vector<std::tuple<int,int,float>> cutterCircleOffsets;
+	std::shared_ptr<ICutter> cutter;
 	int verticesCount;
 	int indicesCount;
 

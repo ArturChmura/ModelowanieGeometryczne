@@ -56,13 +56,13 @@ BlockModel::BlockModel(float widthSize, float lengthSize, float heightSize, int 
 	srvDesc.ViewDimension = D3D11_SRV_DIMENSION::D3D11_SRV_DIMENSION_TEXTURE2D;
 	srvDesc.Texture2D.MipLevels = 1;
 	srvDesc.Texture2D.MostDetailedMip = 0;
-	
+
 
 	heightMapTextureSRV = DxDevice::instance->CreateShaderResourceView(heightMapTexture, &srvDesc);
 
 	colorTexture = DxDevice::instance->CreateShaderResourceView(L"Textures/steeltex.jpg");
 
-	
+
 }
 
 void BlockModel::InitializeMesh()
@@ -235,6 +235,68 @@ BlockModel::DrawLineResult BlockModel::DrawLine(DirectX::SimpleMath::Vector3 sta
 	Vector3 direction = end - start;
 	direction.Normalize();
 
+	auto direction2d = Vector2(direction.x, direction.z);
+	direction2d.Normalize();
+	auto perpendicular = Vector2(direction2d.y, -direction2d.x);
+	//œrodek w 0,0
+	auto diameterP1 = perpendicular * cutter->GetRadius();
+	auto diameterP2 = -perpendicular * cutter->GetRadius();
+
+	auto diameterP1Coords = GetCoordinatesFromPosition(diameterP1);
+	auto diameterP2Coords = GetCoordinatesFromPosition(diameterP2);
+
+	auto diameterPointsCoords = std::vector<std::pair<int, int>>();
+	auto saveDiameterPoints = [&](int x, int y)
+	{
+
+		diameterPointsCoords.push_back(std::make_pair(x, y));
+	};
+
+	BresenhamsAlgorithm::DrawLine(diameterP1Coords.first, diameterP1Coords.second, diameterP2Coords.first, diameterP2Coords.second, LINE_OVERLAP_BOTH, saveDiameterPoints);
+
+
+	auto cuttingPointsOffets = std::vector<std::tuple<int, int, float>>();
+	Vector3 e1; 
+	for (auto diameterPointCoords : diameterPointsCoords)
+	{
+		auto diameterPointPos = GetPositionFromCoordinates(diameterPointCoords);
+		auto cuttingPoint = cutter->GetCuttingPointInDirection(diameterPointPos, direction);
+		auto [cx, cy] = GetCoordinatesFromPosition(Vector2(cuttingPoint.x, cuttingPoint.z));
+		cx -= gridWidthCount / 2;
+		cy -= gridLengthCount / 2;
+		auto ch = cuttingPoint.y;
+		if (cuttingPointsOffets.size() > 0)
+		{
+			auto [lx, ly, lh] = cuttingPointsOffets[cuttingPointsOffets.size() - 1];
+			auto dx = lx - cx;
+			auto dy = ly - cy;
+			if (dx > 1 || dx < -1 || dy > 1 || dy < -1)
+			{
+				float heightDiff = lh - ch;
+				auto lengthCoords = std::sqrtf(dx * dx + dy * dy);
+				BresenhamsAlgorithm::DrawLine(cx, cy, lx, ly, LINE_OVERLAP_NONE, [&](int x, int y) {
+					int dxi = x - cx;
+					int dyi = y - cy;
+
+					auto currentLengthCoords = std::sqrtf(dxi * dxi + dyi * dyi);
+
+					float heightPercentage;
+
+					heightPercentage = currentLengthCoords / lengthCoords;
+
+
+					auto heightOffset = heightDiff * heightPercentage;
+					cuttingPointsOffets.push_back(std::make_tuple(x, y, ch + heightOffset));
+
+					});
+			}
+		}
+		e1 = cuttingPoint;
+		cuttingPointsOffets.push_back(std::make_tuple(cx , cy, ch));
+	}
+
+
+
 	auto startCoords = GetCoordinatesFromPosition(Vector2(start.x, start.z));
 	auto endCoords = GetCoordinatesFromPosition(Vector2(end.x, end.z));
 
@@ -245,7 +307,7 @@ BlockModel::DrawLineResult BlockModel::DrawLine(DirectX::SimpleMath::Vector3 sta
 
 	float heightDiff = end.y - start.y;
 
-	auto drawCircle = [&](int x, int y)
+	auto drawOffset = [&](int x, int y, std::vector<std::tuple<int, int, float>>& offsets)
 	{
 		int dxi = x - startCoords.first;
 		int dyi = y - startCoords.second;
@@ -264,12 +326,12 @@ BlockModel::DrawLineResult BlockModel::DrawLine(DirectX::SimpleMath::Vector3 sta
 
 		auto heightOffset = heightDiff * heightPercentage;
 
-		for (auto [dx, dy, dh] : cutterOffsets)
+		for (auto [dx, dy, dh] : offsets)
 		{
 			int xIndex = x + dx;
 			int yIndex = y + dy;
 			int index = yIndex * gridWidthCount + xIndex;
-			if (xIndex >= gridWidthCount || yIndex >= gridLengthCount || xIndex< 0 || yIndex<0)
+			if (xIndex >= gridWidthCount || yIndex >= gridLengthCount || xIndex < 0 || yIndex < 0)
 			{
 				continue;
 			}
@@ -287,8 +349,20 @@ BlockModel::DrawLineResult BlockModel::DrawLine(DirectX::SimpleMath::Vector3 sta
 		}
 	};
 
-	
-	BresenhamsAlgorithm::DrawLine(startCoords.first, startCoords.second, endCoords.first, endCoords.second, LINE_OVERLAP_MAJOR, drawCircle);
+	auto cut = [&](int x, int y)
+	{
+		drawOffset(x, y, cuttingPointsOffets);
+	};
+
+	BresenhamsAlgorithm::DrawLine(startCoords.first, startCoords.second, endCoords.first, endCoords.second, LINE_OVERLAP_BOTH, cut);
+
+
+	auto drawCircle = [&](int x, int y)
+	{
+		drawOffset(x, y, cutterCircleOffsets);
+	};
+
+	drawCircle(endCoords.first, endCoords.second);
 
 	resetDrawing = true;
 
@@ -337,7 +411,8 @@ void BlockModel::Draw(std::shared_ptr<Camera> camera)
 
 void BlockModel::SetCutter(std::shared_ptr<ICutter> cutter)
 {
-	this->cutterOffsets.clear();
+	this->cutter = cutter;
+	this->cutterCircleOffsets.clear();
 	Vector2 top = Vector2(0, cutter->GetRadius());
 	Vector2 bottom = Vector2(0, -cutter->GetRadius());
 	Vector2 left = Vector2(-cutter->GetRadius(), 0);
@@ -365,7 +440,7 @@ void BlockModel::SetCutter(std::shared_ptr<ICutter> cutter)
 			if (dx * dx + dy * dy <= cutter->GetRadius() * cutter->GetRadius())
 			{
 				float height = cutter->GetHeight(dx, dy);
-				cutterOffsets.push_back(std::make_tuple(x - gridWidthCount / 2 , y - gridLengthCount / 2, height));
+				cutterCircleOffsets.push_back(std::make_tuple(x - gridWidthCount / 2, y - gridLengthCount / 2, height));
 			}
 		}
 	}
@@ -411,8 +486,8 @@ void BlockModel::ResetMesh()
 
 std::pair<int, int> BlockModel::GetCoordinatesFromPosition(DirectX::SimpleMath::Vector2 position)
 {
-	int x = (position.x + widthSize / 2) * ((gridWidthCount-1) / widthSize) + 0.5;
-	int y = (position.y + lengthSize / 2) * ((gridLengthCount-1) / lengthSize) + 0.5;
+	int x = (position.x + widthSize / 2) * ((gridWidthCount - 1) / widthSize) + 0.5;
+	int y = (position.y + lengthSize / 2) * ((gridLengthCount - 1) / lengthSize) + 0.5;
 
 	return std::make_pair(x, y);
 }
