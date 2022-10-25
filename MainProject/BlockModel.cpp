@@ -7,14 +7,14 @@
 #include "FlatCutter.h"
 
 using namespace DirectX::SimpleMath;
-BlockModel::BlockModel(float widthSize, float lengthSize, float heightSize, int gridWidthCount, int gridLengthCount)
+BlockModel::BlockModel(float widthSize, float lengthSize, float heightSize, int gridWidthCount, int gridLengthCount, float minHeight)
 {
 	this->widthSize = widthSize;
 	this->lengthSize = lengthSize;
 	this->heightSize = heightSize;
 	this->gridWidthCount = gridWidthCount;
 	this->gridLengthCount = gridLengthCount;
-
+	this->minHeight = minHeight;
 	heightMap = new float[gridWidthCount * gridLengthCount];
 
 	for (int i = 0; i < gridLengthCount; i++)
@@ -229,8 +229,9 @@ void BlockModel::InitializeMesh()
 	this->verticesCount = vertices.size();
 }
 
-void BlockModel::DrawLine(DirectX::SimpleMath::Vector3 start, DirectX::SimpleMath::Vector3 end)
+BlockModel::DrawLineResult BlockModel::DrawLine(DirectX::SimpleMath::Vector3 start, DirectX::SimpleMath::Vector3 end)
 {
+	DrawLineResult result;
 	Vector3 direction = end - start;
 	direction.Normalize();
 
@@ -274,20 +275,25 @@ void BlockModel::DrawLine(DirectX::SimpleMath::Vector3 start, DirectX::SimpleMat
 			}
 			float height = start.y + heightOffset + dh;
 
-
-			if (heightMap[index] > height)
+			auto currentHeight = heightMap[index];
+			if (currentHeight > height)
 			{
 				heightMap[index] = height;
+				result.anyChanges = true;
+				result.maxHeightChange = max(result.maxHeightChange, currentHeight - height);
+				result.minHeightCutted = min(result.minHeightCutted, height);
 			}
 
 		}
-
 	};
 
 	
 	BresenhamsAlgorithm::DrawLine(startCoords.first, startCoords.second, endCoords.first, endCoords.second, LINE_OVERLAP_MAJOR, drawCircle);
 
 	resetDrawing = true;
+
+
+	return result;
 }
 
 void BlockModel::Draw(std::shared_ptr<Camera> camera)
@@ -366,6 +372,16 @@ void BlockModel::SetCutter(std::shared_ptr<ICutter> cutter)
 	resetDrawing = true;
 }
 
+bool BlockModel::IsError(float minCuttedHeight, std::string& outErrorMessage)
+{
+	if (minCuttedHeight < minHeight)
+	{
+		outErrorMessage += "Entry of the cutter into the base too deep.\n";
+		return true;
+	}
+	return false;
+}
+
 BlockModel::~BlockModel()
 {
 	free((void*)heightMap);
@@ -407,4 +423,10 @@ DirectX::SimpleMath::Vector2 BlockModel::GetPositionFromCoordinates(std::pair<in
 	float y = (coordinates.second * lengthSize / (gridLengthCount - 1)) - lengthSize / 2;
 
 	return Vector2(x, y);
+}
+
+
+void BlockModel::SetMinHeight(float minHeight)
+{
+	this->minHeight = minHeight;
 }

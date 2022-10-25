@@ -1,7 +1,7 @@
 #include "SphereCutter.h"
 #include <cmath>
-SphereCutter::SphereCutter(float radius)
-    :ICutter(radius)
+SphereCutter::SphereCutter(float radius, float cuttingPartHeight)
+    :ICutter(radius, cuttingPartHeight)
 {
     auto getHeight = [&](float x, float y) {return GetHeight(x, y); };
     this->model = std::make_shared<CutterModel>(radius, getHeight);

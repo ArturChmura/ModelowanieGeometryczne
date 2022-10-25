@@ -15,12 +15,12 @@ SimulationSceneStartWindow::SimulationSceneStartWindow(std::shared_ptr<Simulatio
 
 	if (selectedCutterIndex == 0)
 	{
-		auto cutter = std::make_shared<FlatCutter>(cutterRadius);
+		auto cutter = std::make_shared<FlatCutter>(cutterRadius, cutterCuttingPartHeight);
 		this->scene->AddCutter(cutter);
 	}
 	else if (selectedCutterIndex == 1)
 	{
-		auto cutter = std::make_shared<SphereCutter>(cutterRadius);
+		auto cutter = std::make_shared<SphereCutter>(cutterRadius, cutterCuttingPartHeight);
 		this->scene->AddCutter(cutter);
 	}
 }
@@ -33,9 +33,9 @@ void SimulationSceneStartWindow::Render()
 	if (isRunning)
 		ImGui::BeginDisabled();
 
-	if (!errorMessage.empty())
+	if (!inputFileErrorMessage.empty())
 	{
-		ImGui::Text(errorMessage.c_str());
+		ImGui::Text(inputFileErrorMessage.c_str());
 	}
 
 	if (ImGui::Button("Load Paths"))
@@ -48,7 +48,7 @@ void SimulationSceneStartWindow::Render()
 				auto toolPaths = ToolPathsReader::ReadFromFile(outPath);
 				scene->AddToolPaths(toolPaths);
 				ImGui::OpenPopup("Success paths");
-				errorMessage = "";
+				inputFileErrorMessage = "";
 
 				std::string fileName = outPath;
 				auto dotIndex = fileName.find_last_of('.');
@@ -65,13 +65,13 @@ void SimulationSceneStartWindow::Render()
 						this->cutterRadius = radius;
 						if (type == 'f')
 						{
-							auto cutter = std::make_shared<FlatCutter>(radius);
+							auto cutter = std::make_shared<FlatCutter>(radius, cutterCuttingPartHeight);
 							this->scene->AddCutter(cutter);
 							selectedCutterIndex = 0;
 						}
 						else if (type == 'k')
 						{
-							auto cutter = std::make_shared<SphereCutter>(radius);
+							auto cutter = std::make_shared<SphereCutter>(radius, cutterCuttingPartHeight);
 							this->scene->AddCutter(cutter);
 							selectedCutterIndex = 1;
 						}
@@ -82,7 +82,7 @@ void SimulationSceneStartWindow::Render()
 			catch (const std::exception& e)
 			{
 				auto a = e.what();
-				errorMessage = a;
+				inputFileErrorMessage = a;
 				ImGui::OpenPopup(a);
 			}
 
@@ -95,7 +95,7 @@ void SimulationSceneStartWindow::Render()
 	{
 
 	}
-	if (ImGui::DragInt("Grid length count", &gridLengthCount, 1,  2, INT_MAX))
+	if (ImGui::DragInt("Grid length count", &gridLengthCount, 1, 2, INT_MAX))
 	{
 
 	}
@@ -111,25 +111,36 @@ void SimulationSceneStartWindow::Render()
 	{
 
 	}
+	if (ImGui::DragFloat("Height", &heightSize, 1, 1, FLT_MAX))
+	{
+
+	}
+	if (ImGui::DragFloat("Minimum base height", &minimumBaseHeight, 1, 0.01, FLT_MAX))
+	{
+		if (scene->blockModel)
+		{
+			scene->blockModel->SetMinHeight(minimumBaseHeight);
+		}
+	}
 
 	if (ImGui::Button("New block"))
 	{
-		auto blockModel = std::make_shared<BlockModel>(widthSize,lengthSize,heightSize,gridWidthCount, gridLengthCount);
+		auto blockModel = std::make_shared<BlockModel>(widthSize, lengthSize, heightSize, gridWidthCount, gridLengthCount, minimumBaseHeight);
 		scene->AddBlockModel(blockModel);
 	}
 
 
-	const char* items[] = { "Flat cutter", "Sphere cutter"};
+	const char* items[] = { "Flat cutter", "Sphere cutter" };
 	if (ImGui::Combo("Cutter type", &selectedCutterIndex, items, IM_ARRAYSIZE(items)))
 	{
 		if (selectedCutterIndex == 0)
 		{
-			auto cutter = std::make_shared<FlatCutter>(cutterRadius);
+			auto cutter = std::make_shared<FlatCutter>(cutterRadius, cutterCuttingPartHeight);
 			this->scene->AddCutter(cutter);
 		}
-		else if(selectedCutterIndex == 1)
+		else if (selectedCutterIndex == 1)
 		{
-			auto cutter = std::make_shared<SphereCutter>(cutterRadius);
+			auto cutter = std::make_shared<SphereCutter>(cutterRadius, cutterCuttingPartHeight);
 			this->scene->AddCutter(cutter);
 		}
 
@@ -141,6 +152,10 @@ void SimulationSceneStartWindow::Render()
 		{
 			scene->cutter->SetRadius(cutterRadius);
 		}
+	}
+	if (ImGui::DragFloat("Cutter cutting part height", &cutterCuttingPartHeight, 1, 0.01, FLT_MAX))
+	{
+		scene->cutter->SetCuttingPartHeight(cutterCuttingPartHeight);
 	}
 
 	if (isRunning)
@@ -169,7 +184,7 @@ void SimulationSceneStartWindow::Render()
 			}
 		}
 	}
-	
+
 
 
 
@@ -186,6 +201,16 @@ void SimulationSceneStartWindow::Render()
 	{
 		this->scene->SetShowPaths(showPaths);
 	}
+
+	if (millingSimulator)
+	{
+		auto errors = millingSimulator->GetErrorMessages();
+		if (!errors.empty())
+		{
+			ImGui::Text(errors.c_str());
+		}
+	}
+
 
 	ImGui::End();
 }

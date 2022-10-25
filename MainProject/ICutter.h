@@ -6,15 +6,19 @@
 class ICutter
 {
 public:
-	ICutter(float radius);
+	ICutter(float radius, float cuttingPartHeight);
 	float GetRadius();
 	void SetRadius(float radius);
+	void SetCuttingPartHeight(float cuttingPartHeight);
 	void SetPosition(DirectX::SimpleMath::Vector3 position);
 	void Draw(std::shared_ptr<Camera> camera);
 	virtual float GetHeight(float x, float y) = 0;
-
+	float GetCuttingPartHeight();
+	void GetCuttingPartHeight(float cuttingPartHeight);
+	virtual bool IsError(DirectX::SimpleMath::Vector3 start, DirectX::SimpleMath::Vector3 end, float maxHeight, std::string& outErrorMessage);
 protected:
 	float radius;
+	float cuttingPartHeight;
 	DirectX::SimpleMath::Vector3 position;
 	std::shared_ptr<CutterModel> model;
 

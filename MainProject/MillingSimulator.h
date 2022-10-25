@@ -18,6 +18,8 @@ public:
 	virtual void Start() override;
 	virtual bool IsRunning() override;
 
+	std::string GetErrorMessages();
+
 private:
 
 	std::shared_ptr<ToolPaths> toolPaths;
@@ -38,4 +40,6 @@ private:
 	bool Mill(float distance, bool& cancel);
 
 	bool isThreadRunning = false;
+
+	std::string errorMessages;
 };

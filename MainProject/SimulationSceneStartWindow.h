@@ -18,10 +18,13 @@ private:
 	float widthSize = 200;
 	float lengthSize = 200;
 	float heightSize = 40;
+	float minimumBaseHeight = 5;
+
 	float cutterRadius = 40;
+	float cutterCuttingPartHeight = 40;
 	float cutterSpeed = 30;
 	bool showPaths = true;
-	std::string errorMessage;
+	std::string inputFileErrorMessage;
 	int selectedCutterIndex = 0;
 
 	std::shared_ptr<MillingSimulator> millingSimulator;

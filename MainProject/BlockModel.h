@@ -8,14 +8,27 @@
 #include "vsNormal.h"
 #include "ICutter.h"
 
+
+#include <limits>
+
 class BlockModel
 {
 public:
-	BlockModel(float widthSize, float lengthSize, float heightSize, int gridWidthCount, int gridLengthCount);
+
+	struct DrawLineResult
+	{
+		bool anyChanges;
+		float maxHeightChange;
+		float minHeightCutted = FLT_MAX;
+	};
+
+	BlockModel(float widthSize, float lengthSize, float heightSize, int gridWidthCount, int gridLengthCount, float minHeight);
 	void InitializeMesh();
-	void DrawLine(DirectX::SimpleMath::Vector3 start, DirectX::SimpleMath::Vector3 end);
+	DrawLineResult DrawLine(DirectX::SimpleMath::Vector3 start, DirectX::SimpleMath::Vector3 end);
 	void Draw(std::shared_ptr<Camera> camera);
 	void SetCutter(std::shared_ptr<ICutter> cutter);
+	bool IsError(float minCuttedHeight, std::string& outErrorMessage);
+	void SetMinHeight(float minHeight);
 	~BlockModel();
 
 private:
@@ -26,7 +39,7 @@ private:
 	float widthSize; 
 	float lengthSize; 
 	float heightSize; 
-
+	float minHeight;
 	int gridWidthCount; 
 	int gridLengthCount;
 
@@ -37,6 +50,7 @@ private:
 
 	std::pair<int, int> GetCoordinatesFromPosition(DirectX::SimpleMath::Vector2 position);
 	DirectX::SimpleMath::Vector2 GetPositionFromCoordinates(std::pair<int, int> coordinates);
+
 
 	bool resetDrawing;
 

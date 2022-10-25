@@ -21,12 +21,26 @@ void MillingSimulator::StartMilling()
 
 bool MillingSimulator::Mill(float distance, bool& cancel)
 {
-	isThreadRunning = true;
 	if (pathIndex >= toolPaths->points.size() - 1)
 	{
+		isThreadRunning = false;
 		return true;
 	}
 
+	auto drawLine = [&](Vector3 from, Vector3 to)
+	{
+		auto drawResult = blockModel->DrawLine(from, to);
+		this->cutter->SetPosition(to);
+		lastPosition = to;
+		std::string errorMessage;
+		bool error = cutter->IsError(from, to, drawResult.maxHeightChange, errorMessage);
+		error |= blockModel->IsError(drawResult.minHeightCutted, errorMessage);
+		if (error)
+		{
+			errorMessages += "Error on path " + std::to_string(pathIndex) + "\n" + errorMessage;
+		}
+		
+	};
 
 	auto [x, y, z] = toolPaths->points[pathIndex + 1];
 	auto endPoint = Vector3(x, y, z);
@@ -37,10 +51,10 @@ bool MillingSimulator::Mill(float distance, bool& cancel)
 	Vector3 toPoint;
 	while (distance * distance > toEndVector.LengthSquared() && !cancel)
 	{
-		OutputDebugString((L"while Distance: " + std::to_wstring(distance) + L"\n").c_str());
 		toPoint = endPoint;
-		blockModel->DrawLine(lastPosition, toPoint);
-		this->cutter->SetPosition(toPoint);
+
+		drawLine(lastPosition, toPoint);
+
 		pathIndex++;
 		if (pathIndex >= toolPaths->points.size() - 1)
 		{
@@ -48,7 +62,6 @@ bool MillingSimulator::Mill(float distance, bool& cancel)
 			return true;
 		}
 		distance -= toEndVector.Length();
-		lastPosition = endPoint;
 		auto [x, y, z] = toolPaths->points[pathIndex + 1];
 		endPoint = Vector3(x, y, z);
 		toEndVector = endPoint - lastPosition;
@@ -62,15 +75,9 @@ bool MillingSimulator::Mill(float distance, bool& cancel)
 
 	Vector3 direction = toEndVector;
 	direction.Normalize();
-
 	toPoint = lastPosition + direction * distance;
-	OutputDebugString((L"after Distance: " + std::to_wstring(distance) + L"\n").c_str());
 
-	blockModel->DrawLine(lastPosition, toPoint);
-	this->cutter->SetPosition(toPoint);
-
-	lastPosition = toPoint;
-
+	drawLine(lastPosition, toPoint);
 
 	isThreadRunning = false;
 	return false;
@@ -113,6 +120,11 @@ bool MillingSimulator::IsRunning()
 	return isRunning;
 }
 
+std::string MillingSimulator::GetErrorMessages()
+{
+	return errorMessages;
+}
+
 void MillingSimulator::Update(float dt)
 {
 	if (isRunning)
@@ -135,6 +147,7 @@ void MillingSimulator::Update(float dt)
 
 				timeDelay = 0.0f;
 
+				isThreadRunning = true;
 				futureMill = std::async(std::launch::async, &MillingSimulator::Mill, this, distance, std::ref(cancelTask));
 			}
 		}
