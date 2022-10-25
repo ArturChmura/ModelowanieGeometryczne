@@ -3,13 +3,12 @@
 #include "SimulationScene.h"
 #include <memory>
 #include "IGuiWindow.h"
-#include <chrono>
-#include <future>
+#include "MillingSimulator.h"
 
 class SimulationSceneStartWindow : public IGuiWindow
 {
 public:
-	SimulationSceneStartWindow(std::shared_ptr<SimulationScene> scene);
+	SimulationSceneStartWindow(std::shared_ptr<SimulationScene> scene, std::function<void(std::shared_ptr<ISimulation>)> setSimulation);
 	void Render();
 	std::shared_ptr<SimulationScene> scene;
 private:
@@ -24,12 +23,8 @@ private:
 	bool showPaths = true;
 	std::string errorMessage;
 	int selectedCutterIndex = 0;
-	bool isMilling = false;
 
-	std::shared_ptr< MillingSimulator> millingSimulator;
+	std::shared_ptr<MillingSimulator> millingSimulator;
+	std::function<void(std::shared_ptr<ISimulation>)> setSimulation;
 
-	std::chrono::steady_clock::time_point lastFrameTimePoint;
-
-	bool cancelTask = false;
-	std::future<bool> futureMill;
 };

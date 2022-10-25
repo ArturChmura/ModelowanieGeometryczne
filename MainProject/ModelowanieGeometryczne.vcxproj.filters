@@ -797,6 +797,9 @@
     <ClInclude Include="FutureExtensions.h">
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="ISumulation.h">
+      <Filter>Header Files\Simulation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="psColor.hlsl">

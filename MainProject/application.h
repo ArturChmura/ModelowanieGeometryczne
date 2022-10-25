@@ -12,7 +12,8 @@
 #include "KeyboardHandler.h"
 #include "ObjectAdderWindow.h"
 #include "SimulationScene.h"
-
+#include "ISimulation.h"
+#include <chrono>
 
 using namespace mini;
 class Application
@@ -40,4 +41,7 @@ public:
 	std::shared_ptr<KeyboardHandler> keyboardHandler;
 
 	std::map<int, std::vector<std::shared_ptr<IGuiWindow>>> sceneWindowsMap;
+
+	std::chrono::steady_clock::time_point lastFrameTimePoint;
+	std::shared_ptr<ISimulation> simulation;
 };

@@ -8,9 +8,10 @@
 #include <future>
 #include "FutureExtensions.h"
 
-SimulationSceneStartWindow::SimulationSceneStartWindow(std::shared_ptr<SimulationScene> scene)
+SimulationSceneStartWindow::SimulationSceneStartWindow(std::shared_ptr<SimulationScene> scene, std::function<void(std::shared_ptr<ISimulation>)> setSimulation)
 {
 	this->scene = scene;
+	this->setSimulation = setSimulation;
 
 	if (selectedCutterIndex == 0)
 	{
@@ -28,7 +29,8 @@ void SimulationSceneStartWindow::Render()
 {
 	ImGui::Begin("Simulation Scene");
 
-	if (isMilling)
+	bool isRunning = millingSimulator && millingSimulator->IsRunning();
+	if (isRunning)
 		ImGui::BeginDisabled();
 
 	if (!errorMessage.empty())
@@ -141,70 +143,35 @@ void SimulationSceneStartWindow::Render()
 		}
 	}
 
-	if (isMilling)
+	if (isRunning)
 		ImGui::EndDisabled();
 
-	if (ImGui::Button(isMilling ? "End" : "Start"))
+	if (isRunning)
 	{
-		if (isMilling)
+		if (ImGui::Button("End"))
 		{
-			this->millingSimulator = nullptr;
-			isMilling = false;
-			cancelTask = true;
+			if (this->millingSimulator)
+			{
+				millingSimulator->Stop();
+			}
 		}
-		else
+	}
+	else
+	{
+		if (ImGui::Button("Start"))
 		{
 			if (scene->toolPaths && scene->blockModel && scene->cutter)
 			{
-				lastFrameTimePoint = std::chrono::high_resolution_clock::now();
-				auto millingSimulator = std::make_shared<MillingSimulator>(scene->toolPaths, scene->blockModel, scene->cutter, cutterSpeed);
-				this->millingSimulator = millingSimulator;
-				millingSimulator->StartMilling();
-				isMilling = true;
-				cancelTask = false;
-
-
+				auto millingSimulation = std::make_shared<MillingSimulator>(scene->toolPaths, scene->blockModel, scene->cutter, cutterSpeed);
+				this->millingSimulator = millingSimulation;
+				setSimulation(millingSimulation);
+				millingSimulator->Start();
 			}
 		}
 	}
-
-	if (isMilling && this->millingSimulator)
-	{
-		OutputDebugString(L"isMilling\n");
-		bool newTask = !futureMill.valid();
-
-		if (!newTask && is_ready(futureMill) )
-		{
-			auto isOver = futureMill.get();
-			if (isOver)
-			{
-				OutputDebugString(L"Over\n");
-				this->millingSimulator = nullptr;
-				isMilling = false;
-			}
-			else
-			{
-				OutputDebugString(L"koniec starego\n");
-				newTask = true;
-			}
-		}
-
-		if (newTask)
-		{
-			auto now = std::chrono::high_resolution_clock::now();
-			auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(now - lastFrameTimePoint);
-			lastFrameTimePoint = now;
-			auto distance = microseconds.count() * cutterSpeed / 1000000.0;
-			auto lambda = [&]() {
-				return millingSimulator->Mill(distance, cancelTask);
-			};
-			OutputDebugString(L"Tworzymy nowy task\n");
-			OutputDebugString((L"Distance: " + std::to_wstring(distance) + L"\n").c_str());
-			futureMill = std::async(lambda);
-		}
-
 	
-	}
+
+
 
 	if (ImGui::DragFloat("Cutter speed", &cutterSpeed, 1, 0, FLT_MAX))
 	{

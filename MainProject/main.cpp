@@ -21,7 +21,7 @@ static IDXGISwapChain*          g_pSwapChain = NULL;
 bool CreateDeviceD3D(HWND hWnd);
 void CleanupDeviceD3D();
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-SIZE windowSize = { 800,600 };
+SIZE windowSize = { 1800,1600 };
 // Main code
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine, int cmdShow)
 {

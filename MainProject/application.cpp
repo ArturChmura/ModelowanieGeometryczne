@@ -67,7 +67,7 @@ Application::Application(SIZE size)
 
 
 	std::vector< std::shared_ptr < IGuiWindow>> simulationSceneGuiWindows;
-	simulationSceneGuiWindows.push_back(std::make_shared<SimulationSceneStartWindow>(simulationScene));
+	simulationSceneGuiWindows.push_back(std::make_shared<SimulationSceneStartWindow>(simulationScene, [this](std::shared_ptr<ISimulation> simulation) {this->simulation = simulation; }));
 	sceneWindowsMap.insert(std::make_pair(simulationScene->id, simulationSceneGuiWindows));
 
 
@@ -122,8 +122,17 @@ void Application::RenderGui()
 
 void Application::Update()
 {
+	auto now = std::chrono::high_resolution_clock::now();
+	auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(now - lastFrameTimePoint);
+	lastFrameTimePoint = now;
+	float dt = microseconds.count() / 1000000.0f;
+
 	mouseEvents->HandleMouse();
 	keyboardHandler->HandleKeyboard();
+	if (this->simulation)
+	{
+		simulation->Update(dt);
+	}
 }
 
 void Application::HandleMessage(MSG message)
