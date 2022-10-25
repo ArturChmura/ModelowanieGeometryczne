@@ -21,7 +21,7 @@ static IDXGISwapChain*          g_pSwapChain = NULL;
 bool CreateDeviceD3D(HWND hWnd);
 void CleanupDeviceD3D();
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-SIZE windowSize = { 1600,1200 };
+SIZE windowSize = { 800,600 };
 // Main code
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine, int cmdShow)
 {
@@ -170,7 +170,7 @@ bool CreateDeviceD3D(HWND hWnd)
     UINT createDeviceFlags = 0;
 #if defined(_DEBUG)
     // If the project is in a debug build, enable the debug layer.
-    createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+    //createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
     D3D_FEATURE_LEVEL featureLevel;

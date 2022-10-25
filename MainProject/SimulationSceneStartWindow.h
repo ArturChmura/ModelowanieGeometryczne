@@ -3,6 +3,8 @@
 #include "SimulationScene.h"
 #include <memory>
 #include "IGuiWindow.h"
+#include <chrono>
+#include <future>
 
 class SimulationSceneStartWindow : public IGuiWindow
 {
@@ -19,9 +21,15 @@ private:
 	float heightSize = 40;
 	float cutterRadius = 40;
 	float cutterSpeed = 30;
+	bool showPaths = true;
 	std::string errorMessage;
 	int selectedCutterIndex = 0;
 	bool isMilling = false;
 
 	std::shared_ptr< MillingSimulator> millingSimulator;
+
+	std::chrono::steady_clock::time_point lastFrameTimePoint;
+
+	bool cancelTask = false;
+	std::future<bool> futureMill;
 };

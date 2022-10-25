@@ -10,7 +10,6 @@ public:
 	float GetRadius() { return radius; }
 	void SetRadius(float radius);
 
-	virtual void SetTranslation(float x, float y, float z)  override;
 private:
 	std::function<float(float, float)> getHeight;
 	void UpdateSlicesCount();

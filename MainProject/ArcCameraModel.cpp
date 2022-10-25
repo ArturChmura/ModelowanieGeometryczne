@@ -94,6 +94,12 @@ void ArcCameraModel::LookAt(float x, float y, float z)
 	UpdateViewMatrix();
 }
 
+void ArcCameraModel::Move(float x, float y, float z)
+{
+	targetPosition = targetPosition + Vector3(x, y, z);
+	UpdateViewMatrix();
+}
+
 
 
 void ArcCameraModel::UpdateViewMatrix()

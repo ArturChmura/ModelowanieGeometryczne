@@ -76,7 +76,7 @@ Application::Application(SIZE size)
 
 
 	mouseEvents = std::make_shared<MouseEvents>(arcCameraMovement, scene);
-	keyboardHandler = std::make_shared<KeyboardHandler>(scene);
+	keyboardHandler = std::make_shared<KeyboardHandler>(arcCameraMovement, scene);
 	messageHandler = std::make_shared<MessageHandler>(scene);
 
 

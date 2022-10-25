@@ -5,6 +5,8 @@
 #include "FlatCutter.h"
 #include "SphereCutter.h"
 #include <regex>
+#include <future>
+#include "FutureExtensions.h"
 
 SimulationSceneStartWindow::SimulationSceneStartWindow(std::shared_ptr<SimulationScene> scene)
 {
@@ -148,22 +150,60 @@ void SimulationSceneStartWindow::Render()
 		{
 			this->millingSimulator = nullptr;
 			isMilling = false;
+			cancelTask = true;
 		}
 		else
 		{
 			if (scene->toolPaths && scene->blockModel && scene->cutter)
 			{
+				lastFrameTimePoint = std::chrono::high_resolution_clock::now();
 				auto millingSimulator = std::make_shared<MillingSimulator>(scene->toolPaths, scene->blockModel, scene->cutter, cutterSpeed);
 				this->millingSimulator = millingSimulator;
 				millingSimulator->StartMilling();
 				isMilling = true;
+				cancelTask = false;
+
+
 			}
 		}
 	}
 
 	if (isMilling && this->millingSimulator)
 	{
-		millingSimulator->Mill();
+		OutputDebugString(L"isMilling\n");
+		bool newTask = !futureMill.valid();
+
+		if (!newTask && is_ready(futureMill) )
+		{
+			auto isOver = futureMill.get();
+			if (isOver)
+			{
+				OutputDebugString(L"Over\n");
+				this->millingSimulator = nullptr;
+				isMilling = false;
+			}
+			else
+			{
+				OutputDebugString(L"koniec starego\n");
+				newTask = true;
+			}
+		}
+
+		if (newTask)
+		{
+			auto now = std::chrono::high_resolution_clock::now();
+			auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(now - lastFrameTimePoint);
+			lastFrameTimePoint = now;
+			auto distance = microseconds.count() * cutterSpeed / 1000000.0;
+			auto lambda = [&]() {
+				return millingSimulator->Mill(distance, cancelTask);
+			};
+			OutputDebugString(L"Tworzymy nowy task\n");
+			OutputDebugString((L"Distance: " + std::to_wstring(distance) + L"\n").c_str());
+			futureMill = std::async(lambda);
+		}
+
+	
 	}
 
 	if (ImGui::DragFloat("Cutter speed", &cutterSpeed, 1, 0, FLT_MAX))
@@ -172,6 +212,12 @@ void SimulationSceneStartWindow::Render()
 		{
 			millingSimulator->SetSpeed(cutterSpeed);
 		}
+	}
+
+
+	if (ImGui::Checkbox("Show paths", &showPaths))
+	{
+		this->scene->SetShowPaths(showPaths);
 	}
 
 	ImGui::End();

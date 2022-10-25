@@ -11,6 +11,7 @@ public:
 	void Rotate(float firstAxis, float secondAxis);
 	void ChangeDistance(float distanceChange);
 	void LookAt(float x, float y, float z);
+	void Move(float x, float y, float z);
 
 private:
 	DirectX::SimpleMath::Vector3 position;

@@ -124,6 +124,7 @@
     <ClInclude Include="DebugWindow.h" />
     <ClInclude Include="EmptyModelVisitor.h" />
     <ClInclude Include="FlatCutter.h" />
+    <ClInclude Include="FutureExtensions.h" />
     <ClInclude Include="HalfSurface.h" />
     <ClInclude Include="ICutter.h" />
     <ClInclude Include="IFilter.h" />

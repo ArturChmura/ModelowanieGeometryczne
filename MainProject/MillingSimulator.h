@@ -2,7 +2,6 @@
 
 #include "ToolPaths.h"
 #include "BlockModel.h"
-#include <chrono>
 #include "SimpleMath.h"
 
 
@@ -12,7 +11,7 @@ public:
 	MillingSimulator(std::shared_ptr<ToolPaths> toolPaths, std::shared_ptr<BlockModel> blockModel, std::shared_ptr<ICutter> cutter, float speed);
 
 	void StartMilling();
-	bool Mill();
+	bool Mill(float distance, bool & cancel);
 	void SetSpeed(float speed);
 
 private:
@@ -20,7 +19,6 @@ private:
 	std::shared_ptr<ToolPaths> toolPaths;
 	std::shared_ptr<BlockModel> blockModel;
 	float speed;
-	std::chrono::steady_clock::time_point lastFrameTimePoint;
 
 	int pathIndex;
 	DirectX::SimpleMath::Vector3 lastPosition;

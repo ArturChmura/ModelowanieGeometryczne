@@ -22,9 +22,14 @@ void SimulationScene::AddCutter(std::shared_ptr<ICutter> cutter)
 	this->cutter = cutter;
 }
 
+void SimulationScene::SetShowPaths(bool visible)
+{
+	this->showPaths = visible;
+}
+
 void SimulationScene::DrawScene()
 {
-	if (this->toolPaths)
+	if (this->toolPaths && showPaths)
 	{
 		this->toolPaths->Draw(activeCamera);
 	}

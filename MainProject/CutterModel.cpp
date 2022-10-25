@@ -18,16 +18,6 @@ void CutterModel::SetRadius(float radius)
 	UpdateSlicesCount();
 }
 
-void CutterModel::SetTranslation(float x, float y, float z)
-{
-	auto prevTranslation = GetTranslation();
-	VertexModel::SetTranslation(x, y, z);
-	auto translation = GetTranslation();
-
-	auto distance = Vector4::Distance(prevTranslation, translation);
-	Rotate(0, distance/10, 0);
-
-}
 
 void CutterModel::UpdateSlicesCount()
 {
@@ -39,13 +29,6 @@ void CutterModel::UpdateSlicesCount()
 	std::vector<int> indices = std::vector<int>();
 	indices.reserve(indicesCount);
 
-
-
-	this->meshInfo.vertexBuffer = DxDevice::instance->CreateVertexBuffer(vertices);
-	this->verticesCount = vertices.size();
-
-	this->meshInfo.indexBuffer = DxDevice::instance->CreateVertexBuffer(indices);
-	this->indicesCount = indices.size();
 
 	int** indexArray = new int* [radiusPointsCount - 1];
 	for (int i = 0; i < radiusPointsCount - 1; i++)
@@ -128,7 +111,7 @@ void CutterModel::UpdateSlicesCount()
 	this->meshInfo.vertexBuffer = DxDevice::instance->CreateVertexBuffer(vertices);
 	this->verticesCount = vertices.size();
 
-	this->meshInfo.indexBuffer = DxDevice::instance->CreateVertexBuffer(indices);
+	this->meshInfo.indexBuffer = DxDevice::instance->CreateIndexBuffer(indices);
 	this->indicesCount = indices.size();
 }
 

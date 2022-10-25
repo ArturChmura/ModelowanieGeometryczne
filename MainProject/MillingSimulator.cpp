@@ -13,7 +13,6 @@ MillingSimulator::MillingSimulator(std::shared_ptr<ToolPaths> toolPaths, std::sh
 
 void MillingSimulator::StartMilling()
 {
-	lastFrameTimePoint = std::chrono::high_resolution_clock::now();
 	pathIndex = 0;
 	auto [x, y, z] = toolPaths->points[pathIndex];
 	lastPosition = Vector3(x, y, z);
@@ -21,22 +20,19 @@ void MillingSimulator::StartMilling()
 	blockModel->SetCutter(cutter);
 }
 
-bool MillingSimulator::Mill()
+bool MillingSimulator::Mill(float distance, bool& cancel)
 {
 	if (pathIndex >= toolPaths->points.size() - 1)
 	{
 		return true;
 	}
-	auto now = std::chrono::high_resolution_clock::now();
-	auto microseconds = std::chrono::duration_cast<std::chrono::microseconds>(now - lastFrameTimePoint);
-	lastFrameTimePoint = now;
+	
 
 	auto [x, y, z] = toolPaths->points[pathIndex + 1];
 	auto endPoint = Vector3(x, y, z);
 
 	auto toEndVector = endPoint - lastPosition;
 
-	auto distance = microseconds.count() * speed / 1000000.0;
 
 	Vector3 toPoint;
 	while (distance * distance > toEndVector.LengthSquared())

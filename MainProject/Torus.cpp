@@ -120,7 +120,7 @@ void Torus::UpdateSlicesCount()
 	this->meshInfo.vertexBuffer = DxDevice::instance->CreateVertexBuffer(vertices);
 	this->verticesCount = vertices.size();
 
-	this->meshInfo.indexBuffer = DxDevice::instance->CreateVertexBuffer(indices);
+	this->meshInfo.indexBuffer = DxDevice::instance->CreateIndexBuffer(indices);
 	this->indicesCount = indices.size();
 }
 

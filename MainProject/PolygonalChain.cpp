@@ -18,7 +18,7 @@ void PolygonalChain::Draw(std::shared_ptr<Camera> camera, std::vector<DirectX::S
 	if (bufferSize < vertices.size())
 	{
 		vertexBuffer = DxDevice::instance->CreateVertexBuffer(vertices);
-		indexBuffer = DxDevice::instance->CreateVertexBuffer(indices);
+		indexBuffer = DxDevice::instance->CreateIndexBuffer(indices);
 	}
 
 	DxDevice::instance->context()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_LINELIST);

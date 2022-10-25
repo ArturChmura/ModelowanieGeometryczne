@@ -43,7 +43,7 @@ Point::Point(DirectX::SimpleMath::Vector3 location)
 	this->verticesCount = vertices.size();
 	this->indicesCount = indices.size();
 	this->meshInfo.vertexBuffer = DxDevice::instance->CreateVertexBuffer(vertices);
-	this->meshInfo.indexBuffer = DxDevice::instance->CreateVertexBuffer(indices);
+	this->meshInfo.indexBuffer = DxDevice::instance->CreateIndexBuffer(indices);
 	this->meshInfo.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
 }

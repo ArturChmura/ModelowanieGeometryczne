@@ -794,6 +794,9 @@
     <ClInclude Include="CutterModel.h">
       <Filter>Header Files\Simulation\Cutters</Filter>
     </ClInclude>
+    <ClInclude Include="FutureExtensions.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="psColor.hlsl">

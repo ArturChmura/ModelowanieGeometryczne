@@ -14,6 +14,7 @@ public:
 	void AddToolPaths(std::shared_ptr<ToolPaths> toolPaths);
 	void AddBlockModel(std::shared_ptr<BlockModel> blockModel);
 	void AddCutter(std::shared_ptr<ICutter> cutter);
+	void SetShowPaths(bool visible);
 	void DrawScene() override;
 
 	std::shared_ptr<ToolPaths> toolPaths;
@@ -21,5 +22,6 @@ public:
 	std::shared_ptr<ICutter> cutter;
 
 	std::shared_ptr<Cursor3d> cursor;
+	bool showPaths = true;
 };
 
