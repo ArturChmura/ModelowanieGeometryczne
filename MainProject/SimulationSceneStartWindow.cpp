@@ -163,7 +163,7 @@ void SimulationSceneStartWindow::Render()
 
 	if (isRunning)
 	{
-		if (ImGui::Button("End"))
+		if (ImGui::Button("Cancel"))
 		{
 			if (this->millingSimulator)
 			{
@@ -194,6 +194,11 @@ void SimulationSceneStartWindow::Render()
 		{
 			millingSimulator->SetSpeed(cutterSpeed);
 		}
+	}
+	if (ImGui::Button("Skip"))
+	{
+		millingSimulator->SetSpeed(FLT_MAX);
+
 	}
 
 
