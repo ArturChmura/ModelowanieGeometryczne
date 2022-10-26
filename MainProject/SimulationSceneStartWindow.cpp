@@ -123,6 +123,9 @@ void SimulationSceneStartWindow::Render()
 	{
 		auto blockModel = std::make_shared<BlockModel>(widthSize, lengthSize, heightSize, gridWidthCount, gridLengthCount, minimumBaseHeight);
 		scene->AddBlockModel(blockModel);
+
+		this->millingSimulator = nullptr;
+		setSimulation(nullptr);
 	}
 
 

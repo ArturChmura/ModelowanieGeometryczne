@@ -275,6 +275,14 @@ BlockModel::DrawLineResult BlockModel::DrawLine(DirectX::SimpleMath::Vector3 sta
 				float heightDiff = lh - ch;
 				auto lengthCoords = std::sqrtf(dx * dx + dy * dy);
 				BresenhamsAlgorithm::DrawLine(cx, cy, lx, ly, LINE_OVERLAP_NONE, [&](int x, int y) {
+					if (
+						(x == cx && y == cy) ||
+						(x == lx && y == ly)
+						)
+					{
+						return;
+					}
+
 					int dxi = x - cx;
 					int dyi = y - cy;
 
