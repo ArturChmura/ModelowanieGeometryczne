@@ -5,12 +5,15 @@ texture2D colorMap : register(t1);
 
 sampler samp : register(s0);
 
-static const float3 lightPositions[2] =
+//static const float3 lightPositions[2] =
+//{
+//    float3(-100, 100, -100),
+//    float3(100, 100, 100)
+//};
+static const float3 lightPositions[1] =
 {
-    float3(-100, 100, -100),
-    float3(100, 100, 100)
+    float3(0, 100, 0)
 };
-
 static const float3 ambientColor = float3(0.5f, 0.5f, 0.5f);
 static const float3 lightColor = float3(1.0f, 1.0f, 1.0f);
 static const float kd = 0.5, ks = 0.2f, m = 10.0f;
@@ -42,10 +45,10 @@ float4 main(VSOutput input) : SV_TARGET
     {
         float me = heightMap.Sample(samp, tex);
         
-        float t = heightMap.Sample(samp, float2(tex.x, tex.y + 1.0 / lengthSize));
-        float b = heightMap.Sample(samp, float2(tex.x, tex.y - 1.0 / lengthSize));
-        float l = heightMap.Sample(samp, float2(tex.x - 1.0 / widthSize, tex.y));
-        float r = heightMap.Sample(samp, float2(tex.x + 1.0 / widthSize, tex.y));
+        float t = heightMap.Sample(samp, float2(tex.x, tex.y + 1.0 / gridLengthCount));
+        float b = heightMap.Sample(samp, float2(tex.x, tex.y - 1.0 / gridLengthCount));
+        float l = heightMap.Sample(samp, float2(tex.x - 1.0 / gridWidthCount, tex.y));
+        float r = heightMap.Sample(samp, float2(tex.x + 1.0 / gridWidthCount, tex.y));
         
         float3 tanZ = float3(0.0f, (t - b), 1.0f);
         float3 tanX = float3(1.0f, (r - l), 0.0f);
@@ -58,7 +61,7 @@ float4 main(VSOutput input) : SV_TARGET
     }
     
     float3 color = surfaceColor * ambientColor;
-    for (int i = 0; i < 2; ++i)
+    for (int i = 0; i < 1; ++i)
     {
         float3 lightPosition = lightPositions[i];
         float3 lightVec = normalize(lightPosition - input.worldPos);
