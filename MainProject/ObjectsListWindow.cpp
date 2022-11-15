@@ -1,6 +1,7 @@
 #include "ObjectsListWindow.h"
 #include "imgui.h"
 #include "CompositeModel.h"
+#include "ModelFilterSelectorVisitor.h"
 ObjectsListWindow::ObjectsListWindow(std::shared_ptr<Scene> scene)
 {
 	this->scene = scene;
@@ -9,15 +10,29 @@ ObjectsListWindow::ObjectsListWindow(std::shared_ptr<Scene> scene)
 void ObjectsListWindow::Render()
 {
 	ImGui::Begin("Objects list");
+    if (ImGui::Checkbox("List points", &listPoints))
+    {
+
+    }
+    std::vector<std::shared_ptr<IModel>> modelsList;
+    if (listPoints)
+    {
+        modelsList = scene->models;
+    }
+    else
+    {
+        ModelFilterSelectorVisitor<Point> visitor;
+        modelsList = visitor.GetList(scene->models);
+    }
     if (ImGui::BeginListBox("##ObjectsListBox", ImVec2(-FLT_MIN, 20 * ImGui::GetTextLineHeightWithSpacing())))
     {
         ImGuiListClipper clipper;
-        clipper.Begin(scene->models.size());
+        clipper.Begin(modelsList.size());
         while (clipper.Step())
         {
             for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
             {
-                auto model = scene->models[i];
+                auto model = modelsList[i];
                 const bool is_selected = scene->IsSelcted(model->id);
 
                 if (ImGui::Selectable((model->name + "##" + std::to_string(model->id)).c_str(), is_selected, ImGuiSelectableFlags_::ImGuiSelectableFlags_AllowDoubleClick))

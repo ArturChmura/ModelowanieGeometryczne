@@ -9,4 +9,5 @@ public:
 	ObjectsListWindow(std::shared_ptr<Scene> scene);
 	void Render();
 	std::shared_ptr<Scene> scene;
+	bool listPoints = false;
 };

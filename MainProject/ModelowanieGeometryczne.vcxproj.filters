@@ -806,6 +806,9 @@
     <ClInclude Include="CurveToToolPathsSerializer.h">
       <Filter>Header Files\Serialization</Filter>
     </ClInclude>
+    <ClInclude Include="ModelFilterSelectorVisitor.h">
+      <Filter>Header Files\Visitors</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="psColor.hlsl">
