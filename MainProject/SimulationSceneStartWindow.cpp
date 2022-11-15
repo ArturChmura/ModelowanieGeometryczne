@@ -61,7 +61,8 @@ void SimulationSceneStartWindow::Render()
 					{
 						char type = prefix[0];
 						std::string radiusString = prefix.substr(1);
-						auto radius = std::stoi(radiusString);
+						auto diameter = std::stoi(radiusString);
+						auto radius = diameter / 2.0;
 						this->cutterRadius = radius;
 						if (type == 'f')
 						{
