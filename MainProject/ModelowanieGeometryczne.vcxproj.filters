@@ -480,6 +480,9 @@
     <ClCompile Include="CutterModel.cpp">
       <Filter>Source Files\Simulation\Cutters</Filter>
     </ClCompile>
+    <ClCompile Include="CurveToToolPathsSerializer.cpp">
+      <Filter>Source Files\Serialization</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dxptr.h">
@@ -799,6 +802,9 @@
     </ClInclude>
     <ClInclude Include="ISumulation.h">
       <Filter>Header Files\Simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="CurveToToolPathsSerializer.h">
+      <Filter>Header Files\Serialization</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

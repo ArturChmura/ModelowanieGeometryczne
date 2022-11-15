@@ -28,6 +28,7 @@
     <ClCompile Include="CompositeModel.cpp" />
     <ClCompile Include="Cursor3d.cpp" />
     <ClCompile Include="CursorOptionsWindow.cpp" />
+    <ClCompile Include="CurveToToolPathsSerializer.cpp" />
     <ClCompile Include="CutterModel.cpp" />
     <ClCompile Include="DebugWindow.cpp" />
     <ClCompile Include="dxDevice.cpp" />
@@ -120,6 +121,7 @@
     <ClInclude Include="ConcreteModelSelectorVisitor.h" />
     <ClInclude Include="Cursor3d.h" />
     <ClInclude Include="CursorOptionsWindow.h" />
+    <ClInclude Include="CurveToToolPathsSerializer.h" />
     <ClInclude Include="CutterModel.h" />
     <ClInclude Include="DebugWindow.h" />
     <ClInclude Include="EmptyModelVisitor.h" />

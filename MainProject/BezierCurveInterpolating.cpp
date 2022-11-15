@@ -3,6 +3,8 @@
 #include "Helpers.h"
 #include "imgui.h"
 #include "SolveTriDiagonalMatrix.h"
+#include <nfd.h>
+#include "CurveToToolPathsSerializer.h"
 
 using namespace DirectX::SimpleMath;
 BezierCurveInterpolating::BezierCurveInterpolating(std::vector<std::shared_ptr<Point>> points)
@@ -157,6 +159,27 @@ void BezierCurveInterpolating::RenderGUI()
 	{
 		SetRepresentation(rep);
 	}
+
+	if (ImGui::Button("Save as Tool Path"))
+	{
+		nfdchar_t* outPath = NULL;
+		nfdresult_t result = NFD_SaveDialog(NULL, NULL, &outPath);
+		if (result == NFD_OKAY) {
+			
+			auto success = CurveToToolPathsSerializer::Serialize(this->points, outPath);
+			if (success)
+			{
+				ImGui::OpenPopup("Successfull save");
+			}
+		
+
+		}
+		else {
+			ImGui::OpenPopup("Error popup");
+		}
+		free(outPath);
+	}
+
 }
 
 std::vector<DirectX::SimpleMath::Vector3> BezierCurveInterpolating::GetPolygonChainPoints()
