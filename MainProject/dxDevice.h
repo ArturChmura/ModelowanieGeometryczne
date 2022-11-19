@@ -25,6 +25,8 @@ public:
 
 	ID3D11Device* operator->() const { return m_device; }
 
+	ID3D11Device* Device() const { return m_device; }
+
 	mini::dx_ptr<ID3D11RenderTargetView> CreateRenderTargetView(const mini::dx_ptr<ID3D11Texture2D>& texture) const;
 
 	mini::dx_ptr<ID3D11Texture2D> CreateTexture(const D3D11_TEXTURE2D_DESC& desc) const;

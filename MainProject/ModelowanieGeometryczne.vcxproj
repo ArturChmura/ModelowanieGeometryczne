@@ -36,6 +36,7 @@
     <ClCompile Include="EmptyModelVisitor.cpp" />
     <ClCompile Include="exceptions.cpp" />
     <ClCompile Include="FlatCutter.cpp" />
+    <ClCompile Include="GeneralPathsGenerator.cpp" />
     <ClCompile Include="GregoryAdderWindow.cpp" />
     <ClCompile Include="GregoryFinder.cpp" />
     <ClCompile Include="GregoryPatch.cpp" />
@@ -67,6 +68,7 @@
     <ClCompile Include="ObjectAdderWindow.cpp" />
     <ClCompile Include="ObjectsListWindow.cpp" />
     <ClCompile Include="CameraOptionsWindow.cpp" />
+    <ClCompile Include="OrthographicCamera.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="PointsMerger.cpp" />
     <ClCompile Include="PolygonalChain.cpp" />
@@ -127,6 +129,7 @@
     <ClInclude Include="EmptyModelVisitor.h" />
     <ClInclude Include="FlatCutter.h" />
     <ClInclude Include="FutureExtensions.h" />
+    <ClInclude Include="GeneralPathsGenerator.h" />
     <ClInclude Include="HalfSurface.h" />
     <ClInclude Include="ICutter.h" />
     <ClInclude Include="IFilter.h" />
@@ -148,6 +151,7 @@
     <ClInclude Include="MillingSimulator.h" />
     <ClInclude Include="ModelFilterSelectorVisitor.h" />
     <ClInclude Include="ModelSceneStartWindow.h" />
+    <ClInclude Include="OrthographicCamera.h" />
     <ClInclude Include="Pair.h" />
     <ClInclude Include="psNormal.h" />
     <ClInclude Include="SimulationScene.h" />

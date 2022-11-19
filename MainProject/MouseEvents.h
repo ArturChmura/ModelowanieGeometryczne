@@ -16,4 +16,6 @@ private:
 	float objectTranslateSpeedPerPixel = 0.05f;
 	std::shared_ptr<ArcCameraModel> camera; 
 	std::shared_ptr<Scene> scene;
+
+	float xWhenDown, yWhenDown;
 };

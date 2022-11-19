@@ -4,6 +4,8 @@
 #include <Serializer.h>
 #include "SceneLoader.h"
 #include "SerializationVisitor.h"
+#include "GeneralPathsGenerator.h"
+#include "ModelFilterSelectorVisitor.h"
 
 ModelSceneStartWindow::ModelSceneStartWindow(std::shared_ptr<Scene> scene)
 {
@@ -60,6 +62,14 @@ void ModelSceneStartWindow::Render()
 		}
 		free(outPath);
 
+	}
+	
+	if (ImGui::Button("Generate general tool paths"))
+	{
+		ModelFilterSelectorVisitor<Point> visitor;
+		auto modelsList = visitor.GetList(scene->models);
+		GeneralPathsGenerator generator;
+		generator.GeneratePaths(modelsList);
 	}
 
 	if (ImGui::BeginPopup("Success load popup"))

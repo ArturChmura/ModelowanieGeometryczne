@@ -44,4 +44,7 @@ public:
 
 	std::chrono::steady_clock::time_point lastFrameTimePoint;
 	std::shared_ptr<ISimulation> simulation;
+
+
+	ID3D11ShaderResourceView* image;
 };

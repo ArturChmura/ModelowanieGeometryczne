@@ -25,6 +25,9 @@ void GSBezierSurfaceC2::SetConstantBuffer(GSBezierSurfaceC2ConstantBuffer buffer
 	DxDevice::instance->context()->Unmap(constantBufferGS.get(), 0);
 	ID3D11Buffer* cbs[] = { constantBufferGS.get() };
 	DxDevice::instance->context()->GSSetConstantBuffers(0, 1, cbs);
+
+	auto s_ptr = m_samplerWrap.get();
+	DxDevice::instance->context()->GSSetSamplers(0, 1, &s_ptr);
 }
 
 void GSBezierSurfaceC2::SetFilterTexture(ID3D11ShaderResourceView* texture)

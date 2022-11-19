@@ -217,6 +217,12 @@
     <Filter Include="Source Files\Simulation\Milling">
       <UniqueIdentifier>{574a3e61-c26a-4dc1-b50f-6d3752887dd7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\PathsGeneration">
+      <UniqueIdentifier>{9b67aed7-0580-4699-a7e3-c90270bf7ed5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PathsGeneration">
+      <UniqueIdentifier>{5bda6c64-9945-4573-8ae1-eb0e3eebbb4c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxStructures.cpp">
@@ -482,6 +488,12 @@
     </ClCompile>
     <ClCompile Include="CurveToToolPathsSerializer.cpp">
       <Filter>Source Files\Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneralPathsGenerator.cpp">
+      <Filter>Source Files\PathsGeneration</Filter>
+    </ClCompile>
+    <ClCompile Include="OrthographicCamera.cpp">
+      <Filter>Source Files\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -808,6 +820,12 @@
     </ClInclude>
     <ClInclude Include="ModelFilterSelectorVisitor.h">
       <Filter>Header Files\Visitors</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneralPathsGenerator.h">
+      <Filter>Header Files\PathsGeneration</Filter>
+    </ClInclude>
+    <ClInclude Include="OrthographicCamera.h">
+      <Filter>Header Files\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

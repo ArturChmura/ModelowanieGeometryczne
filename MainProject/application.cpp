@@ -13,6 +13,10 @@
 #include "PointsMerger.h"
 #include "ModelSceneStartWindow.h"
 #include "SimulationSceneStartWindow.h"
+#include "SceneLoader.h"
+#include "ModelFilterSelectorVisitor.h"
+#include "GeneralPathsGenerator.h"
+#include <imgui.h>
 
 
 using namespace mini;
@@ -25,10 +29,11 @@ Application::Application(SIZE size)
 		reinterpret_cast<void**>(&temp));
 
 	const dx_ptr<ID3D11Texture2D> backTexture{ temp };
+
 	m_backBuffer = DxDevice::instance->CreateRenderTargetView(backTexture);
 	m_depthBuffer = DxDevice::instance->CreateDepthStencilView(size);
-
-	Viewport viewport{ size };
+	SIZE wpSize = { size.cx, size.cy };
+	Viewport viewport{ wpSize };
 	DxDevice::instance->context()->RSSetViewports(1, &viewport);
 
 	ShadersManager::LoadShaders();
@@ -37,7 +42,7 @@ Application::Application(SIZE size)
 
 	scene = std::make_shared<Scene>(cursor, size);
 	simulationScene = std::make_shared<SimulationScene>();
-	activeScene = simulationScene;
+	activeScene = scene;
 
 	XMFLOAT3 targetPosition = { 0,0,0 };
 	auto arcCameraMovement = std::make_shared<ArcCameraModel>(targetPosition, 30.0f);
@@ -94,11 +99,24 @@ Application::Application(SIZE size)
 
 	auto s_ptr = m_samplerWrap.get();
 	DxDevice::instance->context()->PSSetSamplers(0, 1, &s_ptr);
+
+
+
+	SceneLoader::LoadScene(scene, "C:\\Users\\Artur\\Desktop\\sciezki\\gesty bez podstawy");
+
+	ModelFilterSelectorVisitor<Point> visitor;
+	auto modelsList = visitor.GetList(scene->models);
+	GeneralPathsGenerator generator;
+	image = generator.GeneratePaths(modelsList);
+
 }
 
 void Application::Render()
 {
-	const float clearColor[] = { backgroundColor.x,backgroundColor.y,backgroundColor.z, 1.0f };
+
+	Viewport viewport{ DxDevice::windowSize };
+	DxDevice::instance->context()->RSSetViewports(1, &viewport);
+	float clearColor[] = { backgroundColor.x,backgroundColor.y,backgroundColor.z, 1.0f };
 
 	auto backBuffer = m_backBuffer.get();
 	DxDevice::instance->context()->OMSetRenderTargets(1, &backBuffer, m_depthBuffer.get());
@@ -107,16 +125,25 @@ void Application::Render()
 	DxDevice::instance->context()->ClearDepthStencilView(m_depthBuffer.get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	scene->activeCamera->RenderScene(activeScene);
+
+
+
+
 }
 
 void Application::RenderGui()
 {
-	//if(renderGui)
 	startWindow->Render();
 	for (auto window : sceneWindowsMap[activeScene->id])
 	{
 		window->Render();
 	}
+
+	ImGui::Begin("obrazek");
+
+	ImGui::Image((void*)image, ImVec2(512, 512));
+
+	ImGui::End();
 }
 
 
