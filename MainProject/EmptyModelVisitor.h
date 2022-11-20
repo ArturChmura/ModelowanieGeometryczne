@@ -17,4 +17,9 @@ class EmptyModelVisitor : public AbstractModelVisitor
 	virtual void Accept(std::shared_ptr<SingleGregoryPatch> surface) override;
 
 
+
+	// Inherited via AbstractModelVisitor
+	virtual void Accept(std::shared_ptr<StraightCurveInterpolating> curve) override;
+
+
 };

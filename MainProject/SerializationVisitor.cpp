@@ -11,6 +11,7 @@
 #include "SingleBezierSurfaceC2.h"
 #include "BezierSurfaceC2.h"
 #include "CompositeModel.h"
+#include "StraightCurveInterpolating.h"
 
 using namespace DirectX;
 
@@ -198,4 +199,24 @@ void SerializationVisitor::Accept(std::shared_ptr<GregoryPatch> surface)
 
 void SerializationVisitor::Accept(std::shared_ptr<SingleGregoryPatch> surface)
 {
+}
+
+void SerializationVisitor::Accept(std::shared_ptr<StraightCurveInterpolating> curve)
+{
+	if (!curve->Serializable())
+	{
+		return;
+	}
+	auto& scene = MG1::Scene::Get();
+	auto c = MG1::InterpolatedC0();
+
+	c.name = curve->name;
+	c.SetId(curve->id);
+
+	for (auto cp : curve->points)
+	{
+		c.controlPoints.push_back(MG1::PointRef(cp->id));
+	}
+
+	scene.interpolatedC0.push_back(c);
 }

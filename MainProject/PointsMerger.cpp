@@ -13,6 +13,7 @@
 #include "CompositeModel.h"
 #include "GregoryPatch.h"
 #include "SingleGregoryPatch.h"
+#include "StraightCurveInterpolating.h"
 
 using namespace DirectX::SimpleMath;
 
@@ -167,4 +168,17 @@ void PointsMerger::Accept(std::shared_ptr<GregoryPatch> surface)
 
 void PointsMerger::Accept(std::shared_ptr<SingleGregoryPatch> surface)
 {
+}
+
+void PointsMerger::Accept(std::shared_ptr<StraightCurveInterpolating> curve)
+{
+	for (size_t i = 0; i < curve->points.size(); i++)
+	{
+		auto point = curve->points[i];
+		if (pointsIds.contains(point->id))
+		{
+			curve->points[i] = mergedPoint;
+		}
+	}
+	curve->ResetDrawing();
 }

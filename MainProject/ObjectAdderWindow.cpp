@@ -8,6 +8,7 @@
 #include "GregoryFinder.h"
 #include "GregoryPatch.h"
 #include "BezierCurveInterpolating.h"
+#include "CurvesJoiner.h"
 
 ObjectAdderWindow::ObjectAdderWindow(std::shared_ptr<Scene> scene, bool* renderGui)
 {
@@ -107,6 +108,28 @@ void ObjectAdderWindow::Render()
             this->adder = std::make_shared<BezierSurfaceC2AdderWindow>(scene, &surfaceAdderOpen);
         }
     }
+
+    auto selectedInterpolationsCurves = scene->GetSelectedType<BezierCurveInterpolating>();
+
+    if (selectedInterpolationsCurves.size() == 2)
+    {
+        if (ImGui::Button("Join curves"))
+        {
+            CurvesJoiner::JoinCurves(selectedInterpolationsCurves[0], selectedInterpolationsCurves[1], scene);
+
+        }
+    }
+
+    if (selectedInterpolationsCurves.size() == 1 && selectedPoints.size() == 1)
+    {
+        if (ImGui::Button("Add point to curve"))
+        {
+            CurvesJoiner::JoinPoint(selectedInterpolationsCurves[0], selectedPoints[0]);
+        }
+    }
+
+
+
     ImGui::End();
     if (adder)
     {

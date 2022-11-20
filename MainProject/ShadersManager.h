@@ -36,6 +36,5 @@ public:
 	inline static std::shared_ptr<VSNormal> vsNormal;
 	inline static std::shared_ptr<PSNormal> psNormal;
 
-
 	static void LoadShaders();
 };

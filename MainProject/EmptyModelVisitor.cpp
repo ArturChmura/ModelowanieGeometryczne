@@ -47,3 +47,7 @@ void EmptyModelVisitor::Accept(std::shared_ptr<GregoryPatch> surface)
 void EmptyModelVisitor::Accept(std::shared_ptr<SingleGregoryPatch> surface)
 {
 }
+
+void EmptyModelVisitor::Accept(std::shared_ptr<StraightCurveInterpolating> curve)
+{
+}

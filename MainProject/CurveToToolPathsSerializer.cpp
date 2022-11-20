@@ -15,9 +15,9 @@ bool CurveToToolPathsSerializer::Serialize(std::vector<std::shared_ptr<Point>> p
         auto translation = point->GetTranslation();
         stream << "N" << ++lineNumber << "G01"
          << std::fixed << std::setprecision(3)
-            << "X" << translation.x
-            << "Y" << translation.z
-            << "Z" << translation.y;
+            << "X" << translation.x*10
+            << "Y" << translation.z * 10
+            << "Z" << translation.y * 10;
         auto lineString = stream.str();
 
         out << lineString << "\n";

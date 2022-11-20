@@ -27,4 +27,13 @@ public:
 	void UpdateFilter(int index);
 
 	virtual bool Serializable() override;
+
+private:
+	std::vector<Pair<double>> UVs[2];
+	float transformDistance = 0.5;
+	bool projectOnPlane = false;
+	float planeNormalX = 0.0f;
+	float planeNormalY = 1.0f;
+	float planeNormalZ = 0.0f;
+	int transformDistanceObjectIndex = 0;
 };

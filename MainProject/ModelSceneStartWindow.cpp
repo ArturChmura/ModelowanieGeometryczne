@@ -69,7 +69,17 @@ void ModelSceneStartWindow::Render()
 		ModelFilterSelectorVisitor<Point> visitor;
 		auto modelsList = visitor.GetList(scene->models);
 		GeneralPathsGenerator generator;
-		generator.GeneratePaths(modelsList);
+		auto curve = generator.GeneralPaths(modelsList);
+		scene->AddModel(curve);
+	}
+
+	if (ImGui::Button("Generate base tool paths"))
+	{
+		ModelFilterSelectorVisitor<Point> visitor;
+		auto modelsList = visitor.GetList(scene->models);
+		GeneralPathsGenerator generator;
+		auto curve = generator.PlanePaths(modelsList);
+		scene->AddModel(curve);
 	}
 
 	if (ImGui::BeginPopup("Success load popup"))

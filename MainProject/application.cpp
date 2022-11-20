@@ -102,12 +102,14 @@ Application::Application(SIZE size)
 
 
 
-	SceneLoader::LoadScene(scene, "C:\\Users\\Artur\\Desktop\\sciezki\\gesty bez podstawy");
+	//SceneLoader::LoadScene(scene, "C:\\Users\\Artur\\Desktop\\sciezki\\kubek z podstawka gesty podniesiony");
 
-	ModelFilterSelectorVisitor<Point> visitor;
-	auto modelsList = visitor.GetList(scene->models);
-	GeneralPathsGenerator generator;
-	image = generator.GeneratePaths(modelsList);
+	//ModelFilterSelectorVisitor<Point> visitor;
+	//auto modelsList = visitor.GetList(scene->models);
+	//GeneralPathsGenerator generator;
+	//generatedModel = generator.GeneratePaths(modelsList);
+
+	//scene->AddModel(generatedModel);
 
 }
 
@@ -125,10 +127,6 @@ void Application::Render()
 	DxDevice::instance->context()->ClearDepthStencilView(m_depthBuffer.get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	scene->activeCamera->RenderScene(activeScene);
-
-
-
-
 }
 
 void Application::RenderGui()
@@ -139,11 +137,11 @@ void Application::RenderGui()
 		window->Render();
 	}
 
-	ImGui::Begin("obrazek");
+	//ImGui::Begin("obrazek");
 
-	ImGui::Image((void*)image, ImVec2(512, 512));
+	//ImGui::Image((void*)image, ImVec2(512, 512));
 
-	ImGui::End();
+	//ImGui::End();
 }
 
 

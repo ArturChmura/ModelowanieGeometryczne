@@ -47,4 +47,6 @@ public:
 
 
 	ID3D11ShaderResourceView* image;
+	std::shared_ptr<BlockModel> block;
+	std::shared_ptr<IModel> generatedModel;
 };

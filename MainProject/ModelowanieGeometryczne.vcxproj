@@ -28,6 +28,7 @@
     <ClCompile Include="CompositeModel.cpp" />
     <ClCompile Include="Cursor3d.cpp" />
     <ClCompile Include="CursorOptionsWindow.cpp" />
+    <ClCompile Include="CurvesJoiner.cpp" />
     <ClCompile Include="CurveToToolPathsSerializer.cpp" />
     <ClCompile Include="CutterModel.cpp" />
     <ClCompile Include="DebugWindow.cpp" />
@@ -90,6 +91,7 @@
     <ClCompile Include="SphereCutter.cpp" />
     <ClCompile Include="StartWindow.cpp" />
     <ClCompile Include="StereoscopicCamera.cpp" />
+    <ClCompile Include="StraightCurveInterpolating.cpp" />
     <ClCompile Include="ToolPaths.cpp" />
     <ClCompile Include="ToolPathsReader.cpp" />
     <ClCompile Include="Torus.cpp" />
@@ -123,6 +125,7 @@
     <ClInclude Include="ConcreteModelSelectorVisitor.h" />
     <ClInclude Include="Cursor3d.h" />
     <ClInclude Include="CursorOptionsWindow.h" />
+    <ClInclude Include="CurvesJoiner.h" />
     <ClInclude Include="CurveToToolPathsSerializer.h" />
     <ClInclude Include="CutterModel.h" />
     <ClInclude Include="DebugWindow.h" />
@@ -159,6 +162,7 @@
     <ClInclude Include="SingleSurfaceParameter.h" />
     <ClInclude Include="SolveTriDiagonalMatrix.h" />
     <ClInclude Include="SphereCutter.h" />
+    <ClInclude Include="StraightCurveInterpolating.h" />
     <ClInclude Include="StringExtensions.h" />
     <ClInclude Include="ToolPaths.h" />
     <ClInclude Include="ToolPathsReader.h" />

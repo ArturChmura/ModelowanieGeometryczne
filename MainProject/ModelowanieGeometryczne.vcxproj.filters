@@ -157,12 +157,6 @@
     <Filter Include="Source Files\Algorithms\GregoryFinder">
       <UniqueIdentifier>{f5c72567-3a7c-4d34-8ab4-5aaaa826f149}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Math">
-      <UniqueIdentifier>{fd1fd6e9-0c73-4d5b-ac76-dd9e0e857c09}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Math\BernsteinHelper">
-      <UniqueIdentifier>{d8f09a17-6e50-46ae-b22d-26d5b213679a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Algorithms\Intersections">
       <UniqueIdentifier>{bddfe1c8-ea8f-4443-afd2-42b329c73794}</UniqueIdentifier>
     </Filter>
@@ -222,6 +216,18 @@
     </Filter>
     <Filter Include="Source Files\PathsGeneration">
       <UniqueIdentifier>{5bda6c64-9945-4573-8ae1-eb0e3eebbb4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shaders\Math">
+      <UniqueIdentifier>{fd1fd6e9-0c73-4d5b-ac76-dd9e0e857c09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shaders\Math\BernsteinHelper">
+      <UniqueIdentifier>{d8f09a17-6e50-46ae-b22d-26d5b213679a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Algorithms\Joiner">
+      <UniqueIdentifier>{48ba5126-e560-4e7e-9b30-e98a7753aa5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Algorithms\CurveJoiner">
+      <UniqueIdentifier>{0abdad4a-1292-4eb5-a0d9-50c338f6454d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -495,6 +501,12 @@
     <ClCompile Include="OrthographicCamera.cpp">
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="CurvesJoiner.cpp">
+      <Filter>Source Files\Algorithms\CurveJoiner</Filter>
+    </ClCompile>
+    <ClCompile Include="StraightCurveInterpolating.cpp">
+      <Filter>Source Files\Models\Curves</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dxptr.h">
@@ -693,7 +705,7 @@
       <Filter>Header Files\Models\Surfaces\Gregory</Filter>
     </ClInclude>
     <ClInclude Include="BernsteinHelper.h">
-      <Filter>Header Files\Math\BernsteinHelper</Filter>
+      <Filter>Header Files\Shaders\Math\BernsteinHelper</Filter>
     </ClInclude>
     <ClInclude Include="vsGregory.h">
       <Filter>Header Files\Shaders\Gregory</Filter>
@@ -717,10 +729,10 @@
       <Filter>Header Files\Models</Filter>
     </ClInclude>
     <ClInclude Include="SolveTriDiagonalMatrix.h">
-      <Filter>Header Files\Math</Filter>
+      <Filter>Header Files\Shaders\Math</Filter>
     </ClInclude>
     <ClInclude Include="MatrixExt.h">
-      <Filter>Header Files\Math</Filter>
+      <Filter>Header Files\Shaders\Math</Filter>
     </ClInclude>
     <ClInclude Include="IParameterized.h">
       <Filter>Header Files\Models\Interfaces</Filter>
@@ -826,6 +838,12 @@
     </ClInclude>
     <ClInclude Include="OrthographicCamera.h">
       <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CurvesJoiner.h">
+      <Filter>Header Files\Algorithms\Joiner</Filter>
+    </ClInclude>
+    <ClInclude Include="StraightCurveInterpolating.h">
+      <Filter>Header Files\Models\Curves</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,27 +1,21 @@
 #pragma once
-#include "IModel.h"
-#include "Point.h"
-#include "PolygonalChain.h"
-#include "IUnmovableModel.h"
 
+#include "IBezierCurve.h"
+#include "VirtualPoint.h"
 
-class IBezierCurve : public IUnmovableModel
+class StraightCurveInterpolating : public IUnmovableModel
 {
 public:
-	IBezierCurve(std::vector<std::shared_ptr<Point>> points, std::string name = "IBezierCurve");
+	StraightCurveInterpolating(std::vector<std::shared_ptr<Point>> points);
 	std::vector<std::shared_ptr<Point>> points;
-	virtual std::vector<DirectX::SimpleMath::Vector3> GetBezierPoints() = 0;
-	virtual std::vector<DirectX::SimpleMath::Vector3> GetPolygonChainPoints() = 0;
-
 	virtual void UpdateVertices();
-
 	int verticesCount;
+	int indicesCount;
 	virtual void Draw(std::shared_ptr<Camera> camera) override;
 
 	void AddPoint(std::shared_ptr<Point> point);
 	void AddPointToBeggining(std::shared_ptr<Point> point);
 	void RemovePoint(int pointId);
-	void SetDrawPolygonChain(bool draw = true);
 	void ResetDrawing();
 	void OnRemovedFromScene() override;
 
@@ -32,8 +26,10 @@ public:
 
 	virtual std::vector<std::shared_ptr<IModel>> GetContainingModels() override;
 	MeshInfo meshInfo;
+
+	virtual void Accept(AbstractModelVisitor& visitor) override;
+	virtual bool Serializable();
 protected:
 	bool resetDrawing = true;
-	bool drawPolygonChain = false;
 	bool isAddingMode = false;
 };

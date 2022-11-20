@@ -8,6 +8,7 @@
 #include "BezierSurfaceC2.h"
 #include "SingleBezierSurfaceC0.h"
 #include "SingleBezierSurfaceC2.h"
+#include "StraightCurveInterpolating.h"
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -92,6 +93,21 @@ void SceneLoader::LoadScene(std::shared_ptr<Scene> scene, std::filesystem::path 
 		bezier->name = b.name;
 
 		scene->AddModel(bezier);
+	}
+
+	for (auto& b : deserializedScene.interpolatedC0)
+	{
+		std::vector<std::shared_ptr<Point>> controlPoints;
+
+		std::transform(b.controlPoints.begin(), b.controlPoints.end(), std::back_inserter(controlPoints),
+			[&points](MG1::PointRef ref) { return points[ref.GetId()]; }
+		);
+
+		auto straight = std::make_shared<StraightCurveInterpolating>(controlPoints);
+
+		straight->name = b.name;
+
+		scene->AddModel(straight);
 	}
 
 

@@ -22,7 +22,7 @@ bool CreateDeviceD3D(HWND hWnd);
 void CleanupDeviceD3D();
 void CleanupDeviceD3D();
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-SIZE windowSize = { 1000 ,1000 };
+SIZE windowSize = { 1800 ,1200 };
 SIZE viewportSize;
 // Main code
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine, int cmdShow)

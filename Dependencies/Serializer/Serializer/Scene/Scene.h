@@ -29,6 +29,7 @@ namespace MG1
 		std::vector<BezierC0> bezierC0;
 		std::vector<BezierC2> bezierC2;
 		std::vector<InterpolatedC2> interpolatedC2;
+		std::vector<InterpolatedC0> interpolatedC0;
 
 		std::vector<BezierSurfaceC0> surfacesC0;
 		std::vector<BezierSurfaceC2> surfacesC2;

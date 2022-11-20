@@ -3,9 +3,11 @@
 #include "ArrayFilter.h"
 #include "IFilter.h"
 
+using namespace DirectX::SimpleMath;
+
 IntersectionCurve::IntersectionCurve(
-	std::vector<std::shared_ptr<Point>> points, 
-	std::shared_ptr<Scene> scene, 
+	std::vector<std::shared_ptr<Point>> points,
+	std::shared_ptr<Scene> scene,
 	std::shared_ptr<IParameterized> surfaces[2],
 	std::vector<Pair<double>> UVs[2]
 )
@@ -13,7 +15,8 @@ IntersectionCurve::IntersectionCurve(
 {
 	this->name = "Intersection Curve";
 	this->scene = scene;
-
+	this->UVs[0] = UVs[0];
+	this->UVs[1] = UVs[1];
 	for (int i = 0; i < 2; i++)
 	{
 		this->surfaces[i] = surfaces[i];
@@ -47,7 +50,7 @@ IntersectionCurve::IntersectionCurve(
 
 		UpdateFilter(i);
 	}
-	
+
 }
 
 
@@ -60,13 +63,13 @@ void IntersectionCurve::RenderGUI()
 
 	for (int i = 0; i < 2; i++)
 	{
-		ImGui::Image((ImTextureID)(intptr_t)(filterTextureViews[i].get()), {512,512}, uv_min, uv_max, tint_col, border_col);
+		ImGui::Image((ImTextureID)(intptr_t)(filterTextureViews[i].get()), { 512,512 }, uv_min, uv_max, tint_col, border_col);
 		if (ImGui::Button(("Swap##swap" + std::to_string(i)).c_str()))
 		{
 			filters[i]->Swap();
 			UpdateFilter(i);
 		}
-		if (ImGui::Checkbox(("Filter surface##filterSurface" + std::to_string(i)).c_str(), &(filterSurface[i]) ))
+		if (ImGui::Checkbox(("Filter surface##filterSurface" + std::to_string(i)).c_str(), &(filterSurface[i])))
 		{
 			if (filterSurface[i])
 			{
@@ -93,6 +96,57 @@ void IntersectionCurve::RenderGUI()
 		scene->AddModel(interpolatingCurve);
 		scene->Select(interpolatingCurve);
 	}
+
+	if (ImGui::Button("Transform to interpolating curve with distance"))
+	{
+		auto pointsCopy = this->points;
+		scene->RemoveModel(this->id);
+		auto interpolatingCurve = std::make_shared< BezierCurveInterpolating>(pointsCopy);
+		auto surface = surfaces[transformDistanceObjectIndex];
+		auto UV = UVs[transformDistanceObjectIndex];
+		for (int i = 0; i < pointsCopy.size(); ++i)
+		{
+			auto point = pointsCopy[i];
+			auto uv = UV[i];
+			auto derU = surface->GetUDerivativeValue(uv.a, uv.b);
+			auto derV = surface->GetVDerivativeValue(uv.a, uv.b);
+			auto normal = derU.Cross(derV);
+
+			if (projectOnPlane)
+			{
+				auto planeNormal = Vector3(planeNormalX, planeNormalY, planeNormalZ);
+				planeNormal.Normalize();
+
+				normal = normal - normal.Dot(planeNormal) * planeNormal;
+			}
+			normal.Normalize();
+
+			auto position = Vector3(point->GetTranslation());
+			position = position + normal * transformDistance;
+
+			point->SetTranslation(position.x, position.y, position.z);
+			scene->AddModel(point);
+		}
+		scene->AddModel(interpolatingCurve);
+		scene->Select(interpolatingCurve);
+	}
+	ImGui::DragFloat("Distance", &transformDistance, 0.1f, 0.0f, 3.0f);
+	const char* items[] = { "Surface 1", "Surface 2" };
+	if (ImGui::Combo("Object for distance", &transformDistanceObjectIndex, items, IM_ARRAYSIZE(items)))
+	{
+
+	}
+	if (ImGui::Checkbox("Cast on plane", &projectOnPlane))
+	{
+
+	}
+	if (projectOnPlane)
+	{
+		ImGui::DragFloat("plane normal X", &planeNormalX, 0.1f, 0.0f, 1.0f);
+		ImGui::DragFloat("plane normal Y", &planeNormalY, 0.1f, 0.0f, 1.0f);
+		ImGui::DragFloat("plane normal Z", &planeNormalZ, 0.1f, 0.0f, 1.0f);
+	}
+	
 }
 
 void IntersectionCurve::UpdateFilter(int index)

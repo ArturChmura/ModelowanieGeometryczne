@@ -93,6 +93,14 @@ void IBezierCurve::AddPoint(std::shared_ptr<Point> point)
 	ResetDrawing();
 }
 
+void IBezierCurve::AddPointToBeggining(std::shared_ptr<Point> point)
+{
+	this->points.insert(this->points.begin(), point);
+	point->onModelChangeCallback.Add([this](std::shared_ptr<Point> point) { this->ResetDrawing(); }, id);
+	point->onRemovedFromSceneCallback.Add([this](std::shared_ptr < Point> point) { RemovePoint(point->id); }, id);
+	ResetDrawing();
+}
+
 void IBezierCurve::RemovePoint(int pointId)
 {
 	auto iter = std::find_if(points.begin(), points.end(), [pointId](std::shared_ptr<Point> point) {

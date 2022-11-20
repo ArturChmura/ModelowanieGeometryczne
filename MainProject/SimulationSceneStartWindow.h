@@ -15,12 +15,12 @@ private:
 
 	int gridWidthCount = 1000;
 	int gridLengthCount = 1000;
-	float widthSize = 200;
-	float lengthSize = 200;
-	float heightSize = 40;
+	float widthSize = 150;
+	float lengthSize = 150;
+	float heightSize = 50;
 	float minimumBaseHeight = 5;
 
-	float cutterRadius = 40;
+	float cutterRadius = 16;
 	float cutterCuttingPartHeight = 40;
 	float cutterSpeed = 30;
 	bool showPaths = true;

@@ -15,6 +15,7 @@ class BezierSurfaceC2;
 class CompositeModel;
 class GregoryPatch;
 class SingleGregoryPatch;
+class StraightCurveInterpolating;
 
 class AbstractModelVisitor
 {
@@ -31,4 +32,5 @@ public:
 	virtual void Accept(std::shared_ptr<CompositeModel> surface) = 0;
 	virtual void Accept(std::shared_ptr<GregoryPatch> surface) = 0;
 	virtual void Accept(std::shared_ptr<SingleGregoryPatch> surface) = 0;
+	virtual void Accept(std::shared_ptr<StraightCurveInterpolating> curve) = 0;
 };
