@@ -22,8 +22,6 @@ public:
 	bool IsWrappedV();
 	// Inherited via IParameterized
 	virtual DirectX::SimpleMath::Vector3 GetValue(double u, double v) override;
-	virtual DirectX::SimpleMath::Vector3 GetUDerivativeValue(double u, double v) override;
-	virtual DirectX::SimpleMath::Vector3 GetVDerivativeValue(double u, double v) override;
 	virtual bool IsUWrapped() override;
 	virtual bool IsVWrapped() override;
 private:

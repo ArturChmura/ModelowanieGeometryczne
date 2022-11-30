@@ -19,6 +19,15 @@ void CompositeModel::AddModel(std::shared_ptr<IModel> model)
 	UpdateCentroidPosition();
 }
 
+void CompositeModel::AddModels(std::vector<std::shared_ptr<IModel>> models)
+{
+	for (auto model : models)
+	{
+		this->modelsMap.insert(std::pair(model->id, model));
+	}
+	UpdateCentroidPosition();
+}
+
 void CompositeModel::RemoveModel(std::shared_ptr<IModel> model)
 {
 	this->modelsMap.erase(model->id);

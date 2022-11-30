@@ -8,6 +8,7 @@ public:
 	CompositeModel();
 	std::map<int,std::shared_ptr<IModel>> modelsMap;
 	void AddModel(std::shared_ptr<IModel> model);
+	void AddModels(std::vector<std::shared_ptr<IModel>> models);
 	void RemoveModel(std::shared_ptr<IModel> model);
 
 	void UpdateCentroidPosition();

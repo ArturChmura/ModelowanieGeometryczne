@@ -22,6 +22,7 @@
     <ClCompile Include="BezierSurfaceC0AdderWindow.cpp" />
     <ClCompile Include="BezierSurfaceC2.cpp" />
     <ClCompile Include="BezierSurfaceC2AdderWindow.cpp" />
+    <ClCompile Include="BezierSurfacesFactory.cpp" />
     <ClCompile Include="BlockModel.cpp" />
     <ClCompile Include="BresenhamsAlgorithm.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -45,7 +46,6 @@
     <ClCompile Include="gsBezierSurfaceC2.cpp" />
     <ClCompile Include="gsGregory.cpp" />
     <ClCompile Include="gsSurfaceBezier.cpp" />
-    <ClCompile Include="HalfSurface.cpp" />
     <ClCompile Include="IBezierCurve.cpp" />
     <ClCompile Include="IBezierSurface.cpp" />
     <ClCompile Include="ICutter.cpp" />
@@ -69,6 +69,7 @@
     <ClCompile Include="ObjectAdderWindow.cpp" />
     <ClCompile Include="ObjectsListWindow.cpp" />
     <ClCompile Include="CameraOptionsWindow.cpp" />
+    <ClCompile Include="OffsetParametrized.cpp" />
     <ClCompile Include="OrthographicCamera.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="PointsMerger.cpp" />
@@ -117,6 +118,7 @@
     <ClInclude Include="BezierSurfaceC0AdderWindow.h" />
     <ClInclude Include="BezierSurfaceC2.h" />
     <ClInclude Include="BezierSurfaceC2AdderWindow.h" />
+    <ClInclude Include="BezierSurfacesFactory.h" />
     <ClInclude Include="BlockModel.h" />
     <ClInclude Include="BresenhamsAlgorithm.h" />
     <ClInclude Include="Callback.h" />
@@ -133,7 +135,6 @@
     <ClInclude Include="FlatCutter.h" />
     <ClInclude Include="FutureExtensions.h" />
     <ClInclude Include="GeneralPathsGenerator.h" />
-    <ClInclude Include="HalfSurface.h" />
     <ClInclude Include="ICutter.h" />
     <ClInclude Include="IFilter.h" />
     <ClInclude Include="GregoryAdderWindow.h" />
@@ -154,6 +155,7 @@
     <ClInclude Include="MillingSimulator.h" />
     <ClInclude Include="ModelFilterSelectorVisitor.h" />
     <ClInclude Include="ModelSceneStartWindow.h" />
+    <ClInclude Include="OffsetParametrized.h" />
     <ClInclude Include="OrthographicCamera.h" />
     <ClInclude Include="Pair.h" />
     <ClInclude Include="psNormal.h" />

@@ -71,6 +71,10 @@ void ArrayFilter::DrawLineBetweenPoints(Pair<double> uv1, Pair<double> uv2)
 
 	for (int x = p1.a; x <= p2.a; x++)
 	{
+		if (p1.a == p2.a && p1.b == p2.b)
+		{
+			continue;
+		}
 		int y = (p2.b - p1.b) / (double)(p2.a - p1.a) * (x - p1.a) + p1.b;
 		setXY(x, y, (unsigned char)127);
 	}

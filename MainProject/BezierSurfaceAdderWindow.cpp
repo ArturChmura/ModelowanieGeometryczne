@@ -45,7 +45,15 @@ void BezierSurfaceAdderWindow::Render()
 
 void BezierSurfaceAdderWindow::SetPreview()
 {
-	auto [model, _] = this->GetModel();
+	auto [model, points] = this->GetModel();
+	auto cursorPosition = this->scene->cursor->GetTranslation();
+	for (auto pointsRow : points)
+	{
+		for (auto point : pointsRow)
+		{
+			point->Translate(cursorPosition.x, cursorPosition.y, cursorPosition.z);
+		}
+	}
 	this->scene->previewModel = model;
 }
 
@@ -53,6 +61,14 @@ std::shared_ptr<IBezierSurface> BezierSurfaceAdderWindow::AddModel()
 {
 	*(this->open) = false;
 	auto [model, points] = GetModel();
+	auto cursorPosition = this->scene->cursor->GetTranslation();
+	for (auto pointsRow : points)
+	{
+		for (auto point : pointsRow)
+		{
+			point->Translate(cursorPosition.x, cursorPosition.y, cursorPosition.z);
+		}
+	}
 	this->scene->AddModel(model);
 	this->scene->previewModel = nullptr;
 	for (auto ps : points)

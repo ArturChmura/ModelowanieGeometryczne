@@ -229,6 +229,12 @@
     <Filter Include="Source Files\Algorithms\CurveJoiner">
       <UniqueIdentifier>{0abdad4a-1292-4eb5-a0d9-50c338f6454d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Factories">
+      <UniqueIdentifier>{e613d82a-5375-472d-8361-c15dda4bf2e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Factories\SurfaceFactories">
+      <UniqueIdentifier>{2d857423-64fa-40c1-b354-2fdf5b916c01}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxStructures.cpp">
@@ -441,9 +447,6 @@
     <ClCompile Include="ArrayFilter.cpp">
       <Filter>Source Files\Algorithms\Intersections</Filter>
     </ClCompile>
-    <ClCompile Include="HalfSurface.cpp">
-      <Filter>Source Files\Algorithms\Intersections</Filter>
-    </ClCompile>
     <ClCompile Include="SimulationScene.cpp">
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
@@ -506,6 +509,12 @@
     </ClCompile>
     <ClCompile Include="StraightCurveInterpolating.cpp">
       <Filter>Source Files\Models\Curves</Filter>
+    </ClCompile>
+    <ClCompile Include="OffsetParametrized.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="BezierSurfacesFactory.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -767,9 +776,6 @@
     <ClInclude Include="IntersectionPoint.h">
       <Filter>Header Files\Algorithms\Surfaces</Filter>
     </ClInclude>
-    <ClInclude Include="HalfSurface.h">
-      <Filter>Header Files\Algorithms\Intersections</Filter>
-    </ClInclude>
     <ClInclude Include="SimulationScene.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
@@ -844,6 +850,12 @@
     </ClInclude>
     <ClInclude Include="StraightCurveInterpolating.h">
       <Filter>Header Files\Models\Curves</Filter>
+    </ClInclude>
+    <ClInclude Include="OffsetParametrized.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="BezierSurfacesFactory.h">
+      <Filter>Header Files\Factories\SurfaceFactories</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

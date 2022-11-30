@@ -8,8 +8,6 @@
 #include "BezierCurveInterpolating.h"
 #include "IntersectionCurve.h"
 #include "Helpers.h"
-#include "HalfSurface.h"
-
 using Eigen::MatrixXd;
 using Eigen::MatrixXf;
 using Eigen::Matrix3d;
@@ -33,16 +31,10 @@ std::shared_ptr<std::vector<IntersectionPoint>> IntersectionFinder::FindSelfInte
 
 	auto closePoint = FindStartPointSelf(surface);
 
-	/*auto firstHalf = std::make_shared<HalfSurface>(surface, true, 0);
-	auto secondHalf = std::make_shared<HalfSurface>(surface, true, 1);*/
 
 	auto P0 = FindNearestPoint(surface, surface, closePoint.u, closePoint.v, closePoint.s, closePoint.t, minU1, maxU1, minV1, maxV1, minU1, maxU1, minV1, maxV1);
-	//auto [uSurface, vSurface] = firstHalf->GetSurfaceUV(P0.u, P0.v);
-	//auto [sSurface, tSurface] = secondHalf->GetSurfaceUV(P0.s, P0.t);
-	//P0.u = uSurface;
-	//P0.v = vSurface;
-	//P0.s = sSurface;
-	//P0.t = tSurface;
+
+
 	auto toClose = [=](double u, double v, bool wrapped)
 	{
 		if (u > v)
@@ -760,4 +752,9 @@ void IntersectionFinder::PrintVector(
 
 	OutputDebugString(L" \n");
 
+}
+
+void IntersectionFinder::SetCursorPosition(float x, float y, float z)
+{
+	this->cursorPosition = Vector3(x, y, z);
 }

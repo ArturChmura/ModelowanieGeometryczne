@@ -17,6 +17,10 @@
 #include "ModelFilterSelectorVisitor.h"
 #include "GeneralPathsGenerator.h"
 #include <imgui.h>
+#include "OffsetParametrized.h"
+#include "IntersectionFinder.h"
+#include "BezierSurfacesFactory.h"
+#include "IntersectionCurve.h"
 
 
 using namespace mini;
@@ -101,15 +105,7 @@ Application::Application(SIZE size)
 	DxDevice::instance->context()->PSSetSamplers(0, 1, &s_ptr);
 
 
-
-	//SceneLoader::LoadScene(scene, "C:\\Users\\Artur\\Desktop\\sciezki\\kubek z podstawka gesty podniesiony");
-
-	//ModelFilterSelectorVisitor<Point> visitor;
-	//auto modelsList = visitor.GetList(scene->models);
-	//GeneralPathsGenerator generator;
-	//generatedModel = generator.GeneratePaths(modelsList);
-
-	//scene->AddModel(generatedModel);
+	SceneLoader::LoadScene(scene, "C:\\Users\\Artur\\Desktop\\sciezki\\kubek.json");
 
 }
 

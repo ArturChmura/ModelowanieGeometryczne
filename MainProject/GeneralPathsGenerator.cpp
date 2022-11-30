@@ -2,6 +2,10 @@
 #include "DirectXMath.h"
 #include "OrthographicCamera.h"
 #include "ArcCameraModel.h"
+#include "BezierSurfacesFactory.h"
+#include "IntersectionFinder.h"
+#include "OffsetParametrized.h"
+#include "IntersectionCurve.h"
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -169,10 +173,121 @@ std::shared_ptr<StraightCurveInterpolating> GeneralPathsGenerator::PlanePaths(st
 
 	auto interpolated = std::make_shared<StraightCurveInterpolating>(points);
 
-
+	
 	delete[] heightMap;
 	return interpolated;
 
+}
+
+std::shared_ptr<StraightCurveInterpolating> GeneralPathsGenerator::BorderPath(std::vector<std::shared_ptr<IModel>> models, std::shared_ptr<Scene> scene)
+{
+
+	auto [basePlane,_] = BezierSurfacesFactory::CreateBezierSurfaceC0(1, 1, 15, 15, false, XM_PIDIV2, 0, 0);
+
+	auto itMug = find_if(models.begin(), models.end(), [](const std::shared_ptr<IModel> model) { return model->name == "Kufel"; });
+	auto mugBase = std::dynamic_pointer_cast<IParameterized>(*itMug);
+	auto itTop = find_if(models.begin(), models.end(), [](const std::shared_ptr<IModel> model) { return model->name == "Nakrycie"; });
+	auto mugTop = std::dynamic_pointer_cast<IParameterized>(*itTop);
+	auto itHandle = find_if(models.begin(), models.end(), [](const std::shared_ptr<IModel> model) { return model->name == "Raczka C0"; });
+	auto mugHandle = std::dynamic_pointer_cast<IParameterized>(*itHandle);
+
+	auto mugBaseOffset = std::make_shared< OffsetParametrized>(mugBase, drillRadiusP3);
+	auto mugTopOffset = std::make_shared< OffsetParametrized>(mugTop, drillRadiusP3);
+	auto mugHandleOffset = std::make_shared< OffsetParametrized>(mugHandle, drillRadiusP3);
+
+	auto positions = std::vector<Vector3>();
+
+	positions.push_back(beginPosition);
+
+	auto startPosition = Vector2(-7.5 - drillRadiusP3*2, 7.5 + drillRadiusP3 * 2);
+
+	positions.push_back(Vector3(startPosition.x, beginPosition.y, startPosition.y));
+	positions.push_back(Vector3(startPosition.x, baseHeight, startPosition.y));
+
+	AddBeseIntersection(basePlane, mugBaseOffset, positions, Vector3(-0.906, 0.0, 5.221));
+	
+	AddBeseIntersection(basePlane, mugTopOffset, positions, Vector3(3.567, 1.0, 5.221));
+	AddBeseIntersection(basePlane, mugTopOffset, positions, Vector3(5.243, 0.0, 3.727));
+
+	// górna pozioma belka
+	positions.push_back(Vector3(5.947 + drillRadiusP3, baseHeight, 4.102 + 0.5));
+	positions.push_back(Vector3(5.947 + drillRadiusP3, baseHeight, -0.296 - 0.5));
+
+	AddBeseIntersection(basePlane, mugTopOffset, positions, Vector3(5.356, 0.0, 0.190));
+	AddBeseIntersection(basePlane, mugTopOffset, positions, Vector3(3.567, 1.0, -2.157));
+
+	AddHandleBeseIntersection(basePlane, mugHandle, positions, Vector3(1.184, 0.0, -3.025));
+
+	AddRightCupBeseIntersection(basePlane, mugBaseOffset, positions, Vector3(-0.906, 0.0, -1.572));
+
+
+	positions.push_back(Vector3(-5.560 - drillRadiusP3, baseHeight, 0.055 - 0.5 ));
+	positions.push_back(Vector3(-5.560 - drillRadiusP3, baseHeight, 4.096 + 0.5));
+
+	auto lastPosition = positions[positions.size() - 1];
+	lastPosition.y = beginPosition.y;
+	positions.push_back(lastPosition);
+	positions.push_back(beginPosition);
+
+	auto positionsWithoutIntersections = RemoveSelfIntersections(positions);
+
+	auto points = std::vector<std::shared_ptr<Point>>();
+	for (auto position : positionsWithoutIntersections)
+	{
+		auto point = std::make_shared<Point>(position);
+		points.push_back(point);
+	}
+
+	auto interpolated = std::make_shared<StraightCurveInterpolating>(points);
+
+
+	return interpolated;
+	
+}
+
+void GeneralPathsGenerator::AddBeseIntersection(std::shared_ptr<BezierSurfaceC0> basePlane, std::shared_ptr<IParameterized> modelOffset, std::vector<DirectX::SimpleMath::Vector3>& positions, Vector3 cursorPosition)
+{
+
+	auto intersectionFinder = std::make_shared<IntersectionFinder>(pointsDistance, precision, true, cursorPosition);
+	auto intersectionPointsPtr = intersectionFinder->FindIntersection(basePlane, modelOffset);
+	auto intersectionPoints = *intersectionPointsPtr;
+	for (auto intersectionPoint : intersectionPoints)
+	{
+		positions.push_back(intersectionPoint.position + Vector3(0, baseHeight, 0));
+	}
+}
+
+
+void GeneralPathsGenerator::AddRightCupBeseIntersection(std::shared_ptr<BezierSurfaceC0> basePlane, std::shared_ptr<IParameterized> modelOffset, std::vector<DirectX::SimpleMath::Vector3>& positions, Vector3 cursorPosition)
+{
+
+	auto intersectionFinder = std::make_shared<IntersectionFinder>(pointsDistance, precision, true, cursorPosition);
+	auto intersectionPointsPtr = intersectionFinder->FindIntersection(basePlane, modelOffset);
+	auto intersectionPoints = *intersectionPointsPtr;
+	for (int i = intersectionPoints.size() / 2; i < intersectionPoints.size(); ++i)
+	{
+		positions.push_back(intersectionPoints[i].position + Vector3(0,baseHeight,0));
+	}
+}
+
+void GeneralPathsGenerator::AddHandleBeseIntersection(std::shared_ptr<BezierSurfaceC0> basePlane, std::shared_ptr<IParameterized> handle, std::vector<DirectX::SimpleMath::Vector3>& positions, Vector3 cursorPosition)
+{
+
+	auto intersectionFinder = std::make_shared<IntersectionFinder>(pointsDistance, precision, true, cursorPosition);
+	auto intersectionPointsPtr = intersectionFinder->FindIntersection(basePlane, handle);
+	auto intersectionPoints = *intersectionPointsPtr;
+
+	for (auto intersectionPoint : intersectionPoints)
+	{
+		float s = intersectionPoint.s;
+		float t = intersectionPoint.s;
+		auto dU = handle->GetUDerivativeValue(s, t);
+		auto normal = Vector3(dU.z, 0, -dU.x);
+		normal.Normalize();
+
+		auto offsetPosition = intersectionPoint.position + normal * drillRadiusP3;
+		positions.push_back(offsetPosition + Vector3(0, baseHeight, 0));
+	}
 }
 
 float GeneralPathsGenerator::GetMaxHeight(float* heightMap, int iCenter, int jCenter, int radiusInPixels)
@@ -411,4 +526,61 @@ mini::dx_ptr<ID3D11Texture2D> GeneralPathsGenerator::CreateHeightMapTexture2D()
 int GeneralPathsGenerator::GetDrillRadiusInPixels(float drillRadius)
 {
 	return drillRadius / 15.0f * textureSize;
+}
+
+std::vector<DirectX::SimpleMath::Vector3> GeneralPathsGenerator::RemoveSelfIntersections(std::vector<DirectX::SimpleMath::Vector3> positions)
+{
+	auto newPositions = std::vector<DirectX::SimpleMath::Vector3>();
+
+	auto intersectionPoints = std::vector<std::pair<int, int>>();
+
+	for (int i = 0; i < positions.size(); i++)
+	{
+		auto currentPosition = positions[i];
+		for (int j = i+4; j < positions.size()-1; j++)
+		{
+			auto nextPosition = positions[j];
+			auto distanceSquared = Vector3::DistanceSquared(currentPosition, nextPosition);
+			if (distanceSquared < pointsDistance * pointsDistance * 2)
+			{
+				while (j + 1 < positions.size())
+				{
+					auto nextPosition = positions[++j];
+					auto distanceSquared2 = Vector3::DistanceSquared(currentPosition, nextPosition);
+					if (distanceSquared2 > distanceSquared)
+					{
+						intersectionPoints.push_back(std::make_pair(i, j));
+						i = j;
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	if (intersectionPoints.size() == 0)
+	{
+		newPositions = positions;
+	}
+	else
+	{
+		for (int i = 0; i < intersectionPoints[0].first; i++)
+		{
+			newPositions.push_back(positions[i]);
+		}
+		for (int i = 1; i < intersectionPoints.size(); i++)
+		{
+			int start = intersectionPoints[i - 1].second;
+			int end = intersectionPoints[i].first;
+			for (int j = start; j < end; j++)
+			{
+				newPositions.push_back(positions[j]);
+			}
+		}
+		for (int i = intersectionPoints[intersectionPoints.size() - 1].second; i < positions.size(); i++)
+		{
+			newPositions.push_back(positions[i]);
+		}
+	}
+	return newPositions;
 }

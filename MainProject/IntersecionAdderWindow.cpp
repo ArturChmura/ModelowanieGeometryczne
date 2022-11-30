@@ -31,8 +31,8 @@ void IntersecionAdderWindow::Render()
 	ImGui::Begin("Add intersection", open);
 
 
-	ImGui::DragFloat("Points distance", &pointsDistance, 0.01, 0.0001);
-	ImGui::DragFloat("Precision", &precision, 0.001, 0.00001);
+	ImGui::DragFloat("Points distance", &pointsDistance, 0.01, 0.0001, 1, "%.6f");
+	ImGui::DragFloat("Precision", &precision, 0.001, 0.00001, 1, "%.6f");
 
 	ImGui::Checkbox("Use cursor", &useCursor);
 

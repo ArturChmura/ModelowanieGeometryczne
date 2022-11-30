@@ -82,6 +82,15 @@ void ModelSceneStartWindow::Render()
 		scene->AddModel(curve);
 	}
 
+	if (ImGui::Button("Generate border tool paths"))
+	{
+		ModelFilterSelectorVisitor<Point> visitor;
+		auto modelsList = visitor.GetList(scene->models);
+		GeneralPathsGenerator generator;
+		auto curve = generator.BorderPath(modelsList, scene);
+		scene->AddModel(curve);
+	}
+
 	if (ImGui::BeginPopup("Success load popup"))
 	{
 		ImGui::Text("Successfully loaded scene");

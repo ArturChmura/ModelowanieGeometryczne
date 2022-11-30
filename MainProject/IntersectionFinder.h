@@ -66,6 +66,8 @@ public:
 
 	void PrintVector(DirectX::SimpleMath::Vector3 v);
 
+	void SetCursorPosition(float x, float y, float z);
+
 private:
 	void UpdateBest(double u, double v, double& bestU, double& bestV, double& bestDistance, std::shared_ptr<IParameterized> surface, DirectX::SimpleMath::Vector3 position);
 	bool useCursor;
