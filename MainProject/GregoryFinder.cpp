@@ -7,7 +7,7 @@ std::vector<std::vector<std::shared_ptr<PatchSide>>> GregoryFinder::FindFill(std
 	int id = 0;
 	for (auto surface : surfaces)
 	{
-		if (!surface->IsWrappedU())
+		if (!surface->IsUWrapped())
 		{
 			for (int i = 0; i < surface->verticalSlicesCount; i++)
 			{
@@ -18,7 +18,7 @@ std::vector<std::vector<std::shared_ptr<PatchSide>>> GregoryFinder::FindFill(std
 			}
 		}
 
-		if (!surface->IsWrappedV())
+		if (!surface->IsVWrapped())
 		{
 			for (int i = 0; i < surface->horizontalSlicesCount; i++)
 			{

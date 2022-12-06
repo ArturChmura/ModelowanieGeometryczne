@@ -10,7 +10,9 @@
 class BezierSurfaceC2 : public IBezierSurface
 {
 public:
-	BezierSurfaceC2(std::vector<std::shared_ptr<SingleBezierSurfaceC2>> singleSurfaces,int horizontalCount, int verticalCount, bool isWrapped, std::string name = "Bezier Surface C2");
+	BezierSurfaceC2(
+		std::vector<std::shared_ptr<SingleBezierSurfaceC2>> singleSurfaces,
+		int horizontalCount, int verticalCount, bool isUWrapped, bool isVWrapped, std::string name = "Bezier Surface C2");
 	std::vector<std::shared_ptr<SingleBezierSurfaceC2>> singleSurfaces;
 	virtual void Accept(AbstractModelVisitor& visitor) override;
 

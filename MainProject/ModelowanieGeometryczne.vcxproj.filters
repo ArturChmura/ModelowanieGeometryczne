@@ -516,6 +516,9 @@
     <ClCompile Include="BezierSurfacesFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DetailPathGenerator.cpp">
+      <Filter>Source Files\PathsGeneration</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dxptr.h">
@@ -856,6 +859,9 @@
     </ClInclude>
     <ClInclude Include="BezierSurfacesFactory.h">
       <Filter>Header Files\Factories\SurfaceFactories</Filter>
+    </ClInclude>
+    <ClInclude Include="DetailPathGenerator.h">
+      <Filter>Header Files\PathsGeneration</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

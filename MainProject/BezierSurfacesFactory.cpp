@@ -67,7 +67,7 @@ std::tuple<std::shared_ptr<BezierSurfaceC0>, std::vector<std::vector<std::shared
 		}
 	}
 
-	auto surface = std::make_shared<BezierSurfaceC0>(singleSurfaces, horizontalSlicesCount, verticalSlicesCount, cylinder);
+	auto surface = std::make_shared<BezierSurfaceC0>(singleSurfaces, horizontalSlicesCount, verticalSlicesCount, false, cylinder);
 
 	auto composite = std::make_shared<CompositeModel>();
 	for (auto pointsRow : points)
@@ -152,7 +152,7 @@ std::tuple<std::shared_ptr<BezierSurfaceC2>, std::vector<std::vector<std::shared
 	}
 
 
-	auto surface = std::make_shared<BezierSurfaceC2>(singleSurfaces, horizontalSlicesCount, verticalSlicesCount, cylinder);
+	auto surface = std::make_shared<BezierSurfaceC2>(singleSurfaces, horizontalSlicesCount, verticalSlicesCount, false, cylinder);
 
 	auto composite = std::make_shared<CompositeModel>();
 	for (auto pointsRow : points)

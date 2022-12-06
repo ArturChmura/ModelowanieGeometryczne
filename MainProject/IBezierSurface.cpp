@@ -5,12 +5,13 @@
 #include <algorithm>
 using namespace DirectX::SimpleMath;
 
-IBezierSurface::IBezierSurface(int horizontalCount, int verticalCount, bool isWrapped, std::string name)
+IBezierSurface::IBezierSurface(int horizontalCount, int verticalCount, bool isUWrapped, bool isVWrapped, std::string name)
 	:IUnmovableModel(name)
 {
 	this->horizontalSlicesCount = horizontalCount;
 	this->verticalSlicesCount = verticalCount;
-	this->isWrapped = isWrapped;
+	this->isUWrapped = isUWrapped;
+	this->isVWrapped = isVWrapped;
 
 	D3D11_TEXTURE2D_DESC textureDescription;
 	ZeroMemory(&textureDescription, sizeof(textureDescription));
@@ -40,6 +41,8 @@ IBezierSurface::IBezierSurface(int horizontalCount, int verticalCount, bool isWr
 	filterTextureView = mini::dx_ptr<ID3D11ShaderResourceView>(viewPtr);
 
 }
+
+
 
 void IBezierSurface::Draw(std::shared_ptr<Camera> camera)
 {
@@ -117,15 +120,7 @@ void IBezierSurface::ChangeColor(DirectX::SimpleMath::Vector3 color)
 	}
 }
 
-bool IBezierSurface::IsWrappedU()
-{
-	return false;
-}
 
-bool IBezierSurface::IsWrappedV()
-{
-	return isWrapped;
-}
 
 DirectX::SimpleMath::Vector3 IBezierSurface::GetValue(double u, double v)
 {
@@ -137,12 +132,12 @@ DirectX::SimpleMath::Vector3 IBezierSurface::GetValue(double u, double v)
 
 bool IBezierSurface::IsUWrapped()
 {
-	return isWrapped;
+	return isUWrapped;
 }
 
 bool IBezierSurface::IsVWrapped()
 {
-	return false;
+	return isVWrapped;
 }
 
 SingleSurfaceParameter IBezierSurface::GetSingleSurfaceParameter(double u, double v)

@@ -10,7 +10,7 @@
 class IBezierSurface : public IUnmovableModel, public IParameterized
 {
 public:
-	IBezierSurface(int horizontalCount, int verticalCount, bool isWrapped, std::string name = "IBezierSurface");
+	IBezierSurface(int horizontalCount, int verticalCount, bool isUWrapped, bool isVWrapped, std::string name = "IBezierSurface");
 	virtual void Draw(std::shared_ptr<Camera> camera) override;
 	virtual void RenderGUI() override;
 	virtual std::vector<std::shared_ptr<IModel>> GetContainingModels() override;
@@ -18,15 +18,14 @@ public:
 	virtual std::vector<std::shared_ptr<ISingleBezierSurface>> GetSingleSurfaces() = 0;
 	int horizontalSlicesCount;
 	int verticalSlicesCount;
-	bool IsWrappedU();
-	bool IsWrappedV();
 	// Inherited via IParameterized
 	virtual DirectX::SimpleMath::Vector3 GetValue(double u, double v) override;
 	virtual bool IsUWrapped() override;
 	virtual bool IsVWrapped() override;
 private:
 	bool drawPolygonChain = false;
-	bool isWrapped;
+	bool isUWrapped;
+	bool isVWrapped;
 
 
 	SingleSurfaceParameter GetSingleSurfaceParameter(double u, double v);

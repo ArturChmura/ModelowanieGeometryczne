@@ -105,7 +105,7 @@ Application::Application(SIZE size)
 	DxDevice::instance->context()->PSSetSamplers(0, 1, &s_ptr);
 
 
-	SceneLoader::LoadScene(scene, "C:\\Users\\Artur\\Desktop\\sciezki\\kubek.json");
+	SceneLoader::LoadScene(scene, "..\\sciezki\\kubek.json");
 
 }
 

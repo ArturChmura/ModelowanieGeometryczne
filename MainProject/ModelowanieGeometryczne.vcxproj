@@ -71,6 +71,7 @@
     <ClCompile Include="CameraOptionsWindow.cpp" />
     <ClCompile Include="OffsetParametrized.cpp" />
     <ClCompile Include="OrthographicCamera.cpp" />
+    <ClCompile Include="DetailPathGenerator.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="PointsMerger.cpp" />
     <ClCompile Include="PolygonalChain.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="OffsetParametrized.h" />
     <ClInclude Include="OrthographicCamera.h" />
     <ClInclude Include="Pair.h" />
+    <ClInclude Include="DetailPathGenerator.h" />
     <ClInclude Include="psNormal.h" />
     <ClInclude Include="SimulationScene.h" />
     <ClInclude Include="SimulationSceneStartWindow.h" />

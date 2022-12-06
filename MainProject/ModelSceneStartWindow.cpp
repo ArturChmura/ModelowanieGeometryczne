@@ -6,6 +6,7 @@
 #include "SerializationVisitor.h"
 #include "GeneralPathsGenerator.h"
 #include "ModelFilterSelectorVisitor.h"
+#include "DetailPathGenerator.h"
 
 ModelSceneStartWindow::ModelSceneStartWindow(std::shared_ptr<Scene> scene)
 {
@@ -88,6 +89,15 @@ void ModelSceneStartWindow::Render()
 		auto modelsList = visitor.GetList(scene->models);
 		GeneralPathsGenerator generator;
 		auto curve = generator.BorderPath(modelsList, scene);
+		scene->AddModel(curve);
+	}
+
+	if (ImGui::Button("Generate detail tool paths"))
+	{
+		ModelFilterSelectorVisitor<Point> visitor;
+		auto modelsList = visitor.GetList(scene->models);
+		DetailPathGenerator generator;
+		auto curve = generator.GeneralPaths(modelsList);
 		scene->AddModel(curve);
 	}
 
