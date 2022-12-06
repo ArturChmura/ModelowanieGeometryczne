@@ -17,8 +17,8 @@ public:
 
 	struct DrawLineResult
 	{
-		bool anyChanges;
-		float maxHeightChange;
+		bool anyChanges = false;
+		float maxHeightChange = 0.0f;
 		float minHeightCutted = FLT_MAX;
 	};
 

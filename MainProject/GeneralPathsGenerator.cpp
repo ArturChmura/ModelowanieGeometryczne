@@ -254,7 +254,7 @@ void GeneralPathsGenerator::AddBeseIntersection(std::shared_ptr<BezierSurfaceC0>
 	auto intersectionPoints = *intersectionPointsPtr;
 	for (auto intersectionPoint : intersectionPoints)
 	{
-		positions.push_back(intersectionPoint.position + Vector3(0, baseHeight, 0));
+		positions.push_back(Vector3(intersectionPoint.position.x, baseHeight, intersectionPoint.position.z));
 	}
 }
 
@@ -267,7 +267,8 @@ void GeneralPathsGenerator::AddRightCupBeseIntersection(std::shared_ptr<BezierSu
 	auto intersectionPoints = *intersectionPointsPtr;
 	for (int i = intersectionPoints.size() / 2; i < intersectionPoints.size(); ++i)
 	{
-		positions.push_back(intersectionPoints[i].position + Vector3(0,baseHeight,0));
+		auto intersectionPoint = intersectionPoints[i];
+		positions.push_back(Vector3(intersectionPoint.position.x, baseHeight, intersectionPoint.position.z));
 	}
 }
 
@@ -287,7 +288,7 @@ void GeneralPathsGenerator::AddHandleBeseIntersection(std::shared_ptr<BezierSurf
 		normal.Normalize();
 
 		auto offsetPosition = intersectionPoint.position + normal * drillRadiusP3;
-		positions.push_back(offsetPosition + Vector3(0, baseHeight, 0));
+		positions.push_back(Vector3(offsetPosition.x, baseHeight, offsetPosition.z));
 	}
 }
 
