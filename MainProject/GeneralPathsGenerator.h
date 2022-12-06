@@ -48,6 +48,5 @@ private:
 
 	int GetDrillRadiusInPixels(float drillRadius);
 
-	std::vector<DirectX::SimpleMath::Vector3> RemoveSelfIntersections(std::vector<DirectX::SimpleMath::Vector3> positions);
 	
 };

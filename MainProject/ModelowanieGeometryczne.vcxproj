@@ -72,6 +72,7 @@
     <ClCompile Include="OffsetParametrized.cpp" />
     <ClCompile Include="OrthographicCamera.cpp" />
     <ClCompile Include="DetailPathGenerator.cpp" />
+    <ClCompile Include="PathGenerationHelper.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="PointsMerger.cpp" />
     <ClCompile Include="PolygonalChain.cpp" />
@@ -94,6 +95,7 @@
     <ClCompile Include="StartWindow.cpp" />
     <ClCompile Include="StereoscopicCamera.cpp" />
     <ClCompile Include="StraightCurveInterpolating.cpp" />
+    <ClCompile Include="StraightCurveInterpolatingFactory.cpp" />
     <ClCompile Include="ToolPaths.cpp" />
     <ClCompile Include="ToolPathsReader.cpp" />
     <ClCompile Include="Torus.cpp" />
@@ -160,6 +162,7 @@
     <ClInclude Include="OrthographicCamera.h" />
     <ClInclude Include="Pair.h" />
     <ClInclude Include="DetailPathGenerator.h" />
+    <ClInclude Include="PathGenerationHelper.h" />
     <ClInclude Include="psNormal.h" />
     <ClInclude Include="SimulationScene.h" />
     <ClInclude Include="SimulationSceneStartWindow.h" />
@@ -167,6 +170,7 @@
     <ClInclude Include="SolveTriDiagonalMatrix.h" />
     <ClInclude Include="SphereCutter.h" />
     <ClInclude Include="StraightCurveInterpolating.h" />
+    <ClInclude Include="StraightCurveInterpolatingFactory.h" />
     <ClInclude Include="StringExtensions.h" />
     <ClInclude Include="ToolPaths.h" />
     <ClInclude Include="ToolPathsReader.h" />

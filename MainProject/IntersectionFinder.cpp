@@ -757,4 +757,5 @@ void IntersectionFinder::PrintVector(
 void IntersectionFinder::SetCursorPosition(float x, float y, float z)
 {
 	this->cursorPosition = Vector3(x, y, z);
+	this->useCursor = true;
 }

@@ -6,6 +6,7 @@
 #include "IntersectionFinder.h"
 #include "OffsetParametrized.h"
 #include "IntersectionCurve.h"
+#include "PathGenerationHelper.h"
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -98,7 +99,7 @@ std::shared_ptr<StraightCurveInterpolating> GeneralPathsGenerator::PlanePaths(st
 	positions.push_back(beginPosition);
 
 	int radiusInPixels = GetDrillRadiusInPixels(drillRadiusP2);
-
+	int jStep = 1.8 * radiusInPixels;
 
 
 	auto geterateFromPosition = [&](Vector2 startPosition, Vector2 endPosition)
@@ -111,11 +112,11 @@ std::shared_ptr<StraightCurveInterpolating> GeneralPathsGenerator::PlanePaths(st
 
 		int direction = 1; // 1 - top to bottom, -1 bottom to top
 		int i = beginCoords.first;
-		for (int j = beginCoords.second; j <= endCoords.second; j += radiusInPixels)
+		for (int j = beginCoords.second; j <= endCoords.second; j += jStep)
 		{
 			while (i <= endCoords.first && i >= beginCoords.first)
 			{
-				float maxHeight = GetMaxHeight(heightMap, i, j, radiusInPixels * 1.2);
+				float maxHeight = GetMaxHeight(heightMap, i, j, radiusInPixels *1.05);
 				if (maxHeight - baseHeight <= 1e-5f)
 				{
 					auto position = GetPositionFromCoordinates(i, j);
@@ -139,7 +140,7 @@ std::shared_ptr<StraightCurveInterpolating> GeneralPathsGenerator::PlanePaths(st
 				auto pointPosition = Vector3(position.x, baseHeight, position.y);
 				positions.push_back(pointPosition);
 
-				float maxHeight = GetMaxHeight(heightMap, i, j + radiusInPixels, radiusInPixels * 1.2);
+				float maxHeight = GetMaxHeight(heightMap, i, j + jStep, radiusInPixels * 1.05);
 				canGoToNextLine = (maxHeight - baseHeight) <= 1e-5f;
 			}
 		}
@@ -157,7 +158,7 @@ std::shared_ptr<StraightCurveInterpolating> GeneralPathsGenerator::PlanePaths(st
 
 
 	topLeftPosition.x += drillRadiusP2 * 5;
-	bottomRightPosition.x -= drillRadiusP2 * 3; // wyliczone rêcznie
+	bottomRightPosition.x -= drillRadiusP2 * 2.5; // wyliczone rêcznie
 
 	geterateFromPosition(topLeftPosition, bottomRightPosition);
 
@@ -229,7 +230,7 @@ std::shared_ptr<StraightCurveInterpolating> GeneralPathsGenerator::BorderPath(st
 	positions.push_back(lastPosition);
 	positions.push_back(beginPosition);
 
-	auto positionsWithoutIntersections = RemoveSelfIntersections(positions);
+	auto positionsWithoutIntersections = PathGenerationHelper::RemoveSelfIntersections(positions, pointsDistance);
 
 	auto points = std::vector<std::shared_ptr<Point>>();
 	for (auto position : positionsWithoutIntersections)
@@ -526,61 +527,4 @@ mini::dx_ptr<ID3D11Texture2D> GeneralPathsGenerator::CreateHeightMapTexture2D()
 int GeneralPathsGenerator::GetDrillRadiusInPixels(float drillRadius)
 {
 	return drillRadius / 15.0f * textureSize;
-}
-
-std::vector<DirectX::SimpleMath::Vector3> GeneralPathsGenerator::RemoveSelfIntersections(std::vector<DirectX::SimpleMath::Vector3> positions)
-{
-	auto newPositions = std::vector<DirectX::SimpleMath::Vector3>();
-
-	auto intersectionPoints = std::vector<std::pair<int, int>>();
-
-	for (int i = 0; i < positions.size(); i++)
-	{
-		auto currentPosition = positions[i];
-		for (int j = i+4; j < positions.size()-1; j++)
-		{
-			auto nextPosition = positions[j];
-			auto distanceSquared = Vector3::DistanceSquared(currentPosition, nextPosition);
-			if (distanceSquared < pointsDistance * pointsDistance * 2)
-			{
-				while (j + 1 < positions.size())
-				{
-					auto nextPosition = positions[++j];
-					auto distanceSquared2 = Vector3::DistanceSquared(currentPosition, nextPosition);
-					if (distanceSquared2 > distanceSquared)
-					{
-						intersectionPoints.push_back(std::make_pair(i, j));
-						i = j;
-						break;
-					}
-				}
-			}
-		}
-	}
-
-	if (intersectionPoints.size() == 0)
-	{
-		newPositions = positions;
-	}
-	else
-	{
-		for (int i = 0; i < intersectionPoints[0].first; i++)
-		{
-			newPositions.push_back(positions[i]);
-		}
-		for (int i = 1; i < intersectionPoints.size(); i++)
-		{
-			int start = intersectionPoints[i - 1].second;
-			int end = intersectionPoints[i].first;
-			for (int j = start; j < end; j++)
-			{
-				newPositions.push_back(positions[j]);
-			}
-		}
-		for (int i = intersectionPoints[intersectionPoints.size() - 1].second; i < positions.size(); i++)
-		{
-			newPositions.push_back(positions[i]);
-		}
-	}
-	return newPositions;
 }

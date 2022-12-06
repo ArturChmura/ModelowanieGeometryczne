@@ -235,6 +235,18 @@
     <Filter Include="Header Files\Factories\SurfaceFactories">
       <UniqueIdentifier>{2d857423-64fa-40c1-b354-2fdf5b916c01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Factories\CurvesFactories">
+      <UniqueIdentifier>{7a08f67b-00c1-4583-a3cc-054f4ee5a3b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Factories">
+      <UniqueIdentifier>{de220efa-4d5e-4240-964a-34d5fc6f5bd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Factories\CurvesFactories">
+      <UniqueIdentifier>{15017782-de9d-4c36-bdb1-44fc2e393e69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Factories\SurfaceFactories">
+      <UniqueIdentifier>{31f2e03e-b652-4feb-b03d-78dc189999fa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxStructures.cpp">
@@ -513,11 +525,17 @@
     <ClCompile Include="OffsetParametrized.cpp">
       <Filter>Source Files\Models</Filter>
     </ClCompile>
-    <ClCompile Include="BezierSurfacesFactory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DetailPathGenerator.cpp">
       <Filter>Source Files\PathsGeneration</Filter>
+    </ClCompile>
+    <ClCompile Include="PathGenerationHelper.cpp">
+      <Filter>Source Files\PathsGeneration</Filter>
+    </ClCompile>
+    <ClCompile Include="BezierSurfacesFactory.cpp">
+      <Filter>Source Files\Factories\SurfaceFactories</Filter>
+    </ClCompile>
+    <ClCompile Include="StraightCurveInterpolatingFactory.cpp">
+      <Filter>Source Files\Factories\CurvesFactories</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -862,6 +880,12 @@
     </ClInclude>
     <ClInclude Include="DetailPathGenerator.h">
       <Filter>Header Files\PathsGeneration</Filter>
+    </ClInclude>
+    <ClInclude Include="PathGenerationHelper.h">
+      <Filter>Header Files\PathsGeneration</Filter>
+    </ClInclude>
+    <ClInclude Include="StraightCurveInterpolatingFactory.h">
+      <Filter>Header Files\Factories\CurvesFactories</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

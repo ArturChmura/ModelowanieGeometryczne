@@ -97,7 +97,7 @@ void ModelSceneStartWindow::Render()
 		ModelFilterSelectorVisitor<Point> visitor;
 		auto modelsList = visitor.GetList(scene->models);
 		DetailPathGenerator generator;
-		auto curve = generator.GeneralPaths(modelsList);
+		auto curve = generator.GeneralPaths(modelsList, this->scene);
 		scene->AddModel(curve);
 	}
 
