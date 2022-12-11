@@ -102,7 +102,7 @@ void DetailPathGenerator::GenerateBasePath(
 	std::vector<DirectX::SimpleMath::Vector3> handleBottomIntersection,
 	std::vector<DirectX::SimpleMath::Vector3> handleTopIntersection)
 {
-	int leftToRightPathCount = 80;
+	int leftToRightPathCount = 200;
 	float vBegin = 0.900;
 	float vEnd = 1.400;
 
@@ -168,11 +168,10 @@ std::vector<float> DetailPathGenerator::GetBaseUValues(std::shared_ptr<IParamete
 	float step = 1.0f / resolution;
 	auto Us = std::vector<float>();
 	auto lastPosition = Vector3(-100, -100, -100);
-	float distanceBetweenLines = 0.1;
 	for (float u = 0; u < 1.0f; u += step)
 	{
 		auto currentPosition = mugBaseOffset->GetValue(u, 0.15);
-		if (Vector3::Distance(lastPosition, currentPosition) > distanceBetweenLines)
+		if (Vector3::Distance(lastPosition, currentPosition) > baseTopPathDistance)
 		{
 			Us.push_back(u);
 			lastPosition = currentPosition;
@@ -185,7 +184,7 @@ std::vector<float> DetailPathGenerator::GetBaseUValues(std::shared_ptr<IParamete
 
 void DetailPathGenerator::GenerateTopPath(std::shared_ptr<IParameterized> mugTopOffset, std::vector<Vector3>& positions, float intersectionX, bool baseEndedLeft)
 {
-	int leftToRightPathCount = 80;
+	int leftToRightPathCount = 200;
 	float vBegin = 0.900;
 	float vEnd = 1.400;
 
@@ -230,7 +229,6 @@ std::vector<float> DetailPathGenerator::GetTopUValues(std::shared_ptr<IParameter
 	int resolution = 100000;
 	float step = 1.0f / resolution;
 	auto lastPosition = Vector3(-100, -100, -100);
-	float distanceBetweenLines = 0.1;
 
 	auto Us = std::vector<float>();
 	auto positions = std::vector<Vector3>();
@@ -238,7 +236,7 @@ std::vector<float> DetailPathGenerator::GetTopUValues(std::shared_ptr<IParameter
 	for (float u = 0; u < 1.0f; u += step)
 	{
 		auto currentPosition = mugTopOffset->GetValue(u, 0.15);
-		if (Vector3::Distance(lastPosition, currentPosition) > distanceBetweenLines)
+		if (Vector3::Distance(lastPosition, currentPosition) > baseTopPathDistance)
 		{
 			Us.push_back(u);
 			positions.push_back(currentPosition);
@@ -270,8 +268,7 @@ void DetailPathGenerator::GenerateHandlePaths(
 	std::vector<DirectX::SimpleMath::Vector3> handleBottomIntersection,
 	std::vector<DirectX::SimpleMath::Vector3> handleTopIntersection)
 {
-	int topToBottomPointsCount = 100;
-	int leftToRightPathCount = 60;
+	int topToBottomPointsCount = 200;
 
 
 	bool swapDirectionToFromTop = true;
@@ -299,7 +296,7 @@ void DetailPathGenerator::GenerateHandlePaths(
 	float vBegin = 0.44878196268745163;
 	float vEnd = 0.051168519;
 
-	float vStep = (vEnd - vBegin) / (leftToRightPathCount - 1);
+	float vStep = (vEnd - vBegin) / (handlePathCount - 1);
 	float uStep = 1.0f / (topToBottomPointsCount - 1);
 	float v = vBegin;
 	while (v >= vEnd)
@@ -353,7 +350,7 @@ void DetailPathGenerator::GenerateHolePath(std::shared_ptr<IParameterized> handl
 	float vHandleBase = 0.051168519;
 
 	auto handleBorder = std::vector<Vector3>();
-	float borderUStep = 1.0f / 100;
+	float borderUStep = 1.0f / 200;
 	for (float u = 0; u < 1.0f; u += borderUStep)
 	{
 		auto position = handleOffset->GetValue(u, vHandleBase);
@@ -363,6 +360,7 @@ void DetailPathGenerator::GenerateHolePath(std::shared_ptr<IParameterized> handl
 
 	auto [basePlane, _] = BezierSurfacesFactory::CreateBezierSurfaceC0(1, 1, 15, 15, false, DirectX::XM_PIDIV2, 0, 0);
 	auto basePlaneOffset = std::make_shared<OffsetParametrized>(basePlane, drillRadiusP4);
+
 	auto intersectionFinder = std::make_shared<IntersectionFinder>(0.005, 0.001, true, Vector3(-0.906, drillRadiusP4, -1.572));
 	auto intersectionPointsPtr = intersectionFinder->FindIntersection(basePlaneOffset, baseOffset);
 	auto intersectionPoints = *intersectionPointsPtr;
@@ -374,11 +372,10 @@ void DetailPathGenerator::GenerateHolePath(std::shared_ptr<IParameterized> handl
 	}
 
 	float offset = 0.0f;
-	float offsetStep = 0.1f;
 	bool swapToFromTop = false;
 	while (true)
 	{
-		offset += offsetStep;
+		offset += holePathDistance;
 		auto offsetBorder = baseBorder;
 		for (int i = 0; i < offsetBorder.size(); i++)
 		{
@@ -411,7 +408,7 @@ void DetailPathGenerator::GenerateHolePath(std::shared_ptr<IParameterized> handl
 	auto offsetBorderHandle = handleBorder;
 	for (int i = 0; i < offsetBorderHandle.size(); i++)
 	{
-		offsetBorderHandle[i].z += offsetStep;
+		offsetBorderHandle[i].z += holePathDistance;
 	}
 	auto intersections = PathGenerationHelper::GetCurvesIntersections(offsetBorderHandle, baseBorder);
 	std::vector<Vector3> path;

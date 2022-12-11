@@ -543,5 +543,5 @@ mini::dx_ptr<ID3D11Texture2D> GeneralPathsGenerator::CreateHeightMapTexture2D()
 
 int GeneralPathsGenerator::GetDrillRadiusInPixels(float drillRadius)
 {
-	return drillRadius / 15.0f * textureSize;
+	return std::ceil(drillRadius / 15.0f * textureSize);
 }

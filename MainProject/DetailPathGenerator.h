@@ -12,7 +12,11 @@ public:
 
 	
 private:
+	float baseTopPathDistance = 0.1;
+	int handlePathCount = 40;
+	float holePathDistance = 0.1;
 	float distanceBetweenPointsInPath = 0.05;
+
 	float drillRadiusP4 = 0.4f;
 	float baseHeight = 1.6f;
 	float overTheModelHeight = 5.0f;

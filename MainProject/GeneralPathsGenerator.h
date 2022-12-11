@@ -26,11 +26,13 @@ public:
 
 private:
 	float distanceBetweenPointsInPath = 0.05;
+
 	int textureSize = 512;
 	float baseSize = 15.0f;
 	float drillRadiusP1 = 0.8f;
 	float drillRadiusP2 = 0.6f;
 	float drillRadiusP3 = 0.5f;
+
 	float baseHeight = 1.6f;
 	float pointsDistance = 0.005f;
 	float precision = 0.001f;

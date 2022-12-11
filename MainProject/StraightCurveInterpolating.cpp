@@ -70,6 +70,14 @@ void StraightCurveInterpolating::Draw(std::shared_ptr<Camera> camera)
 	ShadersManager::psConstColor->SetConstantBuffer(meshInfo.color);
 
 	DxDevice::instance->context()->DrawIndexed(indicesCount, 0,0);
+
+	if (showPoints)
+	{
+		for ( auto point : points)
+		{
+			point->Draw(camera);
+		}
+	}
 }
 
 void StraightCurveInterpolating::AddPoint(std::shared_ptr<Point> point)
@@ -156,6 +164,13 @@ void StraightCurveInterpolating::RenderGUI()
 			Point::onAddedToSceneCallback.Add(callback, id);
 		}
 	}
+		if (ImGui::Checkbox("Show Points", &showPoints))
+		{
+			isAddingMode = false;
+			Point::onSelectCallback.Remove(id);
+			Point::onAddedToSceneCallback.Remove(id);
+		}
+	
 	if (ImGui::Button("Save as Tool Path"))
 	{
 		nfdchar_t* outPath = NULL;

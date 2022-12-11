@@ -312,7 +312,9 @@ void PathGenerationHelper::CompressPath(std::vector<DirectX::SimpleMath::Vector3
 		// Check if the current and the next two elements lie on a single line
 		Vector3 v1 = vec[i] - vec[i - 1];
 		Vector3 v2 = vec[i + 1] - vec[i];
-		if (v1.Cross(v2).LengthSquared() == 0)
+		v1.Normalize();
+		v2.Normalize();
+		if (v1.Dot(v2)  >= (1.0 - 10e-5))
 		{
 			vec.erase(vec.begin() + i);
 		}
@@ -329,9 +331,12 @@ void PathGenerationHelper::CompressPath(std::vector<DirectX::SimpleMath::Vector3
 	for (int i = 1; i < vec.size() - 1;)
 	{
 		// Check if the current, previous, and next elements are less than the given distance apart
-		float d1 = (vec[i] - vec[i - 1]).Length();
-		float d2 = (vec[i + 1] - vec[i]).Length();
-		if (d1 < distanceBetweenPoints && d2 < distanceBetweenPoints)
+		auto p1 = (vec[i] - vec[i - 1]);
+		auto p2 = (vec[i + 1] - vec[i]);
+		float d1 = p1.Length();
+		float d2 = p2.Length();
+		auto dot = p1.Dot(p2) / (d1*d2);
+		if (d1 < distanceBetweenPoints && d2 < distanceBetweenPoints && dot > 0.9 )
 		{
 			// If they are, remove the current element
 			vec.erase(vec.begin() + i);

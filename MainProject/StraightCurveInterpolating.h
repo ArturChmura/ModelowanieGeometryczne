@@ -32,4 +32,5 @@ public:
 protected:
 	bool resetDrawing = true;
 	bool isAddingMode = false;
+	bool showPoints = false;
 };
