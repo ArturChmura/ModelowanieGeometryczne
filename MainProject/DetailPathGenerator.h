@@ -12,6 +12,7 @@ public:
 
 	
 private:
+	float distanceBetweenPointsInPath = 0.05;
 	float drillRadiusP4 = 0.4f;
 	float baseHeight = 1.6f;
 	float overTheModelHeight = 5.0f;

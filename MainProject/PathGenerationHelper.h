@@ -16,4 +16,5 @@ public:
 
 
 	static std::vector<DirectX::SimpleMath::Vector3> GetPositions(const std::vector<IntersectionPoint>& intersectionPoints);
+	static void CompressPath(std::vector<DirectX::SimpleMath::Vector3>& path, float distanceBetweenPoints);
 };

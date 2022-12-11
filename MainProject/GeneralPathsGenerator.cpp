@@ -76,7 +76,7 @@ std::shared_ptr< StraightCurveInterpolating> GeneralPathsGenerator::GeneralPaths
 
 	positions.push_back(beginPosition);
 
-
+	PathGenerationHelper::CompressPath(positions, distanceBetweenPointsInPath);
 	std::vector<std::shared_ptr<Point>> points;
 	for (auto position : positions)
 	{
@@ -165,6 +165,7 @@ std::shared_ptr<StraightCurveInterpolating> GeneralPathsGenerator::PlanePaths(st
 	positions.push_back(beginPosition);
 
 
+	PathGenerationHelper::CompressPath(positions, distanceBetweenPointsInPath);
 	std::vector<std::shared_ptr<Point>> points;
 	for (auto position : positions)
 	{
@@ -235,6 +236,7 @@ std::shared_ptr<StraightCurveInterpolating> GeneralPathsGenerator::BorderPath(st
 	positions.push_back(beginPosition);
 
 
+	PathGenerationHelper::CompressPath(positions, distanceBetweenPointsInPath);
 	auto points = std::vector<std::shared_ptr<Point>>();
 	for (auto position : positions)
 	{

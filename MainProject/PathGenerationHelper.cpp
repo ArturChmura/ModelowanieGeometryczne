@@ -1,4 +1,5 @@
 #include "PathGenerationHelper.h"
+#include <vector>
 
 using namespace DirectX::SimpleMath;
 
@@ -298,4 +299,49 @@ std::vector<DirectX::SimpleMath::Vector3> PathGenerationHelper::GetPositions(con
 		positions[i] = intersectionPoints[i].position;
 	}
 	return positions;
+}
+
+void PathGenerationHelper::CompressPath(std::vector<DirectX::SimpleMath::Vector3>& vec, float distanceBetweenPoints)
+{
+	// If the vector has less than 3 elements, there is nothing to clean
+	if (vec.size() < 3) return;
+
+	// Loop through the vector, starting from the second element
+	for (int i = 1; i < vec.size() - 1;)
+	{
+		// Check if the current and the next two elements lie on a single line
+		Vector3 v1 = vec[i] - vec[i - 1];
+		Vector3 v2 = vec[i + 1] - vec[i];
+		if (v1.Cross(v2).LengthSquared() == 0)
+		{
+			vec.erase(vec.begin() + i);
+		}
+		else
+		{
+			++i;
+		}
+	}
+
+
+	if (vec.size() < 3) return;
+
+	// Loop through the vector, starting from the second element
+	for (int i = 1; i < vec.size() - 1;)
+	{
+		// Check if the current, previous, and next elements are less than the given distance apart
+		float d1 = (vec[i] - vec[i - 1]).Length();
+		float d2 = (vec[i + 1] - vec[i]).Length();
+		if (d1 < distanceBetweenPoints && d2 < distanceBetweenPoints)
+		{
+			// If they are, remove the current element
+			vec.erase(vec.begin() + i);
+		}
+		else
+		{
+			// If they aren't, move on to the next element
+			++i;
+		}
+	}
+
+
 }
