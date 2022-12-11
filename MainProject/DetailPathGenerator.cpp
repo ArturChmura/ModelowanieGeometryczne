@@ -5,6 +5,7 @@
 #include "IntersectionFinder.h"
 #include "StraightCurveInterpolatingFactory.h"
 #include <limits>
+#include "BezierSurfacesFactory.h"
 
 using namespace DirectX::SimpleMath;
 
@@ -16,10 +17,12 @@ std::shared_ptr<StraightCurveInterpolating> DetailPathGenerator::GeneralPaths(st
 	auto mugTop = std::dynamic_pointer_cast<IParameterized>(*itTop);
 	auto itHandle = find_if(models.begin(), models.end(), [](const std::shared_ptr<IModel> model) { return model->name == "Raczka C0"; });
 	auto mugHandle = std::dynamic_pointer_cast<IParameterized>(*itHandle);
+	auto [basePlane, _] = BezierSurfacesFactory::CreateBezierSurfaceC0(1, 1, 15, 15, false, DirectX::XM_PIDIV2, 0, 0);
 
 	auto mugBaseOffset = std::make_shared< OffsetParametrized>(mugBase, drillRadiusP4);
 	auto mugTopOffset = std::make_shared< OffsetParametrized>(mugTop, drillRadiusP4);
 	auto mugHandleOffset = std::make_shared< OffsetParametrized>(mugHandle, drillRadiusP4);
+	auto basePlaneOffset = std::make_shared< OffsetParametrized>(basePlane, drillRadiusP4);
 
 	auto intersectionFinder = std::make_shared<IntersectionFinder>(0.1, 0.01, false, Vector3(0, 0, 0));
 	auto topBaseIntersectionPointsPtr = intersectionFinder->FindIntersection(mugTopOffset, mugBaseOffset);
@@ -36,6 +39,8 @@ std::shared_ptr<StraightCurveInterpolating> DetailPathGenerator::GeneralPaths(st
 	auto handleBaseUpIntersectionPositions = std::vector<Vector3>();
 	auto handleBaseDownIntersectionPositions = std::vector<Vector3>();
 
+
+
 	for (auto intersectionPoint : handleBaseUpIntersectionPoints)
 	{
 		handleBaseUpIntersectionPositions.push_back(intersectionPoint.position);
@@ -51,11 +56,31 @@ std::shared_ptr<StraightCurveInterpolating> DetailPathGenerator::GeneralPaths(st
 	scene->AddModel(handleBaseUpIntersectionCurve.first);
 	scene->AddModel(handleBaseDownIntersectionCurve.first);
 
+	
 
 
 	auto positions = std::vector<Vector3>();
-	GenerateBasePath(mugBaseOffset, positions, topBaseIntersectionPoints[0].position.x, handleBaseDownIntersectionPositions, handleBaseUpIntersectionPositions);
-	GenerateTopPath(mugTopOffset, positions, topBaseIntersectionPoints[0].position.x, positions[positions.size() - 1].z > 0);
+	positions.push_back(beginPosition);
+
+	auto baseTopPositions = std::vector<Vector3>();
+	GenerateBasePath(mugBaseOffset, baseTopPositions, topBaseIntersectionPoints[0].position.x, handleBaseDownIntersectionPositions, handleBaseUpIntersectionPositions);
+	GenerateTopPath(mugTopOffset, baseTopPositions, topBaseIntersectionPoints[0].position.x, baseTopPositions[baseTopPositions.size() - 1].z > 0);
+	auto firstBasePositions = baseTopPositions[0];
+	firstBasePositions.y = beginPosition.y;
+	positions.push_back(firstBasePositions);
+	positions.insert(positions.end(), baseTopPositions.begin(), baseTopPositions.end());
+
+	auto lastPosition = baseTopPositions[baseTopPositions.size() - 1];
+	lastPosition.y = overTheModelHeight;
+	positions.push_back(lastPosition);
+
+
+	auto handlePositions = std::vector<Vector3>();
+	GenerateHandlePaths(mugHandleOffset, basePlaneOffset, handlePositions, handleBaseDownIntersectionPositions, handleBaseUpIntersectionPositions);
+	auto firstHandlePositions = handlePositions[0];
+	firstHandlePositions.y = overTheModelHeight;
+	positions.push_back(firstHandlePositions);
+	positions.insert(positions.end(), handlePositions.begin(), handlePositions.end());
 
 	auto points = std::vector<std::shared_ptr<Point>>();
 	for (auto position : positions)
@@ -113,10 +138,10 @@ void DetailPathGenerator::GenerateBasePath(
 		}
 		int intersectionIndex;
 		float pointsDistance = Vector3::Distance(currentPositions[0], currentPositions[1]);
-		auto intersection1 = GetCurvesIntersection(currentPositions, handleBottomIntersection, &intersectionIndex, pointsDistance);
+		auto intersection1 = GetCurvesIntersection(currentPositions, handleBottomIntersection, &intersectionIndex);
 		if (!intersection1)
 		{
-			intersection1 = GetCurvesIntersection(currentPositions, handleTopIntersection, &intersectionIndex, pointsDistance);
+			intersection1 = GetCurvesIntersection(currentPositions, handleTopIntersection, &intersectionIndex);
 		}
 		int startIndex = 0;
 		int endIndex = currentPositions.size() - 1;
@@ -143,19 +168,30 @@ void DetailPathGenerator::GenerateBasePath(
 	}
 }
 
-bool DetailPathGenerator::GetCurvesIntersection(std::vector<Vector3> curve1, std::vector<Vector3> curve2, int* outIntersectionIndex1, float minDistance)
+bool DetailPathGenerator::GetCurvesIntersection(std::vector<Vector3> curve1, std::vector<Vector3> curve2, int* outIntersectionIndex1)
 {
 	float minDistanceSquared = FLT_MAX;
 	int minDistanceIndex1 = -1;
 	int minDistanceIndex2 = -1;
+	float distanceBetweenPointsOnCurve1 = Vector3::Distance(curve1[0], curve1[1]);
 	for (int i = 0; i < curve1.size(); i++)
 	{
+		if (i + 1 < curve1.size())
+		{
+			distanceBetweenPointsOnCurve1 = Vector3::Distance(curve1[i], curve1[i+1]);
+		}
+		float distanceBetweenPointsOnCurve2 = Vector3::Distance(curve2[0], curve2[1]);
 		for (int j = 0; j < curve2.size(); j++)
 		{
+			if (j + 1 < curve2.size())
+			{
+				distanceBetweenPointsOnCurve2 = Vector3::Distance(curve2[j], curve2[j + 1]);
+			}
 			auto point1 = curve1[i];
 			auto point2 = curve2[j];
 			auto distanceSquared = Vector3::DistanceSquared(point1, point2);
-			if (distanceSquared < minDistanceSquared)
+			float minDistance = max(distanceBetweenPointsOnCurve2, distanceBetweenPointsOnCurve1);
+			if (distanceSquared < minDistance * minDistance && distanceSquared < minDistanceSquared)
 			{
 				minDistanceSquared = distanceSquared;
 				minDistanceIndex1 = i;
@@ -165,7 +201,7 @@ bool DetailPathGenerator::GetCurvesIntersection(std::vector<Vector3> curve1, std
 		}
 	}
 
-	if (minDistance * minDistance < minDistanceSquared)
+	if (minDistanceIndex1 == -1)
 	{
 		return false;
 	}
@@ -241,6 +277,11 @@ bool DetailPathGenerator::GetCurvesIntersection(std::vector<Vector3> curve1, std
 	*outIntersectionIndex1 = l1Index;
 	
 	return true;
+}
+
+bool DetailPathGenerator::GenerateHolePath(std::shared_ptr<IParameterized> handleOffset, std::shared_ptr<IParameterized> baseOffset, std::vector<DirectX::SimpleMath::Vector3>& positions)
+{
+	return false;
 }
 
 std::vector<float> DetailPathGenerator::GetBaseUValues(std::shared_ptr<IParameterized> mugBaseOffset)
@@ -329,7 +370,7 @@ std::vector<float> DetailPathGenerator::GetTopUValues(std::shared_ptr<IParameter
 		}
 	}
 
-	auto positionsWithoutIntersections = PathGenerationHelper::RemoveSelfIntersections(positions, distanceBetweenLines);
+	auto positionsWithoutIntersections = PathGenerationHelper::RemoveSelfIntersections(positions);
 
 	auto UsWithoutIntersections = std::vector<float>();
 	int j = 0;
@@ -343,4 +384,116 @@ std::vector<float> DetailPathGenerator::GetTopUValues(std::shared_ptr<IParameter
 	}
 
 	return UsWithoutIntersections;
+}
+
+
+void DetailPathGenerator::GenerateHandlePaths(
+	std::shared_ptr<IParameterized> handleOffset,
+	std::shared_ptr<IParameterized> baseOffset,
+	std::vector<DirectX::SimpleMath::Vector3>& positions,
+	std::vector<DirectX::SimpleMath::Vector3> handleBottomIntersection,
+	std::vector<DirectX::SimpleMath::Vector3> handleTopIntersection)
+{
+	int topToBottomPointsCount = 100;
+	int leftToRightPathCount = 60;
+
+
+	bool swapDirectionToFromTop = true;
+	auto cutCurveToIntersections = [&](std::vector<Vector3>& currentPositions)
+	{
+		int intersectionIndexBottom;
+		int intersectionIndexTop;
+		float pointsDistance = Vector3::Distance(currentPositions[0], currentPositions[1]);
+		auto intersectionBottom = GetCurvesIntersection(currentPositions, handleBottomIntersection, &intersectionIndexBottom);
+		auto intersectionTop = GetCurvesIntersection(currentPositions, handleTopIntersection, &intersectionIndexTop);
+		int startIndex = 0;
+		int endIndex = currentPositions.size() - 1;
+		if (intersectionBottom)
+		{
+			if (swapDirectionToFromTop)
+			{
+				endIndex = intersectionIndexBottom;
+			}
+			else
+			{
+				startIndex = intersectionIndexBottom + 1;
+			}
+		}
+		if (intersectionTop)
+		{
+			if (swapDirectionToFromTop)
+			{
+				startIndex = intersectionIndexTop + 1;
+
+			}
+			else
+			{
+				endIndex = intersectionIndexTop;
+			}
+		}
+
+		return std::vector<Vector3>(currentPositions.begin() + startIndex, currentPositions.begin() + endIndex + 1);
+	};
+
+	auto addCurveToPositions = [&](std::vector<Vector3>& currentPositions)
+	{
+
+		auto firstLifted = currentPositions[0] + Vector3(0, lift, 0);
+		positions.push_back(firstLifted);
+		positions.insert(positions.end(), currentPositions.begin(), currentPositions.end());
+		auto lastLifted = currentPositions[currentPositions.size() - 1] + Vector3(0, lift, 0);
+		positions.push_back(lastLifted);
+	};
+
+
+
+	float vBegin = 0.44878196268745163;
+	float vEnd = 0.051168519;
+	/*float vBegin = 0.151168519;
+	float vEnd = 0.151168519;*/
+	float vStep = (vEnd - vBegin) / (leftToRightPathCount - 1);
+	float uStep = 1.0f / (topToBottomPointsCount - 1);
+	float v = vBegin;
+	while(v >= vEnd)
+	{
+		std::vector<Vector3> currentPositions;
+		bool breaked = false;
+		float u = 0.0f;
+		while (u <= 1.0f)
+		{
+
+			float uDir = swapDirectionToFromTop ?1.0f-u : u;
+
+			auto position = handleOffset->GetValue(uDir, v);
+
+			if (position.y < drillRadiusP4)
+			{
+				position.y = drillRadiusP4;
+			}
+			currentPositions.push_back(position);
+
+			u += uStep;
+			if (u > 1.0f && u <= 1.0f + uStep / 2)
+			{
+				u = 1.0f;
+			}
+		}
+		if (breaked)
+		{
+			continue;
+		}
+		
+		currentPositions = PathGenerationHelper::RemoveSelfIntersections(currentPositions);
+		auto cuttedCurve = cutCurveToIntersections(currentPositions);
+		addCurveToPositions(cuttedCurve);
+		swapDirectionToFromTop = !swapDirectionToFromTop;
+
+		v += vStep;
+		if (v < vEnd && v >= vEnd + vStep / 2)
+
+		{
+			v = vEnd;
+		}
+	}
+
 }

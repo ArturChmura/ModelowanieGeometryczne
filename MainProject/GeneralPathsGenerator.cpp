@@ -217,6 +217,9 @@ std::shared_ptr<StraightCurveInterpolating> GeneralPathsGenerator::BorderPath(st
 	AddBeseIntersection(basePlane, mugTopOffset, positions, Vector3(5.356, 0.0, 0.190));
 	AddBeseIntersection(basePlane, mugTopOffset, positions, Vector3(3.567, 1.0, -2.157));
 
+
+
+	AddRightCupTopBeseIntersection(basePlane, mugBaseOffset, positions, Vector3(-0.906, 0.0, -1.572));
 	AddHandleBeseIntersection(basePlane, mugHandle, positions, Vector3(1.184, 0.0, -3.025));
 
 	AddRightCupBeseIntersection(basePlane, mugBaseOffset, positions, Vector3(-0.906, 0.0, -1.572));
@@ -225,15 +228,15 @@ std::shared_ptr<StraightCurveInterpolating> GeneralPathsGenerator::BorderPath(st
 	positions.push_back(Vector3(-5.560 - drillRadiusP3, baseHeight, 0.055 - 0.5 ));
 	positions.push_back(Vector3(-5.560 - drillRadiusP3, baseHeight, 4.096 + 0.5));
 
+	positions = PathGenerationHelper::RemoveSelfIntersections(positions);
 	auto lastPosition = positions[positions.size() - 1];
 	lastPosition.y = beginPosition.y;
 	positions.push_back(lastPosition);
 	positions.push_back(beginPosition);
 
-	auto positionsWithoutIntersections = PathGenerationHelper::RemoveSelfIntersections(positions, pointsDistance);
 
 	auto points = std::vector<std::shared_ptr<Point>>();
-	for (auto position : positionsWithoutIntersections)
+	for (auto position : positions)
 	{
 		auto point = std::make_shared<Point>(position);
 		points.push_back(point);
@@ -271,7 +274,18 @@ void GeneralPathsGenerator::AddRightCupBeseIntersection(std::shared_ptr<BezierSu
 		positions.push_back(Vector3(intersectionPoint.position.x, baseHeight, intersectionPoint.position.z));
 	}
 }
+void GeneralPathsGenerator::AddRightCupTopBeseIntersection(std::shared_ptr<BezierSurfaceC0> basePlane, std::shared_ptr<IParameterized> modelOffset, std::vector<DirectX::SimpleMath::Vector3>& positions, Vector3 cursorPosition)
+{
 
+	auto intersectionFinder = std::make_shared<IntersectionFinder>(pointsDistance, precision, true, cursorPosition);
+	auto intersectionPointsPtr = intersectionFinder->FindIntersection(basePlane, modelOffset);
+	auto intersectionPoints = *intersectionPointsPtr;
+	for (int i = 0; i < intersectionPoints.size() / 2; ++i)
+	{
+		auto intersectionPoint = intersectionPoints[i];
+		positions.push_back(Vector3(intersectionPoint.position.x, baseHeight, intersectionPoint.position.z));
+	}
+}
 void GeneralPathsGenerator::AddHandleBeseIntersection(std::shared_ptr<BezierSurfaceC0> basePlane, std::shared_ptr<IParameterized> handle, std::vector<DirectX::SimpleMath::Vector3>& positions, Vector3 cursorPosition)
 {
 

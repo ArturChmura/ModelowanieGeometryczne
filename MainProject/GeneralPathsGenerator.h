@@ -19,6 +19,8 @@ public:
 
 	void AddRightCupBeseIntersection(std::shared_ptr<BezierSurfaceC0> basePlane, std::shared_ptr<IParameterized> modelOffset, std::vector<DirectX::SimpleMath::Vector3>& positions, DirectX::SimpleMath::Vector3 cursorPosition);
 
+	void AddRightCupTopBeseIntersection(std::shared_ptr<BezierSurfaceC0> basePlane, std::shared_ptr<IParameterized> modelOffset, std::vector<DirectX::SimpleMath::Vector3>& positions, DirectX::SimpleMath::Vector3 cursorPosition);
+
 	void AddHandleBeseIntersection(std::shared_ptr<BezierSurfaceC0> basePlane, std::shared_ptr<IParameterized> handle, std::vector<DirectX::SimpleMath::Vector3>& positions, DirectX::SimpleMath::Vector3 cursorPosition);
 
 
