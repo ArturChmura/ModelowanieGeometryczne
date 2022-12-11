@@ -244,3 +244,58 @@ std::tuple< DirectX::SimpleMath::Vector3, DirectX::SimpleMath::Vector3, float> P
 	}
 	return std::make_tuple(pA, pB, (pA - pB).Length());
 }
+
+std::vector<std::tuple<int, int, DirectX::SimpleMath::Vector3, DirectX::SimpleMath::Vector3, float>> PathGenerationHelper::GetCurvesIntersections(std::vector<DirectX::SimpleMath::Vector3> curve1, std::vector<DirectX::SimpleMath::Vector3> curve2)
+{
+	
+	auto newPositions = std::vector<DirectX::SimpleMath::Vector3>();
+
+	auto intersectionPoints = std::vector<std::tuple<int, int, Vector3, Vector3, float>>();
+	for (int i = 0; i < curve1.size() - 1; i++)
+	{
+		auto A0 = curve1[i];
+		auto A1 = curve1[i + 1];
+
+		auto ALength = (A1 - A0).Length();
+		for (int j = 0; j < curve2.size() - 1; j++)
+		{
+			auto B0 = curve2[j];
+			auto B1 = curve2[j + 1];
+			auto BLength = (B1 - B0).Length();
+
+			auto [A2, B2, distance] = GetDistanceBetweenSegments(A0, A1, B0, B1);
+			auto minLength = min(ALength, BLength);
+
+			if (distance < minLength)
+			{
+				auto AB2 = (B2 - A2);
+				auto A = (A1 - A0);
+				auto B = (B1 - B0);
+				AB2.Normalize();
+				A.Normalize();
+				B.Normalize();
+				auto dotA = A.Dot(AB2);
+				auto dotB = B.Dot(AB2);
+
+				if (abs(dotA) < 0.05 && abs(dotB) < 0.05)
+				{
+					intersectionPoints.push_back(std::make_tuple(i, j, A2, B2, distance));
+				}
+			}
+
+
+		}
+	}
+
+	return intersectionPoints;
+}
+
+std::vector<DirectX::SimpleMath::Vector3> PathGenerationHelper::GetPositions(const std::vector<IntersectionPoint>& intersectionPoints)
+{
+	std::vector<Vector3> positions(intersectionPoints.size());
+	for (size_t i = 0; i < intersectionPoints.size(); i++)
+	{
+		positions[i] = intersectionPoints[i].position;
+	}
+	return positions;
+}
