@@ -67,11 +67,11 @@ std::shared_ptr< StraightCurveInterpolating> GeneralPathsGenerator::GeneralPaths
 	};
 
 
-	float planeHeight = 3.35f;
+	float planeHeight = 3.325f;
 	makePlane(planeHeight);
 
 	positions.push_back(beginPositionTopLeft);
-	planeHeight = 1.6f;
+	planeHeight = 1.65f;
 	makePlane(planeHeight);
 
 	positions.push_back(beginPosition);
