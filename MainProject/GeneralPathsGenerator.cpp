@@ -29,51 +29,58 @@ std::shared_ptr< StraightCurveInterpolating> GeneralPathsGenerator::GeneralPaths
 
 	int radiusInPixels = GetDrillRadiusInPixels(drillRadiusP1);
 
-	auto beginCoords = std::make_pair(-2 * radiusInPixels, -2 * radiusInPixels);
-	auto endCoords = std::make_pair(textureSize + 2 * radiusInPixels, textureSize + 2 * radiusInPixels);
+	auto beginCoords = std::make_pair((int)(-1.5 * radiusInPixels), 0);
+	auto endCoords = std::make_pair((int)(textureSize + 1.5 * radiusInPixels), textureSize);
 
 	auto beginPositionTopLeftPlane = GetPositionFromCoordinates(beginCoords.first, beginCoords.second);
 	auto beginPositionTopLeft = Vector3(beginPositionTopLeftPlane.x, beginPosition.y, beginPositionTopLeftPlane.y);
 	positions.push_back(beginPositionTopLeft);
 
 
-	auto makePlane = [&](float planeHeight) {
-		bool topToBottom = true;
-
-		for (int j = beginCoords.second; j <= endCoords.second; j += radiusInPixels)
+	auto addPositionFromIndex = [&](float planeHeight, int i, int j) 
+	{
+		float height;
+		if (i < 0 || i >= textureSize || j < 0 || j >= textureSize)
 		{
-			for (int i = beginCoords.first; i <= endCoords.first; i += 1)
-			{
-				float height;
-				int heightIndex = topToBottom ? i : textureSize - i - 1;
-				if (heightIndex < 0 || heightIndex >= textureSize || j < 0 || j >= textureSize)
-				{
-					height = planeHeight;
-				}
-				else
-				{
-					int index = heightIndex * textureSize + j;
-					height = max(diffusedHeightMap[index], planeHeight);
-				}
-				auto position = GetPositionFromCoordinates(heightIndex, j);
-				auto pointPosition = Vector3(position.x, height, position.y);
-				positions.push_back(pointPosition);
-			}
-			topToBottom = !topToBottom;
+			height = planeHeight;
 		}
-		auto lastPosition = positions[positions.size() - 1];
-		lastPosition.y = beginPosition.y;
-		positions.push_back(lastPosition);
+		else
+		{
+			int index = i * textureSize + j;
+			height = max(diffusedHeightMap[index], planeHeight);
+		}
+		auto position = GetPositionFromCoordinates(i, j);
+		auto pointPosition = Vector3(position.x, height, position.y);
+		positions.push_back(pointPosition);
 	};
 
 
 	float planeHeight = 3.325f;
-	makePlane(planeHeight);
+
+	bool topToBottom = true;
+	for (int j = beginCoords.second; j <= endCoords.second; j += radiusInPixels)
+	{
+		for (int i = beginCoords.first; i <= endCoords.first; i += 1)
+		{
+			int iIndex = topToBottom ? i : textureSize - i - 1;
+			addPositionFromIndex(planeHeight, iIndex,j);
+		}
+		topToBottom = !topToBottom;
+	}
+
+	planeHeight = 1.65f;
+	topToBottom = !topToBottom;
+	for (int j = endCoords.second; j >= beginCoords.second; j -= radiusInPixels)
+	{
+		for (int i = endCoords.first; i >= beginCoords.first; i -= 1)
+		{
+			int iIndex = topToBottom ? i : textureSize - i - 1;
+			addPositionFromIndex(planeHeight, iIndex, j);
+		}
+		topToBottom = !topToBottom;
+	}
 
 	positions.push_back(beginPositionTopLeft);
-	planeHeight = 1.65f;
-	makePlane(planeHeight);
-
 	positions.push_back(beginPosition);
 
 	PathGenerationHelper::CompressPath(positions, distanceBetweenPointsInPath);
@@ -95,28 +102,36 @@ std::shared_ptr<StraightCurveInterpolating> GeneralPathsGenerator::PlanePaths(st
 {
 	auto heightMap = GetHeightMapFromRenderingToDepthBuffer(models);
 
-	std::vector<Vector3> positions; 
+	std::vector<Vector3> positions;
 	positions.push_back(beginPosition);
 
 	int radiusInPixels = GetDrillRadiusInPixels(drillRadiusP2);
-	int jStep = 1.8 * radiusInPixels;
-
+	
+	auto xStep = 1.8 * drillRadiusP2;
 
 	auto geterateFromPosition = [&](Vector2 startPosition, Vector2 endPosition)
 	{
-		positions.push_back(Vector3(startPosition.x, beginPosition.y, startPosition.y));
-		positions.push_back(Vector3(startPosition.x, baseHeight, startPosition.y));
-
 		auto beginCoords = GetCoordinatesFromPosition(startPosition);
 		auto endCoords = GetCoordinatesFromPosition(endPosition);
 
-		int direction = 1; // 1 - top to bottom, -1 bottom to top
-		int i = beginCoords.first;
-		for (int j = beginCoords.second; j <= endCoords.second; j += jStep)
+		int jStep = GetDrillRadiusInPixels(xStep);
+		if (endCoords.second < beginCoords.second)
 		{
-			while (i <= endCoords.first && i >= beginCoords.first)
+			jStep = -jStep;
+		}
+
+		int direction = 1; // 1 - top to bottom, -1 bottom to top
+		if (endCoords.first < beginCoords.first)
+		{
+			direction = -direction;
+		}
+
+		int i = beginCoords.first;
+		for (int j = beginCoords.second; j <= max(endCoords.second, beginCoords.second) && j >= min(endCoords.second, beginCoords.second); j += jStep)
+		{
+			while (i >= beginCoords.first && i <= endCoords.first)
 			{
-				float maxHeight = GetMaxHeight(heightMap, i, j, radiusInPixels *1.05);
+				float maxHeight = GetMaxHeight(heightMap, i, j, radiusInPixels * 1.02);
 				if (maxHeight - baseHeight <= 1e-5f)
 				{
 					auto position = GetPositionFromCoordinates(i, j);
@@ -144,24 +159,28 @@ std::shared_ptr<StraightCurveInterpolating> GeneralPathsGenerator::PlanePaths(st
 				canGoToNextLine = (maxHeight - baseHeight) <= 1e-5f;
 			}
 		}
-		auto lastPosition = positions[positions.size() - 1];
-		lastPosition.y = beginPosition.y;
-		positions.push_back(lastPosition);
 
 
 	};
 
-	auto topLeftPosition = Vector2(-baseSize / 2 - drillRadiusP2 * 2, baseSize / 2 + drillRadiusP2 * 2);
-	auto bottomRightPosition = Vector2(baseSize / 2 + drillRadiusP2 * 2, -baseSize / 2 - drillRadiusP2 * 2);
+	auto bottomLeft = Vector2(-baseSize / 2 + drillRadiusP2 * 0.9, baseSize / 2 + drillRadiusP2 * 2);
+	auto topRight = Vector2(baseSize / 2 , -baseSize / 2 - drillRadiusP2 * 2);
 
-	geterateFromPosition(topLeftPosition, bottomRightPosition);
+	positions.push_back(Vector3(bottomLeft.x, beginPosition.y, bottomLeft.y));
+
+	geterateFromPosition(bottomLeft, topRight);
 
 
-	topLeftPosition.x += drillRadiusP2 * 5;
-	bottomRightPosition.x -= drillRadiusP2 * 2.5; // wyliczone rêcznie
+	auto lastPosition = positions[positions.size()-1];
 
-	geterateFromPosition(topLeftPosition, bottomRightPosition);
+	auto leftSideTopLeft = Vector2(lastPosition.x - xStep, lastPosition.z);
+	auto leftSideBottom = Vector2(-baseSize * 0.4, -baseSize / 2 - drillRadiusP2 * 2);
 
+
+	geterateFromPosition(leftSideTopLeft, leftSideBottom);
+
+	lastPosition = positions[positions.size() - 1];
+	positions.push_back(Vector3(lastPosition.x, beginPosition.y, lastPosition.z));
 	positions.push_back(beginPosition);
 
 
@@ -175,7 +194,7 @@ std::shared_ptr<StraightCurveInterpolating> GeneralPathsGenerator::PlanePaths(st
 
 	auto interpolated = std::make_shared<StraightCurveInterpolating>(points);
 
-	
+
 	delete[] heightMap;
 	return interpolated;
 
@@ -184,7 +203,7 @@ std::shared_ptr<StraightCurveInterpolating> GeneralPathsGenerator::PlanePaths(st
 std::shared_ptr<StraightCurveInterpolating> GeneralPathsGenerator::BorderPath(std::vector<std::shared_ptr<IModel>> models, std::shared_ptr<Scene> scene)
 {
 
-	auto [basePlane,_] = BezierSurfacesFactory::CreateBezierSurfaceC0(1, 1, 15, 15, false, XM_PIDIV2, 0, 0);
+	auto [basePlane, _] = BezierSurfacesFactory::CreateBezierSurfaceC0(1, 1, 15, 15, false, XM_PIDIV2, 0, 0);
 
 	auto itMug = find_if(models.begin(), models.end(), [](const std::shared_ptr<IModel> model) { return model->name == "Kufel"; });
 	auto mugBase = std::dynamic_pointer_cast<IParameterized>(*itMug);
@@ -198,16 +217,17 @@ std::shared_ptr<StraightCurveInterpolating> GeneralPathsGenerator::BorderPath(st
 	auto mugHandleOffset = std::make_shared< OffsetParametrized>(mugHandle, drillRadiusP3);
 
 	auto positions = std::vector<Vector3>();
-
 	positions.push_back(beginPosition);
 
-	auto startPosition = Vector2(-7.5 - drillRadiusP3*2, 7.5 + drillRadiusP3 * 2);
-
+	auto tmpPositions = std::vector<Vector3>();
+	AddBeseIntersection(basePlane, mugBaseOffset, tmpPositions, Vector3(-0.906, 0.0, 5.221));
+	auto firstPosition = tmpPositions[0];
+	auto startPosition = Vector2(firstPosition.x, baseSize / 2 + drillRadiusP3 * 1.5);
 	positions.push_back(Vector3(startPosition.x, beginPosition.y, startPosition.y));
 	positions.push_back(Vector3(startPosition.x, baseHeight, startPosition.y));
+	positions.insert(positions.end(), tmpPositions.begin(), tmpPositions.end());
 
-	AddBeseIntersection(basePlane, mugBaseOffset, positions, Vector3(-0.906, 0.0, 5.221));
-	
+
 	AddBeseIntersection(basePlane, mugTopOffset, positions, Vector3(3.567, 1.0, 5.221));
 	AddBeseIntersection(basePlane, mugTopOffset, positions, Vector3(5.243, 0.0, 3.727));
 
@@ -226,7 +246,8 @@ std::shared_ptr<StraightCurveInterpolating> GeneralPathsGenerator::BorderPath(st
 	AddRightCupBeseIntersection(basePlane, mugBaseOffset, positions, Vector3(-0.906, 0.0, -1.572));
 
 
-	positions.push_back(Vector3(-5.560 - drillRadiusP3, baseHeight, 0.055 - 0.5 ));
+	// dolna pozioma belka
+	positions.push_back(Vector3(-5.560 - drillRadiusP3, baseHeight, 0.055 - 0.5));
 	positions.push_back(Vector3(-5.560 - drillRadiusP3, baseHeight, 4.096 + 0.5));
 
 	positions = PathGenerationHelper::RemoveSelfIntersections(positions);
@@ -248,7 +269,7 @@ std::shared_ptr<StraightCurveInterpolating> GeneralPathsGenerator::BorderPath(st
 
 
 	return interpolated;
-	
+
 }
 
 void GeneralPathsGenerator::AddBeseIntersection(std::shared_ptr<BezierSurfaceC0> basePlane, std::shared_ptr<IParameterized> modelOffset, std::vector<DirectX::SimpleMath::Vector3>& positions, Vector3 cursorPosition)
@@ -339,15 +360,15 @@ float GeneralPathsGenerator::GetMaxHeight(float* heightMap, int iCenter, int jCe
 
 DirectX::SimpleMath::Vector2 GeneralPathsGenerator::GetPositionFromCoordinates(int row, int column)
 {
-	float x = column / (float)textureSize * baseSize - baseSize/2;
-	float z = -(row / (float)textureSize * baseSize - baseSize/2);
+	float x = column / (float)textureSize * baseSize - baseSize / 2;
+	float z = -(row / (float)textureSize * baseSize - baseSize / 2);
 	return Vector2(x, z);
 }
 
 std::pair<int, int> GeneralPathsGenerator::GetCoordinatesFromPosition(DirectX::SimpleMath::Vector2 position)
 {
-	int i = (baseSize - 2*position.y) * textureSize / (2 * baseSize);
-	int j = (2*position.x + baseSize) * textureSize / (2 * baseSize) ;
+	int i = (baseSize - 2 * position.y) * textureSize / (2 * baseSize);
+	int j = (2 * position.x + baseSize) * textureSize / (2 * baseSize);
 	return std::make_pair(i, j);
 }
 

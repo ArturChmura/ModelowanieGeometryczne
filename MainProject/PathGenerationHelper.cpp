@@ -26,7 +26,7 @@ std::vector<DirectX::SimpleMath::Vector3> PathGenerationHelper::RemoveSelfInters
 			
 			auto [A2, B2, distance] = GetDistanceBetweenSegments(A0, A1, B0, B1);
 			auto minLength = min(ALength, BLength);
-
+			minLength = min(minLength, 0.1);
 			if (distance < minLength)
 			{
 				auto AB2 = (B2 - A2);
