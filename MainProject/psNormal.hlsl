@@ -5,11 +5,7 @@ texture2D colorMap : register(t1);
 
 sampler samp : register(s0);
 
-//static const float3 lightPositions[2] =
-//{
-//    float3(-100, 100, -100),
-//    float3(100, 100, 100)
-//};
+
 static const float3 lightPositions[1] =
 {
     float3(0, 100, 0)
