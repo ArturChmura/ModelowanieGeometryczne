@@ -37,7 +37,7 @@ std::shared_ptr< StraightCurveInterpolating> GeneralPathsGenerator::GeneralPaths
 	positions.push_back(beginPositionTopLeft);
 
 
-	auto addPositionFromIndex = [&](float planeHeight, int i, int j) 
+	auto addPositionFromIndex = [&](float planeHeight, int i, int j)
 	{
 		float height;
 		if (i < 0 || i >= textureSize || j < 0 || j >= textureSize)
@@ -51,7 +51,7 @@ std::shared_ptr< StraightCurveInterpolating> GeneralPathsGenerator::GeneralPaths
 		}
 		auto position = GetPositionFromCoordinates(i, j);
 		auto pointPosition = Vector3(position.x, height, position.y);
-		positions.push_back(pointPosition);
+		positions.push_back(pointPosition + Vector3(0, 0.01, 0));
 	};
 
 
@@ -63,7 +63,7 @@ std::shared_ptr< StraightCurveInterpolating> GeneralPathsGenerator::GeneralPaths
 		for (int i = beginCoords.first; i <= endCoords.first; i += 1)
 		{
 			int iIndex = topToBottom ? i : textureSize - i - 1;
-			addPositionFromIndex(planeHeight, iIndex,j);
+			addPositionFromIndex(planeHeight, iIndex, j);
 		}
 		topToBottom = !topToBottom;
 	}
@@ -106,7 +106,7 @@ std::shared_ptr<StraightCurveInterpolating> GeneralPathsGenerator::PlanePaths(st
 	positions.push_back(beginPosition);
 
 	int radiusInPixels = GetDrillRadiusInPixels(drillRadiusP2);
-	
+
 	auto xStep = 1.8 * drillRadiusP2;
 
 	auto geterateFromPosition = [&](Vector2 startPosition, Vector2 endPosition)
@@ -164,14 +164,14 @@ std::shared_ptr<StraightCurveInterpolating> GeneralPathsGenerator::PlanePaths(st
 	};
 
 	auto bottomLeft = Vector2(-baseSize / 2 + drillRadiusP2 * 0.9, baseSize / 2 + drillRadiusP2 * 2);
-	auto topRight = Vector2(baseSize / 2 , -baseSize / 2 - drillRadiusP2 * 2);
+	auto topRight = Vector2(baseSize / 2, -baseSize / 2 - drillRadiusP2 * 2);
 
 	positions.push_back(Vector3(bottomLeft.x, beginPosition.y, bottomLeft.y));
 
 	geterateFromPosition(bottomLeft, topRight);
 
 
-	auto lastPosition = positions[positions.size()-1];
+	auto lastPosition = positions[positions.size() - 1];
 
 	auto leftSideTopLeft = Vector2(lastPosition.x - xStep, lastPosition.z);
 	auto leftSideBottom = Vector2(-baseSize * 0.4, -baseSize / 2 - drillRadiusP2 * 2);
